@@ -15,6 +15,7 @@ link:
 
 
 never:
+	ld -T link.ld
 	nasm -f bin -o kernel.bin kernel.asm
 	nasm -f bin -o kernel.bin zeroes.asm
 	gcc -o kernel.o -c kernel.c

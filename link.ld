@@ -1,8 +1,9 @@
 OUTPUT_FORMAT(binary)
 
-ENTRY(entry)
+ENTRY(protect)
 INPUT
 (
+pm.o
 kernel.o
 )
 OUTPUT

@@ -1,5 +1,5 @@
 
-jmp protect
+
 
 %include "gdt.asm"
 
@@ -21,15 +21,18 @@ ret
 [bits 32]
 startPM:
 
-mov ax,dataseg
+mov ax,codeseg
 mov ds,ax
 mov es,ax
 mov fs,ax
 mov gs,ax
 mov ss,ax
 
-mov [0xb80000],byte 'h'
+mov ebp ,0x900000
+mov esp ,ebp
+
+mov [0xb8000], byte "H"
 
 jmp $
 
-times 2048-($-$$)  db 0
+times 2048-($-$$)  db 1

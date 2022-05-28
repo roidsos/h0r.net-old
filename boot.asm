@@ -1,7 +1,6 @@
 bits 16
 org 0x7C00
 
-
 mov dl,0h
 mov dh,0h
 mov ch,0h

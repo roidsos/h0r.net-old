@@ -20,7 +20,7 @@ db 0x00         ;even more base
 gdt_end:
 
 gdtdesc:
-    size: dw gdt_end - gdt_nulldesc -1
+    size: dw gdt_end - gdt_nulldesc - 1
     addr: dd gdt_nulldesc
 
     codeseg equ gdt_text - gdt_nulldesc
