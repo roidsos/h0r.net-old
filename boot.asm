@@ -12,7 +12,7 @@ mov bx,0h
 
 read:
 mov ah,2
-mov al,1
+mov al,4
 int 13h
 jc read
 

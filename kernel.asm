@@ -6,4 +6,4 @@ mov cx,1
 
 int 10h
 
-times 512-($-$$)  db 0
+times 2048-($-$$)  db 0
