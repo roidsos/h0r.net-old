@@ -1,8 +1,15 @@
+mov ah,09h
+mov al,'N'
+mov bh,0
+mov bl,4
+mov cx,1
+int 10h
+jmp $
 
 jmp protect
 
-%include "gdt.asm"
-%include "a20.asm"
+%include "boot/gdt.asm"
+%include "boot/a20.asm"
 
 protect:
 call enableA20
@@ -11,7 +18,7 @@ lgdt [gdtdesc]
 mov eax, cr0
 or eax, 1
 mov cr0, eax
-jmp codeseg:startPM
+jmp 08h:startPM
 
 bits 32
 startPM:
