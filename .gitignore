@@ -1,2 +1,5 @@
 .vscode/
-*.bin
+boot.bin
+kernel.bin
+zeroes.bin
+bin/*
