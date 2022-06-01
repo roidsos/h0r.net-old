@@ -1,4 +1,7 @@
-start:
+segment _ENTRY class=CODE
+global entry
+
+entry:
 mov ah,09h
 mov al,'N'
 mov bh,0
