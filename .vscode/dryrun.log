@@ -1,4 +1,4 @@
-make.exe --dry-run --always-make --keep-going --print-directory
+make.exe --dry-run --keep-going --print-directory
 make.exe: Entering directory `c:/Users/andya/Desktop/h0r.net'
 cd boot/stage1 && make && cd .. && cd ..
 cd boot/stage2 && make && cd .. && cd ..

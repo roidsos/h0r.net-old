@@ -1,3 +1,3 @@
-void _cdecl cstart(){
+void cstart(){
 
 }

@@ -8,7 +8,7 @@ make.exe all --print-data-base --no-builtin-variables --no-builtin-rules --quest
 # This program built for i386-pc-mingw32
  
 
-# Make data base, printed on Wed Jun 01 08:29:28 2022
+# Make data base, printed on Thu Jun 02 08:40:28 2022
 
 # Variables
 
@@ -35,7 +35,8 @@ CURDIR := c:/Users/andya/Desktop/h0r.net
 # default
 SHELL := sh.exe
 # environment
-WINDIR = C:\Windows
+WINDIR = C:\Window 
+s
 # environment
 VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
 # environment
@@ -55,12 +56,12 @@ PROGRAMW6432 = C:\Program Files
 # environment
 PROGRAMDATA = C:\ProgramData
 # environment
-VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-2998d736-685a-43ed-91b3-f25e0e91000b-sock
+VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-1bee3646-bc6a-473c-9b9c-0f0437683139-sock
 # environment
-VSCODE_CWD = C:\Users\andya\Desktop\h0r.net
+VSCODE_CWD = C:\Users\andya\AppData\Local\Programs\Microsoft VS Code Insiders
 # environment
-PATH = C:\Program Files (x86)\VMware\VMware Player\bin\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Users\andya\AppData\Local\Programs\Microsoft VS Code Insiders;C:\Program Files\dotnet\;C:\Program Files (x86)\VMware\VMware Player;C:\Program Files\Oracle\VirtualBox;C:\Users\andya\AppData\Local\bin\NASM;C:\Program Files\qemu\;C:\Windows\System32\bin;C:\Program Files (x86)\GnuWin32\bin;C:\Program Files\Bochs-2.7;C:\MinGW\bin;C:\HashiCorp\Vagrant\bin;C:\Program Files\Git\cmd;C:\Users\andya\AppData\Local\Programs\Python\Python310\Scripts\;C:\Users\andya\AppData\Local\Programs\Python\Python310\;C:\Users\andya\AppData\Local\Microsoft\WindowsApps;;C:\Users\andya\.dotnet\tools;C:\Users\andya\AppData\Local\Programs 
-\Microsoft VS Code Insiders\bin
+PATH = C:\Program Files (x86)\VMware\VMware Workstation\bin\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Users\andya\AppData\Local\Programs\Microsoft VS Code Insiders;C:\Program Files\dotnet\;C:\Program Files (x86)\VMware\VMware Player;C:\Program Files\Oracle\VirtualBox;C:\Users\andya\AppData\Local\bin\NASM;C:\Program Files\qemu\;C:\Windows\System32\bin;C:\Program Files (x86)\GnuWin32\bin;C:\Program Files\Bochs-2.7;C:\MinGW\bin;C:\HashiCorp\Vagrant\bin;C:\Program Files\Git\cmd;C:\Users\andya\AppData\Local\Programs\Python\Python310\Scripts\;C:\Users\andya\AppData\Local\Programs\Python\Python310\;C:\Users\andya\AppData\Local\Microsoft\WindowsApps;;C:\Users\andya\.dotnet\tool 
+s;C:\Users\andya\AppData\Local\Programs\Microsoft VS Code Insiders\bin
 # environment
 COMMONPROGRAMW6432 = C:\Program Files\Common Files
 # environment
@@ -79,8 +80,9 @@ ELECTRON_RUN_AS_NODE = 1
 .FEATURES := target-specific order-only second-expansion else-if archives
 # automatic
 %F = $(notdir $%)
-# environment
-CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_10408_DDJICOAYXDLAMOCV
+# environment 
+
+CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_6700_DRXOJVFSAJUGIKLR
 # environment
 VSCODE_PIPE_LOGGING = true
 # environment
@@ -98,7 +100,8 @@ PUBLIC = C:\Users\Public
 # environment
 VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
 # environment
-VSCODE_CODE_CACHE_PATH = C:\Users\andya\AppData\Roaming\Code - Insiders\CachedData\acb156d6fb0dc451f427748d5f68774f17cc96fd
+VSCODE_CODE_CACHE_PATH  
+= C:\Users\andya\AppData\Roaming\Code - Insiders\CachedData\4589815e4849499c67125ff68563fa102646b869
 # environment
 APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
 # environment
@@ -116,7 +119,8 @@ MAKE = $(MAKE_COMMAND)
 # default
 MAKECMDGOALS := all
 # default
-MAKE_VERSION := 3.81
+MAKE_VERSION :=  
+3.81
 # makefile
 .DEFAULT_GOAL := all
 # environment
@@ -136,7 +140,8 @@ PROCESSOR_ARCHITEW6432 = AMD64
 # automatic
 *F = $(notdir $*)
 # environment
-PROCESSOR_IDENTIFIER = Intel64 Family 6 Model 58 Stepping 9, GenuineIntel
+PROCESSOR_IDENTIFIER = Intel64 Family 6 Mode 
+l 58 Stepping 9, GenuineIntel
 # environment
 OS = Windows_NT
 # environment
@@ -158,7 +163,8 @@ SYSTEMROOT = C:\Windows
 # automatic
 +F = $(notdir $+)
 # environment
-APPDATA = C:\Users\andya\AppData\Roaming
+APPDATA = C: 
+\Users\andya\AppData\Roaming
 # environment
 TEMP = C:\Users\andya\AppData\Local\Temp
 # environment
@@ -186,9 +192,10 @@ LANG = C
 # environment
 PROCESSOR_LEVEL = 6
 # environment
-VSCODE_PID = 10408
+VSCODE_PID = 6700
 # environment
-USERDOMAIN_ROAMINGPROFILE = REVOLVINGPC
+USERD 
+OMAIN_ROAMINGPROFILE = REVOLVINGPC
 # variable set hash-table stats:
 # Load=88/1024=9%, Rehash=0, Collisions=9/110=8%
 
@@ -200,33 +207,37 @@ USERDOMAIN_ROAMINGPROFILE = REVOLVINGPC
 
 # : could not be stat'd.
 # C:\Program Files\qemu\ (key C:/Program Files/qemu/, mtime 1653776732): 156 files, no impossibilities.
-# C:\Program Files (x86)\VMware\VMware Player (key C:/Program Files (x86)/VMware/VMware Player, mtime 1653489712): 115 files, no impossibilities.
-# C:\Windows\System32\WindowsPowerShell\v1.0\ (key C:/Windows/Sys 
-tem32/WindowsPowerShell/v1.0/, mtime 1622903042): 30 files, no impossibilities.
+# C:\Program Files (x86)\VMware\VMware Player (key C:/Program Files (x86)/VMware/VMware Player, mtime 1654104868): 9 files, no impossibilities.
+# C:\Windows\System32\WindowsP 
+owerShell\v1.0\ (key C:/Windows/System32/WindowsPowerShell/v1.0/, mtime 1622903042): 30 files, no impossibilities.
 # C:\Windows\System32\Wbem (key C:/Windows/System32/Wbem, mtime 1653715417): 170 files, no impossibilities.
-# . (key c:/Users/andya/Desktop/h0r.net, mtime 1654090167): 17 files, no impossibilities.
-# C:\Users\andya\AppData\Local\Programs\Microsoft VS Code Insiders (key C:/Users/andya/AppData/Local/Programs/Microsoft VS Code Insiders, mtime 1654090143): 27 files, no impossibilities.
-# C:\Program Files\Bochs-2.7 (key C:/Program Files/Bochs-2.7, mtime 1653855715): 40 files, no impossibilities.
+# . (key c:/Users/andya/Desktop/h0r.net, mtime 1654176996): 16 files, no impossibilities.
+# C:\Users\andya\AppData\Local\Programs\Microsoft VS Code Insiders (key C:/Users/andya/AppData/Local/Programs/Microsoft VS Code Insiders, mtime 1654177032): 26 files, no impossibilities.
+# C:\Program 
+ Files\Bochs-2.7 (key C:/Program Files/Bochs-2.7, mtime 1653855715): 40 files, no impossibilities.
 # C:\Program Files\dotnet\ (key C:/Program Files/dotnet/, mtime 1653445092): 10 files, no impossibilities.
 # C:\MinGW\bin (key C:/MinGW/bin, mtime 1653778960): 144 files, no impossibilities.
+# C:\Program Files (x86)\VMware\VMware Workstation\bin\ (key C:/Program Files (x86)/VMware/VMware Workstation/bin/, mtime 1654104881): 4 files, no impossibilities.
 # C:\Windows\System32\OpenSSH\: could not be stat'd.
-# C:\Users\andya\AppData\Local\Programs\Python\Python310\ (key C:/Users/andya/AppData/Local/Programs/Python/Python310/, mtime 1653417921): 18 files, no impossibilities.
+# C:\ 
+Users\andya\AppData\Local\Programs\Python\Python310\ (key C:/Users/andya/AppData/Local/Programs/Python/Python310/, mtime 1653417921): 18 files, no impossibilities.
 # C:\Users\andya\AppData\Local\bin\NASM (key C:/Users/andya/AppData/Local/bin/NASM, mtime 1653776440): 18 files, no impossibilities.
 # C:\Windows\System32\bin: could not be stat'd.
-# C:\Users\andya\AppData\Local\Programs\Python\Python310\Scripts\ (key C:/Users/andya/AppData/Local/Programs/Python/Python310/Scripts/, mtime 1653677586): 7 files, no impossibilities.
+# C:\Users\andya\AppData\Local\Programs\Python\Python310\Scripts\ (key C:/Users/andya/AppData/Local/Programs/Python/Python310/Scripts/, mtime 1653677586): 7 files, no  
+impossibilities.
 # C:\Windows (key C:/Windows, mtime 1654051646): 114 files, no impossibilities.
-# C:\Users\andya\AppData\Local\Programs\Microsoft VS Code Insiders\bin (key C:/Users/andya/AppData/Local/Programs/Microsoft VS Code Insiders/bin, mtime 1654003791): 4 files, no impossibilities.
+# C:\Users\andya\AppData\Local\Programs\Microsoft VS Code Insiders\bin (key C:/Users/andya/AppData/Local/Programs/Microsoft VS Code Insiders/bin, mtime 1654089721): 4 files, no impossibilities.
 # C:\Users\andya\.dotnet\tools: could not be stat'd.
 # C:\Program Files\Oracle\VirtualBox (key C:/Program Files/Oracle/VirtualBox, mtime 1653504460): 66 files, no impossibilities.
-# C:\Program Files\Git\cmd (key C:/Program Files/Git/cmd, mtime 1654035557): 7 files, no impossibilities.
-# C:\Windows\system32 (key C:/Windows/system32, mtime 1654090009): 2873 files, no impossibilities.
-# C:\Program Files (x86)\VMware\VMware Player\bin\ (key C:/Program Files (x86)/VMware/VMware Player/bin/, mtime 1653489713): 4 files, no impossibilities.
-# C:\Users\andya\AppData\Local\Microsoft\WindowsApps (key C:/Users/andya/AppData/Local/Microsoft/WindowsApps, mtime 1653876178): 26 files, no impossibilities.
+# C:\Program Files\Git\cmd (key C:/Progra 
+m Files/Git/cmd, mtime 1654035557): 7 files, no impossibilities.
+# C:\Windows\system32 (key C:/Windows/system32, mtime 1654104899): 2873 files, no impossibilities.
+# C:\Users\andya\AppData\Local\Microsoft\WindowsApps (key C:/Users/andya/AppData/Local/Microsoft/WindowsApps, mtime 1654126568): 26 files, no impossibilities.
 # C:\HashiCorp\Vagrant\bin (key C:/HashiCorp/Vagrant/bin, mtime 1654023497): 3 files, no impossibilities.
-# C:\Program Files (x86)\GnuWin32\bin (key C:/Program Files (x86)/GnuWin32/bin, mtime 1653854817): 5 files, no impossibilities.
- 
+# C:\Program Files (x86)\GnuWin32\bin (key C:/Program Files (x86)/GnuWin32/bin, mti 
+me 1653854817): 5 files, no impossibilities.
 
-# 3854 files, no impossibilities in 25 directories.
+# 3746 files, no impossibilities in 25 directories.
 
 # Implicit Rules
 
@@ -257,7 +268,8 @@ all:
 # ^ := 
 # automatic
 # ? := 
-# variable set hash-table stats:
+# varia 
+ble set hash-table stats:
 # Load=8/32=25%, Rehash=0, Collisions=1/10=10%
 #  commands to execute (from `makefile', line 5):
 	cd boot/stage1 && make && cd .. && cd ..
@@ -273,14 +285,15 @@ all:
 
 # Not a target:
 .DEFAULT:
-#  Implicit rule search has not been done.
+#  Implicit rule sear 
+ch has not been done.
 #  Modification time never checked.
 #  File has not been updated.
 
 # Not a target:
 makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-01 08:28:21
+#  Last modified 2022-06-01 09:32:16
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -294,7 +307,8 @@ makefile:
 
 never:
 #  Implicit rule search has not been done.
-#  Modification time never checked.
+#  Mo 
+dification time never checked.
 #  File has not been updated.
 #  commands to execute (from `makefile', line 20):
 	ld -T link.ld
@@ -314,9 +328,10 @@ never:
 
 # # of strings in strcache: 1
 # # of strcache buffers: 1
-# strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
+# strcache size: total = 4 
+096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Wed Jun 01 08:29:28 2022
+# Finished Make data base on Thu Jun 02 08:40:28 2022
 
  
