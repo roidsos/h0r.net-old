@@ -1,8 +1,8 @@
-segment _ENTRY class=CODE
+segment _text
 extern cstart
-global entry
+global _start
 
-entry:
+_start:
 mov ah,09h
 mov al,'N'
 mov bh,0
