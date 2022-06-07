@@ -1,12 +1,6 @@
-FORMAT RAW BIN
-OPTION QUIET,
-       NODEFAULTLIBS,
-       START=entry,
-       VERBOSE,
-       OFFSET=0,
-       STACK=0x200
-ORDER
-    CLNAME CODE
-        SEGMENT _ENTRY
-        SEGMENT _TEXT
-    CLNAME DATA
+OUTPUT_FORMAT(binary)
+ENTRY(entry)
+SECTIONS{
+.text = 0x8000;
+}
+
