@@ -1,7 +1,7 @@
 CC=i386-elf-gcc
 LD=i386-elf-ld
 ASMFLAGS?=-f elf32
-CFLAGS16?= #-4 -d3 -s -wx -ms -zl -zq  -oneatxzh 
+CFLAGS16?= 
 ASM=nasm
 BUILD_DIR = ../../bin
 
