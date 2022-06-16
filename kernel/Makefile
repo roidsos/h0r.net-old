@@ -1,7 +1,7 @@
-source_files := $(wildcard *.c)
+source_files := $(wildcard *.c) $(wildcard */*.c)
 kobject_files := $(source_files:.c=.o)
 
-asm_source_files := $(wildcard *.asm)
+asm_source_files := $(wildcard *.asm) $(wildcard */*.asm)
 asm_object_files := $(asm_source_files:.asm=.o)
 all: build-x86_64
 
