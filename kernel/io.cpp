@@ -1,4 +1,4 @@
-#include "io.h"
+#include <stdint.h>
 int iter = 0;
 uint_16 CursorPos;
 void outb(uint_16 port,uint_8 value){
@@ -52,12 +52,14 @@ value += (uint_64)color << 56;
     }
     setCursorpos(0);   
 }
+
 int_8 hex2strout[128];
-const char* hex2str(int value){
-    int* valptr = &value;
+template<typename T>
+const char* hex2str(T value){
+    T* valptr = &value;
     uint_8* ptr;
     uint_8 temp;
-    uint_8 size = (sizeof(int)) * 2 - 1;
+    uint_8 size = (sizeof(T)) * 2 - 1;
     uint_8 i;
     for(i = 0;i < size;i++){
         ptr = ((uint_8*)valptr + i);

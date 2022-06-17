@@ -8,7 +8,7 @@ all: build-x86_64
 object_files := $(asm_object_files) $(kobject_files)
 
 $(kobject_files):
-	x86_64-elf-g++ -I . -ffreestanding -mno-red-zone -m64 -c $(patsubst %.o, %.cpp, $@) -o $@
+	x86_64-elf-g++ -I . -ffreestanding -m64 -c $(patsubst %.o, %.cpp, $@) -o $@
 
 $(asm_object_files):
 	nasm -f elf64 $(patsubst %.o, %.asm, $@) -o $@
