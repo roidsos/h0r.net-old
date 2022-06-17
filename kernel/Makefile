@@ -1,5 +1,5 @@
-source_files := $(wildcard *.c) $(wildcard */*.c)
-kobject_files := $(source_files:.c=.o)
+source_files := $(wildcard *.cpp) $(wildcard */*.cpp)
+kobject_files := $(source_files:.cpp=.o)
 
 asm_source_files := $(wildcard *.asm) $(wildcard */*.asm)
 asm_object_files := $(asm_source_files:.asm=.o)
@@ -8,7 +8,7 @@ all: build-x86_64
 object_files := $(asm_object_files) $(kobject_files)
 
 $(kobject_files):
-	x86_64-elf-gcc -I . -c -ffreestanding $(patsubst %.o, %.c, $@) -o $@
+	x86_64-elf-g++ -I . -ffreestanding -mno-red-zone -m64 -c $(patsubst %.o, %.cpp, $@) -o $@
 
 $(asm_object_files):
 	nasm -f elf64 $(patsubst %.o, %.asm, $@) -o $@
