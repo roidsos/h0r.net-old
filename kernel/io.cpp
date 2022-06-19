@@ -1,10 +1,15 @@
 #include <stdint.h>
+int_32 lol = 0;
 int iter = 0;
 uint_16 CursorPos;
 void outb(uint_16 port,uint_8 value){
     asm volatile ("outb %0, %1" : :"a"(value) ,"Nd"(port));
 }
-uint_8 intb(uint_16 port){
+void outbslow(uint_16 port,uint_8 value){
+     __asm__ volatile("outb %0, %1\njmp 1f\n1: jmp 1f\n1:" : : "a" (value), "Nd" (port));
+}
+
+uint_8 inb(uint_16 port){
     uint_8 ret;
     asm volatile ("inb %1, %0" : :"a"(ret) ,"Nd"(port));
     return ret;
@@ -24,11 +29,11 @@ void print(const int_8* str,uint_8 color)
     while(str[i] != '\0'){
         switch (str[i])
         {
-        case 10:
+        case 10://newline
             iter += 80;
             iter -= iter % 80;//automaticly returns on newlines like unix
             break;
-        case 13:
+        case 13://return
             iter -= iter % 80;
             break;
         
@@ -54,12 +59,11 @@ value += (uint_64)color << 56;
 }
 
 int_8 hex2strout[128];
-template<typename T>
-const char* hex2str(T value){
-    T* valptr = &value;
+const char* hex2str(uint_64 value){
+    uint_64* valptr = &value;
     uint_8* ptr;
     uint_8 temp;
-    uint_8 size = (sizeof(T)) * 2 - 1;
+    uint_8 size = (sizeof(uint_64)) * 2 - 1;
     uint_8 i;
     for(i = 0;i < size;i++){
         ptr = ((uint_8*)valptr + i);

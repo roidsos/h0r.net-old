@@ -1,28 +1,72 @@
 #include <interrupts/IDT.h>
-#include <io.h>
 
-extern IDT64 _idt[256];
-extern uint_64 isr1;
-extern "C" void loadIDT();
+IDT::Interrupt IDT::Entries[256];
 
-void initidt(){
-    for(uint_8 t = 0; t < 256;t++){
-    _idt[t].zero = 0;
-    _idt[t].offset_low  = (uint_16)(((uint_64)&isr1 & 0x000000000000ffff));
-    _idt[t].offset_mid  = (uint_16)(((uint_64)&isr1 & 0x00000000ffff0000) >> 16);
-    _idt[t].offset_high = (uint_32)(((uint_64)&isr1 & 0xffffffff00000000) >> 32);
-    _idt[t].ist = 0;
-    _idt[t].selector = 0x08;
-    _idt[t].type_attr = 0x8e;
-
-    } 
-    outb(0x21,0xfd);
-    outb(0xa1,0xff);
-    loadIDT();
-
+uint_32 IDT::HandleInterrupt(uint_8 number ,uint_32 esp)
+{
+    print("interrupt!!");
+    return esp;
 }
-extern "C" void isr1_handler(){
-    print(hex2str(inb(0x60)));
-    outb(0x20,0x20);
-    outb(0xa0,0x20);
+/*
+PICMasterCommandPort=0x20
+PICMasterDataPort=0x21
+PICSlaveCommandPort=0xA0
+PICSlaveDataPort=0xA1
+*/
+
+IDT::IDT(GDT* gdt)
+{
+    //get some data
+    uint_16 code_offset = gdt->GetCodeseg();
+    const uint_8 IDT_INTERRUPT_GATE = 0xe;
+    //fill the IDT with "air"
+    for(uint_16 i = 0;i < 256;i++)
+        SetIDTEntry(i,code_offset,&InterruptIgnore,0,IDT_INTERRUPT_GATE);
+    //add interrupts to the IDT 
+    SetIDTEntry(0x20,code_offset,&HandleInterruptNumber0x00,0,IDT_INTERRUPT_GATE);//timer interrupt
+    SetIDTEntry(0x21,code_offset,&HandleInterruptNumber0x01,0,IDT_INTERRUPT_GATE);//keyboard interrupt
+    //command the PICs
+    outbslow(0x20,0x11);
+    outbslow(0xA0,0x11);
+    // give the irq_base to the PICs
+    outbslow(0x21,0x20);
+    outbslow(0xA1,0x28);
+    //tell the PICs their role
+    outbslow(0x21,0x04);
+    outbslow(0xA1,0x02);
+    //give the PICs more info
+    outbslow(0x21,0x01);
+    outbslow(0xA1,0x01);
+
+    outbslow(0x21,0x00);
+    outbslow(0xA1,0x00);
+
+    IDT_pointer idt;
+    idt.size = 256 * sizeof(Interrupt) - 1;
+    idt.base = (uint_32)Entries;
+    asm volatile ("lidt %0": : "m" (idt));
+}
+
+IDT::~IDT()
+{
+    
+}
+
+
+
+static void IDT::Activate(){
+    asm("sti");
+}
+
+void IDT::SetIDTEntry(uint_8 num,
+        uint_16 gdt_offset_code,
+        void (*handler)(),
+        uint_8 access,
+        uint_8 type
+){
+Entries[num].handler_low     = (((uint_32)handler)) & 0xffff;
+Entries[num].handler_hi      = (((uint_32)handler) >> 16) & 0xffff;
+Entries[num].gdt_offset_code = gdt_offset_code;
+Entries[num].reserved        = 0;
+Entries[num].access          = 0x80 | type | ((access&3) << 5);
 }
