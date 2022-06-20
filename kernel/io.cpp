@@ -57,21 +57,50 @@ value += (uint_64)color << 56;
     }
     setCursorpos(0);   
 }
-
 int_8 hex2strout[128];
 const char* hex2str(uint_64 value){
-    uint_64* valptr = &value;
-    uint_8* ptr;
-    uint_8 temp;
-    uint_8 size = (sizeof(uint_64)) * 2 - 1;
-    uint_8 i;
-    for(i = 0;i < size;i++){
-        ptr = ((uint_8*)valptr + i);
-        temp = ((*ptr & 0xF0) >> 4);
-        hex2strout[size - (i *2 + 1)] = temp + (temp > 9 ? 55 :48);
-        temp = ((*ptr & 0x0F));
-        hex2strout[size - (i *2 + 0)] = temp + (temp > 9 ? 55 :48);
+    uint_8 size = 0;
+    uint_64 sizetest = value;
+    hex2strout[0] = '0';
+    hex2strout[1] = 'x';
+
+    while(sizetest / 16 > 0){
+        sizetest /= 16;
+        size++;
     }
-    hex2strout[size + 1] = 0;
+    uint_8 index = 0;
+    uint_64 newvalue = value;
+    while(newvalue / 16 > 0){
+        uint_8 remainder = newvalue % 16;
+        newvalue /= 16;
+        hex2strout[size-(index-2)] = remainder + (remainder > 9 ? 55 :48);
+        index++;
+    }
+    uint_8 remainder = newvalue % 16;
+    hex2strout[size - (index-2)] = remainder + (remainder > 9 ? 55 :48);
+    hex2strout[size + 3] = 0;
     return hex2strout;
+}
+int_8 int2strout[128];
+const char* int2str(uint_64 value){
+
+    uint_8 size = 0;
+    uint_64 sizetest = value;
+
+    while(sizetest / 10 > 0){
+        sizetest /= 10;
+        size++;
+    }
+    uint_8 index = 0;
+    uint_64 newvalue = value;
+    while(newvalue / 10 > 0){
+        uint_8 remainder = newvalue % 10;
+        newvalue /= 10;
+        int2strout[size-index] = remainder + 48;
+        index++;
+    }
+    uint_8 remainder = newvalue % 10;
+    int2strout[size-index] = remainder + 48;
+    int2strout[size + 1] = 0;
+    return int2strout;
 }

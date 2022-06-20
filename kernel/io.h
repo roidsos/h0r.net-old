@@ -8,5 +8,6 @@ void outb(uint_16 port,uint_8 value);
 void outbslow(uint_16 port,uint_8 value);
 uint_8 inb(uint_16 port);
 const char* hex2str(uint_64 value);
+const char* int2str(uint_64 value);
 #endif 
 

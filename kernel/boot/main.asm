@@ -1,10 +1,13 @@
 global start
 extern long_mode_start
+;extern DetectMemory
 
 section .text
 bits 32
 start:
+	
 	mov esp, stack_top
+	;call DetectMemory ;does not work because the gdt does not have 16 bit protected mode
 
 	call check_multiboot
 	call check_cpuid
