@@ -45,26 +45,25 @@ HANDLEINT 0x01
 
 int_handler:
 PUSHALL;push stuff
-;push (ds)
-;push (es)
-;push (fs)
-;push (gs)
-
-push (rsp);add argument 1
-push (interruptnumber);add argument 2
+;push ds
+;push es
+;push fs
+;push gs
+push rsp;add argument 1
+push interruptnumber;add argument 2
 
 call _ZN3IDT15HandleInterruptEhj;call the handler
 
 mov rax,rsp;restore the stack pointer
 
-;pop (gs);pop stuff
-;pop (fs)
-;pop (es)
-;pop (ds)
+;pop gs;pop stuff
+;pop fs
+;pop es
+;pop ds
 POPALL
 
 _ZN3IDT15InterruptIgnoreEv:
-iret
+iretq
 
 
 

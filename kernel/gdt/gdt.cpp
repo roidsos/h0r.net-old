@@ -1,4 +1,5 @@
 #include "gdt/gdt.h"
+#include "io.h"
 GDT::GDT():
 nullseg(0,0,0),
 unusedseg(0,0,0),
@@ -6,12 +7,14 @@ codeseg(0,64*1024*1024,0x9A),
 dataseg(0,64*1024*1024,0x92)
 {
     
-    uint_32 i[2];
-    i[0] = (uint_32)this;
-    i[1] = sizeof(GDT) << 16;
-
-    asm volatile("lgdt (%0)" : :"p" (((uint_8 *)i)+2));
-
+    uint_16 i[5];
+    i[0] = sizeof(GDT) - 1;
+    i[1] = ((uint_64)this)& 0xffff;
+    i[2] = ((uint_64)this>> 16)& 0xffff;
+    i[3] = ((uint_64)this>>32)& 0xffff;
+    i[4] = ((uint_64)this>>48)& 0xffff;
+    
+    asm volatile("lgdt (%0)" : :"p" (((uint_64*)i)));
 
 }
 
