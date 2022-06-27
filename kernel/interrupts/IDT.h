@@ -30,7 +30,7 @@ class IDT{
         uint_8 type);
     
     public:
-    static uint_32 HandleInterrupt(uint_8 number ,uint_32 esp);
+    static uint_64 IDT::HandleInterrupt(uint_8 number ,uint_64 rsp);
     static void Activate();
     static void InterruptIgnore();
     static void HandleInterruptNumber0x00();

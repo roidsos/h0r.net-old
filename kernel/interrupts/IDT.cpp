@@ -1,12 +1,12 @@
 #include <interrupts/IDT.h>
 
 IDT::Interrupt IDT::Entries[256];
-
-uint_32 IDT::HandleInterrupt(uint_8 number ,uint_32 esp)
+uint_64 IDT::HandleInterrupt(uint_8 number ,uint_64 rsp)
 {
     print("interrupt!!");
-    return esp;
+    return rsp;
 }
+
 /*
 PICMasterCommandPort=0x20
 PICMasterDataPort=0x21

@@ -7,13 +7,14 @@ all: build-x86_64
 
 object_files := $(asm_object_files) $(kobject_files)
 
-$(kobject_files):
+$(kobject_files):$(source_files)
 	x86_64-elf-g++ -I . -fpermissive -ffreestanding -m64 -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-exceptions -fno-leading-underscore -c $(patsubst %.o, %.cpp, $@) -o $@
 
-$(asm_object_files):
+$(asm_object_files):$(asm_source_files)
 	nasm -f elf64 $(patsubst %.o, %.asm, $@) -o $@
 
 build-x86_64: $(object_files)
-	x86_64-elf-ld -n -o kernel.bin -T linker.ld $^ 
+	x86_64-elf-ld -n -o  kernel.bin -T linker.ld $^ 
+never:
 	rm $(object_files)
 	

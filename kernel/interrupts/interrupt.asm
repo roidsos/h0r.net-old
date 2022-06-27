@@ -1,5 +1,5 @@
 section .text
-extern _ZN3IDT15HandleInterruptEhj
+extern _ZN3IDT15HandleInterruptEhy
 IRQ_BASE equ 0x20
 global _ZN3IDT15InterruptIgnoreEv
 %macro PUSHALL 0
@@ -49,10 +49,10 @@ PUSHALL;push stuff
 ;push es
 ;push fs
 ;push gs
-push rsp;add argument 1
-push interruptnumber;add argument 2
+mov rdi, rsp;add argument 1
+mov rsi, interruptnumber;add argument 2
 
-call _ZN3IDT15HandleInterruptEhj;call the handler
+call _ZN3IDT15HandleInterruptEhy;call the handler
 
 mov rax,rsp;restore the stack pointer
 
