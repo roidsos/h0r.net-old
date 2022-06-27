@@ -13,11 +13,17 @@ public:
         uint_8 flags_limit_hi;
         uint_8 base_vhi;
     public:
-        Segment(uint_32 base,uint_32 limit,uint_8 type);
+        Segment(uint_32 base,uint_32 limit,uint_8 flags);
         uint_32 GetBase();
         uint_32 GetLimit();
 
-    }__attribute__((packed));  
+    }__attribute__((packed));   
+    struct GDT_pointer{
+         uint_16 size;
+         uint_64 base;
+        
+        
+    }__attribute__((packed));
     Segment nullseg;
     Segment unusedseg;
     Segment codeseg;

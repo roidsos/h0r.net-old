@@ -6,10 +6,10 @@
 //#include <drivers/ata.h>
 #include <drivers/pc-speaker.h>
 extern "C" int kernel_main(){
-    pcspeaker sp;
-    //GDT gdt;
+    //pcspeaker sp;
+    GDT gdt;
     //InitHeap(0x100000,0x100000);
-    sp.play_sound(1000);
+    //sp.play_sound(1000);
 
     //inb8(0x3DA); // to index state
     //outb8(0x3C0, 0x10); // register index

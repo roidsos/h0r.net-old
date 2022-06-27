@@ -3,18 +3,16 @@
 GDT::GDT():
 nullseg(0,0,0),
 unusedseg(0,0,0),
-codeseg(0,64*1024*1024,0x9A),
-dataseg(0,64*1024*1024,0x92)
+codeseg(0,64*1024*1024,0b10011010),
+dataseg(0,64*1024*1024,0b10010010)
 {
     
-    uint_16 i[5];
-    i[0] = sizeof(GDT) - 1;
-    i[1] = ((uint_64)this)& 0xffff;
-    i[2] = ((uint_64)this>> 16)& 0xffff;
-    i[3] = ((uint_64)this>>32)& 0xffff;
-    i[4] = ((uint_64)this>>48)& 0xffff;
+    GDT_pointer gdt;
+    gdt.size =sizeof(GDT) - 1;
+    gdt.base = (uint_64)this;
     
-    asm volatile("lgdt (%0)" : :"p" (((uint_64*)i)));
+    
+    asm volatile("lgdt (%0)" : :"p" (&gdt));
 
 }
 
@@ -54,13 +52,12 @@ result = (result << 8) + target[2];
 return result;
 }
 
-GDT::Segment::Segment(uint_32 base,uint_32 limit,uint_8 type)
+GDT::Segment::Segment(uint_32 base,uint_32 limit,uint_8 flags)
 {
-    uint_8* target = (uint_8*)this;
 
     if(limit <= 65536)
     {
-        target[6] = 0x40;
+        flags_limit_hi = 0b01100000;
     }
     else{
         if((limit & 0xfff) != 0xfff){
@@ -68,17 +65,15 @@ GDT::Segment::Segment(uint_32 base,uint_32 limit,uint_8 type)
         }else{
             limit = limit >> 12;
         }
-        target[6] = 0xC0;
+        flags_limit_hi = 0b11100000;
     }
-    target[0] = limit & 0xff;
-    target[1] = (limit >> 8) & 0xff;
-    target[6] |= (limit >> 16) & 0xf;
+    limit_low       = limit & 0xffff;
+    flags_limit_hi |= (limit >> 16) & 0xff;
 
-    target[2] = base & 0xff;
-    target[3] = (base >> 8) & 0xff;
-    target[4] = (base >> 16) & 0xff;
-    target[7] = (base >> 24) & 0xff;
+    base_low    = base & 0xffff;
+    base_hi     = (base >> 16) & 0xff;
+    base_vhi    = (base >> 24) & 0xff;
 
-    target[5] = type;
+    type = flags;
 
 }

@@ -66,9 +66,11 @@ void IDT::SetIDTEntry(uint_8 num,
         uint_8 access,
         uint_8 type
 ){
-Entries[num].handler_low     = (((uint_32)handler)) & 0xffff;
-Entries[num].handler_hi      = (((uint_32)handler) >> 16) & 0xffff;
+Entries[num].handler_low     = (((uint_64)handler)) & 0xffff;
 Entries[num].gdt_offset_code = gdt_offset_code;
-Entries[num].access          = 0x80 | type | ((access&3) << 5);
+Entries[num].IST             = 0;// we dont have a tss
+Entries[num].flags           = (type & 0x0f) | ((access >> 4) & 0b01100000) | 0b10000000;
+Entries[num].offset_mid      = ((uint_64)handler >> 16) & 0xffff0000;
+Entries[num].offset_hi       = ((uint_64)handler >> 32) & 0xffffffff;
 Entries[num].reserved        = 0;
 }
