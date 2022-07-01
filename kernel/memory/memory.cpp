@@ -51,7 +51,7 @@ void memcpy(void* dest,void* src,uint_64 num){
     }
 
 } 
-int memcmp(const void* aptr,const void* bptr,unsigned int n){
+int memcmp(const unsigned char* aptr, const unsigned char* bptr, unsigned int n){
 	const unsigned char* a = aptr,*b = bptr;
 	for (unsigned int i = 0; i < n; i++)
 	{

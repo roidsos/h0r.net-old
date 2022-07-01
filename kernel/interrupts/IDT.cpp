@@ -44,7 +44,7 @@ IDT::IDT(GDT* gdt)
 
     IDT_pointer idt;
     idt.size = 256 * sizeof(Interrupt) - 1;
-    idt.base = (uint_32)Entries;
+    idt.base = (uint_64)Entries;
     asm volatile ("lidt %0": : "m" (idt));
 }
 

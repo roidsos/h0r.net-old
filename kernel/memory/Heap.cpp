@@ -158,7 +158,7 @@ void* aligned_alloc(uint_64 alignment,uint_64 size)
 
         AlignedMemorySegment* ams = (AlignedMemorySegment*)address -1;
         ams->IsAligned           = true;
-        ams->MemorySegmentAddr   = mallocval - sizeof(MemorySegment);
+        ams->MemorySegmentAddr   = (unsigned long long)mallocval - sizeof(MemorySegment);
     }
     return (void*)address;
 }

@@ -66,7 +66,7 @@ void ATA::Read28(uint_32 sector,uint_8* data,int count)
 
     while(((inb8(portbase + 7) & 0x80) == 0x80)&& ((inb8(portbase + 7) & 0x01) != 0x01)){}
 
-    for(uint_16 i = 0;i < count;i++){
+    for(uint_16 i = 0; i < count; i++){
         register uint_16 wdata = inb16(portbase);
         data[i] = wdata & 0x00ff;
         if (i+ 1 < count)

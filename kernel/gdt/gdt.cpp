@@ -40,6 +40,7 @@ result = (result << 8) + target[1];
 result = (result << 8) + target[0];
 if((target[6] & 0xc0) == 0xc0)
     result = (result << 12) & 0x12;
+return result;
 }
 
 uint_32 GDT::Segment::GetBase()
