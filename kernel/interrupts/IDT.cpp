@@ -34,13 +34,13 @@ void RemapPIC(){
 void InitIDT()
 {
     
-        _idt[1].zero = 0;
-        _idt[1].ist = 0;
-        _idt[1].offset_low  = (uint_16)(((uint_64)&isr1 & 0x000000000000ffff));
-        _idt[1].offset_mid  = (uint_16)(((uint_64)&isr1 & 0x00000000ffff0000) >> 16);
-        _idt[1].offset_high = (uint_32)(((uint_64)&isr1 & 0xffffffff00000000) >> 32);
-        _idt[1].selector = 0x8;
-        _idt[1].types_attr = 0x8e;
+    _idt[1].zero = 0;
+    _idt[1].ist = 0;
+    _idt[1].offset_low  = (uint_16)(((uint_64)&isr1 & 0x000000000000ffff));
+    _idt[1].offset_mid  = (uint_16)(((uint_64)&isr1 & 0x00000000ffff0000) >> 16);
+    _idt[1].offset_high = (uint_32)(((uint_64)&isr1 & 0xffffffff00000000) >> 32);
+    _idt[1].selector = 0x8;
+    _idt[1].types_attr = 0x8e;
 
     RemapPIC();
     

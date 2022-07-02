@@ -27,14 +27,12 @@ pop r11
 %endmacro
 
 loadidt:
-
 lidt [idtdesc]
-
 sti
 ret
 
 isr1:
 PUSHALL
-call isr1
+call Isr1
 POPALL
 iretq
