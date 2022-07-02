@@ -1,7 +1,12 @@
-section .text
-extern _ZN3IDT15HandleInterruptEhy
-IRQ_BASE equ 0x20
-global _ZN3IDT15InterruptIgnoreEv
+global isr1
+global loadidt
+extern Isr1
+extern _idt
+
+idtdesc:
+dw 4095
+dq _idt
+
 %macro PUSHALL 0
 push rax
 push rdx
@@ -21,52 +26,15 @@ pop r10
 pop r11
 %endmacro
 
-%macro HANDLEEX 1
-global _ZN3IDT25HandleExeptionNumber%1Ev
-_ZN3IDT25HandleExeptionNumber%1Ev:
-mov [interruptnumber],byte %1
-jmp int_handler
+loadidt:
 
+lidt [idtdesc]
 
-%endmacro
+sti
+ret
 
-
-%macro HANDLEINT 1
-global _ZN3IDT25HandleInterruptNumber%1Ev
-_ZN3IDT25HandleInterruptNumber%1Ev:
-mov [interruptnumber],byte %1 + IRQ_BASE
-jmp int_handler
-%endmacro
-
-
-HANDLEINT 0x00
-HANDLEINT 0x01
-
-
-int_handler:
-PUSHALL;push stuff
-;push ds
-;push es
-;push fs
-;push gs
-mov rdi, rsp;add argument 1
-mov rsi, interruptnumber;add argument 2
-
-call _ZN3IDT15HandleInterruptEhy;call the handler
-
-mov rax,rsp;restore the stack pointer
-
-;pop gs;pop stuff
-;pop fs
-;pop es
-;pop ds
+isr1:
+PUSHALL
+call isr1
 POPALL
-
-_ZN3IDT15InterruptIgnoreEv:
 iretq
-
-
-
-
-section .data
-    interruptnumber: db 0

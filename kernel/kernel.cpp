@@ -29,8 +29,7 @@ extern "C" int kernel_main(){
 //     print("something went wrong with your device",0x1f);
 //     setCursorpos(80 * 24);
 //     print("                                                                                ",0xf1);
-//     IDT idt(&gdt);
-//     idt.Activate();
+    InitIDT();
     Clearscr(0x0F);
     print("Hello, World!", 0xAF);
 

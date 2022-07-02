@@ -25,7 +25,6 @@ public:
         
     }__attribute__((packed));
     Segment nullseg;
-    Segment unusedseg;
     Segment codeseg;
     Segment dataseg;
     GDT();

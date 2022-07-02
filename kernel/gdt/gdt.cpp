@@ -2,7 +2,6 @@
 #include "io.h"
 GDT::GDT():
 nullseg(0,0,0),
-unusedseg(0,0,0),
 codeseg(0,64*1024*1024,0b10011010),
 dataseg(0,64*1024*1024,0b10010010)
 {

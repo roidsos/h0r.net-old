@@ -1,76 +1,55 @@
 #include <interrupts/IDT.h>
 
-IDT::Interrupt IDT::Entries[256];
-uint_64 IDT::HandleInterrupt(uint_8 number ,uint_64 rsp)
-{
-    print("interrupt!!");
-    return rsp;
+#define PIC1_COMMAND 0x20
+#define PIC1_DATA 0x21
+#define PIC2_COMMAND 0xA0
+#define PIC2_DATA 0xA1
+
+#define ICW1_INIT 0x10
+#define ICW1_ICW4 0x01
+#define ICW4_8086 0x01
+
+extern "C" void isr1();
+extern "C" void loadidt();
+void RemapPIC(){
+    uint_8 a1,a2;
+    a1 = inb8(PIC1_DATA);
+    a2 = inb8(PIC2_DATA);
+
+    outb8(PIC1_COMMAND,ICW1_INIT | ICW1_ICW4);
+    outb8(PIC2_COMMAND,ICW1_INIT | ICW1_ICW4);
+
+    outb8(PIC1_DATA,0);
+    outb8(PIC2_DATA,8);
+
+    outb8(PIC1_DATA,4);
+    outb8(PIC2_DATA,2);
+
+    outb8(PIC1_DATA,ICW4_8086);
+    outb8(PIC2_DATA,ICW4_8086);
+
+    outb8(PIC1_DATA,a1);
+    outb8(PIC2_DATA,a2);
 }
-
-/*
-PICMasterCommandPort=0x20
-PICMasterDataPort=0x21
-PICSlaveCommandPort=0xA0
-PICSlaveDataPort=0xA1
-*/
-
-IDT::IDT(GDT* gdt)
-{
-
-    //get some data
-    uint_16 code_offset = gdt->GetCodeseg();
-    const uint_8 IDT_INTERRUPT_GATE = 0xe;
-    //fill the IDT with "air"
-    for(uint_16 i = 0;i < 256;i++)
-        SetIDTEntry(i,code_offset,&InterruptIgnore,0,IDT_INTERRUPT_GATE);
-    //add interrupts to the IDT
-    SetIDTEntry(0x20,code_offset,&HandleInterruptNumber0x00,0,IDT_INTERRUPT_GATE);//timer interrupt
-    SetIDTEntry(0x21,code_offset,&HandleInterruptNumber0x01,0,IDT_INTERRUPT_GATE);//keyboard interrupt
-    //command the PICs
-    outbslow8(0x20,0x11);
-    outbslow8(0xA0,0x11);
-    // give the irq_base to the PICs
-    outbslow8(0x21,0x20);
-    outbslow8(0xA1,0x28);
-    //tell the PICs their role
-    outbslow8(0x21,0x04);
-    outbslow8(0xA1,0x02);
-    //give the PICs more info
-    outbslow8(0x21,0x01);
-    outbslow8(0xA1,0x01);
-
-    outbslow8(0x21,0x00);
-    outbslow8(0xA1,0x00);
-
-    IDT_pointer idt;
-    idt.size = 256 * sizeof(Interrupt) - 1;
-    idt.base = (uint_64)Entries;
-    asm volatile ("lidt %0": : "m" (idt));
-}
-
-IDT::~IDT()
+void InitIDT()
 {
     
+        _idt[1].zero = 0;
+        _idt[1].ist = 0;
+        _idt[1].offset_low  = (uint_16)(((uint_64)&isr1 & 0x000000000000ffff));
+        _idt[1].offset_mid  = (uint_16)(((uint_64)&isr1 & 0x00000000ffff0000) >> 16);
+        _idt[1].offset_high = (uint_32)(((uint_64)&isr1 & 0xffffffff00000000) >> 32);
+        _idt[1].selector = 0x8;
+        _idt[1].types_attr = 0x8e;
+
+    RemapPIC();
+    
+    outb8(0x21,0xfd);
+    outb8(0xa1,0xff);
+    loadidt();
 }
-
-
-
-static void IDT::Activate(){
-
-    asm("sti");
-}
-
-void IDT::SetIDTEntry(uint_8 num,
-        uint_16 gdt_offset_code,
-        void (*handler)(),
-        uint_8 access,
-        uint_8 type
-){
-Entries[num].handler_low     = (((uint_64)handler)) & 0xffff;
-Entries[num].gdt_offset_code = gdt_offset_code;
-Entries[num].IST             = 0;// we dont have a tss
-Entries[num].flags           = (type & 0x0f) | ((access >> 4) & 0b01100000) | 0b10000000;
-Entries[num].offset_mid      = ((uint_64)handler >> 16) & 0xffff0000;
-Entries[num].offset_hi       = ((uint_64)handler >> 32) & 0xffffffff;
-Entries[num].reserved        = 0;
+extern "C" void Isr1(){
+print(hex2str((uint_64)inb8(0x60)));
+outb8(0x20,0x20);
+outb8(0xa0,0x20);
 }
