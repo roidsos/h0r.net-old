@@ -110,6 +110,7 @@ enable_paging:
 	mov cr0, eax
 
 	ret
+	
 
 error:
 	; print "ERR: X" where X is the error code

@@ -1,5 +1,6 @@
 #include <io.h>
 #include <gdt/gdt.h>
+#include <drivers/PIT.h>
 #include <interrupts/IDT.h>
 #include <memory/Heap.h>
 #include <memory/memory.h>
@@ -7,7 +8,7 @@
 #include <drivers/pc-speaker.h>
 extern "C" int kernel_main(){
 //     pcspeaker sp;
-    GDT gdt;
+    //GDT gdt;
 //     InitHeap(0x100000,0x100000);
 //     sp.play_sound(1000);
      // sp.beep();
@@ -29,9 +30,13 @@ extern "C" int kernel_main(){
 //     print("something went wrong with your device",0x1f);
 //     setCursorpos(80 * 24);
 //     print("                                                                                ",0xf1);
-    InitIDT();
     Clearscr(0x0F);
-    print("Hello, World!", 0xAF);
+    print("Hello, World!\n", 0xAF);
+    InitIDT();
 
-    while(1){}
+
+    while(1){
+        print("A");
+        PIT::Sleep(1000);
+    }
 }

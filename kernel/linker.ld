@@ -2,7 +2,7 @@ ENTRY(start)
 
 SECTIONS
 {
-	. = 1000;
+	. = 0;
 
 	.boot :
 	{

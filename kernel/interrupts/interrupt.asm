@@ -1,6 +1,9 @@
 global isr1
+global isr0
+global isrIgnore
 global loadidt
 extern Isr1
+extern Tick
 extern _idt
 
 idtdesc:
@@ -31,8 +34,18 @@ lidt [idtdesc]
 sti
 ret
 
+isr0:
+
+PUSHALL
+;cld
+call Tick
+POPALL
+isrIgnore:
+iretq
+
 isr1:
 PUSHALL
+cld
 call Isr1
 POPALL
 iretq

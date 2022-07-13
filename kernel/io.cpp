@@ -2,6 +2,11 @@
 int_32 lol = 0;
 int iter = 0;
 uint_16 CursorPos;
+
+void IOWait(){
+    asm volatile ("outb %%al, $0x80" : : "a"(0));
+}
+
 void outb8(uint_16 port,uint_8 value){
     asm volatile ("outb %0, %1" : :"a"(value) ,"Nd"(port));
 }

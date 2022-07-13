@@ -3,34 +3,21 @@
 #include "stdint.h"
 
 class GDT{
-public:
-    class Segment{
-
+    uint_8 fullness;
+    struct GDT32{
         uint_16 limit_low;
         uint_16 base_low;
-        uint_8 base_hi;
-        uint_8 type;
-        uint_8 flags_limit_hi;
-        uint_8 base_vhi;
+        uint_8  base_mid;
+        uint_8  access;
+        uint_8  limit_flags;
+        uint_8  base_hi;
+        GDT32();
+    };
+    GDT32 _gdt[256];
     public:
-        Segment(uint_32 base,uint_32 limit,uint_8 flags);
-        uint_32 GetBase();
-        uint_32 GetLimit();
-
-    }__attribute__((packed));   
-    struct GDT_pointer{
-         uint_16 size;
-         uint_64 base;
-        
-        
-    }__attribute__((packed));
-    Segment nullseg;
-    Segment codeseg;
-    Segment dataseg;
     GDT();
-    ~GDT();
-    uint_16 GetCodeseg();
-    uint_16 GetDataseg(); 
+    AddSegment();
+    Load();
 };
 
 #endif
