@@ -1,7 +1,7 @@
 #include <drivers/pc-speaker.h>
 
  //Play sound using built in speaker
- static void pcspeaker::play_sound(uint_32 nFrequence) {
+void pcspeaker::play_sound(uint_32 nFrequence) {
  	uint_32 Div;
  	uint_8 tmp;
  
@@ -19,7 +19,7 @@
  }
  
  //make it shutup
- static void pcspeaker::nosound() {
+void pcspeaker::nosound() {
  	uint_8 tmp = inb8(0x61) & 0xFC;
  
  	outb8(0x61, tmp);

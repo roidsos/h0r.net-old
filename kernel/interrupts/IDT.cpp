@@ -47,8 +47,8 @@ void RemapPIC(){
 }
 void InitIDT()
 {
-    AddEntry(&isr0,0b10001110,0);
-    AddEntry(&isr1,0b10001110,1);
+    AddEntry((void*)&isr0,0b10001110,0);
+    AddEntry((void*)&isr1,0b10001110,1);
 
 
     RemapPIC();

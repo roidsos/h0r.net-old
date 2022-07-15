@@ -16,8 +16,8 @@ class GDT{
     GDT32 _gdt[256];
     public:
     GDT();
-    AddSegment();
-    Load();
+    void AddSegment();
+    void Load();
 };
 
 #endif

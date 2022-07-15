@@ -31,7 +31,7 @@ extern "C" int kernel_main(){
 //     setCursorpos(80 * 24);
 //     print("                                                                                ",0xf1);
     Clearscr(0x0F);
-    //print("Hello, World!\n", 0xAF);
+//     print("Hello, World!\n", 0xAF);
     InitIDT();
 
 
