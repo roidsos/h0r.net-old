@@ -3,11 +3,10 @@
 #include <stdint.h>
 
 namespace PIT {
-    extern double TimeSinceBoot;
+    extern uint_64 tickssincestart;
     const uint_64 BaseFrequency = 1193182;
 
-    void Sleepd(double Seconds);
-    void Sleep(uint_64 MilliSeconds);
+    void Sleep(uint_64 miliseconds);
 
     uint_64 GetFrequency();
     void SetDivisor(uint_16 Divisor);

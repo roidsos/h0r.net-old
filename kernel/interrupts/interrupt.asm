@@ -35,9 +35,8 @@ sti
 ret
 
 isr0:
-
 PUSHALL
-;cld
+cld
 call Tick
 POPALL
 isrIgnore:

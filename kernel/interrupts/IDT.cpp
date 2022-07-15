@@ -17,30 +17,36 @@ extern "C" void loadidt();
 void RemapPIC(){
     uint_8 a1,a2;
     a1 = inb8(PIC1_DATA);
+    IOWait();
     a2 = inb8(PIC2_DATA);
-
+    IOWait();
+    
     outb8(PIC1_COMMAND,ICW1_INIT | ICW1_ICW4);
+    IOWait();    
     outb8(PIC2_COMMAND,ICW1_INIT | ICW1_ICW4);
+    IOWait();
 
     outb8(PIC1_DATA,0);
+    IOWait();
     outb8(PIC2_DATA,8);
+    IOWait();
 
     outb8(PIC1_DATA,4);
+    IOWait();
     outb8(PIC2_DATA,2);
+    IOWait();
 
     outb8(PIC1_DATA,ICW4_8086);
+    IOWait();
     outb8(PIC2_DATA,ICW4_8086);
+    IOWait();
 
     outb8(PIC1_DATA,a1);
+    IOWait();
     outb8(PIC2_DATA,a2);
 }
 void InitIDT()
 {
-
-    for (uint_64 i = 0; i < 256; i++)
-        AddEntry(&isrIgnore,0b10001110,i);
-
-
     AddEntry(&isr0,0b10001110,0);
     AddEntry(&isr1,0b10001110,1);
 
