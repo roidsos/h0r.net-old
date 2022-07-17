@@ -21,4 +21,5 @@ extern "C" IDT64 _idt[256];
 void InitIDT();
 
 void AddEntry(void* Isr,int attr,int _num);
+
 #endif

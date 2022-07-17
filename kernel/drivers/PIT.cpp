@@ -11,6 +11,7 @@ namespace PIT{
     void Sleep(uint_64 miliseconds){
         uint_16 startTime = tickssincestart;
         while (tickssincestart < startTime + (miliseconds)){
+                asm("hlt");
         }
     }
 
@@ -34,7 +35,6 @@ namespace PIT{
 
 }
     extern "C" void Tick(){
-        print("A");
         PIT::tickssincestart += 1;
         outb8(0x20,0x20);
         outb8(0xa0,0x20);

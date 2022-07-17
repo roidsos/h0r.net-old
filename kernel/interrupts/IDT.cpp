@@ -52,9 +52,18 @@ void InitIDT()
 
 
     RemapPIC();
-    
-    outb8(0x21,0xfd);
-    outb8(0xa1,0xff);
+    if(inb8(0x64) & 0x1)
+        inb8(0x60);
+    outb8(0x64,0xAE);
+    outb8(0x64,0x20);
+    uint_8 status = (inb8(0x60) | 1) &-0x10;
+    outb8(0x64,0x60);
+    outb8(0x60,status);
+
+    outb8(0x60,0xf4);
+
+    //outb8(0x21,0xfd);
+    //outb8(0xa1,0xff);
     loadidt();
 }
 void AddEntry(void* Isr,int attr,int _num){
@@ -65,9 +74,4 @@ void AddEntry(void* Isr,int attr,int _num){
  _idt[_num].offset_high = (uint_32)(((uint_64)Isr & 0xffffffff00000000) >> 32);
  _idt[_num].selector = 8;
  _idt[_num].types_attr = attr;
-}
-extern "C" void Isr1(){
-print(int2str((uint_64)inb8(0x60)));
-outb8(0x20,0x20);
-outb8(0xa0,0x20);
 }

@@ -36,8 +36,8 @@ extern "C" int kernel_main(){
 
 
     while(1){
-        //print(hex2str(PIT::tickssincestart));
-        //setCursorpos(0);
+        print(hex2str(PIT::tickssincestart));
+        setCursorpos(0);
         
     }
 }
