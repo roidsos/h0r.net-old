@@ -52,19 +52,22 @@ void InitIDT()
 
 
     RemapPIC();
+    loadidt();
     if(inb8(0x64) & 0x1)
         inb8(0x60);
     outb8(0x64,0xAE);
-    outb8(0x64,0x20);
-    uint_8 status = (inb8(0x60) | 1) &-0x10;
-    outb8(0x64,0x60);
-    outb8(0x60,status);
+    //outb8(0x64,0x20);
+    //uint_8 status = (inb8(0x60) | 1) & 0x10;
+    //outb8(0x64,0x60);
+    //outb8(0x60,status);
 
     outb8(0x60,0xf4);
 
+    asm("sti");
+
     //outb8(0x21,0xfd);
     //outb8(0xa1,0xff);
-    loadidt();
+    
 }
 void AddEntry(void* Isr,int attr,int _num){
  _idt[_num].zero = 0;

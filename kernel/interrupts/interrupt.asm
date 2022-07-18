@@ -31,7 +31,6 @@ pop r11
 
 loadidt:
 lidt [idtdesc]
-sti
 ret
 
 isr0:

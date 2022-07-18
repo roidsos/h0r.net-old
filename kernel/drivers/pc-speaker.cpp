@@ -1,5 +1,5 @@
 #include <drivers/pc-speaker.h>
-
+#include <drivers/PIT.h>
  //Play sound using built in speaker
 void pcspeaker::play_sound(uint_32 nFrequence) {
  	uint_32 Div;
@@ -28,6 +28,6 @@ void pcspeaker::nosound() {
  //Make a beep
  void pcspeaker::beep() {
  	 play_sound(1000);
- 	// timer_wait(10);
+ 	 PIT::Sleep(10);
  	 nosound();
  }

@@ -7,7 +7,7 @@
 //#include <drivers/ata.h>
 #include <drivers/pc-speaker.h>
 extern "C" int kernel_main(){
-     //pcspeaker sp;
+     pcspeaker sp;
     //GDT gdt;
 //     InitHeap(0x100000,0x100000);
     // sp.play_sound(1000);
@@ -31,13 +31,17 @@ extern "C" int kernel_main(){
 //     setCursorpos(80 * 24);
 //     print("                                                                                ",0xf1);
     Clearscr(0x0F);
-//     print("Hello, World!\n", 0xAF);
+    //print("Hello, World!\n", 0xAF);
+    //PIT::SetFrequency(1000);
     InitIDT();
+    
 
 
     while(1){
+        //print("A");
+        //PIT::Sleep(1000);
         print(hex2str(PIT::tickssincestart));
         setCursorpos(0);
-        
+        //sp.beep();
     }
 }

@@ -5,20 +5,18 @@
 
 namespace PIT{
     uint_64 tickssincestart  = 0;
-
+    uint_64 startTime;
     uint_16 Divisor = 65535;
 
     void Sleep(uint_64 miliseconds){
-        uint_16 startTime = tickssincestart;
-        while (tickssincestart < startTime + (miliseconds)){
-                asm("hlt");
-        }
+        startTime = tickssincestart;
+        while (tickssincestart <= startTime + miliseconds){}
     }
 
 
-    void SetDivisor(uint_64 _Divisor){
-        if (_Divisor < 100) _Divisor = 100;
-        Divisor = _Divisor;
+    void SetDivisor(uint_64 Divisor){
+        if (Divisor < 100) Divisor = 100;
+        Divisor = Divisor;
         outb8(0x40, (uint_8)(Divisor & 0x00ff));
         IOWait();
         outb8(0x40, (uint_8)((Divisor & 0xff00) >> 8));
