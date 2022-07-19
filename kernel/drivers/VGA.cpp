@@ -63,6 +63,14 @@ uint_8 VGA::GetCol(uint_32 r,uint_32 g,uint_8 b)
     return (uint_8)0;
 }
 
+void VGA::Clearscr(uint_8 color) {
+    for(int y = 0; y < 200; y++) {
+        for(int x = 0; x < 320; x++) {
+            VGA::PutPixel(x, y, color);
+        }
+    }
+}
+
 void VGA::WriteReg(uint_8* reg)
 {
     //misc

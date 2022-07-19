@@ -27,6 +27,7 @@ public:
     bool SetMode(uint_32 width, uint_32 height,uint_32 colors);
     void PutPixel(uint_32 x,uint_32 y,uint_8 r,uint_8 g,uint_8 b);
     void PutPixel(uint_32 x,uint_32 y,uint_8 color);
+    void Clearscr(uint_8 color);
 };
 
 

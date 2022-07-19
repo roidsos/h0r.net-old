@@ -1,7 +1,0 @@
-make.exe --dry-run --always-make --keep-going --print-directory
-make.exe: Entering directory `c:/Users/andya/Desktop/h0r.net'
-cd kernel && make && cd .. 
-cp kernel/kernel.bin iso/boot/kernel.bin 
-grub-mkrescue /usr/lib/grub/i386-pc -o os.iso ./iso
-make.exe: Leaving directory `c:/Users/andya/Desktop/h0r.net'
- 

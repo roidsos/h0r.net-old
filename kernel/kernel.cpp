@@ -8,6 +8,7 @@
 //#include <drivers/ata.h>
 #include <drivers/pc-speaker.h>
 #include <drivers/VGA.h>
+#include <render/renderer.h>
 #include "colors.h"
 extern "C" int kernel_main(){
      pcspeaker sp;
@@ -33,7 +34,7 @@ extern "C" int kernel_main(){
 //     print("something went wrong with your device",0x1f);
 //     setCursorpos(80 * 24);
 //     print("                                                                                ",0xf1);
-    Clearscr(0x0F);
+    // Clearscr(0x0F);
     //print("Hello, World!\n", 0xAF);
     //PIT::SetFrequency(1000);
     InitIDT();
@@ -41,12 +42,13 @@ extern "C" int kernel_main(){
     VGA vga;
 
     vga.SetMode(320, 200, 8);
-    for(int y = 0; y < 200; y++) {
-        for(int x = 0; x < 320; x++) {
-            vga.PutPixel(x, y, 0);
-        }
-    }
-    renderFont(10, 10, 'h');
+    vga.Clearscr(0x1);
+    // vga.filledrect(1, 1, 50, 20, 0xC);
+    // vga.rect(1, 25, 50, 20, 0xC);
+
+    window(10, 10, 50, 50, "Title", 0x0);
+
+    // renderFont(10, 10, 1);
         
     
 
