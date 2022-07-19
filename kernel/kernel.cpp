@@ -6,6 +6,7 @@
 #include <memory/memory.h>
 //#include <drivers/ata.h>
 #include <drivers/pc-speaker.h>
+#include <drivers/VGA.h>
 extern "C" int kernel_main(){
      pcspeaker sp;
     //GDT gdt;
@@ -34,14 +35,17 @@ extern "C" int kernel_main(){
     //print("Hello, World!\n", 0xAF);
     //PIT::SetFrequency(1000);
     InitIDT();
-    
 
+    VGA vga;
+
+    vga.SetMode(320,200,8);
+    //vga.PutPixel(0,0,0,0,0xA8);
 
     while(1){
         //print("A");
         //PIT::Sleep(1000);
-        print(hex2str(PIT::tickssincestart));
-        setCursorpos(0);
+        //print(hex2str(PIT::tickssincestart));
+        //setCursorpos(0);
         //sp.beep();
     }
 }
