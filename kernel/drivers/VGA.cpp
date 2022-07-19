@@ -6,8 +6,7 @@ bool VGA::SupportMode(uint_32 width, uint_32 height,uint_32 colors)
 
 bool VGA::SetMode(uint_32 width, uint_32 height,uint_32 colors)
 {
-    if(!SupportMode(width,height,colors))
-        return false;
+    if(!SupportMode(width,height,colors)) return false;
     unsigned char g_320x200x256[] =
     {
         /* MISC */
@@ -41,7 +40,7 @@ uint_8* VGA::GetSeg()
     outb8(GCindex,0x06);
     uint_8 segmentnum = ((inb8(GCdata) >> 2) & 0x03);
     print(hex2str(segmentnum));
-    return 0xA0000;
+    return (uint_8*)0xA0000;
     switch(segmentnum){
         default:
         case 0:return (uint_8*)0x00000;
@@ -61,6 +60,7 @@ uint_8 VGA::GetCol(uint_32 r,uint_32 g,uint_8 b)
 {
     if(r == 0 && g == 0 && b == 0xA8)
         return 1;
+    return (uint_8)0;
 }
 
 void VGA::WriteReg(uint_8* reg)

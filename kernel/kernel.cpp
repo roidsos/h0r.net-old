@@ -1,12 +1,14 @@
 #include <io.h>
 #include <gdt/gdt.h>
 #include <drivers/PIT.h>
+#include <render/frender.h>
 #include <interrupts/IDT.h>
 #include <memory/Heap.h>
 #include <memory/memory.h>
 //#include <drivers/ata.h>
 #include <drivers/pc-speaker.h>
 #include <drivers/VGA.h>
+#include "colors.h"
 extern "C" int kernel_main(){
      pcspeaker sp;
     //GDT gdt;
@@ -38,10 +40,13 @@ extern "C" int kernel_main(){
 
     VGA vga;
 
-    vga.SetMode(320,200,8);
-    for(int y= 0;y < 200;y++)
-        for(int x= 0;x < 320;x++)
-            vga.PutPixel(x,y,4);//that is the only color supported right now!!
+    vga.SetMode(320, 200, 8);
+    for(int y = 0; y < 200; y++) {
+        for(int x = 0; x < 320; x++) {
+            vga.PutPixel(x, y, 0);
+        }
+    }
+    renderFont(10, 10, 'h');
         
     
 

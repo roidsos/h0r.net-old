@@ -8,7 +8,7 @@ make.exe all --print-data-base --no-builtin-variables --no-builtin-rules --quest
 # This program built for i386-pc-mingw32
  
 
-# Make data base, printed on Fri Jul 15 11:05:03 2022
+# Make data base, printed on Tue Jul 19 09:42:19 2022
 
 # Variables
 
@@ -16,6 +16,10 @@ make.exe all --print-data-base --no-builtin-variables --no-builtin-rules --quest
 <D = $(patsubst %/,%,$(dir $<))
 # automatic
 ?F = $(notdir $?)
+# environment
+WSLENV = WT_SESSION::WT_PROFILE_ID
+# environment
+ELECTRON_NO_ATTACH_CONSOLE = 1
 # makefile
 MAKEFLAGS = Rrqp
 # automatic
@@ -34,8 +38,7 @@ CURDIR := c:/Users/andya/Desktop/h0r.net
 SHELL := sh.exe
 # environment
 CLION = C:\Program Files\JetBrains\CLion 2022.1.3\bin;
-# e 
-nvironment
+# environment
 WINDIR = C:\Windows
 # environment
 VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
@@ -44,20 +47,22 @@ VBOX_MSI_INSTALL_PATH = C:\Program Files\Oracle\VirtualBox\
 # environment
 ONEDRIVE = C:\Users\andya\OneDrive
 # environment
-PATHEXT = .COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC
+PATHEXT = .COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.CPL
 # makefile (from `makefile', line 1)
 MAKEFILE_LIST :=  makefile
+# environment
+FPS_BROWSER_USER_PROFILE_STRING = Default
 # environment
 TMP = C:\Users\andya\AppData\Local\Temp
 # environment
 PROGRAMW6432 = C:\Program Files
-# environme 
-nt
+# environment
 PROGRAMDATA = C:\ProgramData
 # environment
-VSCODE_CWD = C:\Users\andya\AppData\Local\Programs\Microsoft VS Code Insiders
+VSCODE_CWD = C:\Users\andya\Desktop\h0r.net
 # environment
-PATH = C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\VMware\VMware Workstation\bin\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Users\andya\AppData\Local\Programs\Microsoft VS Code Insiders;C:\Program Files (x86)\VMware\VMware Player;C:\Program Files\Oracle\VirtualBox;C:\Users\andya\AppData\Local\bin\NASM;C:\Program Files\qemu\;C:\Windows\System32\bin;C:\Program Files (x86)\GnuWin32\bin;C:\Program Files\Bochs-2.7;C:\MinGW\bin;C:\Program Files\Git\cmd;C:\Program Files\dotnet\;C:\Program Files\nodejs\;C:\Users\andya\AppData\Local\Programs\Python\Python310\Scripts\;C:\Users\andya\AppData\Local\Programs\Python\Python310\;C:\Users\andya\AppData\Local\Microsoft\WindowsApps;;C:\Users\andya\AppData\Local\Programs\Microsoft VS Code Insiders\bin;C:\Program Files\CMake\bin;C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2022.1.2\bin;;C:\Users\andya\.dotnet\tools;C:\Users\andya\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\andya\AppData\Roaming\npm;C:\Users\andya\AppData\Local\JetBrains\Toolbox\scripts;C:\Program Files\JetBrains\CLion 2022.1.3\bin;
+PATH = C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\VMware\VMware Workstation\bin\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Users\andya\AppData\Local\Programs\Microsoft VS Code Insiders;C:\Program Files (x86)\VMware\VMware Player;C:\Program Files\Oracle\VirtualBox;C:\Users\andya\AppData\Local\bin\NASM;C:\Program Files\qemu\;C:\Windows\System32\bin;C:\Program Files (x86)\GnuWin32\bin;C:\Program Files\Bochs-2.7;C:\MinGW\bin;C:\Program Files\Git\cmd;C:\Program Files\dotnet\;C:\Program Files\nodejs\;C:\Users\andya\AppData\Local\Programs\Python\Python310\Scripts\;C:\Users\andya\AppData\ 
+Local\Programs\Python\Python310\;C:\Users\andya\AppData\Local\Microsoft\WindowsApps;C:\Users\andya\AppData\Local\Programs\Microsoft VS Code Insiders\bin;C:\Program Files\CMake\bin;C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2022.1.2\bin;C:\Users\andya\.dotnet\tools;C:\Users\andya\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\andya\AppData\Roaming\npm;C:\Users\andya\AppData\Local\JetBrains\Toolbox\scripts;C:\Program Files\JetBrains\CLion 2022.1.3\bin
 # environment
 COMMONPROGRAMW6432 = C:\Program Files\Common Files
 # environment
@@ -75,7 +80,7 @@ ELECTRON_RUN_AS_NODE = 1
 # automatic
 %F = $(notdir $%)
 # environment
-CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_8912_CHNWGENYSYUPONVE
+CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_11420_HRZXKCGSJIRCBMNQ
 # environment
 COMPUTERNAME = REVOLVINGPC
 # environment
@@ -85,15 +90,19 @@ DRIVERDATA = C:\Windows\System32\Drivers\DriverData
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = undefined
 # environment
+WT_SESSION = c4d6d089-7f57-42a1-a20f-ecc23d4c0ab0
+# environment
 USERNAME = andya
 # environment
 PUBLIC = C:\Users\Public
 # environment
 VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
 # environment
-VSCODE_CODE_CACHE_PATH = C:\Users\andya\AppData\Roaming\Code - Insiders\CachedData\1cd90cceddf3c413673963ab6f154d2ff294b17c
+VSCODE_CLI = 1
 # environment
-APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
+VSCODE_CODE_CACHE_PATH = C:\Users\andya\AppData\Roaming\Code\CachedData\b06ae3b2d2dbfe28bca3134cc6be65935cdfea6a
+# environment
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
 # environment
 COMMONPROGRAMFILES = C:\Program Files (x86)\Common Files
 # environment
@@ -110,7 +119,8 @@ INTELLIJ IDEA COMMUNITY EDITION = C:\Program Files\JetBrains\IntelliJ IDEA Commu
 MAKE = $(MAKE_COMMAND)
 # default
 MAKECMDGOALS := all
-# environment
+# envir 
+onment
 JAVA_HOME = C:\Program Files\Common Files\Oracle\Java\javapath\
 # default
 MAKE_VERSION := 3.81
@@ -123,7 +133,7 @@ PROGRAMFILES(X86) = C:\Program Files (x86)
 # environment
 LOCALAPPDATA = C:\Users\andya\AppData\Local
 # environment
-PSMODULEPATH = C:\Program Files\WindowsPowerShell\Modules;C:\Windows\system32\WindowsPowerShell\v1.0\Modules
+PSMODULEPATH = C:\Users\andya\Documents\WindowsPowerShell\Modules;C:\Program Files\WindowsPowerShell\Modules;C:\Windows\system32\WindowsPowerShell\v1.0\Modules
 # default
 MAKE_COMMAND := make.exe
 # environment
@@ -137,7 +147,7 @@ PROCESSOR_IDENTIFIER = Intel64 Family 6 Model 58 Stepping 9, GenuineIntel
 # environment
 OS = Windows_NT
 # environment
-VSCODE_IPC_HOOK = \\.\pipe\6b1fe1644dd34f01c4e1e3a0a66c13bb-1.70.0-insider-main-sock
+VSCODE_IPC_HOOK = \\.\pipe\87cbcda516850ef35309f2b32242269a-1.69.1-main-sock
 # environment
 HOMEPATH = \Users\andya
 # environment
@@ -147,7 +157,8 @@ PROMPT = $P$G
 # environment
 MFLAGS = -Rrqp
 # automatic
-*D = $(patsubst %/,%,$(dir $*))
+*D = $(patsubst %/,%,$(dir $*) 
+)
 # environment
 SYSTEMROOT = C:\Windows
 # automatic
@@ -157,9 +168,9 @@ SYSTEMROOT = C:\Windows
 # environment
 APPDATA = C:\Users\andya\AppData\Roaming
 # environment
-__COMPAT_LAYER = DetectorsAppHealth
-# environment
 TEMP = C:\Users\andya\AppData\Local\Temp
+# environment
+WT_PROFILE_ID = {61c54bbd-c2c6-5271-96e7-009a87ff44bf}
 # environment
 COMSPEC = C:\Windows\system32\cmd.exe
 # default
@@ -174,9 +185,8 @@ LC_ALL = C
 SUFFIXES := 
 # environment
 SYSTEMDRIVE = C:
-# environment
-SESSIONNAME = Console
-# environment
+# en 
+vironment
 PROCESSOR_REVISION = 3a09
 # environment
 MAKELEVEL := 0
@@ -185,11 +195,13 @@ LANG = C
 # environment
 PROCESSOR_LEVEL = 6
 # environment
-VSCODE_PID = 8912
+FPS_BROWSER_APP_PROFILE_STRING = Internet Explorer
+# environment
+VSCODE_PID = 11420
 # environment
 USERDOMAIN_ROAMINGPROFILE = REVOLVINGPC
 # variable set hash-table stats:
-# Load=87/1024=8%, Rehash=0, Collisions=9/109=8%
+# Load=92/1024=9%, Rehash=0, Collisions=9/114=8%
 
 # Pattern-specific Variable Values
 
@@ -197,52 +209,53 @@ USERDOMAIN_ROAMINGPROFILE = REVOLVINGPC
 
 # Directories
 
-# : could not be stat'd.
 # C:\Program Files\qemu\ (key C:/Program Files/qemu/, mtime 1653776732): 156 files, no impossibilities.
 # C:\Program Files\Common Files\Oracle\Java\javapath (key C:/Program Files/Common Files/Oracle/Java/javapath, mtime 1657399437): 6 files, no impossibilities.
 # C:\Program Files (x86)\VMware\VMware Player (key C:/Program Files (x86)/VMware/VMware Player, mtime 1654104868): 9 files, no impossibilities.
 # C:\Windows\System32\WindowsPowerShell\v1.0\ (key C:/Windows/System32/WindowsPowerShell/v1.0/, mtime 1622903042): 30 files, no impossibilities.
-# C:\Windows\System32\Wbem (key C:/Windows/System32/Wbem, mtime 1653715417): 170 files, no impossibilities.
-# . (key c:/Users/andya/Desktop/h0r.net, mtime 1657901080): 11 files, no impossibilities.
-# C:\Users\andya\AppData\Local\Programs\Microsoft VS Code Insiders (key C:/Users/andya/AppData/Local/Programs/Microsoft VS Code Insiders, mtime 1657901031): 26 files, no impossibilities.
+# C:\Windows\System32\Wbe 
+m (key C:/Windows/System32/Wbem, mtime 1653715417): 170 files, no impossibilities.
+# . (key c:/Users/andya/Desktop/h0r.net, mtime 1658240874): 11 files, no impossibilities.
+# C:\Users\andya\AppData\Local\Programs\Microsoft VS Code Insiders (key C:/Users/andya/AppData/Local/Programs/Microsoft VS Code Insiders, mtime 1658153495): 26 files, no impossibilities.
 # C:\Program Files\nodejs\ (key C:/Program Files/nodejs/, mtime 1657562233): 13 files, no impossibilities.
 # C:\Program Files\Bochs-2.7 (key C:/Program Files/Bochs-2.7, mtime 1653855715): 40 files, no impossibilities.
 # C:\Program Files\dotnet\ (key C:/Program Files/dotnet/, mtime 1656004020): 10 files, no impossibilities.
 # C:\MinGW\bin (key C:/MinGW/bin, mtime 1653778960): 144 files, no impossibilities.
 # C:\Program Files (x86)\VMware\VMware Workstation\bin\ (key C:/Program Files (x86)/VMware/VMware Workstation/bin/, mtime 1654104881): 4 files, no impossibilities.
 # C:\Windows\System32\OpenSSH\: could not be stat'd.
-# C:\Program Files (x86)\Common Files\Oracle\Java\javapath (key C:/Program Files (x86)/Common Files/Oracle/Java/javapath, mtime 1657399135): 5 files, no impossibilities.
-# C:\Users\andya\AppData\Local\Programs\Python\Python310\ (key C:/Users/andya/AppData/Local/Programs/Python/Python310/, mtime 1654274 
-959): 19 files, no impossibilities.
+# C:\Program Files (x86)\Common Files\ 
+Oracle\Java\javapath (key C:/Program Files (x86)/Common Files/Oracle/Java/javapath, mtime 1657399135): 5 files, no impossibilities.
+# C:\Users\andya\AppData\Local\Programs\Python\Python310\ (key C:/Users/andya/AppData/Local/Programs/Python/Python310/, mtime 1654274959): 19 files, no impossibilities.
 # C:\Users\andya\AppData\Local\bin\NASM (key C:/Users/andya/AppData/Local/bin/NASM, mtime 1653776440): 18 files, no impossibilities.
 # C:\Windows\System32\bin: could not be stat'd.
-# C:\Users\andya\AppData\Local\Programs\Python\Python310\Scripts\ (key C:/Users/andya/AppData/Local/Programs/Python/Python310/Scripts/, mtime 1657563877): 56 files, no impossibilities.
-# C:\Windows (key C:/Windows, mtime 1657771746): 116 files, no impossibilities.
 # C:\Users\andya\AppData\Local 
-\Programs\Microsoft VS Code\bin (key C:/Users/andya/AppData/Local/Programs/Microsoft VS Code/bin, mtime 1657651433): 4 files, no impossibilities.
-# C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2022.1.2\bin (key C:/Program Files/JetBrains/IntelliJ IDEA Community Edition 2022.1.2/bin, mtime 1657485507): 31 files, no impossibilities.
-# C:\Users\andya\AppData\Local\Programs\Microsoft VS Code Insiders\bin (key C:/Users/andya/AppData/Local/Programs/Microsoft VS Code Insiders/bin, mtime 1657900619):  
-4 files, no impossibilities.
+\Programs\Python\Python310\Scripts\ (key C:/Users/andya/AppData/Local/Programs/Python/Python310/Scripts/, mtime 1657563877): 56 files, no impossibilities.
+# C:\Windows (key C:/Windows, mtime 1657771746): 116 files, no impossibilities.
+# C:\Users\andya\AppData\Local\Programs\Microsoft VS Code\bin (key C:/Users/andya/AppData/Local/Programs/Microsoft VS Code/bin, mtime 1657651433): 4 files, no impossibilities.
+# C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2022.1.2\bin (key C:/Program Files/JetBr 
+ains/IntelliJ IDEA Community Edition 2022.1.2/bin, mtime 1657485507): 31 files, no impossibilities.
+# C:\Users\andya\AppData\Local\Programs\Microsoft VS Code Insiders\bin (key C:/Users/andya/AppData/Local/Programs/Microsoft VS Code Insiders/bin, mtime 1658153480): 4 files, no impossibilities.
 # C:\Program Files\JetBrains\CLion 2022.1.3\bin: could not be stat'd.
 # C:\Users\andya\AppData\Roaming\npm (key C:/Users/andya/AppData/Roaming/npm, mtime 1657562358): 9 files, no impossibilities.
-# C:\Users\andya\.dotnet\tools: could not be stat'd.
+# C:\Users\andya\.dotn 
+et\tools: could not be stat'd.
 # C:\Program Files\Oracle\VirtualBox (key C:/Program Files/Oracle/VirtualBox, mtime 1653504460): 66 files, no impossibilities.
 # C:\Program Files\Git\cmd (key C:/Program Files/Git/cmd, mtime 1654035557): 7 files, no impossibilities.
-# 
- C:\Windows\system32 (key C:/Windows/system32, mtime 1657804452): 2940 files, no impossibilities.
+# C:\Windows\system32 (key C:/Windows/system32, mtime 1657804452): 2940 files, no impossibilities.
 # C:\Program Files\CMake\bin (key C:/Program Files/CMake/bin, mtime 1654200308): 7 files, no impossibilities.
-# C:\Users\andya\AppData\Local\JetBrains\Toolbox\scripts (key C:/Users/andya/AppData/Local/JetBrains/Toolbox/scripts, mtime 1657585012): 2 files, no impossibilities.
-# C:\Users\andya\AppData\Local\Microsoft\WindowsApps (key C:/Users/andya/AppData/Local/Microsoft/WindowsApps, mtime 1657656734): 39 files, 
- no impossibilities.
+# C:\Users\andya\AppData\Local\JetBrain 
+s\Toolbox\scripts (key C:/Users/andya/AppData/Local/JetBrains/Toolbox/scripts, mtime 1657585012): 2 files, no impossibilities.
+# C:\Users\andya\AppData\Local\Microsoft\WindowsApps (key C:/Users/andya/AppData/Local/Microsoft/WindowsApps, mtime 1657656734): 39 files, no impossibilities.
 # C:\Program Files (x86)\GnuWin32\bin (key C:/Program Files (x86)/GnuWin32/bin, mtime 1653854817): 5 files, no impossibilities.
 
-# 3947 files, no impossibilities in 33 directories.
+# 3947 files, no impossibilities in 32 directories.
 
 # Implicit Rules
 
 # No implicit rules.
 
-# Files
+# Fi 
+les
 
 all:
 #  Command-line target.
@@ -257,8 +270,7 @@ all:
 # % := 
 # automatic
 # * := 
-# a 
-utomatic
+# automatic
 # + := 
 # automatic
 # | := 
@@ -271,7 +283,8 @@ utomatic
 # variable set hash-table stats:
 # Load=8/32=25%, Rehash=0, Collisions=1/10=10%
 #  commands to execute (from `makefile', line 2):
-	cd kernel && make && cd .. 
+	cd kernel && make & 
+& cd .. 
 	cp kernel/kernel.bin iso/boot/kernel.bin 
 	grub-mkrescue /usr/lib/grub/i386-pc -o os.iso ./iso
 	
@@ -283,18 +296,18 @@ utomatic
 #  File has not been updated.
 
 debug: all
-#  Implici 
-t rule search has not been done.
+#  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
 #  commands to execute (from `makefile', line 11):
 	qemu-system-x86_64 -no-reboot -d int -no-shutdown -cdrom os.iso -soundhw pcspk
 	
 
-# Not a target:
+# Not a target 
+:
 makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-07-15 11:04:39
+#  Last modified 2022-07-19 09:27:54
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -302,8 +315,7 @@ makefile:
 
 # Not a target:
 .SUFFIXES:
-#  Implicit rule sear 
-ch has not been done.
+#  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
 
@@ -311,7 +323,8 @@ run: all
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  commands to execute (from `makefile', line 8):
+#  commands to execute (from `makefile', 
+ line 8):
 	qemu-system-x86_64 -cdrom os.iso -soundhw pcspk
 	
 
@@ -320,8 +333,7 @@ debugr: all
 #  Modification time never checked.
 #  File has not been updated.
 #  commands to execute (from `makefile', line 14):
-	qemu-system-x86_64 -s -S -no-r 
-eboot -monitor stdio -d int -no-shutdown -cdrom os.iso -soundhw pcspk
+	qemu-system-x86_64 -s -S -no-reboot -monitor stdio -d int -no-shutdown -cdrom os.iso -soundhw pcspk
 	
 
 # files hash-table stats:
@@ -332,11 +344,12 @@ eboot -monitor stdio -d int -no-shutdown -cdrom os.iso -soundhw pcspk
 
 # No general (`VPATH' variable) search path.
 
-# # of strings in strcache: 1
+# # o 
+f strings in strcache: 1
 # # of strcache buffers: 1
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Fri Jul 15 11:05:03 2022
+# Finished Make data base on Tue Jul 19 09:42:19 2022
 
  
