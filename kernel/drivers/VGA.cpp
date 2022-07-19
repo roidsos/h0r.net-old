@@ -39,22 +39,22 @@ void VGA::PutPixel(uint_32 x,uint_32 y,uint_8 r,uint_8 g,uint_8 b)
 uint_8* VGA::GetSeg()
 {
     outb8(GCindex,0x06);
-    uint_8 segmentnum = ((inb8(GCdata) >> 2) & 3);
+    uint_8 segmentnum = ((inb8(GCdata) >> 2) & 0x03);
+    print(hex2str(segmentnum));
+    return 0xA0000;
     switch(segmentnum){
         default:
-        print("ur graphics card is broken..");
-        return 0; 
-        case 0:return 0x00000;
-        case 1:return 0xA0000;
-        case 2:return 0xB0000;
-        case 3:return 0xB8000;
+        case 0:return (uint_8*)0x00000;
+        case 1:return (uint_8*)0xA0000;
+        case 2:return (uint_8*)0xB0000;
+        case 3:return (uint_8*)0xB8000;
     }
 }
 
 void VGA::PutPixel(uint_32 x,uint_32 y,uint_8 color)
 {
     uint_8* pixeladdr = GetSeg() + 320*y + x;
-    pixeladdr[0] = color;
+    *pixeladdr = color;
 }
 
 uint_8 VGA::GetCol(uint_32 r,uint_32 g,uint_8 b)

@@ -19,13 +19,14 @@ class VGA{
 void WriteReg(uint_8* reg);
 uint_8* GetSeg();
 
-void PutPixel(uint_32 x,uint_32 y,uint_8 color);
+
 uint_8 GetCol(uint_32 r,uint_32 g,uint_8 b);
 
 public:
     bool SupportMode(uint_32 width, uint_32 height,uint_32 colors);
     bool SetMode(uint_32 width, uint_32 height,uint_32 colors);
     void PutPixel(uint_32 x,uint_32 y,uint_8 r,uint_8 g,uint_8 b);
+    void PutPixel(uint_32 x,uint_32 y,uint_8 color);
 };
 
 

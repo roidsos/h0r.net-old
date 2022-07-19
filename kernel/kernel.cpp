@@ -39,7 +39,12 @@ extern "C" int kernel_main(){
     VGA vga;
 
     vga.SetMode(320,200,8);
-    //vga.PutPixel(0,0,0,0,0xA8);
+    for(int y= 0;y < 200;y++)
+        for(int x= 0;x < 320;x++)
+            vga.PutPixel(x,y,4);//that is the only color supported right now!!
+        
+    
+
 
     while(1){
         //print("A");
