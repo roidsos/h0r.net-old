@@ -40,14 +40,26 @@ extern "C" int kernel_main(){
 
     VGA vga;
 
+    char str[]{
+        55,//W
+        69,//e
+        76,//l
+        67,//c
+        79,//o
+        77,//m
+        69,//e
+        96,// 
+        69,//e
+        0
+    };
+
     vga.SetMode(320, 200, 8);
     for(int y = 0; y < 200; y++) {
         for(int x = 0; x < 320; x++) {
             vga.PutPixel(x, y, 0);
         }
     }
-    renderFont(10, 10, 'h');
-        
+renderString(0,0,4,str);
     
 
 

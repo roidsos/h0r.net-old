@@ -3,4 +3,4 @@ boot.bin
 kernel.bin
 zeroes.bin
 os.iso
-*.o
+%.o
