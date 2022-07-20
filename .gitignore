@@ -5,3 +5,4 @@ iso/boot/kernel.bin
 # folders/os.iso
 os.iso
 %.o
+.vscode

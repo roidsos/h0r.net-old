@@ -53,11 +53,10 @@ extern "C" int kernel_main(){
         69,//e
         0
     };
-
     vga.SetMode(320, 200, 8);
     for(int y = 0; y < 200; y++) {
         for(int x = 0; x < 320; x++) {
-            vga.PutPixel(x, y, 0);
+            vga.PutPixel(x, y, BLUE);
         }
     }
     window(0,0,150,70,str,0x0,0x4);
