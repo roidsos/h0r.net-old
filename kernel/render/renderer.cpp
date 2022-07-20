@@ -1,4 +1,5 @@
 #include <render/renderer.h>
+#include <render/frender.h>
 #include <drivers/VGA.h>
 
 void filledrect(uint_16 x, uint_8 y, uint_16 width, uint_8 height, uint_8 color) {
@@ -21,9 +22,20 @@ void rect(uint_16 x, uint_8 y, uint_16 width, uint_8 height, uint_8 color) {
     }
 }
 
-void window(uint_16 x, uint_8 y, uint_16 width, uint_8 height, char* title, uint_8 border_color) {
-    filledrect(x, y, width, 10, 0xF);
-    rect(x, y, width, 10, border_color);
-    filledrect(x, y+10, width, height-11, 0xF);
-    rect(x, y+9, width, height-10, border_color);
+uint_8 strlen(char* str){
+    uint_8 i = 0;
+    while(str[i] != 0){
+    i++;
+    }
+    return i;
+}
+
+void window(uint_16 x, uint_8 y, uint_16 width, uint_8 height, char* title, uint_8 border_color, uint_8 inside_color) {
+    uint_8 tlen = strlen(title);
+    uint_8 rows = tlen / (width / 16) + (tlen % 16 == 0 ? 0 : 16 );
+    filledrect(x, y, width, rows*16, inside_color);
+    rect(x, y, width, rows*16, border_color);
+    filledrect(x, y+rows*16, width, height, inside_color);
+    rect(x, y+rows*16, width, height, border_color);
+    renderString(x + 2,y + 2,width/16,0x1,title);
 }

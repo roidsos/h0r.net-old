@@ -60,7 +60,8 @@ extern "C" int kernel_main(){
             vga.PutPixel(x, y, 0);
         }
     }
-    renderString(0,0,4,str);
+    window(0,0,150,70,str,0x0,0x4);
+
     
 
 
