@@ -59,8 +59,8 @@ extern "C" int kernel_main(){
             vga.PutPixel(x, y, BLUE);
         }
     }
-    window(0,0,150,70,str,0x0,0x4);
-
+    window(0,0,150,70,str,0x0,RED);
+    //RenderCircle(30,30,10,BLUE);
     
 
 
