@@ -10,6 +10,7 @@
 #include <drivers/VGA.h>
 #include <render/renderer.h>
 #include "colors.h"
+
 extern "C" int kernel_main(){
      pcspeaker sp;
     //GDT gdt;
@@ -49,21 +50,23 @@ extern "C" int kernel_main(){
         82,//r
         0
     };
-    vga.SetMode(320, 200, 8);
-    for(int y = 0; y < 200; y++) {
-        for(int x = 0; x < 320; x++) {
-            vga.PutPixel(x, y, BLUE);
-        }
-    }
-    window(0,0,150,70,str,0x0,RED);
+    //vga.SetMode(320, 200, 8);
+    //for(int y = 0; y < 200; y++) {
+    //    for(int x = 0; x < 320; x++) {
+    //        vga.PutPixel(x, y, BLUE);
+    //    }
+    //}
+    //window(0,0,150,70,"EXPLORER",0x0,RED);
+    //window(75,60,150,70,"GAME",0x0,RED);
     //RenderCircle(30,30,10,BLUE);
+    //PIT::SetFrequency(1);
     
 
 
     while(1){
-        //print("A");
-        //PIT::Sleep(1000);
-        //print(hex2str(PIT::tickssincestart));
+        print("A");
+        PIT::Sleep(1000);
+        //print(hex2str((uint_64)PIT::TimeSinceBoot));
         //setCursorpos(0);
         //sp.beep();
     }

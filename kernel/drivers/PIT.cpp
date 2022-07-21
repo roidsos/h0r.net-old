@@ -4,22 +4,27 @@
 
 
 namespace PIT{
-    uint_64 tickssincestart  = 0;
-    uint_64 startTime;
+    double TimeSinceBoot = 0;
+
     uint_16 Divisor = 65535;
 
-    void Sleep(uint_64 miliseconds){
-        startTime = tickssincestart;
-        while (tickssincestart <= startTime + miliseconds){}
+    void Sleepd(double seconds){
+    double startTime = TimeSinceBoot;
+        while (TimeSinceBoot <= startTime + seconds){
+            asm volatile("nop");
+        }
     }
 
+    void Sleep(uint_64 milliseconds){
+        Sleepd((double)milliseconds / 1000);
+    }
 
-    void SetDivisor(uint_64 Divisor){
-        if (Divisor < 100) Divisor = 100;
-        Divisor = Divisor;
-        outb8(0x40, (uint_8)(Divisor & 0x00ff));
+    void SetDivisor(uint_16 divisor){
+        if (divisor < 100) divisor = 100;
+        Divisor = divisor;
+        outb8(0x40, (uint_8)(divisor & 0x00ff));
         IOWait();
-        outb8(0x40, (uint_8)((Divisor & 0xff00) >> 8));
+        outb8(0x40, (uint_8)((divisor & 0xff00) >> 8));
     }
 
     uint_64 GetFrequency(){
@@ -30,10 +35,9 @@ namespace PIT{
         SetDivisor(BaseFrequency / frequency);
     }
 
-
 }
     extern "C" void Tick(){
-        PIT::tickssincestart += 1;
+        PIT::TimeSinceBoot += 1 / (double)PIT::GetFrequency();
         outb8(0x20,0x20);
         outb8(0xa0,0x20);
     }
