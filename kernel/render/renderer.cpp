@@ -34,8 +34,8 @@ void window(uint_16 x, uint_8 y, uint_16 width, uint_8 height, char* title, uint
     uint_8 tlen = strlen(title);
     uint_8 rows = tlen / (width / 16) + (tlen % 16 == 0 ? 0 : 16 );
     filledrect(x, y, width, rows*16, inside_color);
-    rect(x, y, width, rows*16, border_color);
     filledrect(x, y+rows*16, width, height, inside_color);
+    renderString(x,y + 2,width/16,0x1,title);
+    rect(x, y, width, 16, border_color);
     rect(x, y+rows*16, width, height, border_color);
-    renderString(x + 2,y + 2,width/16,0x1,title);
 }

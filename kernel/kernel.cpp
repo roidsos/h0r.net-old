@@ -42,24 +42,30 @@ extern "C" int kernel_main(){
     VGA vga;
 
     char str[] {
-        55,//W
-        69,//e
-        76,//l
-        67,//c
-        79,//o
-        77,//m
-        69,//e
-        96,// 
-        69,//e
-        0
+        50,
+69,
+86,
+95,
+73,
+83,
+95,
+68,
+85,
+77,
+66,
+95,
+8,
+42,
+75,
+9,
+0
     };
     vga.SetMode(320, 200, 8);
-    for(int y = 0; y < 200; y++) {
-        for(int x = 0; x < 320; x++) {
-            vga.PutPixel(x, y, BLUE);
-        }
-    }
-    window(0,0,150,70,str,0x0,0x4);
+    vga.Clearscr(0x01);
+    // window(0,0,150,70,str,0x0,0x4);
+    renderString(0, 0, 250, 0xF, str);
+    // Make a array of 1 and 0's that makes a black and white image
+    // Wait for a keypress
 
     
 
