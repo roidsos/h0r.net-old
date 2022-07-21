@@ -10,6 +10,7 @@
 #include <drivers/VGA.h>
 #include <render/renderer.h>
 #include "colors.h"
+
 extern "C" int kernel_main(){
      pcspeaker sp;
     //GDT gdt;
@@ -42,38 +43,27 @@ extern "C" int kernel_main(){
     VGA vga;
 
     char str[] {
-        50,
-69,
-86,
-95,
-73,
-83,
-95,
-68,
-85,
-77,
-66,
-95,
-8,
-42,
-75,
-9,
-0
+        44,//L
+        79,//o
+        83,//s
+        69,//e
+        82,//r
+        0
     };
     vga.SetMode(320, 200, 8);
-    vga.Clearscr(0x01);
-    // window(0,0,150,70,str,0x0,0x4);
-    renderString(0, 0, 250, 0xF, str);
-    // Make a array of 1 and 0's that makes a black and white image
-    // Wait for a keypress
-
+    vga.Clearscr(0x1);
+    renderString(0, 0, (uint_8)320, 0xF, str);
+    //window(0,0,150,70,"EXPLORER",0x0,RED);
+    //window(75,60,150,70,"GAME",0x0,RED);
+    //RenderCircle(30,30,10,BLUE);
+    //PIT::SetFrequency(1);
     
 
 
     while(1){
-        //print("A");
-        //PIT::Sleep(1000);
-        //print(hex2str(PIT::tickssincestart));
+        // print("A");
+        // PIT::Sleep(1000);
+        //print(hex2str((uint_64)PIT::TimeSinceBoot));
         //setCursorpos(0);
         //sp.beep();
     }
