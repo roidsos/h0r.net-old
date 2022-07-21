@@ -42,15 +42,11 @@ extern "C" int kernel_main(){
     VGA vga;
 
     char str[] {
-        55,//W
-        69,//e
-        76,//l
-        67,//c
+        44,//L
         79,//o
-        77,//m
+        83,//s
         69,//e
-        96,// 
-        69,//e
+        82,//r
         0
     };
     vga.SetMode(320, 200, 8);
