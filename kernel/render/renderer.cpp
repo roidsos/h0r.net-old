@@ -30,7 +30,7 @@ uint_8 strlen(char* str){
     return i;
 }
 uint_8 sqrt(uint_8 x){
-    if(x == 0 || x == 1){
+    if(x == 0 || x == 1) {
         return x;
     }
 

@@ -125,3 +125,19 @@ const char* int2str(uint_64 value){
     int2strout[size + 1] = 0;
     return int2strout;
 }
+
+int_8 fromHEXToRGB(int_8 color){
+     uint_8 red = (color >> 16) & 0xff;
+     uint_8 green = (color >> 8) & 0xff;
+     uint_8 blue = color & 0xff;
+     print("R: ", 0xF);
+     print(hex2str(red), 0xF);
+     print("\n", 0xF);
+     print(" G: ", 0xF);
+     print(hex2str(green), 0xF);
+     print("\n", 0xF);
+     print(" B: ", 0xF);
+     print(hex2str(blue), 0xF);
+     print("\n", 0xF);
+     return red+green+blue;
+}
