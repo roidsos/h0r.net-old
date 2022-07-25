@@ -4,7 +4,6 @@
 #include <render/frender.h>
 #include <interrupts/IDT.h>
 #include <memory/Heap.h>
-#include "drivers/keyboard.h"
 #include <memory/memory.h>
 //#include <drivers/ata.h>
 #include <drivers/pc-speaker.h>
@@ -51,28 +50,19 @@ extern "C" int kernel_main(){
         82,//r
         0
     };
-//     vga.SetMode(320, 200, 8);
-//     vga.Clearscr(0x1);
-    // // renderString(0, 0, (uint_8)320, 0xF, str);
-    // window(0,0,150,70,"EXPLORER",0x0,RED);
-    // window(75,60,150,70,"GAME",0x0,RED);
-    // PIT::SetFrequency(1);
-     // print(fromHEXToRGB(0xffff00));
-     // keyint();
-     Clearscr(0x0F);
-     asm("sti");
-     uint_8 byte = inb8(0x60);
-     // if (byte == 0) {
-     //      print("byte = 0");
-     // } else {
-     //      print(":OOOOOOOOOOOO");
-     // }
-     print(hex2str(byte));
+    // vga.SetMode(320, 200, 8);
+    // vga.Clearscr(0x0);
+    // renderString(0, 0, (uint_8)320, 0xF, str);
+    //window(0,0,150,70,"EXPLORER",0x0,RED);
+    //window(75,60,150,70,"GAME",0x0,RED);
+    //RenderCircle(30,30,10,BLUE);
+    //PIT::SetFrequency(1);
+    
 
 
     while(1){
-     //    print("A");
-     //    PIT::Sleep(1);
+        // print("A");
+        // PIT::Sleep(1000);
         //print(hex2str((uint_64)PIT::TimeSinceBoot));
         //setCursorpos(0);
         //sp.beep();
