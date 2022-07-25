@@ -67,6 +67,39 @@ void print(const int_8* str,uint_8 color)
     }
     setCursorpos(iter);   
 }
+
+void printchar(char chr, uint_8 color)
+{
+    static uint_16* VideoMemory = (uint_16*)0xb8000;
+    int iter = CursorPos;
+    switch (chr)
+    {
+    case 10://newline
+        iter += 80;
+        iter -= iter % 80;//automaticly returns on newlines like unix
+        break;
+    case 13://return
+        iter -= iter % 80;
+        break;
+    
+    default:
+        VideoMemory[iter] = (VideoMemory[iter] & (color << 8)) | chr;
+        iter++;
+    }
+    setCursorpos(iter);   
+}
+
+void backspace(){
+    static uint_16* VideoMemory = (uint_16*)0xb8000;
+    int iter = CursorPos;
+    if(iter > 0){
+        iter--;
+        VideoMemory[iter] = ' ' | (VideoMemory[iter] & 0x0f00);
+        setCursorpos(iter);
+    }
+    // Make support for going up a line later
+}
+
 void Clearscr(uint_8 color){
 uint_64 value = 0;
 value += (uint_64)color << 8;

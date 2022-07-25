@@ -9,6 +9,7 @@
 #include <drivers/pc-speaker.h>
 #include <drivers/VGA.h>
 #include <render/renderer.h>
+// #include <drivers/keyboard.h>
 #include "colors.h"
 
 extern "C" int kernel_main(){
@@ -53,14 +54,19 @@ extern "C" int kernel_main(){
     // vga.SetMode(320, 200, 8);
     // vga.Clearscr(0x0);
     // renderString(0, 0, (uint_8)320, 0xF, str);
-    //window(0,0,150,70,"EXPLORER",0x0,RED);
-    //window(75,60,150,70,"GAME",0x0,RED);
+    // window(0,0,150,70,"EXPLORER",0x0,RED);
+    // window(75,60,150,70,"GAME",0x0,RED);
     //RenderCircle(30,30,10,BLUE);
     //PIT::SetFrequency(1);
+    Clearscr(0x0F);
+    // printchar('a');
+    // print("Hello, World!");
+    print("Username: ", 0xF);
     
 
 
     while(1){
+        // printchar(getch());
         // print("A");
         // PIT::Sleep(1000);
         //print(hex2str((uint_64)PIT::TimeSinceBoot));
