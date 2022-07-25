@@ -5,7 +5,7 @@
 #include <interrupts/IDT.h>
 #include <memory/Heap.h>
 #include <memory/memory.h>
-//#include <drivers/ata.h>
+#include <drivers/ata.h>
 #include <drivers/pc-speaker.h>
 #include <drivers/VGA.h>
 #include <render/renderer.h>
@@ -38,25 +38,25 @@ extern "C" int kernel_main(){
     // Clearscr(0x0F);
     //print("Hello, World!\n", 0xAF);
     //PIT::SetFrequency(1000);
-    InitIDT();
-
-    VGA vga;
-
-    char str[] {
-        44,//L
-        79,//o
-        83,//s
-        69,//e
-        82,//r
-        0
-    };
-    vga.SetMode(320, 200, 8);
-    vga.Clearscr(0x1);
-    renderString(0, 0, (uint_8)320, 0xF, str);
+    //InitIDT();
+    ATA ata(0x1F0,true);
+    ata.Identify();
+    //VGA vga;
+    //char str[] {
+    //    44,//L
+    //    79,//o
+    //    83,//s
+    //    69,//e
+    //    82,//r
+    //    0
+    //};
+    //vga.SetMode(320, 200, 8);
+    //vga.Clearscr(0x1);
+    ////renderString(0, 0, (uint_8)320, 0xF, str);
     //window(0,0,150,70,"EXPLORER",0x0,RED);
     //window(75,60,150,70,"GAME",0x0,RED);
-    //RenderCircle(30,30,10,BLUE);
-    //PIT::SetFrequency(1);
+    ////RenderCircle(30,30,10,BLUE);
+    ////PIT::SetFrequency(1);
     
 
 
