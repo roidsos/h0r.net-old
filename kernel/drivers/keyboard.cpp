@@ -1,11 +1,5 @@
 #include <drivers/keyboard.h>
 
-uint_8 inportb(uint_16 port) {
-    uint_8 r;
-    asm("inb %1, %0" : "=a" (r) : "dN" (port));
-    return r;
-}
-
 uint_8 keyboard_layout_us[2][128] = {
     {
         KEY_NULL, KEY_ESC, '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
@@ -30,8 +24,8 @@ uint_8 keyboard_layout_us[2][128] = {
 
 struct Keyboard keyboard;
 
-extern "C" void keyint() {
-    uint_16 scancode = (uint_16)inportb(0x60);
+extern "C" void getch() {
+    uint_16 scancode = (uint_16)inb8(0x60);
     if (KEY_SCANCODE(scancode) == KEY_LALT || KEY_SCANCODE(scancode) == KEY_RALT) {
 
     } else if (KEY_SCANCODE(scancode) == KEY_LCTRL || KEY_SCANCODE(scancode) == KEY_RCTRL) {
@@ -51,19 +45,25 @@ extern "C" void keyint() {
         if (KEY_IS_PRESS(scancode))
             print("\n");
     } else {
-        if (KEY_IS_PRESS(scancode)) {
-            if (keyboard.shift) {
-                printchar(keyboard_layout_us[1][scancode]);
-            } else {
-                printchar(keyboard_layout_us[0][scancode]);
-            }
-        }
-        // print(hex2str(scancode));
+     if (KEY_IS_PRESS(scancode)) {
+          if (keyboard.shift) {
+               printchar(keyboard_layout_us[1][scancode]);
+          } else {
+               printchar(keyboard_layout_us[0][scancode]);
+          }
+     }
     }
 
     keyboard.keys[(uint_8) (scancode & 0x7F)] = KEY_IS_PRESS(scancode);
     keyboard.chars[KEY_CHAR(scancode)] = KEY_IS_PRESS(scancode);
     outb8(0x20,0x20);
     outb8(0xa0,0x20);
+    // Set the repeat delay
 
 };
+
+// char* input() {
+//     char str[256];
+//     uint_8 i = 0;
+//     return str;
+// }

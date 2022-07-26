@@ -1,6 +1,33 @@
 #include <stdint.h>
 int_32 lol = 0;
 int iter = 0;
+int line_num = 0;
+int vga_line_lengths[24] = {
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+};
 uint_16 CursorPos;
 
 void IOWait(){
@@ -20,11 +47,6 @@ void outbslow8(uint_16 port,uint_8 value){
      __asm__ volatile("outb %0, %1\njmp 1f\n1: jmp 1f\n1:" : : "a" (value), "Nd" (port));
 }
 
-uint_8 inb8(uint_16 port){
-    uint_8 ret;
-    asm volatile ("inb %1, %0" : :"a"(ret) ,"Nd"(port));
-    return ret;
-}
 uint_16 inb16(uint_16 port){
     uint_16 ret;
     asm volatile ("inw %1, %0" : :"a"(ret) ,"Nd"(port));
@@ -53,6 +75,7 @@ void print(const int_8* str,uint_8 color)
         case 10://newline
             iter += 80;
             iter -= iter % 80;//automaticly returns on newlines like unix
+            line_num += 1;
             break;
         case 13://return
             iter -= iter % 80;
@@ -61,6 +84,7 @@ void print(const int_8* str,uint_8 color)
         default:
             VideoMemory[iter] = (VideoMemory[iter] & (color << 8)) | str[i];
             iter++;
+            vga_line_lengths[line_num]++;
         }
         
         i++;
@@ -77,6 +101,7 @@ void printchar(char chr, uint_8 color)
     case 10://newline
         iter += 80;
         iter -= iter % 80;//automaticly returns on newlines like unix
+        line_num += 1;
         break;
     case 13://return
         iter -= iter % 80;
@@ -85,6 +110,7 @@ void printchar(char chr, uint_8 color)
     default:
         VideoMemory[iter] = (VideoMemory[iter] & (color << 8)) | chr;
         iter++;
+        vga_line_lengths[line_num]++;
     }
     setCursorpos(iter);   
 }
@@ -94,10 +120,16 @@ void backspace(){
     int iter = CursorPos;
     if(iter > 0){
         iter--;
+        vga_line_lengths[line_num]--;
         VideoMemory[iter] = ' ' | (VideoMemory[iter] & 0x0f00);
         setCursorpos(iter);
     }
-    // Make support for going up a line later
+    if(iter % 80 == 0) {
+        line_num--;
+        iter = vga_line_lengths[line_num] + 80 * (line_num);
+        VideoMemory[iter] = ' ' | (VideoMemory[iter] & 0x0f00);
+        setCursorpos(iter);
+    }
 }
 
 void Clearscr(uint_8 color){
@@ -174,3 +206,15 @@ int_8 fromHEXToRGB(int_8 color){
      print("\n", 0xF);
      return red+green+blue;
 }
+
+uint_8 inb8(uint_16 port) {
+    uint_8 r;
+    asm("inb %1, %0" : "=a" (r) : "dN" (port));
+    return r;
+}
+
+// uint_8 inb8(uint_16 port){
+//     uint_8 ret;
+//     asm volatile ("inb %1, %0" : :"a"(ret) ,"Nd"(port));
+//     return ret;
+// }
