@@ -81,4 +81,5 @@ extern struct Keyboard keyboard;
 #define keyboard_key(_s) (keyboard.keys[(_s)])
 #define keyboard_char(_c) (keyboard.chars[(uint_8) (_c)])
 
-char* turn_into_ASCII(uint_16 scancode);
+char turn_into_ASCII(uint_16 scancode);
+char getch();

@@ -1,5 +1,7 @@
 #include <drivers/keyboard.h>
 
+extern char* keybuffer;
+
 uint_8 keyboard_layout_us[2][128] = {
     {
         KEY_NULL, KEY_ESC, '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
@@ -23,15 +25,20 @@ uint_8 keyboard_layout_us[2][128] = {
 };
 
 struct Keyboard keyboard;
+char getch(){
+    return turn_into_ASCII(keybuffer[0]);
+}
+
 extern "C" void keyint(){
-    uint_16 scancode = (uint_16)inb8(0x60);
-    print(turn_into_ASCII(scancode));
+    keybuffer[0] = inb8(0x60);
+    print(keybuffer);
     outb8(0x20,0x20);
     outb8(0xa0,0x20);
 }
 
-char ASCIIOUT[2] = {0,0};
-char* turn_into_ASCII(uint_16 scancode) {
+
+
+char turn_into_ASCII(uint_16 scancode) {
 
     if (KEY_SCANCODE(scancode) == KEY_LALT || KEY_SCANCODE(scancode) == KEY_RALT) {
 
@@ -54,18 +61,17 @@ char* turn_into_ASCII(uint_16 scancode) {
     } else {
      if (KEY_IS_PRESS(scancode)) {
           if (keyboard.shift) {
-               ASCIIOUT[0] = keyboard_layout_us[1][scancode];
+               return keyboard_layout_us[1][scancode];
           } else {
-               ASCIIOUT[0] = keyboard_layout_us[0][scancode];
+               return keyboard_layout_us[0][scancode];
           }
-          return ASCIIOUT;
+          
      }
     }
 
     keyboard.keys[(uint_8) (scancode & 0x7F)] = KEY_IS_PRESS(scancode);
     keyboard.chars[KEY_CHAR(scancode)] = KEY_IS_PRESS(scancode);
-    ASCIIOUT[0] = 0;
-    return ASCIIOUT;
+    return 0;
 };
 
 // char* input() {
