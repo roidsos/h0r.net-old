@@ -23,9 +23,16 @@ uint_8 keyboard_layout_us[2][128] = {
 };
 
 struct Keyboard keyboard;
-
-extern "C" void getch() {
+extern "C" void keyint(){
     uint_16 scancode = (uint_16)inb8(0x60);
+    print(turn_into_ASCII(scancode));
+    outb8(0x20,0x20);
+    outb8(0xa0,0x20);
+}
+
+char ASCIIOUT[2] = {0,0};
+char* turn_into_ASCII(uint_16 scancode) {
+
     if (KEY_SCANCODE(scancode) == KEY_LALT || KEY_SCANCODE(scancode) == KEY_RALT) {
 
     } else if (KEY_SCANCODE(scancode) == KEY_LCTRL || KEY_SCANCODE(scancode) == KEY_RCTRL) {
@@ -47,19 +54,18 @@ extern "C" void getch() {
     } else {
      if (KEY_IS_PRESS(scancode)) {
           if (keyboard.shift) {
-               printchar(keyboard_layout_us[1][scancode]);
+               ASCIIOUT[0] = keyboard_layout_us[1][scancode];
           } else {
-               printchar(keyboard_layout_us[0][scancode]);
+               ASCIIOUT[0] = keyboard_layout_us[0][scancode];
           }
+          return ASCIIOUT;
      }
     }
 
     keyboard.keys[(uint_8) (scancode & 0x7F)] = KEY_IS_PRESS(scancode);
     keyboard.chars[KEY_CHAR(scancode)] = KEY_IS_PRESS(scancode);
-    outb8(0x20,0x20);
-    outb8(0xa0,0x20);
-    // Set the repeat delay
-
+    ASCIIOUT[0] = 0;
+    return ASCIIOUT;
 };
 
 // char* input() {

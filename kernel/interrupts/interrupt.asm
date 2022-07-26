@@ -2,7 +2,7 @@ global isr1
 global isr0
 global isrIgnore
 global loadidt
-extern getch
+extern keyint
 extern Tick
 extern _idt
 
@@ -44,6 +44,6 @@ iretq
 isr1:
 PUSHALL
 cld
-call getch
+call keyint
 POPALL
 iretq
