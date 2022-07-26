@@ -60,6 +60,7 @@ extern "C" int kernel_main(){
     //PIT::SetFrequency(1);
     Clearscr(0x0F);
     // printchar('a');
+    enable_text_cursor(14, 15);
     // print("Hello, World!");
     print("Username: ", 0xF);
     // char* text = input();

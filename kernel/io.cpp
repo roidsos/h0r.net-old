@@ -115,6 +115,7 @@ void printchar(char chr, uint_8 color)
     setCursorpos(iter);   
 }
 
+
 void backspace(){
     static uint_16* VideoMemory = (uint_16*)0xb8000;
     int iter = CursorPos;
@@ -213,8 +214,10 @@ uint_8 inb8(uint_16 port) {
     return r;
 }
 
-// uint_8 inb8(uint_16 port){
-//     uint_8 ret;
-//     asm volatile ("inb %1, %0" : :"a"(ret) ,"Nd"(port));
-//     return ret;
-// }
+void enable_text_cursor(uint_8 cursor_start, uint_8 cursor_end) {
+	outb8(0x3D4, 0x0A);
+	outb8(0x3D5, (inb8(0x3D5) & 0xC0) | cursor_start);
+ 
+	outb8(0x3D4, 0x0B);
+	outb8(0x3D5, (inb8(0x3D5) & 0xE0) | cursor_end);
+}
