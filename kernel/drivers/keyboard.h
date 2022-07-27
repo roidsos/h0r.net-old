@@ -88,4 +88,5 @@ extern struct Keyboard keyboard;
 
 // ============================================================================
 
-char* turn_into_ASCII(uint_16 scancode);
+char turn_into_ASCII(uint_16 scancode);
+char getch();
