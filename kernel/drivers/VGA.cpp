@@ -30,9 +30,9 @@ bool VGA::SetMode(uint_32 width, uint_32 height,uint_32 colors)
     return true;
 }
 
-void VGA::PutPixel(uint_32 x,uint_32 y,uint_8 r,uint_8 g,uint_8 b)
+void VGA::PutPixel(uint_32 x, uint_32 y, uint_8 r, uint_8 g, uint_8 b)
 {
-    PutPixel(y,x,GetCol(r,g,b));
+    PutPixel(y, x, GetCol(r, g, b));
 }
 
 uint_8* VGA::GetSeg()
@@ -52,8 +52,10 @@ uint_8* VGA::GetSeg()
 
 void VGA::PutPixel(uint_32 x,uint_32 y,uint_8 color)
 {
-    uint_8* pixeladdr = GetSeg() + 320*y + x;
-    *pixeladdr = color;
+    // uint_8* pixeladdr = GetSeg() + 320*y + x;
+    // *pixeladdr = color;
+    unsigned char* pixaddr = (unsigned char*)0xa0000;
+    pixaddr[x+y*320] = color;
 }
 
 uint_8 VGA::GetCol(uint_32 r,uint_32 g,uint_8 b)

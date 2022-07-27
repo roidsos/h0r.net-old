@@ -1,5 +1,9 @@
 #include <io.h>
 
+// |============================================================================|
+// |The following code is copied from https://github.com/lucianoforks/tetris-os/|
+// |============================================================================|
+
 #define KEY_NULL 0
 #define KEY_ESC 27
 #define KEY_BACKSPACE 0xE
@@ -70,6 +74,7 @@ struct Keyboard {
     uint_16 mods;
     bool keys[128];
     bool chars[128];
+
     bool shift = false;
     bool capslock = false;
     bool backspace = false;
@@ -80,5 +85,7 @@ extern struct Keyboard keyboard;
 
 #define keyboard_key(_s) (keyboard.keys[(_s)])
 #define keyboard_char(_c) (keyboard.chars[(uint_8) (_c)])
+
+// ============================================================================
 
 char* turn_into_ASCII(uint_16 scancode);

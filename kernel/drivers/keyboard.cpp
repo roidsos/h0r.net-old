@@ -51,6 +51,10 @@ char* turn_into_ASCII(uint_16 scancode) {
     } else if (KEY_SCANCODE(scancode) == KEY_ENTER) {
         if (KEY_IS_PRESS(scancode))
             print("\n");
+    } else if (KEY_SCANCODE(scancode) == KEY_TAB) {
+
+    } else if (KEY_SCANCODE(scancode) == KEY_ESC) {
+
     } else {
      if (KEY_IS_PRESS(scancode)) {
           if (keyboard.shift) {
@@ -67,9 +71,3 @@ char* turn_into_ASCII(uint_16 scancode) {
     ASCIIOUT[0] = 0;
     return ASCIIOUT;
 };
-
-// char* input() {
-//     char str[256];
-//     uint_8 i = 0;
-//     return str;
-// }
