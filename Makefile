@@ -1,8 +1,4 @@
 all:
-	-mkdir iso/
-	-mkdir iso/boot/
-	-mkdir iso/boot/grub/
-	-echo "set timeout=0\nset default=0\n\nmenuentry "h0r.net" {\nmultiboot2 /boot/kernel.bin\nboot\n}" > iso/boot/grub/grub.cfg
 	cd kernel && make && cd .. 
 
 	cp kernel/kernel.bin iso/boot/kernel.bin
@@ -18,4 +14,4 @@ debugr: all
 	qemu-system-x86_64 -s -S -no-reboot -monitor stdio -d int -no-shutdown -cdrom os.iso -soundhw pcspk
 
 clean:
-	-rm -rf kernel/boot/*.o kernel/drivers/*.o kernel/gdt/*.o kernel/interrupts/*.o kernel/memory/*.o kernel/render/*.o kernel/*.o os.iso .vscode/ kernel/kernel.bin iso/boot/kernel.bin bin/ iso/
+	-rm -rf kernel/boot/*.o kernel/drivers/*.o kernel/gdt/*.o kernel/interrupts/*.o kernel/memory/*.o kernel/render/*.o kernel/*.o os.iso .vscode/ kernel/kernel.bin iso/boot/kernel.bin
