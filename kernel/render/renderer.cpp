@@ -1,5 +1,5 @@
 #include <render/renderer.h>
-#include <render/frender.h>
+#include <render/font_render.h>
 #include <drivers/VGA.h>
 
 void filledrect(uint_16 x, uint_8 y, uint_16 width, uint_8 height, uint_8 color) {
@@ -29,6 +29,15 @@ uint_8 strlen(char* str){
     }
     return i;
 }
+
+uint_8 strlen(const char* str){
+    uint_8 i = 0;
+    while(str[i] != 0){
+    i++;
+    }
+    return i;
+}
+
 uint_8 sqrt(uint_8 x){
     if(x == 0 || x == 1){
         return x;
@@ -54,7 +63,7 @@ uint_8 abs(int_8 input){
 }
  
 
-void window(uint_16 x, uint_8 y, uint_16 width, uint_8 height, char* title, uint_8 border_color, uint_8 inside_color) {
+void window(uint_16 x, uint_8 y, uint_16 width, uint_8 height, const char* title, uint_8 border_color, uint_8 inside_color) {
     uint_8 tlen = strlen(title);
     uint_8 rows = tlen / (width / 16) + (tlen % 16 != 0);
     filledrect(x, y, width, rows*16, inside_color);

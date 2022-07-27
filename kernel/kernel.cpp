@@ -1,7 +1,7 @@
 #include <io.h>
 #include <gdt/gdt.h>
 #include <drivers/PIT.h>
-#include <render/frender.h>
+#include <render/font_render.h>
 #include <interrupts/IDT.h>
 #include <memory/Heap.h>
 #include <memory/memory.h>
@@ -12,7 +12,7 @@
 #include <drivers/keyboard.h>
 #include "colors.h"
 
-char* keybuffer;
+void* keybuffer;
 
 extern "C" int kernel_main(){
      pcspeaker sp;
@@ -79,8 +79,6 @@ extern "C" int kernel_main(){
 
     VGA vga;
 
-    vga.SetMode(320, 200, 8);
-    // vga.Clearscr(0x0);
 
     // static uint_16* pixel = (uint_16*)0xa0000;
 
@@ -99,10 +97,23 @@ extern "C" int kernel_main(){
     // ++pixel;
     // ++*pixel = 0x2;
     // *pixel++ = 0x2;
-    vga.Clearscr(0x0);
-    window(0,0,150,70,"EXPLORER",0x0,RED);
-    window(75,60,150,70,"GAME",0x0,RED);
-    // renderString(0, 0, (uint_8)320, 0xF, str);
+    char str[] {
+        55,//W
+        69,//e
+        76,//l
+        67,//c
+        79,//o
+        77,//m
+        69,//e
+        96,// 
+        69,//e
+        0
+    };
+    vga.SetMode(320, 200, 8);
+    // vga.Clearscr(0x0);
+    // window(0,0,150,70,"EXPLORER",0x0,RED);
+    // window(75,60,150,70,"GAME",0x0,RED);
+    // renderString(0, 0, 320, 0xF, str);
     //RenderCircle(30,30,10,BLUE);
     //PIT::SetFrequency(1);
     // Clearscr(0x0F);
@@ -115,6 +126,10 @@ extern "C" int kernel_main(){
     // print(text, 0xF);
     // print("\n");
     // print("┌─────────────────┐", 0xF);
+
+
+
+
 
     while(1){
         // PIT::Sleep(1000);
