@@ -72,8 +72,19 @@ uint_8* VGA::GetSeg()
 
 void VGA::PutPixel(uint_32 x,uint_32 y,uint_8 color)
 {
-    uint_8* pixeladdr = GetSeg() + 320*y + x;
-    *pixeladdr = color;
+
+    uint_16 index = ((640*y) + x)/8;
+    uint_8* pixeladdr = 0xa0000;//getting the address of the pixel
+    outb16(SEQindex,0x0102);//1.st bitplane
+    pixeladdr[index] = *pixeladdr | ((color >> 4) & (0b10000000 >> index%8));
+    outb16(SEQindex,0x0202);//2.nd bitplane
+    pixeladdr[index] = *pixeladdr | ((color >> 5) & (0b10000000 >> index%8));
+    outb16(SEQindex,0x0302);//3.rd bitplane
+    pixeladdr[index] = *pixeladdr | ((color >> 6) & (0b10000000 >> index%8));
+    outb16(SEQindex,0x0402);//4.th bitplane
+    pixeladdr[index] = *pixeladdr | ((color >> 7) & (0b10000000 >> index%8));
+    //outb16(SEQindex,0x0f02);//f.th bitplane???
+    //pixeladdr[(640*y)/8 + x/8] = *pixeladdr | ((color >> 4) & (0b00000001 << y%8));
     // unsigned char* pixaddr = (unsigned char*)0xa0000;
     // pixaddr[x+y*320] = color;
 }
@@ -86,8 +97,8 @@ uint_8 VGA::GetCol(uint_32 r,uint_32 g,uint_8 b)
 }
 
 void VGA::Clearscr(uint_8 color) {
-    for(int y = 0; y < 200; y++) {
-        for(int x = 0; x < 320; x++) {
+    for(int y = 0; y < 480; y++) {
+        for(int x = 0; x < 640; x++) {
             VGA::PutPixel(x, y, color);
         }
     }
