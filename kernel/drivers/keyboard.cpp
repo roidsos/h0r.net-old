@@ -30,8 +30,8 @@ char getch(){
 }
 
 extern "C" void keyint(){
-    keybuffer[0] = inb8(0x60);
-    print(keybuffer);
+    //keybuffer[0] = inb8(0x60);
+    printchar(turn_into_ASCII(inb8(0x60)));
     outb8(0x20,0x20);
     outb8(0xa0,0x20);
 }
@@ -76,4 +76,4 @@ char turn_into_ASCII(uint_16 scancode) {
     keyboard.keys[(uint_8) (scancode & 0x7F)] = KEY_IS_PRESS(scancode);
     keyboard.chars[KEY_CHAR(scancode)] = KEY_IS_PRESS(scancode);
     return 0;
-};
+}

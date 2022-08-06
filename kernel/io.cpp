@@ -78,6 +78,8 @@ void print(const int_8* str,uint_8 color)
 
 void printchar(char chr, uint_8 color)
 {
+    if (!chr) return; 
+    
     static uint_16* VideoMemory = (uint_16*)0xb8000;
     int iter = CursorPos;
     switch (chr)

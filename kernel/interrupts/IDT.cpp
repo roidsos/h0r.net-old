@@ -9,7 +9,7 @@
 #define ICW1_ICW4 0x01
 #define ICW4_8086 0x01
 
-
+extern "C" void isrC();
 extern "C" void isr1();
 extern "C" void isr0();
 extern "C" void isrIgnore();
@@ -49,19 +49,22 @@ void InitIDT()
 {
     AddEntry((void*)&isr0,0b10001110,0);
     AddEntry((void*)&isr1,0b10001110,1);
-
+    AddEntry((void*)&isrC,0b10001110,12);
 
     RemapPIC();
     loadidt();
+
     if(inb8(0x64) & 0x1)
         inb8(0x60);
     outb8(0x64,0xAE);
-    //outb8(0x64,0x20);
-    //uint_8 status = (inb8(0x60) | 1) & 0x10;
-    //outb8(0x64,0x60);
-    //outb8(0x60,status);
+    outb8(0x64,0xA8);
+    outb8(0x64,0x60);
+    outb8(0x60,0b01100111);
 
+    outb8(0x64,0xf4);
+    outb8(0x64,0xd4);
     outb8(0x60,0xf4);
+    inb8(0x60);
 
     asm("sti");
 

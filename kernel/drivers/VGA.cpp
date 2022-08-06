@@ -45,8 +45,8 @@ bool VGA::SetMode(uint_32 width, uint_32 height,uint_32 colors)
         0x38, 0x39, 0x3A, 0x3B, 0x3C, 0x3D, 0x3E, 0x3F,
         0x01, 0x00, 0x0F, 0x00, 0x00
     };
-    // WriteReg(g_320x200x256);
-    WriteReg(g_640x480x16);
+    WriteReg(g_320x200x256);
+    //WriteReg(g_640x480x16);
     return true;
 }
 
@@ -73,20 +73,21 @@ uint_8* VGA::GetSeg()
 void VGA::PutPixel(uint_32 x,uint_32 y,uint_8 color)
 {
 
-    uint_16 index = ((640*y) + x)/8;
-    uint_8* pixeladdr = 0xa0000;//getting the address of the pixel
-    outb16(SEQindex,0x0102);//1.st bitplane
-    pixeladdr[index] = *pixeladdr | ((color >> 4) & (0b10000000 >> index%8));
-    outb16(SEQindex,0x0202);//2.nd bitplane
-    pixeladdr[index] = *pixeladdr | ((color >> 5) & (0b10000000 >> index%8));
-    outb16(SEQindex,0x0302);//3.rd bitplane
-    pixeladdr[index] = *pixeladdr | ((color >> 6) & (0b10000000 >> index%8));
-    outb16(SEQindex,0x0402);//4.th bitplane
-    pixeladdr[index] = *pixeladdr | ((color >> 7) & (0b10000000 >> index%8));
+    //uint_16 index = ((640*y) + x)/8;//getting the index
+    //uint_8* pixeladdr = 0xa0000;//getting the address of the pixel
+    //
+    //outb16(SEQindex,0x0102);//1.st bitplane
+    //pixeladdr[index] = pixeladdr[index] | (((color << 7) >> index%8) & (0b10000000 >> index%8));
+    //outb16(SEQindex,0x0202);//2.nd bitplane
+    //pixeladdr[index] = pixeladdr[index] | (((color << 6) >> index%8) & (0b10000000 >> index%8));
+    //outb16(SEQindex,0x0302);//3.rd bitplane
+    //pixeladdr[index] = pixeladdr[index] | (((color << 5) >> index%8) & (0b10000000 >> index%8));
+    //outb16(SEQindex,0x0402);//4.th bitplane
+    //pixeladdr[index] = pixeladdr[index] | (((color << 4) >> index%8) & (0b10000000 >> index%8));
     //outb16(SEQindex,0x0f02);//f.th bitplane???
     //pixeladdr[(640*y)/8 + x/8] = *pixeladdr | ((color >> 4) & (0b00000001 << y%8));
-    // unsigned char* pixaddr = (unsigned char*)0xa0000;
-    // pixaddr[x+y*320] = color;
+     unsigned char* pixaddr = (unsigned char*)0xa0000;
+     pixaddr[x+y*320] = color;
 }
 
 uint_8 VGA::GetCol(uint_32 r,uint_32 g,uint_8 b)

@@ -1,8 +1,10 @@
+global isrC
 global isr1
 global isr0
 global isrIgnore
 global loadidt
 extern keyint
+extern musint
 extern Tick
 extern _idt
 
@@ -45,5 +47,12 @@ isr1:
 PUSHALL
 cld
 call keyint
+POPALL
+iretq
+
+isrC:
+PUSHALL
+cld
+call musint
 POPALL
 iretq

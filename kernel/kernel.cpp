@@ -77,10 +77,10 @@ extern "C" int kernel_main(){
         69,//e
         0
     };
-    vga.SetMode(320, 200, 8);
-     vga.Clearscr(0x41);
-     window(0,0,150,70,"EXPLORER",0x0,RED);
-     window(75,60,150,70,"GAME",0x0,RED);
+    //vga.SetMode(320, 200, 8);
+    // vga.Clearscr(0x1);
+    // window(0,0,150,70,"EXPLORER",0x0,RED);
+    // window(75,60,150,70,"GAME",0x0,RED);
     // renderString(0, 0, 320, 0xF, str);
     //RenderCircle(30,30,10,BLUE);
     //PIT::SetFrequency(1);
@@ -88,7 +88,7 @@ extern "C" int kernel_main(){
     // printchar('a');
     // enable_text_cursor(14, 15);
     // print("Hello, World!");
-    // print("Username: ", 0xF);
+    //print("Username: ", 0xF);
     // char* text = input();
     // print("Hello, ");
     // print(text, 0xF);
