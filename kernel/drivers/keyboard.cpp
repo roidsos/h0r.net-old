@@ -27,11 +27,12 @@ uint_8 keyboard_layout_us[2][128] = {
 struct Keyboard keyboard;
 char getch(){
     return turn_into_ASCII(keybuffer[0]);
+    keybuffer[0] = 0;
 }
 
 extern "C" void keyint(){
-    //keybuffer[0] = inb8(0x60);
-    printchar(turn_into_ASCII(inb8(0x60)));
+    keybuffer[0] = inb8(0x60);
+    //printchar(turn_into_ASCII(inb8(0x60)));
     outb8(0x20,0x20);
     outb8(0xa0,0x20);
 }
