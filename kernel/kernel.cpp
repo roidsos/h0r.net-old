@@ -28,11 +28,12 @@ extern "C" int kernel_main(){
     Clearscr(0x0F);
 
 
-    VGA vga;
-    vga.SetMode(320, 200, 8);
+    //VGA vga;
+    //vga.SetMode(320, 200, 8);
 
-    Snake::Init();
+    //Snake::Init();
     enable_text_cursor(14, 15);
+   print("Type here but please dont delete all cuz it bugs out like hell!!!");
 
     // static uint_16* pixel = (uint_16*)0xa0000;
 
@@ -70,7 +71,7 @@ extern "C" int kernel_main(){
 
 
     while(1){
-        Snake::Update();
+        //Snake::Update();
         // PIT::Sleep(1000);
         // print(hex2str((uint_64)PIT::()));
         // print("       ");
