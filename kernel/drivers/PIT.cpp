@@ -1,43 +1,67 @@
 #include "PIT.h"
 #include "io.h"
+#include <stdint.h>
+// sztem a sleepd se megy
+// ujra probaljuk csinalni?
+// az egészet? ja
+// rev is segíthet?
+// rev wanna help rewrite PIT?
+// how da fuk does it even work idk /shrug
+// Tick is the interrupt
+// This was on osdev
+//  section .text
+//  global TimerIRQ
+//  TimerIRQ:
+//      push eax
+//      mov eax, [CountDown]
+//      test eax, eax
+//      jz TimerDone
+//      dec eax
+//      mov [CountDown], eax
+//  TimerDone:
+//      pop eax
+//      iretd
+// ik its assembly
+// it decrements Countdown if its not zero
+// in the interrupt
+
+volatile uint_32 g_pitTicks;
 
 
 
-namespace PIT{
-    double TimeSinceBoot = 0;
 
-    uint_16 Divisor = 65535;
+volatile int CountDown;
+namespace PIT
+{
+    void PitInit()
+    {
+        // this code was yoinked from https://github.com/pdoane/osdev/blob/master/time/pit.c and we totally read the license!!!!!
 
-    void Sleepd(double seconds){
-    double startTime = TimeSinceBoot;
-        while (TimeSinceBoot <= startTime + seconds){
-            asm volatile("nop");
+        uint_32 hz = 1000;
+        uint_32 divisor = PIT_FREQUENCY / hz;
+        outb8(PIT_CMD, CMD_BINARY | CMD_MODE3 | CMD_RW_BOTH | CMD_COUNTER0);
+        outb8(PIT_COUNTER0, divisor);
+        outb8(PIT_COUNTER0, divisor >> 8);
+        // 
+    }
+
+
+    void Sleep(uint_32 millis) 
+    {
+        CountDown = millis;
+        while (CountDown > 0)
+        {
+            
+            
         }
     }
-
-    void Sleep(uint_64 milliseconds){
-        Sleepd((double)milliseconds / 1000);
-    }
-
-    void SetDivisor(uint_16 divisor){
-        if (divisor < 100) divisor = 100;
-        Divisor = divisor;
-        outb8(0x40, (uint_8)(divisor & 0x00ff));
-        IOWait();
-        outb8(0x40, (uint_8)((divisor & 0xff00) >> 8));
-    }
-
-    uint_64 GetFrequency(){
-        return BaseFrequency / Divisor;
-    }
-
-    void SetFrequency(uint_64 frequency){
-        SetDivisor(BaseFrequency / frequency);
-    }
-
 }
-    extern "C" void Tick(){
-        PIT::TimeSinceBoot += 1 / (double)PIT::GetFrequency();
-        outb8(0x20,0x20);
-        outb8(0xa0,0x20);
+
+extern "C" void Tick()
+{
+    if (CountDown != 0)
+    {
+        CountDown--;
     }
+    print(hex2str(CountDown));
+}
