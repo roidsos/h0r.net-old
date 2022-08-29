@@ -2,7 +2,16 @@
 # h0r.net
 an open-source kernel for BlindsOS</br>
 BlindsOS discord: [https://discord.gg/BlindsOS](https://discord.gg/8eEQqKGqk2)</br>
-h0r.net discord: [https://discord.gg/h0r.net](https://discord.gg/Yz3nRcENzp)
+h0r.net discord: [https://discord.gg/h0r.net](https://discord.gg/Yz3nRcENzp)</br>
+
+## What is h0r.net?
+h0r.net is a W.I.P. kernel witch is non-profit and open source.
+Current features:
+*printing strings with color
+*memory managment
+*IDTs
+*keyboard input
+*VGA support
 
 ## How to get it running?
 ### On Arch Linux and similar:
