@@ -5,13 +5,13 @@ BlindsOS discord: [https://discord.gg/BlindsOS](https://discord.gg/8eEQqKGqk2)</
 h0r.net discord: [https://discord.gg/h0r.net](https://discord.gg/Yz3nRcENzp)</br>
 
 ## What is h0r.net?
-h0r.net is a W.I.P. kernel witch is non-profit and open source.
-Current features:
-*printing strings with color
-*memory managment
-*IDTs
-*keyboard input
-*VGA support
+h0r.net is a W.I.P. kernel witch is non-profit and open source.</br>
+Current features:</br>
+-printing strings with color</br>
+-memory managment</br>
+-IDTs</br>
+-keyboard input</br>
+-VGA support</br>
 
 ## How to get it running?
 ### On Arch Linux and similar:
