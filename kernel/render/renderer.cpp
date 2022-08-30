@@ -73,4 +73,3 @@ void window(uint_16 x, uint_8 y, uint_16 width, uint_8 height, const char* title
     rect(x, y+rows*16, width, height, border_color);
     renderString(x + 2,y + 2,width/16,0x1,title);
 }
-

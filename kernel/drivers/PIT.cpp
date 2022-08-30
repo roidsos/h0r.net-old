@@ -1,34 +1,5 @@
 #include "PIT.h"
-#include "io.h"
-#include <stdint.h>
-// sztem a sleepd se megy
-// ujra probaljuk csinalni?
-// az egészet? ja
-// rev is segíthet?
-// rev wanna help rewrite PIT?
-// how da fuk does it even work idk /shrug
-// Tick is the interrupt
-// This was on osdev
-//  section .text
-//  global TimerIRQ
-//  TimerIRQ:
-//      push eax
-//      mov eax, [CountDown]
-//      test eax, eax
-//      jz TimerDone
-//      dec eax
-//      mov [CountDown], eax
-//  TimerDone:
-//      pop eax
-//      iretd
-// ik its assembly
-// it decrements Countdown if its not zero
-// in the interrupt
-
-volatile uint_32 g_pitTicks;
-
-
-
+#include "io/io.h"
 
 volatile int CountDown;
 namespace PIT
