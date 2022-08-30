@@ -74,17 +74,3 @@ void window(uint_16 x, uint_8 y, uint_16 width, uint_8 height, const char* title
     renderString(x + 2,y + 2,width/16,0x1,title);
 }
 
-void RenderCircle(uint_16 centerx,uint_16 centery,uint_8 radius,uint_8 color){
-VGA vga;
-    for(int x = centerx - radius;x < centerx + radius;x++){
-        for(int y = centery - radius;y < centery + radius;y++){
-            uint_8 diffx = abs(x - centerx);
-            uint_8 diffy = abs(y - centery);
-
-            uint_8 distance = sqrt(diffx*diffx+diffy*diffy);
-            if(distance <= radius)
-                vga.PutPixel(x,y, color);
-
-        }
-    }
-}

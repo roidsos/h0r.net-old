@@ -121,13 +121,11 @@ void backspace(){
 
 void Clearscr(uint_8 color){
 uint_64 value = 0;
-value += (uint_64)color << 8;
-value += (uint_64)color << 24;
-value += (uint_64)color << 40;
-value += (uint_64)color << 56;
-    for(uint_64* i = (uint_64*)0xb8000;i < (uint_64*)0xb8000 + 4000;i++){
-        *i = value;
-    }
+  unsigned char *VGAPIXELS = 0xa0000;
+  for (int i = 0; i < 320 * 200; i++)
+  {
+    VGAPIXELS[i] = color;
+  }
     setCursorpos(0);
 }
 int_8 hex2strout[128];
