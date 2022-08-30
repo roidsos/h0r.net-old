@@ -45,6 +45,7 @@ void RemapPIC(){
     IOWait();
     outb8(PIC2_DATA,a2);
 }
+//initializes and loads the IDT
 void InitIDT()
 {
     AddEntry((void*)&isr0,0b10001110,0);
@@ -54,24 +55,30 @@ void InitIDT()
     RemapPIC();
     loadidt();
 
-    if(inb8(0x64) & 0x1)
-        inb8(0x60);
-    outb8(0x64,0xAE);
-    outb8(0x64,0xA8);
-    outb8(0x64,0x60);
-    outb8(0x60,0b01100111);
+    //if(inb8(0x64) & 0x1)
+    //    inb8(0x60);
+    //outb8(0x64,0xAE);
+    //outb8(0x64,0xA8);
+    //outb8(0x64,0x60);
+    //outb8(0x60,0b01100111);
 
     //outb8(0x64,0xf4);
     //outb8(0x64,0xd4);
     //outb8(0x60,0xf4);
-    //inb8(0x60);
+    //inb8(0x60);       useless shit that does nothing
 
-    asm("sti");
+
+    
+}
+//activates the IDT
+void ActivateIDT()
+{
+     asm("sti");
 
     outb8(0x21,0xfd);
     outb8(0xa1,0xff);
-    
 }
+//Adds an entry to the IDT
 void AddEntry(void* Isr,int attr,int _num){
  _idt[_num].zero = 0;
  _idt[_num].ist = 0;
