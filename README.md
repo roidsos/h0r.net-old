@@ -26,7 +26,7 @@ the h0r.net project was started just for fun, but Im planning to use it.</br>
 - [x] Heap
 
 ### ACPI
-- [ ] ACPI
+- [X] ACPI(Restart commmand only)
 - [ ] LAPIC
 - [ ] IOAPIC
 - [ ] LAI
