@@ -40,6 +40,7 @@ Current features:</br>
 #### Audio
 - [X] PC speaker
 - [ ] AC97
+- [ ] Intel High Definition Audio
 - [ ] SB16
 #### I/O
 - [X] PS/2 Keyboard
