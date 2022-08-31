@@ -31,7 +31,7 @@ Current features:</br>
 - [x] Heap
 
 ### ACPI
-- [ ] ACPI
+- [X] ACPI(Restart commmand only)
 - [ ] LAPIC
 - [ ] IOAPIC
 - [ ] LAI
