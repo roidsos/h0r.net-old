@@ -1,4 +1,4 @@
-
+#include <drivers/soundblaster.h>
 // Code used: https://forum.osdev.org/viewtopic.php?f=1&t=32879
 #include <io/io.h>
 #include <util/stdint.h>

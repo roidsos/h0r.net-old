@@ -1,6 +1,8 @@
 #ifndef __SOUNDBLASTER_H__
 #define __SOUNDBLASTER_H__
 
+#include <util/stdint.h>
+
 extern uint_8 sound_blaster;
 extern uint_8 sb16_version_major;
 extern uint_8 sb16_version_minor;
