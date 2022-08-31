@@ -1,5 +1,5 @@
  #include <io/io.h>
- #include <stdint.h>
+ #include <util/stdint.h>
  class pcspeaker{
      public:
  //Play sound using built in speaker

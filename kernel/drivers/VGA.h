@@ -1,6 +1,6 @@
 #ifndef __VGA_H__
 #define __VGA_H__
-#include <stdint.h>
+#include <util/stdint.h>
 #include <io/io.h>
 
 #define miscport  0x3c2

@@ -1,7 +1,7 @@
 
 // Code used: https://forum.osdev.org/viewtopic.php?f=1&t=32879
-#include <io.h>
-#include <stdint.h>
+#include <io/io.h>
+#include <util/stdint.h>
 
 #define DSP_RESET 0x226
 #define DSP_READ 0x22A

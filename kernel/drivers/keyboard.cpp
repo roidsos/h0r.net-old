@@ -53,6 +53,7 @@ char turn_into_ASCII(uint_16 scancode) {
     } else if (KEY_SCANCODE(scancode) == KEY_LSHIFT || KEY_SCANCODE(scancode) == KEY_RSHIFT) {
         keyboard.shift = !keyboard.shift;
     } else if (KEY_SCANCODE(scancode) == KEY_CAPS_LOCK) {
+        if (KEY_IS_PRESS(scancode))
         keyboard.capslock = !keyboard.capslock; // Doesnt work, Acts like shift key
     } else if (KEY_SCANCODE(scancode) == KEY_NUM_LOCK) {
 

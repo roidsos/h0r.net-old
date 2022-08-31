@@ -1,5 +1,5 @@
-#include <io.h>
-#include <stdint.h>
+#include <io/io.h>
+#include <util/stdint.h>
 
 void reboot() {
   uint_8 good = 0x02;

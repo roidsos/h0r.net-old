@@ -1,6 +1,6 @@
 #ifndef __ATA_H__
 #define __ATA_H__
-#include <stdint.h>
+#include <util/stdint.h>
 #include <io/io.h>
 class ATA{
     public:

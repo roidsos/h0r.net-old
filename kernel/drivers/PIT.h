@@ -2,7 +2,7 @@
 #define __PIT_H_
 
 #pragma once
-#include <stdint.h>
+#include <util/stdint.h>
 
 // ------------------------------------------------------------------------------------------------
 // I/O Ports

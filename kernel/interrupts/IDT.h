@@ -1,6 +1,6 @@
 #ifndef __IDT_H__
 #define __IDT_H__
-#include <stdint.h>
+#include <util/stdint.h>
 #include <io/io.h>
 #include <gdt/gdt.h>
 

@@ -1,4 +1,4 @@
-#include <stdint.h>
+#include <util/stdint.h>
 int iter = 0;
 int line_num = 0;
 int vga_line_lengths[24] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
@@ -89,8 +89,10 @@ void print(const int_8* str,uint_8 color)
         vga_line_lengths[line_num] += iter;
         i++;
     }
-    //adds the displayed string lenght to the cursor position
-    setCursorpos(iter);   
+    
+    //adds the displayed string lenght to the cursor position and updates the line number
+    setCursorpos(iter);
+    line_num = CursorPos / 80;
 }
 //prints a char
 void printchar(char chr, uint_8 color)
@@ -120,6 +122,7 @@ void printchar(char chr, uint_8 color)
         vga_line_lengths[line_num]++;
     }
     setCursorpos(iter);   
+    line_num = CursorPos / 80;
 }
 
 //adds a backspace and moves the 
@@ -128,6 +131,7 @@ void backspace(){
     static uint_16* VideoMemory = (uint_16*)0xb8000;
     register int iter = CursorPos;
 
+    
     if(iter > 0){
         //decreese iter and delete the charachter right before the cursor
         iter--;
@@ -142,6 +146,7 @@ void backspace(){
         VideoMemory[iter] = ' ' | (VideoMemory[iter] & 0x0f00);
         setCursorpos(iter);
     }
+    
 }
 //clears the screen with color!!
 void Clearscr(uint_8 color){

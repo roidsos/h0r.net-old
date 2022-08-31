@@ -1,6 +1,6 @@
 #ifndef __RENDERER_H__
 #define __RENDERER_H__
-#include <stdint.h>
+#include <util/stdint.h>
 
 void filledrect(uint_16 x, uint_8 y, uint_16 width, uint_8 height, uint_8 color);
 void rect(uint_16 x, uint_8 y, uint_16 width, uint_8 height, uint_8 color);
