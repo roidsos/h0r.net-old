@@ -1,7 +1,7 @@
 #ifndef GDT_HEADER
 #define GDT_HEADER
 #include "stdint.h"
-//dont look here ,I never finished this shit
+
 class GDT{
     uint_8 fullness;
     struct GDT32{

@@ -1,7 +1,6 @@
 #include "gdt/gdt.h"
-#include "io/io.h"
+#include "io.h"
 
-//dont look here ,I never finished this shit
 GDT::GDT()
 {
     uint_64* ptr = (uint_64*)_gdt;

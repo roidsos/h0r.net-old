@@ -1,5 +1,4 @@
-#include <io/io.h>
-//this does not even work
+#include <io.h>
 extern "C" void musint(){
     uint_8 status = inb8(0x64);
     if(! status&0x20)

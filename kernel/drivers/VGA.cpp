@@ -107,8 +107,6 @@ void VGA::Clearscr(uint_8 color) {
 
 void VGA::WriteReg(uint_8* reg)
 {
-    // send data
-
     //misc
     outb8(miscport,*(reg++));
     //sequencer

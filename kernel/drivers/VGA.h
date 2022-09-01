@@ -1,7 +1,7 @@
 #ifndef __VGA_H__
 #define __VGA_H__
 #include <stdint.h>
-#include <io/io.h>
+#include <io.h>
 
 #define miscport  0x3c2
 #define CRTCindex 0x3d4

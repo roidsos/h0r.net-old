@@ -1,4 +1,4 @@
- #include <io/io.h>
+ #include <io.h>
  #include <stdint.h>
  class pcspeaker{
      public:

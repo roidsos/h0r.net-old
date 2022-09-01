@@ -1,7 +1,7 @@
 #ifndef __ATA_H__
 #define __ATA_H__
 #include <stdint.h>
-#include <io/io.h>
+#include <io.h>
 class ATA{
     public:
     /*
