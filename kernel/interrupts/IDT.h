@@ -1,7 +1,7 @@
 #ifndef __IDT_H__
 #define __IDT_H__
 #include <stdint.h>
-#include <io.h>
+#include <io/io.h>
 #include <gdt/gdt.h>
 
 
@@ -19,6 +19,9 @@ struct IDT64
 extern "C" IDT64 _idt[256];
 
 void InitIDT();
+
+
+void ActivateIDT();
 
 void AddEntry(void* Isr,int attr,int _num);
 
