@@ -30,7 +30,7 @@ void ATA::Identify()
     
     uint_8 status = inb8(portbase + 7);
     if(status == 0){
-    print("[Error] No device found.\n");
+        print("[Error] No device found.\n");
         return;// no device
     }
     while(((status & 0x80) == 0x80)&& (status & 0x01) != 0x01){

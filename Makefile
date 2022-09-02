@@ -5,7 +5,7 @@ all:
 	grub-mkrescue /usr/lib/grub/i386-pc -o os.iso ./iso
 
 run: all
-	qemu-system-x86_64 -cdrom os.iso -soundhw sb16
+	qemu-system-x86_64 -cdrom os.iso -hda hdd.img -soundhw sb16
 
 debug: all
 	qemu-system-x86_64 -no-reboot -d int -no-shutdown -cdrom os.iso -soundhw sb16
