@@ -15,14 +15,17 @@ extern "C" int kernel_main(){
 
     init_SB16();
 
-    GDT gdt;
+    //TODO: fix gdts
 
-    gdt.AddSegment(0, 0, 0);
-    gdt.AddSegment(0x00AF, 0x000FFFFF, 0x9B);//code
-    gdt.AddSegment(0x00AF, 0x000FFFFF, 0x93);//data
+    //GDT gdt;
+
+    //gdt.AddSegment(0, 0, 0);
+    //gdt.AddSegment(0x00AF, 0x000FFFFF, 0x9B);//code
+    //gdt.AddSegment(0x00AF, 0x000FFFFF, 0x93);//data
     //gdt.AddSegment(0, 0x000FFFFF, (GDT_DATA_PL3));
+//
+    //gdt.Load();
 
-    gdt.Load();
     
     InitIDT();//initialize the IDT
 
