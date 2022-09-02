@@ -15,6 +15,12 @@ SECTIONS
 		. = . + 0x1000;
 	}
 
+	.gdt BLOCK(0x1000) : ALIGN(0x1000)
+	{
+		_gdt = .;
+		. = . + 0x1000;
+	}
+
 	.text :
 	{
 		*(.text)
