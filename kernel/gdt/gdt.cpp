@@ -1,5 +1,6 @@
 #include "gdt/gdt.h"
 #include "io/io.h"
+#include <memory/memory.h>
 extern "C" uint_64  _gdt[256];
 
 void create_descriptor(uint_32 num, uint_32 base, uint_32 limit, uint_16 flag)
@@ -19,7 +20,8 @@ void create_descriptor(uint_32 num, uint_32 base, uint_32 limit, uint_16 flag)
     _gdt[num] |= limit  & 0x0000FFFF;               // set limit bits 15:0
 }
 GDT::GDT()
-{
+{   
+    memset(_gdt,0,0xfff);
     fullness = 0; 
 }
 
@@ -30,7 +32,7 @@ void GDT::AddSegment(uint_32 base, uint_32 limit, uint_16 flag)
 
 void GDT::Load()
 {
-    descriptor[0]   =   fullness * 8;
+    descriptor[0]   =   0xfff;
     descriptor[1]   =   (uint_16)_gdt;
     descriptor[2]   =   (uint_16)((uint_64)_gdt >> 16);
     descriptor[3]   =   (uint_16)((uint_64)_gdt >> 32);
