@@ -8,6 +8,7 @@
 #include <util/printf.h>
 #include <util/string.h>
 #include <drivers/ata.h>
+#include <drivers/pci.h>
 
 void *keybuffer;
 
@@ -40,6 +41,13 @@ extern "C" int kernel_main(){
     Clearscr(0x0F);
 
     enable_text_cursor(14, 15);
+
+    //pci test
+    PCI pci;
+
+    pci.SelectDrivers();
+
+    // ata test
     ATA ata2(0x1F0,true);//the 1st slave drive
 
     char* atabuffer = "I am god!!";
