@@ -6,6 +6,7 @@
 //#include <memory/memory.h>
 #include <drivers/soundblaster.h>
 #include <util/printf.h>
+#include <util/string.h>
 #include <drivers/ata.h>
 
 void *keybuffer;
@@ -47,6 +48,18 @@ extern "C" int kernel_main(){
     ATA ata2(0x1F0,true);
     ata2.Flush();
     ata2.Identify();
+    print("\n");
+
+    char* atabuffer = "I am god!!";
+    int length = strlen(atabuffer);
+    ata2.Write28(0,(uint_8*)atabuffer,length);
+    ata2.Flush();
+
+    atabuffer[0] = 0;
+
+    ata2.Read28(0,atabuffer,length);
+    ata2.Flush();
+    print(atabuffer);
     //printf("soundblaster version: %i.%i",sb16_version_major,sb16_version_minor);
 
    while(1){}

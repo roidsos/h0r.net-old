@@ -45,7 +45,7 @@ void ATA::Identify()
 
     for(uint_16 i = 0;i < 256;i++){
         uint_16 data = inb16(portbase);
-        print(hex2str((uint_64)data));
+        printchar(hex2str((uint_64)data));
     }
     
 }
