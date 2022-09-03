@@ -40,15 +40,7 @@ extern "C" int kernel_main(){
     Clearscr(0x0F);
 
     enable_text_cursor(14, 15);
-    printf("master:");
-    ATA ata(0x1F0,false);
-    ata.Flush();
-    ata.Identify();
-    printf("slave:");
-    ATA ata2(0x1F0,true);
-    ata2.Flush();
-    ata2.Identify();
-    print("\n");
+    ATA ata2(0x1F0,true);//the 1st slave drive
 
     char* atabuffer = "I am god!!";
     int length = strlen(atabuffer);
