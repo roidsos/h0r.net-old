@@ -20,6 +20,7 @@ class ATA{
    uint_16 BytesPerSector;
    ATA(uint_16 _portbase,bool _master);
    ~ATA();
+   
 
     void Identify();
     void Read28(uint_32 sector,uint_8* data,int count);

@@ -17,7 +17,8 @@ void ATA::Identify()
     outb8(portbase + 0x206,0);
 
     outb8(portbase + 6,0xA0);//switching to the master
-    if(inb8(portbase + 7) == 255){
+    register uint_8 status = inb8(portbase + 7);
+    if(status == 255){
         print("[Error] No device found.\n");
         return;// no device 
     }
@@ -28,7 +29,7 @@ void ATA::Identify()
     outb8(portbase + 4,0);
     outb8(portbase + 7,0xEC);// specifying the command: 0xEC - identify
     
-    uint_8 status = inb8(portbase + 7);
+    status = inb8(portbase + 7);
     if(status == 0){
         print("[Error] No device found.\n");
         return;// no device
