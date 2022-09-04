@@ -34,7 +34,6 @@
 
     typedef struct fat_BS
     {
-        // ez itt a Master Boot record (struct)
         unsigned char bootjmp[3];
         unsigned char oem_name[8];
         unsigned short bytes_per_sector;

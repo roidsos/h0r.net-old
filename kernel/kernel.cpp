@@ -20,24 +20,23 @@ extern "C" int kernel_main()
     Clearscr(0x0F);
 
     InitHeap(0x100000, 0x100000); // initialize the heap
-    LogINFO("Initalized heap ");
-    // Test is heap is working 
+    LogINFO("Initalized heap \n");
     
     init_SB16();
-    LogINFO("Initalized SoundBlaster 16 (Experimental) ");
+    LogINFO("Initalized SoundBlaster 16 (Experimental) \n");
     InitIDT();
-    LogINFO("Initalized IDT");
+    LogINFO("Initalized IDT \n");
     keybuffer = malloc(1);
-    LogINFO("Allocating memory for IDT");
+    LogINFO("Allocating memory for IDT \n");
     ActivateIDT();
-    LogINFO("Activated IDT");
+    LogINFO("Activated IDT \n");
     enable_text_cursor(14, 15);
     PCI pci;
     pci.SelectDrivers();
     ATA ata2(0x1F0, true);
-    LogINFO("Initalized ATA");
+    LogINFO("Initalized ATA \n");
     LoadMBR(ata2);
-    LogINFO("Loaded MBR");
+    LogINFO("Loaded MBR\n");
     while (1)
     {
     }
