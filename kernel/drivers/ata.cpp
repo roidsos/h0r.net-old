@@ -67,11 +67,12 @@ void ATA::Read28(uint_32 sector,uint_8* data,int count)
 
     while(((inb8(portbase + 7) & 0x80) == 0x80)&& ((inb8(portbase + 7) & 0x01) != 0x01)){}
 
-    for(uint_16 i = 0; i < count; i++){
+    for(uint_16 i = 0; i < count; i+= 2){
           uint_16 wdata = inb16(portbase);
-        data[i] = wdata & 0x00ff;
+        data[i]     = wdata & 0x00ff;
         if (i+ 1 < count)
-            data[i+1] = (wdata >> 8) & 0x00ff;
+        data[i+1]     = (wdata & 0xff00) >> 8;
+
     }
 
     for(uint_16 i = count + count % 2;i < BytesPerSector;i++){
@@ -97,7 +98,7 @@ void ATA::Write28(uint_32 sector,uint_8* data,int count)
     outb8(portbase + 7,0x30);// specifying the command: 0x30 - write
 
     for(uint_16 i = 0;i < count;i++){
-        uint_16 wdata = data[i];
+        uint_16 wdata = (data[i]);
         if (i+ 1 < count)
             wdata |= ((uint_16)data[i+1] << 8 );
         outb16(portbase,wdata);
