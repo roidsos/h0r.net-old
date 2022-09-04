@@ -39,6 +39,7 @@ extern "C" int kernel_main()
     LogINFO("Loaded MBR\n");
     while (1)
     {
+
     }
 }
 // TODO: fix gdts
