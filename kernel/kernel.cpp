@@ -1,4 +1,3 @@
-
 #include <io/io.h>
 #include <interrupts/IDT.h>
 //#include <gdt/gdt.h>
@@ -9,59 +8,47 @@
 #include <util/string.h>
 #include <drivers/ata.h>
 #include <drivers/pci.h>
-
+#include <filesystem/mbr.h>
+#include <util/colors.h>
+#include <util/logger.h>
 void *keybuffer;
 
-extern "C" int kernel_main(){
 
-    InitHeap(0x100000,0x100000);//initialize the heap
-
-    init_SB16();
-
-    //TODO: fix gdts
-
-    //GDT gdt;
-
-    //gdt.AddSegment(0, 0, 0);
-    //gdt.AddSegment(0x00AF, 0x000FFFFF, 0x9B);//code
-    //gdt.AddSegment(0x00AF, 0x000FFFFF, 0x93);//data
-    //gdt.AddSegment(0, 0x000FFFFF, (GDT_DATA_PL3));
-//
-    //gdt.Load();
-
-    
-    InitIDT();//initialize the IDT
-
-
-
-   keybuffer = malloc(1);
-
-    ActivateIDT();
+extern "C" int kernel_main()
+{
 
     Clearscr(0x0F);
 
+    InitHeap(0x100000, 0x100000); // initialize the heap
+    LogINFO("Initalized heap ");
+    // Test is heap is working 
+    
+    init_SB16();
+    LogINFO("Initalized SoundBlaster 16 (Experimental) ");
+    InitIDT();
+    LogINFO("Initalized IDT");
+    keybuffer = malloc(1);
+    LogINFO("Allocating memory for IDT");
+    ActivateIDT();
+    LogINFO("Activated IDT");
     enable_text_cursor(14, 15);
-
-    //pci test
     PCI pci;
-
     pci.SelectDrivers();
-
-    // ata test
-    ATA ata2(0x1F0,true);//the 1st slave drive
-
-    char* atabuffer = "I am god!!";
-    int length = strlen(atabuffer);
-    ata2.Write28(0,(uint_8*)atabuffer,length);
-    ata2.Flush();
-
-    atabuffer[0] = 0;
-
-    ata2.Read28(0,atabuffer,length);
-    ata2.Flush();
-    print(atabuffer);
-    //printf("soundblaster version: %i.%i",sb16_version_major,sb16_version_minor);
-
-   while(1){}
-
+    ATA ata2(0x1F0, true);
+    LogINFO("Initalized ATA");
+    LoadMBR(ata2);
+    LogINFO("Loaded MBR");
+    while (1)
+    {
+    }
 }
+// TODO: fix gdts
+
+// GDT gdt;
+
+// gdt.AddSegment(0, 0, 0);
+// gdt.AddSegment(0x00AF, 0x000FFFFF, 0x9B);//code
+// gdt.AddSegment(0x00AF, 0x000FFFFF, 0x93);//data
+// gdt.AddSegment(0, 0x000FFFFF, (GDT_DATA_PL3));
+//
+// gdt.Load();

@@ -3,7 +3,7 @@
 #include <util/stdint.h>
 
 void IOWait();
-void print(const int_8* str,uint_8 color = 0x0f);
+void print(const int_8* str,uint_8 color = 0xff);
 void printchar(char chr,uint_8 color = 0x0f);
 void backspace();
 void Clearscr(uint_8 color = 0x0f);

@@ -55,6 +55,9 @@ outb8(0x3d5,(uint_8)((pos >> 8) & 0xff));
 CursorPos = pos;
 }
 // prints a string
+
+
+
 void print(const int_8* str,uint_8 color)
 {
     //set up some internal varibles
@@ -94,6 +97,7 @@ void print(const int_8* str,uint_8 color)
     setCursorpos(iter);
     line_num = CursorPos / 80;
 }
+
 //prints a char
 void printchar(char chr, uint_8 color)
 {
