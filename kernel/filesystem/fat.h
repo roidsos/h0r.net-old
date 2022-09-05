@@ -1,5 +1,24 @@
     #include <drivers/ata.h>
+    #include <util/stdint.h>
+
     void LoadMBR(ATA ata);
+
+        struct DirectoryEntryFat32
+    {
+        uint_8 name[8];
+        uint_8 ext[3];
+        uint_8 attributes;
+        uint_8 reserved;
+        uint_8 cTimeTenth;
+        uint_16 cTime;
+        uint_16 cDate;
+        uint_16 aTime;
+        uint_16 firstClusterHi;
+        uint_16 wTime;
+        uint_16 wDate;
+        uint_16 firstClusterLow;
+        uint_32 size;
+    } __attribute__((packed));
     
     typedef struct fat_extBS_32
     {

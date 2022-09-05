@@ -14,4 +14,8 @@ debugr: all
 	qemu-system-x86_64 -s -S -no-reboot -monitor stdio -d int -no-shutdown -cdrom os.iso -device sb16 -drive file=mbr.bin,if=ide,index=0,media=disk,format=raw
 
 clean:
+<<<<<<< HEAD
 	-rm -rf kernel/boot/*.o kernel/util/*.o kernel/drivers/*.o kernel/gdt/*.o kernel/interrupts/*.o kernel/memory/*.o kernel/render/*.o kernel/*.o os.iso .vscode/ kernel/kernel.bin iso/boot/kernel.bin
+=======
+	-rm -rf kernel/*/*.o kernel/boot/*.o kernel/util/*.o kernel/drivers/*.o kernel/gdt/*.o kernel/interrupts/*.o kernel/memory/*.o kernel/render/*.o kernel/*.o os.iso .vscode/ kernel/kernel.bin iso/boot/kernel.bin
+>>>>>>> ec4bf41 (This should work I hope)

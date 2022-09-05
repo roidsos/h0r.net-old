@@ -3,3 +3,5 @@ iso/boot/kernel.bin
 os.iso
 %.o
 .vscode
+hdd.img
+devtools/backups/*.img
