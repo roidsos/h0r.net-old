@@ -27,7 +27,7 @@ extern "C" int kernel_main()
     InitIDT();
     LogINFO("Initalized IDT \n");
     keybuffer = malloc(1);
-    LogINFO("Allocating memory for IDT \n");
+    LogINFO("Initalized keyboard \n");
     ActivateIDT();
     LogINFO("Activated IDT \n");
     enable_text_cursor(14, 15);
@@ -36,7 +36,7 @@ extern "C" int kernel_main()
     ATA ata2(0x1F0, true);
     LogINFO("Initalized ATA \n");
     LoadMBR(ata2);
-    LogINFO("Loaded MBR\n");
+    LogINFO("Loaded Fat\n");
     while (1)
     {
 

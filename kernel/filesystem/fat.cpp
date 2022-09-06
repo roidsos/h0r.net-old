@@ -9,15 +9,15 @@ void Loadfat32(ATA ata,fat_BS* fatbs,fat_extBS_32* BSext){
     uint_32 datastart= fatstart + (fatsize*fatbs->table_count);
     uint_32 rootstart= datastart+ (fatbs->sectors_per_cluster*(BSext->root_cluster - 2));
 
-
-    DirectoryEntryFat32* dirents = malloc(16*sizeof(DirectoryEntryFat32));
-    ata.Read28(rootstart,(uint_8*)dirents,16*sizeof(DirectoryEntryFat32));
+    uint_8 *sectorbuffer = malloc(16*sizeof(DirectoryEntryFat32));
+    ata.Read28(633, sectorbuffer, 16*sizeof(DirectoryEntryFat32));
+    ata.Flush();
+    DirectoryEntryFat32* dirents = (DirectoryEntryFat32*)sectorbuffer;
     printf("files:\n");
     for (size_t i = 0; i < 16; i++)
     {
         if(dirents[i].name == 0x00)
             break;
-
         if((dirents[i].attributes & 0x0f) == 0x00)//skip non-existing files
             continue;
         char* name = malloc(8);
@@ -29,14 +29,14 @@ void Loadfat32(ATA ata,fat_BS* fatbs,fat_extBS_32* BSext){
         
         printf("file : %s.%s\n",name,ext);
         
-    // kész a névkiírás,  rakj a lemere filokat hogy teszelhessünk okes mountolom 
-    // csak ... . . . . .
     }
+
+    
     
 }
 
 void LoadMBR(ATA ata){
-    uint_8 *sectorbuffer = malloc(512);
+    uint_8 *sectorbuffer = calloc(512);
     ata.Read28(0, sectorbuffer, 512);
     ata.Flush();
     fat_BS *fat_boot = (fat_BS *)sectorbuffer;
@@ -44,7 +44,12 @@ void LoadMBR(ATA ata){
 
 
 
-   // printf("oem: %s\n", fat_boot->oem_name); // idk what to do with this information that is in the struct
+        printf("oem: %s\n", fat_boot->oem_name);
+    
+    
+
+
+     // idk what to do with this information that is in the struct
                                              // In this case we EXPECT the machine to have a pre formatted fat32 disk (:
 
     //uint_32 fat_size = (fat_boot->table_size_16 == 0)? fat_boot_ext->table_size_32 : fat_boot->table_size_16;
