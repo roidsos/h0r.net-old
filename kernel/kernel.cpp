@@ -8,7 +8,8 @@
 #include <util/string.h>
 #include <drivers/ata.h>
 #include <drivers/pci.h>
-#include <filesystem/fat.h>
+#include <drivers/PIT.h>
+#include <filesystem/msdospart.h>
 #include <util/colors.h>
 #include <util/logger.h>
 void *keybuffer;
@@ -23,7 +24,7 @@ extern "C" int kernel_main()
     LogINFO("Initalized heap \n");
     
     init_SB16();
-    LogINFO("Initalized SoundBlaster 16 (Experimental) \n");
+    LogINFO("Initalized SoundBlaster 16 (Not-Even-Half-Done) \n");
     InitIDT();
     LogINFO("Initalized IDT \n");
     keybuffer = malloc(1);

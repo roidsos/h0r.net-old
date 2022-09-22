@@ -8,15 +8,10 @@ PCI::PCI()
 
 uint_32 PCI::Read(uint_16 bus,uint_16 device,uint_16 function,uint_32 offset)
 {
-    uint_32 id =
-        0x1 << 31
-        | ((bus & 0xFF) << 16)
-        | ((device & 0x1F) << 11)
-        | ((function & 0x07) << 8)
-        | (offset & 0xFC);
+    uint_32 id = (bus << 16) | (device << 11) | (function << 8) | (offset & ~(3)) | 0x80000000;
     outb32(0xCF8,id);
-    register uint_32 result = inb32(0xCFC);
-    return result >> (8 * (offset % 4));
+    register uint_32 result = inb32(0xCFC + (offset & 3));
+    return result;
 }
 
 bool PCI::HasFunction(uint_16 bus, uint_16 device)
@@ -26,6 +21,7 @@ bool PCI::HasFunction(uint_16 bus, uint_16 device)
 
 void PCI::SelectDrivers()
 {
+    printf("PCI Devices: \n");
     for(int bus = 0;bus < 8;bus++)
     {
         for(int device = 0;device < 32;device++)
