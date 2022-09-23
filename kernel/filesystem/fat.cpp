@@ -12,7 +12,6 @@ void Loadfat32(ATA ata,fat_BS* fatbs,fat_extBS_32* BSext,uint_8 partition){
 
     printf("rootstart : %i \n",rootstart);
     uint_8* sectorbuffer = malloc(16*sizeof(DirectoryEntryFat32));
-    memset(sectorbuffer,0xffffffffffffffff,512);
     ata.Read28(rootstart, sectorbuffer, 16*sizeof(DirectoryEntryFat32));
     ata.Flush();
     DirectoryEntryFat32* dirents = (DirectoryEntryFat32*)sectorbuffer;

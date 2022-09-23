@@ -9,8 +9,8 @@ class ATA{
     errorport: 8bit     =   portbase + 1
     sectorport: 8bit    =   portbase + 2
     lbalowport: 8bit    =   portbase + 3
-    lbahiport: 8bit     =   portbase + 4
-    lbamidport: 8bit    =   portbase + 5
+    lbamidport: 8bit    =   portbase + 4
+    lbahiport:  8bit    =   portbase + 5
     deviceport: 8bit    =   portbase + 6
     commandport: 8bit   =   portbase + 7
     controlport: 8bit   =   portbase + 0x206
