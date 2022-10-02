@@ -5,7 +5,7 @@ all:
 	grub-mkrescue /usr/lib/grub/i386-pc -o os.iso ./iso
 
 run: all
-	qemu-system-x86_64 -cdrom os.iso  -device sb16 -drive file=hdd.img,if=ide,index=0,media=disk,format=raw -boot order=d
+	qemu-system-x86_64 -cdrom os.iso  -device sb16 -drive file=hdd.img,if=ide,index=0,media=disk,format=raw -boot order=d -soundhw pcspk
 
 debug: all
 	qemu-system-x86_64 -no-reboot -d int -no-shutdown -cdrom os.iso -device sb16 -drive file=hdd.img,if=ide,index=0,media=disk,format=raw -boot order=d

@@ -12,6 +12,7 @@
 #include <filesystem/msdospart.h>
 #include <util/colors.h>
 #include <util/logger.h>
+#include <drivers/pc-speaker.h>
 void *keybuffer;
 
 
@@ -31,16 +32,22 @@ extern "C" int kernel_main()
     LogINFO("Initalized keyboard \n");
     ActivateIDT();
     LogINFO("Activated IDT \n");
+    PIT::PitInit();
+    LogINFO("Initialized PIT \n");
     enable_text_cursor(14, 15);
     PCI pci;
     pci.SelectDrivers();
     ATA ata2(0x1F0, true);
     LogINFO("Initalized ATA \n");
-    LoadMBR(ata2);
-    LogINFO("Loaded Fat\n");
+    //LoadMBR(ata2);
+    //LogINFO("Loaded Fat\n");
+    //print("hello world!\nthis is a custom-built kernel called h0r.net");
+    //pcspeaker sp;
+    //sp.play_sound(1000);
     while (1)
     {
-
+        PIT::Sleep(1000);
+        print("a");
     }
 }
 // TODO: fix gdts

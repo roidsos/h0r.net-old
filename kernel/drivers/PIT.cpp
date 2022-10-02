@@ -1,9 +1,11 @@
 #include "PIT.h"
 #include "io/io.h"
 
-volatile int CountDown;
+
 namespace PIT
 {
+    volatile int UptmeInMillis;
+    volatile int countdown;
     void PitInit()
     {
         // this code was yoinked from https://github.com/pdoane/osdev/blob/master/time/pit.c and we totally read the license!!!!!
@@ -13,30 +15,26 @@ namespace PIT
         outb8(PIT_CMD, CMD_BINARY | CMD_MODE3 | CMD_RW_BOTH | CMD_COUNTER0);
         outb8(PIT_COUNTER0, divisor);
         outb8(PIT_COUNTER0, divisor >> 8);
-        //  still not working?!?!?!?!?!?!??
-        // just blank screen oh wait
-        // we still need to fix PIT:Sleep right?
-        // 
     }
-/// we dont even get the interrupt for some odd reason
-// what does that mean I'm dumb for this xDDD
-// hmm
+
     void Sleep(uint_32 millis) 
     {
-        CountDown = millis;
-        while (CountDown > 0)
-        {
-            
-            
-        }
+        countdown =  millis;
+
+        while (countdown != 0)
+        {}
     }
 }
 
 extern "C" void Tick()
 {
-    if (CountDown != 0)
+    PIT::UptmeInMillis++;
+    
+    if (PIT::countdown != 0)
     {
-        CountDown--;
+        PIT::countdown--;
     }
-    print(hex2str(CountDown));
+
+    outb8(0x20,0x20);
+    outb8(0xa0,0x20);
 }

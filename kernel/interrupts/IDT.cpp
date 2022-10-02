@@ -55,17 +55,19 @@ void InitIDT()
     RemapPIC();
     loadidt();
 
-    //if(inb8(0x64) & 0x1)
-    //    inb8(0x60);
-    //outb8(0x64,0xAE);
-    //outb8(0x64,0xA8);
-    //outb8(0x64,0x60);
-    //outb8(0x60,0b01100111);
+    //TODO: unstupidify the fuking code
+    if(inb8(0x64) & 0x1)// initialize the mouse
+        inb8(0x60);
+    outb8(0x64,0x60);
+    outb8(0x60,0b01100111);
+    outb8(0x64,0xA8);
 
-    //outb8(0x64,0xf4);
-    //outb8(0x64,0xd4);
-    //outb8(0x60,0xf4);
-    //inb8(0x60);       useless shit that does nothing
+    outb8(0x64,0xd4);
+    outb8(0x60,0xf4);
+    inb8(0x60);
+
+    
+    
 
 
     
