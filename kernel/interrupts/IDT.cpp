@@ -56,21 +56,13 @@ void InitIDT()
     loadidt();
 
     //TODO: unstupidify the fuking code
-    if(inb8(0x64) & 0x1)// initialize the mouse
+    if(inb8(0x64) & 0x1)// initialize the ps2 controller
         inb8(0x60);
     outb8(0x64,0x60);
     outb8(0x60,0b01100111);
-    outb8(0x64,0xA8);
-
-    outb8(0x64,0xd4);
-    outb8(0x60,0xf4);
-    inb8(0x60);
-
-    
-    
 
 
-    
+
 }
 //activates the IDT
 void ActivateIDT()

@@ -1,4 +1,13 @@
 #include <io/io.h>
+void initmouse(){
+    
+    outb8(0x64,0xA8);
+
+    outb8(0x64,0xd4);
+    outb8(0x60,0xf4);
+    inb8(0x60);
+}
+
 //this does not even work
 extern "C" void musint(){
     uint_8 status = inb8(0x64);

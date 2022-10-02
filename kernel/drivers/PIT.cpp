@@ -1,4 +1,4 @@
-#include "PIT.h"
+#include <drivers/PITdefs.h>
 #include "io/io.h"
 
 

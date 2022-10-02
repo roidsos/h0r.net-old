@@ -9,16 +9,15 @@
 #include <drivers/ata.h>
 #include <drivers/pci.h>
 #include <drivers/PIT.h>
+#include <drivers/keyboard.h>
+#include <drivers/mouse.h>
 #include <filesystem/msdospart.h>
 #include <util/colors.h>
 #include <util/logger.h>
 #include <drivers/pc-speaker.h>
-void *keybuffer;
-
 
 extern "C" int kernel_main()
 {
-
     Clearscr(0x0F);
 
     InitHeap(0x100000, 0x100000); // initialize the heap
@@ -28,8 +27,9 @@ extern "C" int kernel_main()
     LogINFO("Initalized SoundBlaster 16 (Not-Even-Half-Done) \n");
     InitIDT();
     LogINFO("Initalized IDT \n");
-    keybuffer = malloc(1);
-    LogINFO("Initalized keyboard \n");
+    initkeyboard();
+    initmouse();
+    LogINFO("Initalized keyboard & mouse \n");
     ActivateIDT();
     LogINFO("Activated IDT \n");
     PIT::PitInit();
@@ -37,7 +37,7 @@ extern "C" int kernel_main()
     enable_text_cursor(14, 15);
     PCI pci;
     pci.SelectDrivers();
-    ATA ata2(0x1F0, true);
+    ATA ata2(0x1F0, false);
     LogINFO("Initalized ATA \n");
     //LoadMBR(ata2);
     //LogINFO("Loaded Fat\n");
@@ -46,8 +46,7 @@ extern "C" int kernel_main()
     //sp.play_sound(1000);
     while (1)
     {
-        PIT::Sleep(1000);
-        print("a");
+
     }
 }
 // TODO: fix gdts

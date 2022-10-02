@@ -1,4 +1,5 @@
 #include <util/stdint.h>
+#include <memory/memory.h>
 int iter = 0;
 int line_num = 0;
 int vga_line_lengths[24] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
@@ -69,15 +70,22 @@ void print(const int_8* str,uint_8 color)
         switch (str[i])
         {
         case 10://newline
+
             iter += 80;
             iter -= iter % 80;//automaticly returns on newlines like unix
             line_num += 1;
             break;
         case 13://return
+
             iter -= iter % 80;
             break;
         
         default:
+            if(iter > 80*20){
+                memcpy(VideoMemory,VideoMemory + 80,80*19);
+                memset(VideoMemory + 80*19,0,80);
+                iter = iter + VideoMemory + 80*19;
+                }
             /*
             internal output format:
             1 byte - ASCII charachter
@@ -143,13 +151,13 @@ void backspace(){
         VideoMemory[iter] = ' ' | (VideoMemory[iter] & 0x0f00);
         setCursorpos(iter);
     }
-    if(iter % 80 == 0 && iter != 0) {
-        //go to the previous line and delete the charachter right before the cursor
-        line_num--;
-        iter -= 80 - vga_line_lengths[line_num];
-        VideoMemory[iter] = ' ' | (VideoMemory[iter] & 0x0f00);
-        setCursorpos(iter);
-    }
+    //if(iter % 80 == 0 && iter != 0) { // this is broken
+    //    //go to the previous line and delete the charachter right before the cursor
+    //    line_num--;
+    //    iter -= 80 - vga_line_lengths[line_num];
+    //    VideoMemory[iter] = ' ' | (VideoMemory[iter] & 0x0f00);
+    //    setCursorpos(iter);
+    //}
     
 }
 //clears the screen with color!!

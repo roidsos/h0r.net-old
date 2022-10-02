@@ -87,6 +87,6 @@ extern struct Keyboard keyboard;
 #define keyboard_char(_c) (keyboard.chars[(uint_8) (_c)])
 
 // ============================================================================
-
+void initkeyboard();
 char turn_into_ASCII(uint_16 scancode);
 char getch();

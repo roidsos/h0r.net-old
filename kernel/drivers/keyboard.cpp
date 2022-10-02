@@ -1,6 +1,7 @@
 #include <drivers/keyboard.h>
+#include <memory/Heap.h>
 
-extern char* keybuffer;
+char* keybuffer;
 
 uint_8 keyboard_layout_us[2][128] = {
     {
@@ -25,6 +26,12 @@ uint_8 keyboard_layout_us[2][128] = {
 };
 
 struct Keyboard keyboard;
+void initkeyboard(){
+    keybuffer = malloc(1);
+    outb8(0x64,0xAE);
+    outb8(0x60,0xf4);
+}
+
 char getch(){
     return turn_into_ASCII(keybuffer[0]);
     keybuffer[0] = 0;
