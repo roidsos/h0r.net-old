@@ -1,25 +1,39 @@
 #include <drivers/pci.h>
 #include <io/io.h>
 #include <util/printf.h>
-PCI::PCI()
+namespace PCI{
+uint_32 Read(uint_16 bus,uint_16 device,uint_16 function,uint_32 offset)
 {
-    
-}
-
-uint_32 PCI::Read(uint_16 bus,uint_16 device,uint_16 function,uint_32 offset)
-{
-    uint_32 id = (bus << 16) | (device << 11) | (function << 8) | (offset & ~(3)) | 0x80000000;
+    uint_32 id =
+        0x1 << 31
+        | ((bus & 0xFF) << 16)
+        | ((device & 0x1F) << 11)
+        | ((function & 0x07) << 8)
+        | (offset & 0xFC);
     outb32(0xCF8,id);
     register uint_32 result = inb32(0xCFC + (offset & 3));
     return result;
 }
 
-bool PCI::HasFunction(uint_16 bus, uint_16 device)
+void Write(uint_16 bus, uint_16 device, uint_16 function, uint_32 offset,uint_32 value)
+{
+    
+    uint_32 id =
+        0x1 << 31
+        | ((bus & 0xFF) << 16)
+        | ((device & 0x1F) << 11)
+        | ((function & 0x07) << 8)
+        | (offset & 0xFC);
+    outb32(0xCF8,id);
+    outb32(0xCFC,value);
+}
+
+bool HasFunction(uint_16 bus, uint_16 device)
 {
     return Read(bus,device,0,0x0E) & (1<<7);
 }
 
-void PCI::SelectDrivers()
+void SelectDrivers()
 {
     printf("PCI Devices: \n");
     for(int bus = 0;bus < 8;bus++)
@@ -43,7 +57,7 @@ void PCI::SelectDrivers()
     }
 }
 
-PCIDevice PCI::GetDevice(uint_16 bus, uint_16 device, uint_16 function)
+PCIDevice GetDevice(uint_16 bus, uint_16 device, uint_16 function)
 {
     PCIDevice result;
     result.bus = bus;
@@ -61,20 +75,9 @@ PCIDevice PCI::GetDevice(uint_16 bus, uint_16 device, uint_16 function)
     result.interrupt = Read(bus,device,function,0x3c);
 }
 
-void Write(uint_16 bus, uint_16 device, uint_16 function, uint_32 offset,uint_32 value)
-{
-    
-    uint_32 id =
-        0x1 << 31
-        | ((bus & 0xFF) << 16)
-        | ((device & 0x1F) << 11)
-        | ((function & 0x07) << 8)
-        | (offset & 0xFC);
-    outb32(0xCF8,id);
-    outb32(0xCFC,value);
+
+
 }
-
-
 
 PCIDevice::PCIDevice()
 {

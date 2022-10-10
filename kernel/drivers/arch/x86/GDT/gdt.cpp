@@ -1,6 +1,6 @@
-#include "gdt/gdt.h"
+#include "drivers/arch/x86/GDT/gdt.h"
 #include "io/io.h"
-#include <memory/memory.h>
+#include <drivers/memory/memory.h>
 extern "C" uint_64  _gdt[256];
 
 void create_descriptor(uint_32 num, uint_32 base, uint_32 limit, uint_16 flag)

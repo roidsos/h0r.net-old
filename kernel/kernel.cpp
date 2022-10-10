@@ -1,52 +1,36 @@
 #include "io/io.h"
-#include <interrupts/IDT.h>
 //#include <gdt/gdt.h>
-#include <memory/Heap.h>
 //#include <memory/memory.h>
-#include <drivers/soundblaster.h>
+
+#include <drivers/mouse.h>
 #include <util/printf.h>
 #include <util/string.h>
-#include <drivers/ata.h>
-#include <drivers/pci.h>
-#include <drivers/PIT.h>
-#include <drivers/keyboard.h>
-#include <drivers/mouse.h>
-#include <filesystem/msdospart.h>
 #include <util/colors.h>
-#include <util/logger.h>
-#include <drivers/pc-speaker.h>
+#include <drivers/driver.h>
+#include <drivers/PIT.h>
 
 extern "C" int kernel_main()
 {
     Clearscr(0x0F);
-
-    InitHeap(0x100000, 0x100000); // initialize the heap
-    LogINFO("Initalized heap \n");
-    
-    init_SB16();
-    LogINFO("Initalized SoundBlaster 16 (Not-Even-Half-Done) \n");
-    InitIDT();
-    LogINFO("Initalized IDT \n");
-    initkeyboard();
-    initmouse();
-    LogINFO("Initalized keyboard & mouse \n");
-    ActivateIDT();
-    LogINFO("Activated IDT \n");
-    PIT::PitInit();
-    LogINFO("Initialized PIT \n");
     enable_text_cursor(14, 15);
-    PCI pci;
-    pci.SelectDrivers();
-    ATA ata2(0x1F0, false);
-    LogINFO("Initalized ATA \n");
-    //LoadMBR(ata2);
-    //LogINFO("Loaded Fat\n");
+
+
+    InitDrivers();
+
+
+
+
     //print("hello world!\nthis is a custom-built kernel called h0r.net");
     //pcspeaker sp;
     //sp.play_sound(1000);
     while (1)
     {
-
+        if(mousebl || mousebr){
+            printf("click");
+            mousebl = false;
+            mousebr = false;
+        }
+        PIT::Sleep(5);
     }
 }
 // TODO: fix gdts

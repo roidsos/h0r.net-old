@@ -1,7 +1,7 @@
-source_files := $(wildcard *.cpp) $(wildcard */*.cpp)
+source_files := $(wildcard *.cpp) $(wildcard */*.cpp) $(wildcard */*/*.cpp) $(wildcard */*/*/*.cpp) $(wildcard */*/*/*/*.cpp) $(wildcard */*/*/*/*/*.cpp)
 kobject_files := $(source_files:.cpp=.o)
 
-asm_source_files := $(wildcard *.asm) $(wildcard */*.asm)
+asm_source_files := $(wildcard *.asm) $(wildcard */*.asm) $(wildcard */*/*.asm) $(wildcard */*/*/*.asm) $(wildcard */*/*/*/*.asm) $(wildcard */*/*/*/*/*.asm)
 asm_object_files := $(asm_source_files:.asm=.o)
 all: build-x86_64
 

@@ -2,7 +2,7 @@
 #define __IDT_H__
 #include <util/stdint.h>
 #include <io/io.h>
-#include <gdt/gdt.h>
+#include <drivers/arch/x86/GDT/gdt.h>
 
 
 struct IDT64

@@ -27,10 +27,8 @@ struct PCIDevice{
     PCIDevice();
 };
 
-class PCI
+namespace PCI
 {
-public:
-    PCI();
     uint_32 Read(uint_16 bus, uint_16 device, uint_16 function, uint_32 offset);
     void Write(uint_16 bus, uint_16 device, uint_16 function, uint_32 offset,uint_32 value);
     bool HasFunction(uint_16 bus, uint_16 device);

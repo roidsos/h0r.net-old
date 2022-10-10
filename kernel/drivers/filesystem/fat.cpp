@@ -1,7 +1,7 @@
-#include <filesystem/fat.h>
+#include <drivers/filesystem/fat.h>
 #include <util/printf.h>
-#include <memory/Heap.h>
-#include <memory/memory.h>
+#include <drivers/memory/Heap.h>
+#include <drivers/memory/memory.h>
 #include <util/logger.h>
 void Loadfat32(ATA ata,fat_BS* fatbs,fat_extBS_32* BSext,uint_8 partition){
     //data stuff

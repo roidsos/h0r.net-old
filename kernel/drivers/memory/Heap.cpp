@@ -1,5 +1,5 @@
-#include "memory/Heap.h"
-#include "memory/memory.h"
+#include "drivers/memory/Heap.h"
+#include "drivers/memory/memory.h"
 
 MemorySegment* first_free;
 

@@ -1,5 +1,5 @@
 #include <util/stdint.h>
-#include <memory/memory.h>
+#include <drivers/memory/memory.h>
 int iter = 0;
 int line_num = 0;
 int vga_line_lengths[24] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
@@ -84,7 +84,7 @@ void print(const int_8* str,uint_8 color)
             if(iter > 80*20){
                 memcpy(VideoMemory,VideoMemory + 80,80*19);
                 memset(VideoMemory + 80*19,0,80);
-                iter = iter + VideoMemory + 80*19;
+                iter += VideoMemory + 80*19;
                 }
             /*
             internal output format:

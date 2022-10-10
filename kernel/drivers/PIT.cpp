@@ -17,6 +17,7 @@ namespace PIT
         outb8(PIT_COUNTER0, divisor >> 8);
     }
 
+    //TODO: this code will break if you add multitasking, so move the countdowns to the scedualer when it gets implemented
     void Sleep(uint_32 millis) 
     {
         countdown =  millis;

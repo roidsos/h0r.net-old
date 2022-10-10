@@ -1,4 +1,4 @@
-#include <interrupts/IDT.h>
+#include <drivers/arch/x86/IDT/IDT.h>
 
 #define PIC1_COMMAND 0x20
 #define PIC1_DATA 0x21

@@ -2,6 +2,7 @@
 // Code used: https://forum.osdev.org/viewtopic.php?f=1&t=32879
 #include <io/io.h>
 #include <util/stdint.h>
+#include <drivers/PIT.h>
 
 #define DSP_MIXER 0x224
 #define DSP_MIXER_DATA 0x225
@@ -11,6 +12,12 @@
 #define DSP_BUFFER 0x22E
 #define DSP_INTERRUPT 0x22F
 
+enum IRQ{
+      IRQ_2,
+      IRQ_5,
+      IRQ_7 = 4,
+      IRQ_10 = 8    
+};
 
 
 uint_8 sound_blaster=false;
@@ -32,18 +39,22 @@ void set_time_constant(uint_8 time){
       write_DSP(time);
 }
 
-void set_sample_rate(uint_8 srhi,uint_8 srlo){
+void set_sample_rate(uint_16 sr){
       outb8(DSP_WRITE,0x40);
-      write_DSP(srhi);
-      write_DSP(srlo);
+      write_DSP(sr & 0x0f);
+      write_DSP((sr & 0xf0) >> 8);
+}
+
+void set_IRQ(uint_8 irq){
+      outb8(DSP_MIXER,0x80);
+      outb8(DSP_MIXER_DATA,irq);
 }
 
 
 void reset_DSP(void) {
           outb8(DSP_RESET, 1);
-          IOWait();
+          PIT::Sleep(3);
           outb8(DSP_RESET, 0);
-          IOWait();
 
           if(inb8(DSP_READ)==0xAA) {
                 sound_blaster=true;
