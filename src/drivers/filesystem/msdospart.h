@@ -31,6 +31,6 @@
             uint_16 magicnumber;
         } __attribute__((packed));
 
-        void LoadMBR(ATA ata);
+        void LoadMBR();
 
 #endif // __MSDOSPART_H__

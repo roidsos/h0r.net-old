@@ -11,7 +11,7 @@
 
 extern "C" int kernel_main()
 {
-    Clearscr(0x0F);
+    Clearscr(0x4F);
     enable_text_cursor(14, 15);
 
 

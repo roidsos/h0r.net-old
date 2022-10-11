@@ -3,7 +3,7 @@
 #include <drivers/memory/Heap.h>
 #include <drivers/memory/memory.h>
 #include <util/logger.h>
-void Loadfat32(ATA ata,fat_BS* fatbs,fat_extBS_32* BSext,uint_8 partition){
+void Loadfat32(fat_BS* fatbs,fat_extBS_32* BSext,uint_8 partition){
     //data stuff
     uint_32 fatstart = partition + fatbs->reserved_sector_count;
     uint_32 fatsize  = BSext->table_size_32;
@@ -12,8 +12,11 @@ void Loadfat32(ATA ata,fat_BS* fatbs,fat_extBS_32* BSext,uint_8 partition){
 
     printf("rootstart : %i \n",rootstart);
     uint_8* sectorbuffer = malloc(16*sizeof(DirectoryEntryFat32));
-    ata.Read28(rootstart, sectorbuffer, 16*sizeof(DirectoryEntryFat32));
-    ata.Flush();
+
+    //TODO: replace the ATA reads in this file with the new ata driver reads when its done
+
+    //ata.Read28(rootstart, sectorbuffer, 16*sizeof(DirectoryEntryFat32));
+    //ata.Flush();
     DirectoryEntryFat32* dirents = (DirectoryEntryFat32*)sectorbuffer;
 
     //for(int i = 0; i <= 0x01FF; i++) // testing the data
@@ -48,10 +51,10 @@ void Loadfat32(ATA ata,fat_BS* fatbs,fat_extBS_32* BSext,uint_8 partition){
     
 }
 
-void LoadFAT(ATA ata,uint_8 partition){
+void LoadFAT(uint_8 partition){
     uint_8 *sectorbuffer = calloc(512);
-    ata.Read28(partition, sectorbuffer, 512);
-    ata.Flush();
+    //ata.Read28(partition, sectorbuffer, 512);
+    //ata.Flush();
     fat_BS *fat_boot = (fat_BS *)sectorbuffer;
     fat_extBS_32* fat_boot_ext = (fat_extBS_32 *)fat_boot->extended_section;
 
@@ -96,6 +99,6 @@ void LoadFAT(ATA ata,uint_8 partition){
     //else
     //{
     //    LogINFO("fat32 detected on device\n");
-    Loadfat32(ata,fat_boot,fat_boot_ext,partition);
+    Loadfat32(fat_boot,fat_boot_ext,partition);
     //}
 }

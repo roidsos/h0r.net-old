@@ -1,7 +1,7 @@
     #include <drivers/ata.h>
     #include <util/stdint.h>
 
-    void LoadFAT(ATA ata,uint_8 partition);
+    void LoadFAT(uint_8 partition);
 
         struct DirectoryEntryFat32
     {

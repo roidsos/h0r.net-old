@@ -4,7 +4,7 @@
 
 void IOWait();
 void print(const int_8* str,uint_8 color = 0xff);
-void printchar(char chr,uint_8 color = 0x0f);
+void printchar(char chr,uint_8 color = 0xff);
 void backspace();
 void Clearscr(uint_8 color = 0x0f);
 void setCursorpos(uint_16 pos);

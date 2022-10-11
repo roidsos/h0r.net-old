@@ -1,13 +1,13 @@
 #include <drivers/filesystem/fat.h>
 #include <drivers/filesystem/msdospart.h>
 #include <util/printf.h>
-void LoadMBR(ATA ata){
+void LoadMBR(){
 
     MasterBootRecord mbr;
     
     printf("MBR: ");
     
-    ata.Read28(0, (uint_8*)&mbr, sizeof(MasterBootRecord));
+    //ata.Read28(0, (uint_8*)&mbr, sizeof(MasterBootRecord));
     
 
     
@@ -45,6 +45,6 @@ void LoadMBR(ATA ata){
         printf(" 0x %x \n",mbr.primaryPartition[i].partition_id);
         
      
-        LoadFAT(ata, mbr.primaryPartition[i].start_lba);
+        LoadFAT(mbr.primaryPartition[i].start_lba);
     }
 }

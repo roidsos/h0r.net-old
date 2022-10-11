@@ -1,17 +1,19 @@
 #include <drivers/ata.h>
-ATA::ATA(uint_16 _portbase,bool _master)
+#include <util/printf.h>
+ATAdevice::ATAdevice(uint_16 _portbase,bool _master)
 {
     BytesPerSector = 512;
     portbase = _portbase;
     master = _master;
 }
-
-ATA::~ATA()
+ATAdevice::ATAdevice()
 {
-     
+    BytesPerSector = 512;
+    portbase = 0;
+    master = false;
 }
 
-void ATA::Identify()
+void ATAdevice::Identify()
 {
     outb8(portbase + 6,master ? 0xA0 : 0xB0);//switching to the correct device
     outb8(portbase + 0x206,0);
@@ -45,77 +47,18 @@ void ATA::Identify()
 
     for(uint_16 i = 0;i < 256;i++){
         uint_16 data = inb16(portbase);
-        printchar(hex2str((uint_64)data));
+        printf("0x%x",data);
     }
     
 }
 
-void ATA::Read28(uint_32 sector,uint_8* data,int count)
+void ATAdevice::RW28(uint_32 sector,uint_8* data,int count,bool write)
 {
-    if (count > BytesPerSector)
-        return;
-    if(sector & 0xf0000000)
-        return;
-    outb8(portbase + 6,master ? 0xe0 : 0xf0 | (( sector & 0x0f000000) >> 24));//switching to the correct device
-    outb8(portbase + 1,0);// clear errors
-    outb8(portbase + 2,1);
-
-    outb8(portbase + 3,(sector & 0x0000000ff));
-    outb8(portbase + 4,(sector & 0x00000ff00) >> 8);
-    outb8(portbase + 5,(sector & 0x000ff0000) >>16);
-    outb8(portbase + 7,0x20);// specifying the command: 0x20 - read
-
-    uint_8 status = inb8(portbase + 7);
-    while(((status & 0x80) == 0x80)&& ((status & 0x01) != 0x01)){
-        status = inb8(portbase + 7);
-    }
-    if(status & 0x01)
-    {
-        print("ERROR\n");
-        return;
-    }
-
-    for(uint_16 i = 0; i < count; i+= 2){
-          uint_16 wdata = inb16(portbase);
-        data[i] = wdata & 0x00ff;
-        if(i+1 < count)
-            data[i+1] = (wdata >> 8) & 0x00FF;
-    }
-
-    for(uint_16 i = count + count % 2;i < BytesPerSector;i+= 2){
-        inb16(portbase);
-    }
+ 
     
     
 }
-
-void ATA::Write28(uint_32 sector,uint_8* data,int count)
-{
-    if (count > BytesPerSector)
-        return;
-    if(sector & 0xf0000000)
-        return;
-    outb8(portbase + 6,master ? 0xe0 : 0xf0 |( sector & 0x0f000000) >> 24);//switching to the correct device
-    outb8(portbase + 1,0);// clear errors
-    outb8(portbase + 2,1);
-
-    outb8(portbase + 3,(sector & 0x0000000ff));
-    outb8(portbase + 5,(sector & 0x00000ff00) >> 8);
-    outb8(portbase + 4,(sector & 0x000ff0000) >>16);
-    outb8(portbase + 7,0x30);// specifying the command: 0x30 - write
-
-    for(uint_16 i = 0;i < count;i++){
-        uint_16 wdata = data[i];
-        if (i+ 1 < count)
-            wdata |= ((uint_16)data[i+1] << 8 );
-        outb16(portbase,wdata);
-    }
-    for(uint_16 i = count + count % 2;i < BytesPerSector;i++){
-        outb16(portbase,0x0000);
-    }
-}
-
-void ATA::Flush()
+void ATAdevice::Flush()
 {
 
     outb8(portbase + 6,master ? 0xe0 : 0xf0);//switching to the correct device
@@ -123,4 +66,49 @@ void ATA::Flush()
 
     while(((inb8(portbase + 7) & 0x80) == 0x80)&& ((inb8(portbase + 7) & 0x01) != 0x01)){}
 
+}
+
+namespace ATA
+{
+    ATAdevice devs[16];
+    void Init()
+    {
+        devs[0] = ATAdevice(4,true);
+        devs[1] = ATAdevice(4,true);
+        devs[2] = ATAdevice(4,true);
+        devs[3] = ATAdevice(4,true);
+        devs[4] = ATAdevice(4,true);
+        devs[5] = ATAdevice(4,true);
+        devs[6] = ATAdevice(4,true);
+        devs[7] = ATAdevice(4,true);
+        devs[8] = ATAdevice(4,true);
+        devs[9] = ATAdevice(4,true);
+        devs[10] = ATAdevice(4,true);
+        devs[11] = ATAdevice(4,true);
+        devs[12] = ATAdevice(4,true);
+        devs[13] = ATAdevice(4,true);
+        devs[14] = ATAdevice(4,true);
+        devs[15] = ATAdevice(4,true);
+        devs[16] = ATAdevice(4,true);
+    }
+    
+    void Read28(uint_8 drive_num,uint_32 sector,uint_8* data,int count)
+    {
+        
+    }
+    
+    void Write28(uint_8 drive_num,uint_32 sector,uint_8* data,int count)
+    {
+        
+    }
+    
+    void ListDevices()
+    {
+        for (size_t i = 0; i < 16; i++)
+        {
+            printf("Device #%i(port #%i %s)\n",i,devs[i].portbase,devs[i].master ? "master" : "slave");
+            
+        }
+        
+    }
 }

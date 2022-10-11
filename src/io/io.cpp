@@ -81,11 +81,11 @@ void print(const int_8* str,uint_8 color)
             break;
         
         default:
-            if(iter > 80*20){
-                memcpy(VideoMemory,VideoMemory + 80,80*19);
-                memset(VideoMemory + 80*19,0,80);
-                iter += VideoMemory + 80*19;
-                }
+            //if(iter > 80*20){
+            //    memcpy(VideoMemory,VideoMemory + 80,80*19);
+            //    memset(VideoMemory + 80*19,0,80);
+            //    iter += VideoMemory + 80*19;
+            //    }
             /*
             internal output format:
             1 byte - ASCII charachter

@@ -34,7 +34,8 @@ void InitDrivers(){
     PCI::SelectDrivers();
     LogINFO("Initalized PCI \n");
 
-    ATA ata2(0x1F0, false);
+    ATA::Init();
+    ATA::ListDevices();
     LogINFO("Initalized ATA \n");
 
     //LoadMBR(ata2);
