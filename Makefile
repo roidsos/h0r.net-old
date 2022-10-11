@@ -1,7 +1,7 @@
 all:
-	cd kernel && make && cd .. 
+	cd src && make && cd .. 
 
-	cp kernel/kernel.bin iso/boot/kernel.bin
+	cp src/kernel.bin iso/boot/kernel.bin
 	grub-mkrescue /usr/lib/grub/i386-pc -o os.iso ./iso
 
 run: all
