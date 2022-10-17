@@ -1,5 +1,8 @@
 #include <drivers/ata.h>
 #include <util/printf.h>
+
+#include <drivers/ataDefs.h>
+
 ATAdevice::ATAdevice(uint_16 _portbase,bool _master)
 {
     BytesPerSector = 512;
@@ -54,9 +57,59 @@ void ATAdevice::Identify()
 
 void ATAdevice::RW28(uint_32 sector,uint_8* data,int count,bool write)
 {
- 
-    
-    
+    //code modified, but taken from https://github.com/ilobilo/kernel/blob/master/source/drivers/block/ata/ata.cpp#L41
+
+    outb8(ATA_REGISTER_DRIVE_HEAD, 0x40 | (0/* drive number goes here*/ << 4));// setting the head
+
+    for (size_t i = 0; i < 4; i++) inb8(ATA_REGISTER_DATA);
+    while (inb8(ATA_REGISTER_STATUS) & ATA_DEV_BUSY);
+
+    outb8(ATA_REGISTER_SECTOR_COUNT, ((count / 512) >> 8) & 0xFF);
+
+    outb8(ATA_REGISTER_LBA_LOW, (sector >> 24) & 0xFF);
+    outb8(ATA_REGISTER_LBA_MID, (sector >> 32) & 0xFF);
+    outb8(ATA_REGISTER_LBA_HIGH, (sector >> 40) & 0xFF);
+
+    for (size_t i = 0; i < 4; i++) inb8(ATA_REGISTER_DATA);
+
+    outb8(ATA_REGISTER_SECTOR_COUNT, (count / 512) & 0xFF);
+
+    outb8(ATA_REGISTER_LBA_LOW, sector & 0xFF);
+    outb8(ATA_REGISTER_LBA_MID, (sector >> 8) & 0xFF);
+    outb8(ATA_REGISTER_LBA_HIGH, (sector >> 16) & 0xFF);
+
+    for (size_t i = 0; i < 4; i++) inb8(ATA_REGISTER_DATA);
+
+    while (inb8(ATA_REGISTER_STATUS) & ATA_DEV_BUSY || !(inb8(ATA_REGISTER_STATUS) & ATA_DEV_DRDY));
+
+    outb8(ATA_REGISTER_COMMAND, (write ? ATA_CMD_WRITE : ATA_CMD_READ));
+
+    uint_8 status = inb8(ATA_REGISTER_STATUS);
+    while (status & ATA_DEV_BUSY)
+    {
+        if (status & ATA_DEV_ERR)
+        {
+            printf("ATA: %s error!", write ? "write" : "read");
+            return;
+        }
+        status = inb8(ATA_REGISTER_STATUS);
+    }
+    if (write){
+    for(uint_16 i = 0; i < count; i+= 2){
+        uint_16 wdata = data[i] << 8;        
+        if(i+1 < count)
+            wdata |= data[i+1];
+        outb16(portbase,wdata);
+    }
+    }else{
+            for(uint_16 i = 0; i < count; i+= 2){
+          uint_16 wdata = inb16(portbase);
+        data[i] = wdata & 0x00ff;
+        if(i+1 < count)
+            data[i+1] = (wdata >> 8) & 0x00FF;
+    }
+    }
+
 }
 void ATAdevice::Flush()
 {
@@ -73,32 +126,19 @@ namespace ATA
     ATAdevice devs[16];
     void Init()
     {
-        devs[0] = ATAdevice(4,true);
-        devs[1] = ATAdevice(4,true);
-        devs[2] = ATAdevice(4,true);
-        devs[3] = ATAdevice(4,true);
-        devs[4] = ATAdevice(4,true);
-        devs[5] = ATAdevice(4,true);
-        devs[6] = ATAdevice(4,true);
-        devs[7] = ATAdevice(4,true);
-        devs[8] = ATAdevice(4,true);
-        devs[9] = ATAdevice(4,true);
-        devs[10] = ATAdevice(4,true);
-        devs[11] = ATAdevice(4,true);
-        devs[12] = ATAdevice(4,true);
-        devs[13] = ATAdevice(4,true);
-        devs[14] = ATAdevice(4,true);
-        devs[15] = ATAdevice(4,true);
-        devs[16] = ATAdevice(4,true);
+        devs[0] = ATAdevice(0x1F0,false);
     }
     
     void Read28(uint_8 drive_num,uint_32 sector,uint_8* data,int count)
     {
-        
+        devs[drive_num].RW28(sector,data,count,false);
+        devs[drive_num].Flush();
     }
     
     void Write28(uint_8 drive_num,uint_32 sector,uint_8* data,int count)
     {
+        devs[drive_num].RW28(sector,data,count,true);
+        devs[drive_num].Flush();
         
     }
     
@@ -106,6 +146,7 @@ namespace ATA
     {
         for (size_t i = 0; i < 16; i++)
         {
+            if(devs[i].BytesPerSector == 512)
             printf("Device #%i(port #%i %s)\n",i,devs[i].portbase,devs[i].master ? "master" : "slave");
             
         }

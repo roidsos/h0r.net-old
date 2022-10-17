@@ -7,17 +7,6 @@
 
 class ATAdevice{
     public:
-    /*
-    dataport: 16bit     =   portbase
-    errorport: 8bit     =   portbase + 1
-    sectorport: 8bit    =   portbase + 2
-    lbalowport: 8bit    =   portbase + 3
-    lbamidport: 8bit    =   portbase + 4
-    lbahiport:  8bit    =   portbase + 5
-    deviceport: 8bit    =   portbase + 6
-    commandport: 8bit   =   portbase + 7
-    controlport: 8bit   =   portbase + 0x206
-    */
    uint_16 portbase;
    bool master;
    uint_16 BytesPerSector;
