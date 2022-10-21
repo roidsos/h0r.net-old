@@ -8,21 +8,22 @@
 #include <util/colors.h>
 #include <drivers/driver.h>
 #include <drivers/PIT.h>
+#include <drivers/pc-speaker.h>
 
 extern "C" int kernel_main()
 {
-    Clearscr(0x4F);
+    Clearscr(LIGHT_BLUE);
     enable_text_cursor(14, 15);
 
 
     InitDrivers();
 
 
-
+    pcspeaker sp;
+    sp.beep();
 
     //print("hello world!\nthis is a custom-built kernel called h0r.net");
-    //pcspeaker sp;
-    //sp.play_sound(1000);
+    // play_sound()
     while (1)
     {
         if(mousebl || mousebr){
