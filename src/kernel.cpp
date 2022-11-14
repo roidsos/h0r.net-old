@@ -7,6 +7,7 @@
 #include <util/string.h>
 #include <util/colors.h>
 #include <drivers/driver.h>
+#include <drivers/keyboard.h>
 #include <drivers/PIT.h>
 #include <drivers/pc-speaker.h>
 
@@ -18,20 +19,14 @@ extern "C" int kernel_main()
 
     InitDrivers();
 
-
-    pcspeaker sp;
-    sp.beep();
-
-    //print("hello world!\nthis is a custom-built kernel called h0r.net");
-    // play_sound()
     while (1)
     {
-        if(mousebl || mousebr){
-            printf("click");
-            mousebl = false;
-            mousebr = false;
+        uint_8 key = getch();
+        if (key)
+        {
+            printchar(key);
         }
-        PIT::Sleep(5);
+        
     }
 }
 // TODO: fix gdts

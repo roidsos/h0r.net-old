@@ -33,20 +33,20 @@ void initkeyboard(){
 }
 
 char getch(){
-    return turn_into_ASCII(keybuffer[0]);
+    if (keybuffer[0]){
     keybuffer[0] = 0;
+    return turn_into_ASCII(keybuffer[0]);
+    }
+    return 0;
 }
 
 extern "C" void keyint(){
     uint_8 scancode = inb8(0x60);
     keybuffer[0] = scancode;
-    //printchar(turn_into_ASCII(inb8(0x60)));
-    //keybuffer[0] = inb8(0x60);
-    printchar(turn_into_ASCII(inb8(0x60)));
-    outb8(0x20,0x20);
-    outb8(0xa0,0x20);
     keyboard.keys[(uint_8) (scancode & 0x7F)] = KEY_IS_PRESS(scancode);
     keyboard.chars[KEY_CHAR(scancode)] = KEY_IS_PRESS(scancode);
+    outb8(0x20,0x20);
+    outb8(0xa0,0x20);
 }
 
 
