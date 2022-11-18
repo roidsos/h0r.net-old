@@ -7,8 +7,10 @@
 #include <util/string.h>
 #include <util/colors.h>
 #include <drivers/driver.h>
-#include <drivers/keyboard.h>
-#include <drivers/PIT.h>
+#include <drivers/mouse.h>
+#include <drivers/VGA.h>
+#include <render/renderer.h>
+
 #include <drivers/pc-speaker.h>
 
 extern "C" int kernel_main()
@@ -16,16 +18,19 @@ extern "C" int kernel_main()
     Clearscr(LIGHT_BLUE);
     enable_text_cursor(14, 15);
 
+    VGA vga;
+
+    //vga.SetMode(320,200,8);
+    //vga.Clearscr(0); // forgot xD
+    //window(10,3,140,70,"BENIS",4,3);
+    pcspeaker p;
+    p.play_sound(1000);
 
     InitDrivers();
 
     while (1)
     {
-        uint_8 key = getch();
-        if (key)
-        {
-            printchar(key);
-        }
+        //vga.PutPixel(mousex,mousey,4);
         
     }
 }
