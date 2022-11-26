@@ -23,8 +23,8 @@ extern "C" int kernel_main()
     //vga.SetMode(320,200,8);
     //vga.Clearscr(0); // forgot xD
     //window(10,3,140,70,"BENIS",4,3);
-    pcspeaker p;
-    p.play_sound(1000);
+    // pcspeaker p;
+    // p.play_sound(1000);
 
     InitDrivers();
 

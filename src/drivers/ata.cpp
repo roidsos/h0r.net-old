@@ -82,7 +82,7 @@ void ATAdevice::RW28(uint_32 sector,uint_8* data,int count,bool write)
 
     while (inb8(ATA_REGISTER_STATUS) & ATA_DEV_BUSY || !(inb8(ATA_REGISTER_STATUS) & ATA_DEV_DRDY));
 
-    outb8(ATA_REGISTER_COMMAND, (write ? ATA_CMD_WRITE : ATA_CMD_READ));
+    outb8(ATA_REGISTER_COMMAND, (write ? ATA_CMD_WRITE_EXT : ATA_CMD_READ_EXT));
 
     uint_8 status = inb8(ATA_REGISTER_STATUS);
     while (status & ATA_DEV_BUSY)
