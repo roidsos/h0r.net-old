@@ -4,11 +4,19 @@
 #include <drivers/memory/memory.h>
 #include <util/logger.h>
 void Loadfat32(fat_BS* fatbs,fat_extBS_32* BSext,uint_8 partition){
-    //data stuff
+    //theese
     uint_32 fatstart = partition + fatbs->reserved_sector_count;
     uint_32 fatsize  = BSext->table_size_32;
     uint_32 datastart= fatstart + (fatsize*fatbs->table_count);
     uint_32 rootstart= datastart+ (fatbs->sectors_per_cluster*(BSext->root_cluster - 2));
+
+
+    // ye ah shit I forgor I need to link disk first hold on
+    
+    printf("fatstart: %d\n",fatstart);
+    printf("fatsize: %d\n",fatsize);
+    printf("datastart: %d\n",datastart);
+    printf("fatsize: %d\n",rootstart);
 
     printf("rootstart : %i \n",rootstart);
     uint_8* sectorbuffer = calloc(16*sizeof(DirectoryEntryFat32));
@@ -25,6 +33,8 @@ void Loadfat32(fat_BS* fatbs,fat_extBS_32* BSext,uint_8 partition){
     //printf("\n");
     //return;
     printf("files:\n");
+
+
     for (size_t i = 0; i < 16; i++)
     {
         if(dirents[i].name[0] == 0x00){

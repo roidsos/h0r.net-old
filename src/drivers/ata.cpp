@@ -59,8 +59,14 @@ void ATAdevice::RW28(uint_32 sector,uint_8* data,int count,bool write)
 {
     //code modified, but taken from https://github.com/ilobilo/kernel/blob/master/source/drivers/block/ata/ata.cpp#L41
 
-    outb8(ATA_REGISTER_DRIVE_HEAD, 0x40 | (0/* drive number goes here*/ << 4));// setting the head
-
+    outb8(ATA_REGISTER_DRIVE_HEAD, 0b11100000 | ((sector & 0x0F000000) >> 24));// setting the head
+    // Explanation for above:
+    // bits 0-3 = ((sector & 0x0F000000) >> 24)
+    // bit  4   = drive number
+    // bit  5   = always 1
+    // bit  6   = Uses CHS addressing if clear or LBA addressing if set. 
+    // bit  7   = always 1
+    // soo
     for (size_t i = 0; i < 4; i++) inb8(ATA_REGISTER_DATA);
     while (inb8(ATA_REGISTER_STATUS) & ATA_DEV_BUSY);
 
@@ -118,6 +124,7 @@ void ATAdevice::Flush()
     outb8(portbase + 7,0xe7);// specifying the command: 0xe7 - flush
 
     while(((inb8(portbase + 7) & 0x80) == 0x80)&& ((inb8(portbase + 7) & 0x01) != 0x01)){}
+
 
 }
 
