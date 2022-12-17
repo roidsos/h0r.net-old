@@ -8,7 +8,7 @@
 #include <drivers/soundblaster.h>
 #include <drivers/filesystem/msdospart.h>
 #include <util/logger.h>
-#include <util/printf.h>
+#include <lib/printf.h>
 
 void InitDrivers(){
     InitIDT();

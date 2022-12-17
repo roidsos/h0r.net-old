@@ -3,7 +3,7 @@
 //#include <memory/memory.h>
 
 #include <drivers/mouse.h>
-#include <util/printf.h>
+#include <lib/printf.h>
 #include <util/string.h>
 #include <util/colors.h>
 #include <drivers/driver.h>
@@ -20,12 +20,12 @@ extern "C" int kernel_main()
 
     VGA vga;
 
-    //vga.SetMode(320,200,8);
-    //vga.Clearscr(0); // forgot xD
-    //window(10,3,140,70,"BENIS",4,3);
-    PIT::PitInit();
-    InitDrivers();
-    pcspeaker p;
+    vga.SetMode(320,200,8);
+    vga.Clearscr(0); // forgot xD
+    window(10,3,140,70,"BENIS",4,3);
+    //PIT::PitInit();
+    //InitDrivers();
+    //pcspeaker p;
     while (1)
     { 
         //vga.PutPixel(mousex,mousey,4);
