@@ -58,39 +58,32 @@ void ATAdevice::Identify()
 void ATAdevice::RW28(uint_32 sector,uint_8* data,int count,bool write)
 {
     //code modified, but taken from https://github.com/ilobilo/kernel/blob/master/source/drivers/block/ata/ata.cpp#L41
+    uint_8 status = inb8(ATA_REGISTER_STATUS);
+    if (status == 0xFF)
+        return;
 
-    outb8(ATA_REGISTER_DRIVE_HEAD, 0b11100000 | ((sector & 0x0F000000) >> 24));// setting the head
+    outb8(ATA_REGISTER_DRIVE_HEAD, 0xE0 | ((sector >> 24 )& 0x0F));// setting the head
     // Explanation for above:
     // bits 0-3 = ((sector & 0x0F000000) >> 24)
     // bit  4   = drive number
     // bit  5   = always 1
     // bit  6   = Uses CHS addressing if clear or LBA addressing if set. 
     // bit  7   = always 1
-    // soo
+
     for (size_t i = 0; i < 4; i++) inb8(ATA_REGISTER_DATA);
     while (inb8(ATA_REGISTER_STATUS) & ATA_DEV_BUSY);
 
-    outb8(ATA_REGISTER_SECTOR_COUNT, ((count / 512) >> 8) & 0xFF);
-
-    outb8(ATA_REGISTER_LBA_LOW, (sector >> 24) & 0xFF);
-    outb8(ATA_REGISTER_LBA_MID, (sector >> 32) & 0xFF);
-    outb8(ATA_REGISTER_LBA_HIGH, (sector >> 40) & 0xFF);
-
-    for (size_t i = 0; i < 4; i++) inb8(ATA_REGISTER_DATA);
-
-    outb8(ATA_REGISTER_SECTOR_COUNT, (count / 512) & 0xFF);
+    outb8(ATA_REGISTER_SECTOR_COUNT, count);
 
     outb8(ATA_REGISTER_LBA_LOW, sector & 0xFF);
     outb8(ATA_REGISTER_LBA_MID, (sector >> 8) & 0xFF);
     outb8(ATA_REGISTER_LBA_HIGH, (sector >> 16) & 0xFF);
 
-    for (size_t i = 0; i < 4; i++) inb8(ATA_REGISTER_DATA);
-
     while (inb8(ATA_REGISTER_STATUS) & ATA_DEV_BUSY || !(inb8(ATA_REGISTER_STATUS) & ATA_DEV_DRDY));
 
-    outb8(ATA_REGISTER_COMMAND, (write ? ATA_CMD_WRITE_EXT : ATA_CMD_READ_EXT));
+    outb8(ATA_REGISTER_COMMAND, (write ? ATA_CMD_WRITE : ATA_CMD_READ));
 
-    uint_8 status = inb8(ATA_REGISTER_STATUS);
+    status = inb8(ATA_REGISTER_STATUS);
     while (status & ATA_DEV_BUSY)
     {
         if (status & ATA_DEV_ERR)
