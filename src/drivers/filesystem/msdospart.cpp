@@ -44,8 +44,7 @@ void LoadMBR(){
         
         
         printf(" 0x %x \n",mbr.primaryPartition[i].partition_id);
-        
-     
+        printf("startlba: %i \n",mbr.primaryPartition[i].start_lba);
         LoadFAT(mbr.primaryPartition[i].start_lba);
     }
 }
