@@ -71,7 +71,13 @@ void ATAdevice::RW28(uint_32 sector,uint_8* data,int count,bool write)
     // bit  7   = always 1
 
     for (size_t i = 0; i < 4; i++) inb8(ATA_REGISTER_DATA);
-    while (inb8(ATA_REGISTER_STATUS) & ATA_DEV_BUSY);
+    while (inb8(ATA_REGISTER_STATUS) & ATA_DEV_BUSY){
+        if ((inb8(ATA_REGISTER_STATUS) & ATA_DEV_ERR))
+        {
+            printf("ATA: %s error!\n", write ? "write" : "read");
+            return;
+        }
+    };
 
     outb8(ATA_REGISTER_SECTOR_COUNT, count);
 
@@ -79,14 +85,16 @@ void ATAdevice::RW28(uint_32 sector,uint_8* data,int count,bool write)
     outb8(ATA_REGISTER_LBA_MID, (sector >> 8) & 0xFF);
     outb8(ATA_REGISTER_LBA_HIGH, (sector >> 16) & 0xFF);
 
-    while (inb8(ATA_REGISTER_STATUS) & ATA_DEV_BUSY || !(inb8(ATA_REGISTER_STATUS) & ATA_DEV_DRDY));
+    while (inb8(ATA_REGISTER_STATUS) & ATA_DEV_BUSY || !(inb8(ATA_REGISTER_STATUS) & ATA_DEV_DRDY)){
+
+    }
 
     outb8(ATA_REGISTER_COMMAND, (write ? ATA_CMD_WRITE : ATA_CMD_READ));
 
     status = inb8(ATA_REGISTER_STATUS);
     while (status & ATA_DEV_BUSY)
     {
-        if (status & ATA_DEV_ERR)
+        if (status & ATA_DEV_ERR )
         {
             printf("ATA: %s error!", write ? "write" : "read");
             return;

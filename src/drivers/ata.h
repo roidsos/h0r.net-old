@@ -3,6 +3,10 @@
 #include <util/stdint.h>
 #include <io/io.h>
 
+struct ata_device_summary
+{
+    uint_8 data[512];
+};
 
 
 class ATAdevice{

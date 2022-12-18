@@ -3,7 +3,7 @@
 #include <drivers/memory/Heap.h>
 #include <drivers/memory/memory.h>
 #include <util/logger.h>
-void Loadfat32(fat_BS* fatbs,fat_extBS_32* BSext,uint_8 partition){
+void Loadfat32RootDir(fat_BS* fatbs,fat_extBS_32* BSext,uint_8 partition){
     //theese
     uint_32 fatstart = partition + fatbs->reserved_sector_count;
     uint_32 fatsize  = BSext->table_size_32;
@@ -20,8 +20,6 @@ void Loadfat32(fat_BS* fatbs,fat_extBS_32* BSext,uint_8 partition){
 
     printf("rootstart : %i \n",rootstart);
     uint_8* sectorbuffer = calloc(16*sizeof(DirectoryEntryFat32));
-
-    //TODO: replace the ATA reads in this file with the new ata driver reads when its done
 
     ATA::Read28(0,rootstart, sectorbuffer, 16*sizeof(DirectoryEntryFat32));
     DirectoryEntryFat32* dirents = (DirectoryEntryFat32*)sectorbuffer;
@@ -66,6 +64,15 @@ void LoadFAT(uint_8 partition){
     fat_BS *fat_boot = (fat_BS *)sectorbuffer;
     fat_extBS_32* fat_boot_ext = (fat_extBS_32 *)fat_boot->extended_section;
 
-    Loadfat32(fat_boot,fat_boot_ext,partition);
+    if(fat_boot->bytes_per_sector == 0 || fat_boot->sectors_per_cluster == 0 || fat_boot->reserved_sector_count == 0){
+        printf("Error: invalid or non-fat partition header\n");
+        return;
+    }
+
+    if(fat_boot_ext->root_cluster != 0 && fat_boot_ext->table_size_32 != 0){
+        Loadfat32RootDir(fat_boot,fat_boot_ext,partition);
+    }else{
+        printf("Error: invalid fat32 header\n");
+    }
 
 }
