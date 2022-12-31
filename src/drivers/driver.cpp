@@ -40,6 +40,6 @@ void InitDrivers(){
     ATAdevice dev(0x1F0,false);
     //LogINFO("Initalized ATA \n");
     printf("E:\n");
-    LoadMBR();
+    //LoadMBR();
     //LogINFO("Loaded Fat\n");
 }

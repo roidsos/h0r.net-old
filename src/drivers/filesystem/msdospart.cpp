@@ -8,7 +8,7 @@ void LoadMBR(){
     
     printf("MBR: ");
     
-    ATA::Read28(0,0, (uint_8*)&mbr, sizeof(MasterBootRecord));
+    ATA::Read28(0,0, (uint_8*)&mbr, 1);
     
 
     

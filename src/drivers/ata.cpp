@@ -60,6 +60,7 @@ void ATAdevice::RW28(uint_32 sector,uint_8* data,int count,bool write)
     //code modified, but taken from https://github.com/ilobilo/kernel/blob/master/source/drivers/block/ata/ata.cpp#L41
     uint_8 status = inb8(ATA_REGISTER_STATUS);
     if (status == 0xFF)
+        printf("ATA: %s error: bad state at start\n", write ? "write" : "read");
         return;
 
     outb8(ATA_REGISTER_DRIVE_HEAD, 0xE0 | ((sector >> 24 )& 0x0F));// setting the head
@@ -70,7 +71,7 @@ void ATAdevice::RW28(uint_32 sector,uint_8* data,int count,bool write)
     // bit  6   = Uses CHS addressing if clear or LBA addressing if set. 
     // bit  7   = always 1
 
-    outb8(ATA_REGISTER_COMMAND, (write ? ATA_CMD_WRITE : ATA_CMD_READ));
+    //outb8(ATA_REGISTER_COMMAND, (write ? ATA_CMD_WRITE : ATA_CMD_READ));
 
     for (size_t i = 0; i < 4; i++) inb8(ATA_REGISTER_DATA);
     while (inb8(ATA_REGISTER_STATUS) & ATA_DEV_BUSY){
@@ -108,19 +109,20 @@ void ATAdevice::RW28(uint_32 sector,uint_8* data,int count,bool write)
         status = inb8(ATA_REGISTER_STATUS);
     }
     if (write){
-    for(uint_16 i = 0; i < count; i+= 2){
+    for(uint_16 i = 0; i < (count * 512); i+= 2){
         uint_16 wdata = data[i] << 8;        
-        if(i+1 < count)
+        if(i+1 < (count * 512))
             wdata |= data[i+1];
         outb16(portbase,wdata);
     }
     }else{
-            for(uint_16 i = 0; i < count; i+= 2){
+    for(uint_16 i = 0; i < (count * 512); i+= 2){
           uint_16 wdata = inb16(portbase);
         data[i] = wdata & 0x00ff;
-        if(i+1 < count)
+        if(i+1 < (count * 512))
             data[i+1] = (wdata >> 8) & 0x00FF;
     }
+
     }
 
 }

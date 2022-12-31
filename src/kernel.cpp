@@ -7,6 +7,7 @@
 #include <util/string.h>
 #include <util/colors.h>
 #include <drivers/driver.h>
+#include <drivers/ata.h>
 #include <drivers/mouse.h>
 #include <drivers/VGA.h>
 #include <render/renderer.h>
@@ -25,7 +26,14 @@ extern "C" int kernel_main()
     //window(10,3,140,70,"BENIS",4,3);
     PIT::PitInit();
     InitDrivers();
-    pcspeaker p;
+//    uint_8 test[512];
+//    ATA::Read28(0,0,test,1);
+//    for(int i = 0; i <= 0x01FF; i++)
+//    {
+//        printf("0x%x ",test[i]);
+//    }
+//    printf("\n");
+
     while (1)
     { 
         //vga.PutPixel(mousex,mousey,4);
