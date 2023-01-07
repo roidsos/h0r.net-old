@@ -2,18 +2,23 @@
 #include <io/io.h>
 #include <lib/printf.h>
 namespace PCI{
+
+    PCIDevice devices[2048];
+    bool initialized;
+
 uint_32 Read(uint_16 bus,uint_16 device,uint_16 function,uint_32 offset)
 {
     uint_32 id =
-        0x1 << 31
-        | ((bus & 0xFF) << 16)
-        | ((device & 0x1F) << 11)
-        | ((function & 0x07) << 8)
-        | (offset & 0xFC);
+        0x1 << 31 // first bit is 1
+        | ((bus & 0xFF) << 16)// bits 2-15 are the bus
+        | ((device & 0x1F) << 11) // bits 16-21 are the device
+        | ((function & 0x07) << 8)// bits 22-24 are the function
+        | (offset & 0xFC); // the remaining bits are the offset, so every function gets 255 bytes of registers minus the header
     outb32(0xCF8,id);
-    register uint_32 result = inb32(0xCFC + (offset & 3));
-    return result;
+    register uint_32 result = inb32(0xCFC);
+    return result >> (8* (offset % 4));
 }
+
 
 void Write(uint_16 bus, uint_16 device, uint_16 function, uint_32 offset,uint_32 value)
 {
@@ -35,6 +40,7 @@ bool HasFunction(uint_16 bus, uint_16 device)
 
 void SelectDrivers()
 {
+    //https://wiki.osdev.org/PCI
     printf("PCI Devices: \n");
     for(int bus = 0;bus < 8;bus++)
     {
@@ -44,21 +50,27 @@ void SelectDrivers()
             for(int function = 0;function < numfuncs;function++)
             {
                 PCIDevice dev  =  GetDevice(bus,device,function);
+                devices[(bus * 8) + (device * 32) + function] = dev;
 
                 if(dev.vendor_id == 0x0000 ||dev.vendor_id == 0xFFFF){
                     //printf("nothing\n");
-                    break;
+                    continue;
                 }
-                printf("VendorID: %i ,",dev.vendor_id);
-                printf("DeviceID: %i \n",dev.device_id);
+                
+                printf("VendorID: 0x%x ,DeviceID: 0x%x \n",dev.vendor_id,dev.device_id);
             }
             
         }   
     }
+    initialized = true;
 }
 
 PCIDevice GetDevice(uint_16 bus, uint_16 device, uint_16 function)
 {
+    if(initialized){
+        return devices[(bus * 8) + (device * 32) + function]; 
+    }
+
     PCIDevice result;
     result.bus = bus;
     result.device = device;
@@ -67,12 +79,13 @@ PCIDevice GetDevice(uint_16 bus, uint_16 device, uint_16 function)
     result.vendor_id = Read(bus,device,function,0x00);
     result.device_id = Read(bus,device,function,0x02);
 
-    result.class_id = Read(bus,device,function,0x0B);
-    result.subclass_id = Read(bus,device,function,0x0A);
-    result.interface_id = Read(bus,device,function,0x09);
+    result.class_id = Read(bus,device,function,0x0B) & 0x000000FF;
+    result.subclass_id = Read(bus,device,function,0x0A) & 0x000000FF;
+    result.interface_id = Read(bus,device,function,0x09) & 0x000000FF;
 
-    result.revision = Read(bus,device,function,0x08);
-    result.interrupt = Read(bus,device,function,0x3c);
+    result.revision = Read(bus,device,function,0x08) & 0x000000FF;
+    result.interrupt = Read(bus,device,function,0x3c) & 0x000000FF;
+    return result;
 }
 
 
@@ -82,4 +95,14 @@ PCIDevice GetDevice(uint_16 bus, uint_16 device, uint_16 function)
 PCIDevice::PCIDevice()
 {
     
+}
+
+void PCIDevice::Write(uint_32 offset,uint_32 value)
+{
+    PCI::Write(bus,device,function,offset,value);
+}
+
+uint_32 PCIDevice::Read(uint_32 offset)
+{
+    return PCI::Read(bus,device,function,offset);
 }
