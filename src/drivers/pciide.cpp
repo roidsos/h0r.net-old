@@ -203,7 +203,7 @@ unsigned int BAR4){
 }
 
 unsigned char pciide::ide_ata_access(unsigned char direction, unsigned char drive, unsigned int lba, 
-                             unsigned char numsects, unsigned short selector, unsigned int edi) {
+                             unsigned char numsects, unsigned short selector,unsigned char* destination) {
 
     unsigned char lba_mode /* 0: CHS, 1:LBA28, 2: LBA48 */, dma /* 0: No DMA, 1: DMA */, cmd;
    unsigned char lba_io[6];
@@ -214,7 +214,7 @@ unsigned char pciide::ide_ata_access(unsigned char direction, unsigned char driv
    unsigned short cyl, i;
    unsigned char head, sect, err;
 
-   ide_write(channel, ATA_REG_CONTROL, channels[channel].nIEN = (ide_irq_invoked = 0x0) + 0x02);
+   ide_write(channel, ATA_REG_CONTROL, channels[channel].nIEN = 0x02);
 
     // (I) Select one from LBA28, LBA48 or CHS;
    if (lba >= 0x10000000) { // Sure Drive should support LBA in this case, or you are
@@ -301,21 +301,19 @@ unsigned char pciide::ide_ata_access(unsigned char direction, unsigned char driv
         for (i = 0; i < numsects; i++) {
             if (err = ide_polling(channel, 1))
                return err; // Polling, set error and exit if there is.
-            asm("pushw %es");
-            asm("mov %%ax, %%es" : : "a"(selector));
-            asm("rep insw" : : "c"(words), "d"(bus), "D"(edi)); // Receive Data.
-            asm("popw %es");
-            
-            edi += (words*2);
+            for (size_t j = 0; j < words; j++)
+            {
+               ((uint_16*)destination)[j] = ide_read(channel,ATA_REG_DATA);;
+            }
         } else {
         // PIO Write.
            for (i = 0; i < numsects; i++) {
             ide_polling(channel, 0); // Polling.
-            asm("pushw %ds");
-            asm("mov %%ax, %%ds"::"a"(selector));
-            asm("rep outsw"::"c"(words), "d"(bus), "S"(edi)); // Send Data
-            asm("popw %ds");
-            edi += (words*2);
+            for (size_t j = 0; j < words; j++)
+            {
+               ide_write(channel,ATA_REG_DATA,((uint_16*)destination)[j]);
+            }
+            
         }
         ide_write(channel, ATA_REG_COMMAND, (char []) {(char)ATA_CMD_CACHE_FLUSH,
                         (char)ATA_CMD_CACHE_FLUSH,

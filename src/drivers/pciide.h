@@ -98,7 +98,7 @@ public:
 unsigned int BAR4);
 
 unsigned char ide_ata_access(unsigned char direction, unsigned char drive, unsigned int lba, 
-                             unsigned char numsects, unsigned short selector, unsigned int edi);
+                             unsigned char numsects, unsigned short selector, unsigned char* destination);
 
 private:
     IDEChannelRegisters channels[2];

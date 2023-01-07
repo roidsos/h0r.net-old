@@ -1,6 +1,6 @@
 #include <drivers/filesystem/fat.h>
 #include <drivers/filesystem/msdospart.h>
-#include <drivers/ata.h>
+#include <drivers/mass-storage.h>
 #include <lib/printf.h>
 void LoadMBR(){
 
@@ -8,7 +8,7 @@ void LoadMBR(){
     
     printf("MBR: ");
     
-    ATA::Read28(0,0, (uint_8*)&mbr, 1);
+    mass_storage_manager::Read28(0,0, (uint_8*)&mbr, 1);
     
 
     

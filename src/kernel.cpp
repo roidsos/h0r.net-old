@@ -7,7 +7,7 @@
 #include <util/string.h>
 #include <util/colors.h>
 #include <drivers/driver.h>
-#include <drivers/ata.h>
+#include <drivers/mass-storage.h>
 #include <drivers/mouse.h>
 #include <drivers/VGA.h>
 #include <render/renderer.h>
