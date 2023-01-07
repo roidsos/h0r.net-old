@@ -5,8 +5,8 @@
 
 namespace mass_storage_manager
 {
-    MSController* controllers = (MSController*)calloc(sizeof(MSController) * 255);
-    MSDevice* devices = (MSDevice*)calloc(sizeof(MSDevice) * 4096);
+    MSController controllers[255];
+    MSDevice devices[4096];
     uint_16 controllerssize;
     uint_16 devicessize;
 
@@ -38,8 +38,7 @@ namespace mass_storage_manager
             printf("ERROR:No Storage Devices Regisrtered\n");
             return;
         }
-        uint_16 controller_index = devices[drive_num].parent_index + 1;
-        printf("s: %i",(unsigned int)controllers[controller_index].RW_func);
+        uint_16 controller_index = devices[drive_num].parent_index;
         controllers[controller_index].RW_func(devices[drive_num].index_inside_parent,0,data,sector,count);
     }
     

@@ -25,7 +25,6 @@ namespace ATA{
    
    void read_or_write(int device,char direction,uint_8* destination,int address,int sector_count)
    {
-      printf("s");
       pciide parent = *(devs[device].parent);
       parent.ide_read_slash_write(devs[device].index_inside_parent,direction,destination,address,sector_count);
    }

@@ -8,7 +8,7 @@ void LoadMBR(){
     
     printf("MBR: ");
     
-    mass_storage_manager::Read28(0,0, (uint_8*)&mbr, 1);
+    mass_storage_manager::Read28(3,0, (uint_8*)&mbr, 1);
     
 
     
