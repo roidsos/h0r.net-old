@@ -15,8 +15,8 @@ uint_32 Read(uint_16 bus,uint_16 device,uint_16 function,uint_32 offset)
         | ((function & 0x07) << 8)// bits 22-24 are the function
         | (offset & 0xFC); // the remaining bits are the offset, so every function gets 255 bytes of registers minus the header
     outb32(0xCF8,id);
-    register uint_32 result = inb32(0xCFC + (offset & 3));
-    return result;
+    register uint_32 result = inb32(0xCFC);
+    return result >> (8* (offset % 4));
 }
 
 
@@ -54,7 +54,7 @@ void SelectDrivers()
 
                 if(dev.vendor_id == 0x0000 ||dev.vendor_id == 0xFFFF){
                     //printf("nothing\n");
-                    break;
+                    continue;
                 }
                 
                 printf("VendorID: 0x%x ,DeviceID: 0x%x \n",dev.vendor_id,dev.device_id);
