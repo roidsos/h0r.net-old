@@ -3,6 +3,11 @@
 
 #include <drivers/ataDefs.h>
 
+extern "C" void atairq(){
+    printf("ATA irq triggered\n");
+    outb8(0x20,0x20);
+    outb8(0xa0,0x20);
+}
 ATAdevice::ATAdevice(uint_16 _portbase,bool _master)
 {
     BytesPerSector = 512;
@@ -59,9 +64,10 @@ void ATAdevice::RW28(uint_32 sector,uint_8* data,int count,bool write)
 {
     //code modified, but taken from https://github.com/ilobilo/kernel/blob/master/source/drivers/block/ata/ata.cpp#L41
     uint_8 status = inb8(ATA_REGISTER_STATUS);
-    if (status == 0xFF)
+    if (status == 0xFF){
         printf("ATA: %s error: bad state at start\n", write ? "write" : "read");
         return;
+    }
 
     outb8(ATA_REGISTER_DRIVE_HEAD, 0xE0 | ((sector >> 24 )& 0x0F));// setting the head
     // Explanation for above:
@@ -71,9 +77,10 @@ void ATAdevice::RW28(uint_32 sector,uint_8* data,int count,bool write)
     // bit  6   = Uses CHS addressing if clear or LBA addressing if set. 
     // bit  7   = always 1
 
-    //outb8(ATA_REGISTER_COMMAND, (write ? ATA_CMD_WRITE : ATA_CMD_READ));
+    outb8(ATA_REGISTER_COMMAND, (write ? ATA_CMD_WRITE : ATA_CMD_READ));
 
     for (size_t i = 0; i < 4; i++) inb8(ATA_REGISTER_DATA);
+
     while (inb8(ATA_REGISTER_STATUS) & ATA_DEV_BUSY){
         if ((inb8(ATA_REGISTER_STATUS) & ATA_DEV_ERR))
         {
@@ -166,6 +173,7 @@ namespace ATA
             printf("Device #%i(port 0x%x %s)\n",i,devs[i].portbase,devs[i].master ? "master" : "slave");
             
         }
+
         
     }
 }

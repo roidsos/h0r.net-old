@@ -10,6 +10,7 @@
 #define ICW4_8086 0x01
 
 extern "C" void isrC();
+extern "C" void isrE();
 extern "C" void isr1();
 extern "C" void isr0();
 extern "C" void isrIgnore();
@@ -51,6 +52,8 @@ void InitIDT()
     AddEntry((void*)&isr0,0b10001110,0);
     AddEntry((void*)&isr1,0b10001110,1);
     AddEntry((void*)&isrC,0b10001110,12);
+    AddEntry((void*)&isrE,0b10001110,14);
+    AddEntry((void*)&isrE,0b10001110,15);
 
     RemapPIC();
     loadidt();

@@ -12,34 +12,32 @@
 
 void InitDrivers(){
     InitIDT();
-    //LogINFO("Initalized IDT \n");
+    LogINFO("Initalized IDT \n");
 
     InitHeap(0x100000, 0x100000); 
-    //LogINFO("Initalized heap \n");
+    LogINFO("Initalized heap \n");
 
     PIT::PitInit();
-    //LogINFO("Initialized PIT \n");
+    LogINFO("Initialized PIT \n");
 
     initkeyboard();
     initmouse();
-    //LogINFO("Initalized keyboard & mouse \n");
+    LogINFO("Initalized keyboard & mouse \n");
     
     ActivateIDT();
-    //LogINFO("Activated IDT \n");
     
-    init_SB16();
+    //init_SB16();
     //printf("soundblaster version: %i.%i\n" ,sb16_version_major,sb16_version_minor);
     //LogINFO("Initalized SoundBlaster 16 (Not-Even-Half-Done) \n");
 
-    //PCI::SelectDrivers();
-    //LogINFO("Initalized PCI \n");
+    PCI::SelectDrivers();
+    LogINFO("Initalized PCI \n");
 
     ATA::Init();
     ATA::ListDevices();
+    //https://lolguy91-silver-succotash-67jxpq957vgh4jvx-6080.preview.app.github.dev/ for later
 
-    ATAdevice dev(0x1F0,false);
-    //LogINFO("Initalized ATA \n");
-    printf("E:\n");
-    //LoadMBR();
-    //LogINFO("Loaded Fat\n");
+    LogINFO("Initalized ATA \n");
+    LoadMBR();
+    LogINFO("Loaded Fat\n");
 }
