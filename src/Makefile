@@ -15,6 +15,3 @@ $(asm_object_files):$(asm_source_files)
 
 build-x86_64: $(object_files)
 	 ld -n -o  kernel.bin -T linker.ld $^ 
-never:
-	rm $(object_files)
-	

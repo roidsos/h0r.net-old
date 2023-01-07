@@ -1,4 +1,4 @@
-    #include <drivers/ata.h>
+    #include <drivers/mass-storage.h>
     #include <util/stdint.h>
 
     void LoadFAT(uint_8 partition);

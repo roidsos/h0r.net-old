@@ -19,7 +19,7 @@ void Loadfat32RootDir(fat_BS* fatbs,fat_extBS_32* BSext,uint_8 partition){
     printf("rootstart : %i \n",rootstart);
     uint_8* sectorbuffer = calloc(16*sizeof(DirectoryEntryFat32));
 
-    ATA::Read28(0,rootstart, sectorbuffer, 1);
+    mass_storage_manager::Read28(3,rootstart, sectorbuffer, 1);
     DirectoryEntryFat32* dirents = (DirectoryEntryFat32*)sectorbuffer;
 
     //for(int i = 0; i <= 0x01FF; i++) // testing the data
@@ -58,7 +58,7 @@ void Loadfat32RootDir(fat_BS* fatbs,fat_extBS_32* BSext,uint_8 partition){
 
 void LoadFAT(uint_8 partition){
     uint_8 *sectorbuffer = calloc(512);
-    ATA::Read28(0,partition, sectorbuffer, 1);
+    mass_storage_manager::Read28(3,partition, sectorbuffer, 1);
 
     //for(int i = 0; i <= 50; i++) // 3C9
     //{
