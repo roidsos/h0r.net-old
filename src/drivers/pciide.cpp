@@ -20,12 +20,13 @@ namespace ATA{
    static void init()
    {
       mass_storage_manager::RegisterController(&read_or_write);
-      pciide controller = pciide(0x1F0, 0x3F6, 0x170, 0x376, 0x000);
+      pciide controller(0x1F0, 0x3F6, 0x170, 0x376, 0x000);
    }
    
    void read_or_write(int device,char direction,uint_8* destination,int address,int sector_count)
    {
       pciide parent = *(devs[device].parent);
+      printf("s: %i\n",devs[device].index_inside_parent);
       parent.ide_read_slash_write(devs[device].index_inside_parent,direction,destination,address,sector_count);
    }
 
@@ -191,9 +192,9 @@ unsigned int BAR4){
          }
  
         // (V) Read Identification Space of the Device:
-        for(uint_16 i = 0;i < 256;i++){
+        for(uint_16 k = 0;k < 256;k++){
             uint_16 data = ide_read(i,ATA_REG_DATA);
-            *((uint_16*)ide_buf) = data;
+            ((uint_16*)ide_buf)[k] = data;
         }
  
          // (VI) Read Device Parameters:
@@ -225,9 +226,9 @@ unsigned int BAR4){
    // 4- Print Summary:
    for (i = 0; i < 4 ; i++)
       if (ide_devices[i].Reserved == 1) {
-         printf(" Found %s Drive %dGB - %s\n",
+         printf(" Found %s Drive %dB - %s\n",
             (const char *[]){"ATA", "ATAPI"}[ide_devices[i].Type],         /* Type */
-            ide_devices[i].Size / 1024 / 1024 / 2,               /* Size */
+            ide_devices[i].Size,               /* Size */
             ide_devices[i].Model);
             ATADevice dev;
             dev.parent = this;
@@ -338,7 +339,7 @@ unsigned char pciide::ide_ata_access(unsigned char direction, unsigned char driv
                return err; // Polling, set error and exit if there is.
             for (size_t j = 0; j < words; j++)
             {
-               ((uint_16*)destination)[j] = ide_read(channel,ATA_REG_DATA);;
+               ((uint_16*)destination)[j] = ide_read(bus,ATA_REG_DATA);
             }
         } else {
         // PIO Write.
@@ -346,7 +347,7 @@ unsigned char pciide::ide_ata_access(unsigned char direction, unsigned char driv
             ide_polling(channel, 0); // Polling.
             for (size_t j = 0; j < words; j++)
             {
-               ide_write(channel,ATA_REG_DATA,((uint_16*)destination)[j]);
+               ide_write(bus,ATA_REG_DATA,((uint_16*)destination)[j]);
             }
             
         }
