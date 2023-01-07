@@ -1,6 +1,7 @@
 #include <drivers/arch/x86/IDT/IDT.h>
 #include <drivers/memory/Heap.h>
 #include <drivers/mass-storage.h>
+#include <drivers/pciide.h>
 #include <drivers/pci.h>
 #include <drivers/PIT.h>
 #include <drivers/keyboard.h>
@@ -32,10 +33,10 @@ void InitDrivers(){
 
     PCI::SelectDrivers();
     LogINFO("Initalized PCI \n");
-    
+    ATA::init();
     //https://lolguy91-silver-succotash-67jxpq957vgh4jvx-6080.preview.app.github.dev/ for later
 
-    LogINFO("Initalized ATA \n");
+    LogINFO("Initalized Mass Storage \n");
     LoadMBR();
     LogINFO("Loaded Fat\n");
 }

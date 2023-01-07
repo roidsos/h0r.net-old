@@ -1,10 +1,38 @@
+// most of the code is copied from https://wiki.osdev.org/PCI_IDE_Controller
 #include <drivers/pciide.h>
 #include <drivers/PIT.h>
+#include <drivers/mass-storage.h>
 #include <drivers/memory/Heap.h>
 #include <io/io.h>
 #include <lib/printf.h>
 
+//awful implementation sadly
+uint_16 controller_index;
+uint_16 devs_size;
+ATADevice::ATADevice()
+{
+   mass_storage_manager::RegisterDevice(controller_index,devs_size);
+}
 
+namespace ATA{
+   ATADevice devs[1024];
+
+   static void init()
+   {
+      mass_storage_manager::RegisterController(&read_or_write);
+      pciide controller = pciide(0x1F0, 0x3F6, 0x170, 0x376, 0x000);
+   }
+   
+   void read_or_write(int device,char direction,uint_8* destination,int address,int sector_count)
+   {
+      printf("s");
+      pciide parent = *(devs[device].parent);
+      parent.ide_read_slash_write(devs[device].index_inside_parent,direction,destination,address,sector_count);
+   }
+
+   
+}
+//end of the awful stuff
 void ide_write(unsigned char channel, unsigned char reg, unsigned char data); // forward declaration
 
 unsigned char pciide::ide_read(unsigned char channel, unsigned char reg) {
@@ -101,6 +129,9 @@ unsigned char pciide::ide_print_error(unsigned int drive, unsigned char err) {
  
    return err;
 }
+
+
+
 pciide::pciide(unsigned int BAR0, unsigned int BAR1, unsigned int BAR2, unsigned int BAR3,
 unsigned int BAR4){
  
@@ -199,11 +230,16 @@ unsigned int BAR4){
             (const char *[]){"ATA", "ATAPI"}[ide_devices[i].Type],         /* Type */
             ide_devices[i].Size / 1024 / 1024 / 2,               /* Size */
             ide_devices[i].Model);
+            ATADevice dev;
+            dev.parent = this;
+            dev.index_inside_parent = i;
+            ATA::devs[devs_size] = dev;
+            devs_size++;
       }
 }
 
 unsigned char pciide::ide_ata_access(unsigned char direction, unsigned char drive, unsigned int lba, 
-                             unsigned char numsects, unsigned short selector,unsigned char* destination) {
+                             unsigned char numsects,unsigned char* destination) {
 
     unsigned char lba_mode /* 0: CHS, 1:LBA28, 2: LBA48 */, dma /* 0: No DMA, 1: DMA */, cmd;
    unsigned char lba_io[6];
@@ -322,4 +358,27 @@ unsigned char pciide::ide_ata_access(unsigned char direction, unsigned char driv
         }
     }
    return 0;
+}
+void pciide::ide_read_slash_write(int device,char direction,uint_8* destination,int address,int sector_count) {
+ 
+   
+   // 1: Check if the drive presents:
+   // ==================================
+   if (device > 3 || ide_devices[device].Reserved == 0) return;      // Drive Not Found!
+ 
+   // 2: Check if inputs are valid:
+   // ==================================
+   else if (((address + sector_count) > ide_devices[device].Size) && (ide_devices[device].Type == IDE_ATA))
+      return;                     // Seeking to invalid position.
+ 
+   // 3: Read in PIO Mode through Polling & IRQs:
+   // ============================================
+   else {
+      unsigned char err;
+      if (ide_devices[device].Type == IDE_ATA)
+         err = ide_ata_access(direction, device, address, sector_count, (unsigned char*)destination);
+      else if (ide_devices[device].Type == IDE_ATAPI)
+            printf("ERROR: ATAPI not supported\n");
+      ide_print_error(device, err);
+   }
 }

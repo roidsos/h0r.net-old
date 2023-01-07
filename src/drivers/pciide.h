@@ -1,5 +1,9 @@
+// most of the code is copied from https://wiki.osdev.org/PCI_IDE_Controller
+
 #ifndef __PCIIDE_H__
 #define __PCIIDE_H__
+
+#include <util/stdint.h>
 
 #define ATA_SR_BSY     0x80    // Busy
 #define ATA_SR_DRDY    0x40    // Drive ready
@@ -71,6 +75,23 @@
 #define ATA_REG_CONTROL    0x0C
 #define ATA_REG_ALTSTATUS  0x0C
 #define ATA_REG_DEVADDRESS 0x0D
+    class pciide;
+
+    struct ATADevice{
+        pciide* parent;
+        char index_inside_parent;
+        ATADevice();
+    };
+
+    namespace ATA
+    {
+
+        void init();
+        void read_or_write(int device,char direction,uint_8* destination,int address,int sector_count);
+
+    }
+    
+
     struct IDEChannelRegisters {
     unsigned short base;  // I/O Base.
     unsigned short ctrl;  // Control Base
@@ -97,22 +118,22 @@ public:
     pciide(unsigned int BAR0, unsigned int BAR1, unsigned int BAR2, unsigned int BAR3,
 unsigned int BAR4);
 
-unsigned char ide_ata_access(unsigned char direction, unsigned char drive, unsigned int lba, 
-                             unsigned char numsects, unsigned short selector, unsigned char* destination);
+void ide_read_slash_write(int device,char direction,uint_8* destination,int address,int sector_count);
 
 private:
     IDEChannelRegisters channels[2];
     ide_device ide_devices[4];
     unsigned char ide_buf[2048];
-    volatile unsigned static char ide_irq_invoked;
     unsigned static char atapi_packet[12] ;
 
     unsigned char ide_polling(unsigned char channel, unsigned int advanced_check);
     void ide_write(unsigned char channel, unsigned char reg, unsigned char data);
     unsigned char ide_read(unsigned char channel, unsigned char reg);
     unsigned char ide_print_error(unsigned int drive, unsigned char err);
-};
+    unsigned char ide_ata_access(unsigned char direction, unsigned char drive, unsigned int lba, 
+                             unsigned char numsects, unsigned char* destination);
 
+};
 
 
 #endif // __PCIIDE_H__
