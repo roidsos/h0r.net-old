@@ -96,3 +96,13 @@ PCIDevice::PCIDevice()
 {
     
 }
+
+void PCIDevice::Write(uint_32 offset,uint_32 value)
+{
+    PCI::Write(bus,device,function,offset,value);
+}
+
+uint_32 PCIDevice::Read(uint_32 offset)
+{
+    return PCI::Read(bus,device,function,offset);
+}
