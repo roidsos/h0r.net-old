@@ -26,14 +26,14 @@ namespace ATA{
    void read_or_write(int device,char direction,uint_8* destination,int address,int sector_count)
    {
       pciide parent = *(devs[device].parent);
-      printf("s: %i\n",devs[device].index_inside_parent);
       parent.ide_read_slash_write(devs[device].index_inside_parent,direction,destination,address,sector_count);
    }
 
    
 }
 //end of the awful stuff
-void ide_write(unsigned char channel, unsigned char reg, unsigned char data); // forward declaration
+
+void pciide::ide_write(unsigned char channel, unsigned char reg, unsigned char data); // forward declaration
 
 unsigned char pciide::ide_read(unsigned char channel, unsigned char reg) {
    unsigned char result;

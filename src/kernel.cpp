@@ -13,7 +13,7 @@
 #include <render/renderer.h>
 #include <drivers/PIT.h>
 #include <drivers/pc-speaker.h>
-
+#include <desh/desh.h>
 extern "C" int kernel_main()
 {
     Clearscr(LIGHT_BLUE);
@@ -39,8 +39,10 @@ extern "C" int kernel_main()
 //    }
 //    printf("\n");
 
+    DeshInit();
+
     while (1)
     {
-
+        DeshUpdate();
     }
 }

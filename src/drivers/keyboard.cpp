@@ -1,3 +1,4 @@
+#include <io/io.h>
 #include <drivers/keyboard.h>
 #include <drivers/memory/Heap.h>
 
@@ -33,9 +34,9 @@ void initkeyboard(){
 }
 
 char getch(){
-    if (keybuffer[0]){
-    keybuffer[0] = 0;
+    if (turn_into_ASCII(keybuffer[0])){
     return turn_into_ASCII(keybuffer[0]);
+    keybuffer[0] = 0;
     }
     return 0;
 }

@@ -1,4 +1,3 @@
-#include <io/io.h>
 
 // |============================================================================|
 // |The following code is copied from https://github.com/lucianoforks/tetris-os/|
