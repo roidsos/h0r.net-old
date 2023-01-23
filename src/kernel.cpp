@@ -1,6 +1,6 @@
 #include "io/io.h"
-//#include <gdt/gdt.h>
-//#include <memory/memory.h>
+//#include <drivers/arch/x86/GDT/gdt.h>
+
 
 #include <drivers/mouse.h>
 #include <util/printf.h>
@@ -20,27 +20,19 @@ extern "C" int kernel_main()
 
     VGA vga;
 
-    //vga.SetMode(320,200,8);
-    //vga.Clearscr(0); // forgot xD
-    //window(10,3,140,70,"BENIS",4,3);
-    // pcspeaker p;
-    // p.play_sound(1000);
+    //GDT gdt;
+//
+    //gdt.AddSegment(0, 0, 0);
+    //gdt.AddSegment(0x00AF, 0x000FFFFF, 0x9B);//code
+    //gdt.AddSegment(0x00AF, 0x000FFFFF, 0x93);//data
+    //gdt.AddSegment(0, 0x000FFFFF, (GDT_DATA_PL3));
+//
+    //gdt.Load();
 
     InitDrivers();
 
     while (1)
     {
-        //vga.PutPixel(mousex,mousey,4);
-        
+
     }
 }
-// TODO: fix gdts
-
-// GDT gdt;
-
-// gdt.AddSegment(0, 0, 0);
-// gdt.AddSegment(0x00AF, 0x000FFFFF, 0x9B);//code
-// gdt.AddSegment(0x00AF, 0x000FFFFF, 0x93);//data
-// gdt.AddSegment(0, 0x000FFFFF, (GDT_DATA_PL3));
-//
-// gdt.Load();
