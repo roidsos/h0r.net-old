@@ -40,12 +40,7 @@ extern "C" int kernel_main()
 //    printf("\n");
 
     while (1)
-<<<<<<< HEAD
     {
 
-=======
-    { 
-        //vga.PutPixel(mousex,mousey,4);
->>>>>>> b9082e954603c1e633b500eb1e14191d002ebccd
     }
 }
