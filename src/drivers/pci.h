@@ -24,6 +24,9 @@ struct PCIDevice{
 
     uint_8 revision;
 
+    uint_32 Read(uint_32 offset);
+    void Write(uint_32 offset,uint_32 value);
+
     PCIDevice();
 };
 

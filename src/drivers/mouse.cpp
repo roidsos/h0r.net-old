@@ -1,5 +1,5 @@
 #include <io/io.h>
-#include <util/printf.h>
+#include <lib/printf.h>
 uint_8 mousey,mousex;
 bool mousebl,mousebr;
 uint_8 offset;

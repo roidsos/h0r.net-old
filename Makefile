@@ -11,7 +11,7 @@ run: all
 # runs using qemu
 
 debug: all
-	qemu-system-x86_64 -no-reboot -d int -no-shutdown -cdrom os.iso -device sb16 -drive file=hdd.img,if=ide,index=0,media=disk,format=raw -boot order=d
+	qemu-system-x86_64 -no-reboot -d int -D qemu.log -no-shutdown -cdrom os.iso -device sb16 -drive file=hdd.img,if=ide,index=0,media=disk,format=raw -boot order=d
 
 # standard qemu debug
 debugr: all
