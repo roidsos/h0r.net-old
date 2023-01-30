@@ -12,6 +12,8 @@
 #include <lib/printf.h>
 
 void InitDrivers(){
+
+
     InitIDT();
     LogINFO("Initalized IDT \n");
 
