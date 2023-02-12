@@ -1,4 +1,5 @@
 #include <io/io.h>
+#include <drivers/PIT.h>
 #include <drivers/keyboard.h>
 #include <drivers/memory/Heap.h>
 
@@ -31,6 +32,22 @@ void initkeyboard(){
     keybuffer = malloc(1);
     outb8(0x64,0xAE);
     outb8(0x60,0xf4);
+}
+void getstr(char* buffer,int size){
+    int idx;
+    do
+    {
+        if (idx >= size) 
+            return;
+        char _char = getch();
+        if (_char){
+            printchar(_char);
+            buffer[idx] = _char;
+            idx++;
+        }
+        PIT::Sleep(90);
+    }while (!keyboard_key(KEY_ENTER));
+    buffer[idx] = 0;
 }
 
 char getch(){
@@ -71,8 +88,7 @@ char turn_into_ASCII(uint_16 scancode) {
         if (KEY_IS_PRESS(scancode))
             backspace();
     } else if (KEY_SCANCODE(scancode) == KEY_ENTER) {
-        if (KEY_IS_PRESS(scancode))
-            print("\n");
+        //nothing, this case is left to the program
     } else if (KEY_SCANCODE(scancode) == KEY_TAB) {
 
     } else if (KEY_SCANCODE(scancode) == KEY_ESC) {
