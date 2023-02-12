@@ -3,3 +3,6 @@ iso/boot/kernel.bin
 os.iso
 %.o
 .vscode
+hdd.img
+devtools/backups/*.img
+x86_64-elf-7.5.0-Linux-x86_64
