@@ -30,7 +30,6 @@ namespace PIT
 extern "C" void Tick()
 {
     PIT::UptmeInMillis++;
-    
     if (PIT::countdown != 0)
     {
         PIT::countdown--;

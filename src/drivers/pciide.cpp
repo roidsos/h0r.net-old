@@ -32,7 +32,8 @@ namespace ATA{
    
 }
 //end of the awful stuff
-void ide_write(unsigned char channel, unsigned char reg, unsigned char data); // forward declaration
+
+void pciide::ide_write(unsigned char channel, unsigned char reg, unsigned char data); // forward declaration
 
 unsigned char pciide::ide_read(unsigned char channel, unsigned char reg) {
    unsigned char result;

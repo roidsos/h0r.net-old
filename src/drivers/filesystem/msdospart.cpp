@@ -22,7 +22,7 @@ void LoadMBR(){
     
     if(mbr.magicnumber != 0xAA55)
     {
-        printf("illegal MBR");
+        printf("illegal MBR\n");
         return;
     }
 

@@ -1,4 +1,3 @@
-#include <io/io.h>
 
 // |============================================================================|
 // |The following code is copied from https://github.com/lucianoforks/tetris-os/|
@@ -89,4 +88,5 @@ extern struct Keyboard keyboard;
 // ============================================================================
 void initkeyboard();
 char turn_into_ASCII(uint_16 scancode);
+void getstr(char* buffer,int size);
 char getch();

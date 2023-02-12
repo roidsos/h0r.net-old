@@ -44,7 +44,6 @@
                     
 class GDT{
     uint_8 fullness;
-    uint_16 descriptor[5];
     public:
     GDT();
     void AddSegment(uint_32 base, uint_32 limit, uint_16 flag);
