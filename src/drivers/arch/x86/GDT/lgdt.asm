@@ -8,5 +8,5 @@ dq _gdt
 %include "asm/macros.inc"
 
 loadgdt:
-lidt [gdtdesc]
+lgdt [gdtdesc]
 ret
