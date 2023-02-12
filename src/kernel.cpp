@@ -19,15 +19,15 @@ extern "C" int kernel_main()
     Clearscr(LIGHT_BLUE);
     enable_text_cursor(14, 15);
 
-//gdts are fucked
-//    GDT gdt;
-//
-//    gdt.AddSegment(0, 0, 0);//null
-//    gdt.AddSegment(0x00AF, 0x000FFFFF, 0x9B);//code
-//    gdt.AddSegment(0x00AF, 0x000FFFFF, 0x93);//data
-//    gdt.AddSegment(0, 0x000FFFFF, (GDT_DATA_PL3));
-//
-//    gdt.Load();
+    //gdts are fucked
+    // GDT gdt;
+    // so does getch work rn?
+    // gdt.AddSegment(0, 0, 0);//null
+    // gdt.AddSegment(0x00AF, 0x000FFFFF, 0x9B);//code
+    // gdt.AddSegment(0x00AF, 0x000FFFFF, 0x93);//data
+    // gdt.AddSegment(0, 0x000FFFFF, (GDT_DATA_PL3));
+
+    // gdt.Load();
 
     InitDrivers();
 //    uint_8 test[512];
@@ -38,6 +38,9 @@ extern "C" int kernel_main()
 //    }
 //    printf("\n");
 
+    Clearscr(LIGHT_BLUE);
+    enable_text_cursor(14, 15);
+    
     DeshInit();
 
     while (1)

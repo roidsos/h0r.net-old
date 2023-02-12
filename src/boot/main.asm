@@ -1,26 +1,22 @@
 global start
 extern long_mode_start
 ;extern DetectMemory
-
 section .text
 bits 32
 start:
 	
 	mov esp, stack_top
 
-	; we have to clear the stack here
-	; but idk how to implement memset in assembly ... I can try
-	; alr im too stupid to even understand c++ so I wont even try with asm lmfao
-	; I think its done
-
 	mov ebx, stack_bottom
+	
 	clstk:
 
-	mov [ebx],byte 0  ; now? now?
+	mov [ebx],byte 0 
 	inc ebx
 
 	cmp ebx, stack_bottom + 4096 * 4
 	jne clstk
+
 	;call DetectMemory ;does not work because the gdt does not have 16 bit protected mode
 
 

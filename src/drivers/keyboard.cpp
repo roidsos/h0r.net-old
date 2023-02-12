@@ -33,7 +33,8 @@ void initkeyboard(){
     outb8(0x64,0xAE);
     outb8(0x60,0xf4);
 }
-void getstr(char* buffer,int size){
+
+void getstr_original(char* buffer,int size){
     int idx;
     do
     {
@@ -41,14 +42,57 @@ void getstr(char* buffer,int size){
             return;
         char _char = getch();
         if (_char){
-            printchar(_char);
-            buffer[idx] = _char;
-            idx++;
+            if(_char == -1){  // @ignGeri
+                buffer[idx--] = ' ';
+            } else {
+                printchar(_char);
+                buffer[idx] = _char;
+                idx++;
+            }
         }
         PIT::Sleep(90);
     }while (!keyboard_key(KEY_ENTER));
     buffer[idx] = 0;
 }
+
+
+void getstr(char* buffer, int size) {
+    int idx = 0;
+    bool repeat = false;
+    int repeat_count = 0;
+    int repeat_delay = 100;
+
+    do {
+        char _char = getch();
+        if (_char) {
+            if (_char == -1) {
+                buffer[idx--] = ' ';
+            } else {
+                if (repeat) {
+                    if (++repeat_count >= 10) {
+                        repeat_count = 0;
+                        printchar(_char);
+                        buffer[idx] = _char;
+                        idx++;
+                    }
+                } else {
+                    printchar(_char);
+                    buffer[idx] = _char;
+                    idx++;
+                }
+                repeat = true;
+            }
+        } else {
+            repeat = false;
+            repeat_count = 0;
+        }
+        if (idx >= size) return;
+        PIT::Sleep(repeat ? repeat_delay / 10 : repeat_delay);
+    } while (!keyboard_key(KEY_ENTER));
+    buffer[idx] = 0;
+}
+
+
 
 char getch(){
     if (turn_into_ASCII(keybuffer[0])){
@@ -87,6 +131,7 @@ char turn_into_ASCII(uint_16 scancode) {
     } else if (KEY_SCANCODE(scancode) == KEY_BACKSPACE) {
         if (KEY_IS_PRESS(scancode))
             backspace();
+            return -1;
     } else if (KEY_SCANCODE(scancode) == KEY_ENTER) {
         //nothing, this case is left to the program
     } else if (KEY_SCANCODE(scancode) == KEY_TAB) {

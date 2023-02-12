@@ -18,6 +18,5 @@ uint_16 inb16(uint_16 port);
 uint_32 inb32(uint_16 port);
 const char* hex2str(uint_64 value);
 const char* int2str(uint_64 value);
-int_8 fromHEXToRGB(int color);
 #endif 
 

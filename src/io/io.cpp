@@ -67,38 +67,39 @@ void print(const int_8* str,uint_8 color)
     int iter = CursorPos;
     //loops trough the string and outputs to the screen
     while(str[i] != '\0'){
-        switch (str[i])
-        {
-        case 10://newline
+            switch (str[i])
+            {
+            case 10://newline
 
-            iter += 80;
-            iter -= iter % 80;//automaticly returns on newlines like unix
-            line_num += 1;
-            break;
-        case 13://return
+                iter += 80;
+                iter -= iter % 80;//automaticly returns on newlines like unix
+                line_num += 1;
+                break;
+            case 13://return
 
-            iter -= iter % 80;
-            break;
-        
-        default:
-            //if(iter > 80*20){
-            //    memcpy(VideoMemory,VideoMemory + 80,80*19);
-            //    memset(VideoMemory + 80*19,0,80);
-            //    iter += VideoMemory + 80*19;
-            //    }
-            /*
-            internal output format:
-            1 byte - ASCII charachter
-            1 byte - color data
-            1 byte - ASCII charachter
-            1 byte - color data
-            and so on until the end of the buffer
-            */
-            VideoMemory[iter] = (VideoMemory[iter] & (color << 8)) | str[i];
-            iter++;
-        }
-        vga_line_lengths[line_num] += iter;
-        i++;
+                iter -= iter % 80;
+                break;
+            
+            default:
+                //if(iter > 80*20){
+                //    memcpy(VideoMemory,VideoMemory + 80,80*19);
+                //    memset(VideoMemory + 80*19,0,80);
+                //    iter = 80*19;
+                //}
+                
+                /*
+                internal output format:
+                1 byte - ASCII charachter
+                1 byte - color data
+                1 byte - ASCII charachter
+                1 byte - color data
+                and so on until the end of the buffer
+                */
+                VideoMemory[iter] = (VideoMemory[iter] & (color << 8)) | str[i];
+                iter++;
+            }
+            vga_line_lengths[line_num] += iter;
+            i++;
     }
     
     //adds the displayed string lenght to the cursor position and updates the line number
@@ -129,6 +130,12 @@ void printchar(char chr, uint_8 color)
         break;
     
     default:
+        if(iter > 80*22){
+            memcpy(VideoMemory,VideoMemory + 80,80*60);
+            memset(VideoMemory + 80*60,0,80);
+            iter = 80*22;
+        }
+
         VideoMemory[iter] = (VideoMemory[iter] & (color << 8)) | chr;
         iter++;
         vga_line_lengths[line_num]++;

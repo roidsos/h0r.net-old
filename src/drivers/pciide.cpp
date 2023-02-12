@@ -299,7 +299,6 @@ unsigned char pciide::ide_ata_access(unsigned char direction, unsigned char driv
        ide_write(channel, ATA_REG_HDDEVSEL, 0xA0 | (slavebit << 4) | head); // Drive & CHS.
     else
        ide_write(channel, ATA_REG_HDDEVSEL, 0xE0 | (slavebit << 4) | head); // Drive & LBA
-      printf("s : %i",lba_mode);
     // (V) Write Parameters;
     if (lba_mode == 2) {
        ide_write(channel, ATA_REG_SECCOUNT1,   0);
@@ -339,7 +338,10 @@ unsigned char pciide::ide_ata_access(unsigned char direction, unsigned char driv
                return err; // Polling, set error and exit if there is.
             for (size_t j = 0; j < words; j++)
             {
-               ((uint_16*)destination)[j] = ide_read(bus,ATA_REG_DATA);
+               uint_16 wdata = inb16(bus);
+               destination[i] = wdata & 0x00ff;
+               if (i+ 1 < words)
+                  destination[i+1] = (wdata >> 8) & 0x00ff;
             }
         } else {
         // PIO Write.
@@ -347,7 +349,7 @@ unsigned char pciide::ide_ata_access(unsigned char direction, unsigned char driv
             ide_polling(channel, 0); // Polling.
             for (size_t j = 0; j < words; j++)
             {
-               ide_write(bus,ATA_REG_DATA,((uint_16*)destination)[j]);
+               outb16(bus,((uint_16*)destination)[j]);
             }
             
         }

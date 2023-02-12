@@ -36,7 +36,6 @@ void InitDrivers(){
     PCI::SelectDrivers();
     LogINFO("Initalized PCI \n");
     ATA::init();
-    //https://lolguy91-silver-succotash-67jxpq957vgh4jvx-6080.preview.app.github.dev/ for later
 
     LogINFO("Initalized Mass Storage \n");
     LoadMBR();

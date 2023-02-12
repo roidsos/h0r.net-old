@@ -37,6 +37,7 @@ namespace PCI
     bool HasFunction(uint_16 bus, uint_16 device);
 
     void SelectDrivers();
+    void list_devices();
     PCIDevice GetDevice(uint_16 bus, uint_16 device, uint_16 function);
 };
 

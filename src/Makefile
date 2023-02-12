@@ -11,7 +11,7 @@ object_files := $(asm_object_files) $(kobject_files)
 
 $(kobject_files):$(source_files)
 #compiles a source file with a lot of STFU options cuz I hate debugging
-	x86_64-elf-g++ -I . -fpermissive -ffreestanding -m64 -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-exceptions -fno-leading-underscore -c $(patsubst %.o, %.cpp, $@) -o $@
+	g++ -I . -fpermissive -ffreestanding -m64 -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-exceptions -fno-leading-underscore -c $(patsubst %.o, %.cpp, $@) -o $@
 
 $(asm_object_files):$(asm_source_files)
 #assembles the .asm files
@@ -19,4 +19,4 @@ $(asm_object_files):$(asm_source_files)
 
 build-x86_64: $(object_files)
 # this is the linkng phase, it links using a linker script
-	x86_64-elf-ld -n -o  kernel.bin -T linker.ld $^ 
+	ld -n -o  kernel.bin -T linker.ld $^ 
