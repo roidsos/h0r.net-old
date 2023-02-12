@@ -26,7 +26,6 @@ namespace ATA{
    void read_or_write(int device,char direction,uint_8* destination,int address,int sector_count)
    {
       pciide parent = *(devs[device].parent);
-      printf("s: %i\n",devs[device].index_inside_parent);
       parent.ide_read_slash_write(devs[device].index_inside_parent,direction,destination,address,sector_count);
    }
 
@@ -264,7 +263,7 @@ unsigned char pciide::ide_ata_access(unsigned char direction, unsigned char driv
       lba_io[4] = 0; // LBA28 is integer, so 32-bits are enough to access 2TB.
       lba_io[5] = 0; // LBA28 is integer, so 32-bits are enough to access 2TB.
       head      = 0; // Lower 4-bits of HDDEVSEL are not used here.
-   } else if (ide_devices[drive].Capabilities & 0x200)  { // Drive supports LBA?
+   } else if (ide_devices[drive].Capabilities & 0b0000000000000000)  { // Drive supports LBA?
       // LBA28:
       lba_mode  = 1;
       lba_io[0] = (lba & 0x00000FF) >> 0;
@@ -299,7 +298,7 @@ unsigned char pciide::ide_ata_access(unsigned char direction, unsigned char driv
        ide_write(channel, ATA_REG_HDDEVSEL, 0xA0 | (slavebit << 4) | head); // Drive & CHS.
     else
        ide_write(channel, ATA_REG_HDDEVSEL, 0xE0 | (slavebit << 4) | head); // Drive & LBA
-
+      printf("s : %i",lba_mode);
     // (V) Write Parameters;
     if (lba_mode == 2) {
        ide_write(channel, ATA_REG_SECCOUNT1,   0);
