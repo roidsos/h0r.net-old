@@ -1,1 +1,1 @@
-#include "asm/macros.inc"
+%include "asm/macros.inc"
