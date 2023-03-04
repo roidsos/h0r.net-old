@@ -20,4 +20,4 @@ debugr: all
 #remote debug using GDB
 clean:
 # JUST DELETES JUNK LIKE OBJECT FILES - fuck capslock
-	-rm -rf kernel/*/*.o kernel/boot/*.o kernel/util/*.o kernel/drivers/*.o kernel/gdt/*.o kernel/interrupts/*.o kernel/memory/*.o kernel/render/*.o kernel/*.o os.iso .vscode/ kernel/kernel.bin iso/boot/kernel.bin
+	rm -f src/*/*.o  iso/boot/kernel.bin

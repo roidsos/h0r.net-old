@@ -139,6 +139,11 @@ static inline void _out_buffer(char character, void* buffer, size_t idx, size_t 
   }
 }
 
+static inline void _out_dbg(char character, void* buffer, size_t idx, size_t maxlen)
+{
+  
+  outb8(0xE9,character);
+}
 
 // internal null output
 static inline void _out_null(char character, void* buffer, size_t idx, size_t maxlen)
@@ -867,6 +872,17 @@ int printf_(const char* format, ...)
   va_end(va);
   return ret;
 }
+
+int dprintf_(const char* format, ...)
+{
+  va_list va;
+  va_start(va, format);
+  char buffer[1];
+  const int ret = _vsnprintf(_out_dbg, buffer, (size_t)-1, format, va);
+  va_end(va);
+  return ret;
+}
+
 
 
 int sprintf_(char* buffer, const char* format, ...)
