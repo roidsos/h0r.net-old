@@ -25,7 +25,7 @@ the h0r.net project was started just for fun, but Im planning to use it.</br>
 - [x] Heap
 
 ### ACPI
-- [X] ACPI(Restart commmand only)
+- [ ] ACPI
 - [ ] LAPIC
 - [ ] IOAPIC
 - [ ] LAI
@@ -40,6 +40,7 @@ the h0r.net project was started just for fun, but Im planning to use it.</br>
 - [X] PS/2 Keyboard
 - [ ] PS/2 Mouse
 - [ ] COM
+<!--
 #### VMs
 - [ ] VMWare Tools
 - [ ] VBox Guest Additions
@@ -60,13 +61,13 @@ the h0r.net project was started just for fun, but Im planning to use it.</br>
 - [ ] OHCI
 - [ ] EHCI
 - [ ] XHCI 
-
+-->
 ### Timers
 - [ ] HPET
 - [x] PIT
 - [ ] RTC
 - [ ] LAPIC Timer
-
+<!--
 ### Tasking
 - [ ] SMP
 - [ ] Scheduler
@@ -109,7 +110,7 @@ the h0r.net project was started just for fun, but Im planning to use it.</br>
 - [ ] Telnet
 - [ ] SSL
 - [ ] Or just LWIP
-
+-->
 ## How to get it running?
 ### On Arch Linux and similar:
   Install packages from aur: [x86_64-elf-gcc](https://aur.archlinux.org/packages/x86_64-elf-gcc) [x86_64-elf-binutils](https://aur.archlinux.org/packages/x86_64-elf-binutils)</br>
