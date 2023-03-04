@@ -1,6 +1,7 @@
 #include <drivers/mass-storage.h>
 #include <drivers/memory/Heap.h>
 #include <drivers/memory/memory.h>
+#include <util/logger.h>
 #include <lib/printf.h>
 
 namespace mass_storage_manager
@@ -35,7 +36,7 @@ namespace mass_storage_manager
     void Read28(uint_8 drive_num,uint_32 sector,uint_8* data,int count)
     {
         if (devicessize == 0){
-            printf("ERROR:No Storage Devices Regisrtered\n");
+            LogERR("No Storage Devices Regisrtered\n");
             return;
         }
         uint_16 controller_index = devices[drive_num].parent_index;
@@ -45,7 +46,7 @@ namespace mass_storage_manager
     void Write28(uint_8 drive_num,uint_32 sector,uint_8* data,int count)
     {
         if (devicessize == 0){
-            printf("ERROR:No Storage Devices Regisrtered\n");
+            LogERR("No Storage Devices Regisrtered\n");
             return;
         }        
         uint_16 controller_index = devices[drive_num].parent_index;
@@ -54,6 +55,6 @@ namespace mass_storage_manager
     
     void ListDevices()
     {
-        printf("nope, I was too lazy to implement this important debug tool \n");
+        LogWRN("nope, I was too lazy to implement this important debug tool \n");
     }
 }

@@ -1,5 +1,8 @@
 #include <util/stdint.h>
 #include <drivers/memory/memory.h>
+
+//TODO: fix this mess
+
 int iter = 0;
 int line_num = 0;
 int vga_line_lengths[24] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
@@ -55,10 +58,8 @@ outb8(0x3d4,0x0e);
 outb8(0x3d5,(uint_8)((pos >> 8) & 0xff));
 CursorPos = pos;
 }
+
 // prints a string
-
-
-
 void print(const int_8* str,uint_8 color)
 {
     //set up some internal varibles

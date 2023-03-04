@@ -3,6 +3,7 @@
 #include <drivers/PIT.h>
 #include <drivers/mass-storage.h>
 #include <drivers/memory/Heap.h>
+#include <util/logger.h>
 #include <io/io.h>
 #include <lib/printf.h>
 
@@ -108,21 +109,21 @@ unsigned char pciide::ide_print_error(unsigned int drive, unsigned char err) {
    if (err == 0)
       return err;
  
-   printf("IDE:");
-   if (err == 1) {printf("- Device Fault\n     "); err = 19;}
+   
+   if (err == 1) {LogERR("IDE: - Device Fault\n     "); err = 19;}
    else if (err == 2) {
       unsigned char st = ide_read(ide_devices[drive].Channel, ATA_REG_ERROR);
-      if (st & ATA_ER_AMNF)   {printf("- No Address Mark Found\n     ");   err = 7;}
-      if (st & ATA_ER_TK0NF)   {printf("- No Media or Media Error\n     ");   err = 3;}
-      if (st & ATA_ER_ABRT)   {printf("- Command Aborted\n     ");      err = 20;}
-      if (st & ATA_ER_MCR)   {printf("- No Media or Media Error\n     ");   err = 3;}
-      if (st & ATA_ER_IDNF)   {printf("- ID mark not Found\n     ");      err = 21;}
-      if (st & ATA_ER_MC)   {printf("- No Media or Media Error\n     ");   err = 3;}
-      if (st & ATA_ER_UNC)   {printf("- Uncorrectable Data Error\n     ");   err = 22;}
-      if (st & ATA_ER_BBK)   {printf("- Bad Sectors\n     ");       err = 13;}
-   } else  if (err == 3)           {printf("- Reads Nothing\n     "); err = 23;}
-     else  if (err == 4)  {printf("- Write Protected\n     "); err = 8;}
-   printf("- [%s %s] %s\n",
+      if (st & ATA_ER_AMNF)      {LogERR("IDE: - No Address Mark Found\n     ");   err = 7;}
+      if (st & ATA_ER_TK0NF)     {LogERR("IDE: - No Media or Media Error\n     ");   err = 3;}
+      if (st & ATA_ER_ABRT)      {LogERR("IDE: - Command Aborted\n     ");      err = 20;}
+      if (st & ATA_ER_MCR)       {LogERR("IDE: - No Media or Media Error\n     ");   err = 3;}
+      if (st & ATA_ER_IDNF)      {LogERR("IDE: - ID mark not Found\n     ");      err = 21;}
+      if (st & ATA_ER_MC)        {LogERR("IDE: - No Media or Media Error\n     ");   err = 3;}
+      if (st & ATA_ER_UNC)       {LogERR("IDE: - Uncorrectable Data Error\n     ");   err = 22;}
+      if (st & ATA_ER_BBK)       {LogERR("IDE: - Bad Sectors\n     ");       err = 13;}
+   } else  if (err == 3)         {LogERR("IDE: - Reads Nothing\n     "); err = 23;}
+     else  if (err == 4)         {LogERR("IDE: - Write Protected\n     "); err = 8;}
+                                  LogERR("IDE: - [%s %s] %s\n",
       (const char *[]){"Primary", "Secondary"}[ide_devices[drive].Channel], // Use the channel as an index into the array
       (const char *[]){"Master", "Slave"}[ide_devices[drive].Drive], // Same as above, using the drive
       ide_devices[drive].Model);
@@ -226,7 +227,7 @@ unsigned int BAR4){
    // 4- Print Summary:
    for (i = 0; i < 4 ; i++)
       if (ide_devices[i].Reserved == 1) {
-         printf(" Found %s Drive %dB - %s\n",
+         LogINFO(" Found %s Drive %dB - %s\n",
             (const char *[]){"ATA", "ATAPI"}[ide_devices[i].Type],         /* Type */
             ide_devices[i].Size,               /* Size */
             ide_devices[i].Model);
@@ -380,7 +381,7 @@ void pciide::ide_read_slash_write(int device,char direction,uint_8* destination,
       if (ide_devices[device].Type == IDE_ATA)
          err = ide_ata_access(direction, device, address, sector_count, (unsigned char*)destination);
       else if (ide_devices[device].Type == IDE_ATAPI)
-            printf("ERROR: ATAPI not supported\n");
+            LogERR(" ATAPI not supported\n");
       ide_print_error(device, err);
    }
 }
