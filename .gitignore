@@ -1,8 +1,43 @@
-kernel/kernel.bin
-iso/boot/kernel.bin
-os.iso
+
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
 *.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Kernel stuff
+kernel/kernel.bin
+iso/*
+os.iso
 .vscode
 hdd.img
-devtools/backups/*.img
-x86_64-elf-7.5.0-Linux-x86_64
+
+# Logs
+log.txt

@@ -7,15 +7,15 @@ all:
 	grub-mkrescue /usr/lib/grub/i386-pc -o os.iso ./iso
 
 run: all
-	qemu-system-x86_64 -cdrom os.iso -debugcon stdio -device sb16 -drive file=hdd.img,if=ide,index=0,media=disk,format=raw -boot order=d -audiodev pa,id=audio0 -machine pcspk-audiodev=audio0
+	qemu-system-x86_64 -cdrom os.iso -debugcon file:log.txt -device sb16 -drive file=hdd.img,if=ide,index=0,media=disk,format=raw -boot order=d -audiodev pa,id=audio0 -machine pcspk-audiodev=audio0
 # runs using qemu
 
 debug: all
-	qemu-system-x86_64 -no-reboot -debugcon stdio -d int -no-shutdown -cdrom os.iso -device sb16 -drive file=hdd.img,if=ide,index=0,media=disk,format=raw -boot order=d
+	qemu-system-x86_64 -no-reboot -debugcon file:log.txt -d int -no-shutdown -cdrom os.iso -device sb16 -drive file=hdd.img,if=ide,index=0,media=disk,format=raw -boot order=d
 
 # standard qemu debug
 debugr: all
-	qemu-system-x86_64 -s -S -no-reboot -debugcon stdio -d int -no-shutdown -cdrom os.iso -device sb16 -drive file=hdd.img,if=ide,index=0,media=disk,format=raw -boot order=d
+	qemu-system-x86_64 -s -S -no-reboot -debugcon file:log.txt -d int -no-shutdown -cdrom os.iso -device sb16 -drive file=hdd.img,if=ide,index=0,media=disk,format=raw -boot order=d
 
 #remote debug using GDB
 clean:
