@@ -37,7 +37,7 @@ void InitDrivers(){
     PCI::SelectDrivers();
     LogINFO("Initalized PCI \n");
 
-    x86_Read_From_Drive();
+    //x86_Read_From_Drive(); //<--- garbage(or is it?)
 
     ATA::init();
 

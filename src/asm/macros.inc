@@ -39,18 +39,11 @@ pop r11
         RETFQ                       ; Perform a far return, RETFQ or LRETQ depending on syntax
 
     .reload_CS:
-    ; Reload data segment registers
-        MOV   AX, 0x30 ; 0x10 is a stand-in for your data segment
-        MOV   DS, AX
-        MOV   ES, AX
-        MOV   FS, AX
-        MOV   GS, AX
-        MOV   SS, AX
 
     [bits 16]
     .rmode16:
         ; Reload data segment registers
-        MOV   AX, 0x38 ; 0x10 is a stand-in for your data segment
+        MOV   AX, 0x20 ; 0x10 is a stand-in for your data segment
         MOV   DS, AX
         MOV   ES, AX
         MOV   FS, AX
@@ -59,12 +52,13 @@ pop r11
 %endmacro
 
 %macro go2protectedmode 0
+extern loadidt
     [bits 16]
     go2protectedmode:
         jmp 0x8:.pmode64
 
 
-    [bits 64]
+    [bits 32]
     .pmode64:
         ; Reload data segment registers
         MOV   AX, 0x10 ; 0x10 is a stand-in for your data segment
@@ -78,12 +72,13 @@ pop r11
         mov rax, cr0
         or rax, 1
         mov cr0, rax
-        ret
+        
 
         ;enable paging
         mov rax, cr0
         or rax, 0x80000000
         mov cr0, rax
         
+        call loadidt
         sti
 %endmacro
