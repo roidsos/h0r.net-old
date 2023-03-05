@@ -80,7 +80,6 @@
     struct ATADevice{
         pciide* parent;
         char index_inside_parent;
-        ATADevice();
     };
 
     namespace ATA

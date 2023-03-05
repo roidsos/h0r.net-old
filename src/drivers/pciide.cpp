@@ -10,17 +10,13 @@
 //awful implementation sadly
 uint_16 controller_index;
 uint_16 devs_size;
-ATADevice::ATADevice()
-{
-   controller_index = mass_storage_manager::RegisterDevice(controller_index,devs_size);
-}
 
 namespace ATA{
    ATADevice devs[1024];
 
    static void init()
    {
-      mass_storage_manager::RegisterController(&read_or_write);
+      controller_index = mass_storage_manager::RegisterController(&read_or_write);
 
       //TODO: detect controllers
       pciide controller(0x1F0, 0x3F6, 0x170, 0x376, 0x000);
@@ -33,7 +29,7 @@ namespace ATA{
    }
 
    
-}
+};
 //end of the awful stuff
 
 void pciide::ide_write(unsigned char channel, unsigned char reg, unsigned char data); // forward declaration
@@ -166,7 +162,6 @@ unsigned int BAR4){
          // (II) Send ATA Identify Command:
          ide_write(i, ATA_REG_COMMAND, ATA_CMD_IDENTIFY);
          PIT::Sleep(1); // This function should be implemented in your OS. which waits for 1 ms.
-                   // it is based on System Timer Device Driver.
  
          // (III) Polling:
          if (ide_read(i, ATA_REG_STATUS) == 0) continue; // If Status = 0, No Device.
@@ -227,11 +222,10 @@ unsigned int BAR4){
       }
  
    // 4- Print Summary:
-   const char* names[2]{"ATA", "ATAPI"};
    for (i = 0; i < 4 ; i++)
       if (ide_devices[i].Reserved == 1) {
          LogINFO(" Found %s Drive %dB - %s\n",
-            names[ide_devices[i].Type],         /* Type */
+            ide_devices[i].Type ? "ATA":"ATAPI",         /* Type */
             ide_devices[i].Size,               /* Size */
             ide_devices[i].Model);
 
@@ -239,7 +233,10 @@ unsigned int BAR4){
             dev.parent = this;
             dev.index_inside_parent = i;
             ATA::devs[devs_size] = dev;
+            mass_storage_manager::RegisterDevice(controller_index,devs_size);
             devs_size++;
+
+            
       }
 }
 

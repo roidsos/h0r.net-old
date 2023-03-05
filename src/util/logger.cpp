@@ -17,6 +17,7 @@ void LogINFO(char *msg,...){
 
     printf(PREFIX_INFO);
     vprintf(msg,va);
+
     va_end(va);
 }
 
@@ -29,6 +30,7 @@ void LogERR(char *msg,...){
 
     printf(PREFIX_ERR);
     vprintf(msg,va);
+
     va_end(va);
 }
 void LogWRN(char *msg,...){
@@ -40,6 +42,7 @@ void LogWRN(char *msg,...){
 
     printf(PREFIX_WRN);
     vprintf(msg,va);
+
     va_end(va);
 }
 void LogFATAL(char *msg,...){
@@ -51,6 +54,7 @@ void LogFATAL(char *msg,...){
 
     printf(PREFIX_FATAL);
     vprintf(msg,va);
+    
     va_end(va);
 
     //reboot cuz its fatal

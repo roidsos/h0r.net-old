@@ -14,6 +14,11 @@ namespace mass_storage_manager
 
     uint_16 RegisterDevice(uint_16 parent_index,uint_16 index_inside_parent)
     {
+        if (parent_index >= controllerssize){
+            LogERR("Failed to register device: No Such Controller Regisrtered\n");
+            return;
+        }
+
         MSDevice dev;
         dev.parent_index = parent_index;
         dev.index_inside_parent = index_inside_parent;
@@ -35,8 +40,8 @@ namespace mass_storage_manager
     
     void Read28(uint_8 drive_num,uint_32 sector,uint_8* data,int count)
     {
-        if (devicessize == 0){
-            LogERR("No Storage Devices Regisrtered\n");
+        if (drive_num >= devicessize){
+            LogERR("Failed to read from device: No Such Storage Device Regisrtered\n");
             return;
         }
         uint_16 controller_index = devices[drive_num].parent_index;
@@ -45,8 +50,8 @@ namespace mass_storage_manager
     
     void Write28(uint_8 drive_num,uint_32 sector,uint_8* data,int count)
     {
-        if (devicessize == 0){
-            LogERR("No Storage Devices Regisrtered\n");
+        if (drive_num >= devicessize){
+            LogERR("Failed to write to device: No Such Storage Device Regisrtered\n");
             return;
         }        
         uint_16 controller_index = devices[drive_num].parent_index;
