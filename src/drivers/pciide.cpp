@@ -12,7 +12,7 @@ uint_16 controller_index;
 uint_16 devs_size;
 ATADevice::ATADevice()
 {
-   mass_storage_manager::RegisterDevice(controller_index,devs_size);
+   controller_index = mass_storage_manager::RegisterDevice(controller_index,devs_size);
 }
 
 namespace ATA{
@@ -21,6 +21,8 @@ namespace ATA{
    static void init()
    {
       mass_storage_manager::RegisterController(&read_or_write);
+
+      //TODO: detect controllers
       pciide controller(0x1F0, 0x3F6, 0x170, 0x376, 0x000);
    }
    
@@ -225,12 +227,14 @@ unsigned int BAR4){
       }
  
    // 4- Print Summary:
+   const char* names[2]{"ATA", "ATAPI"};
    for (i = 0; i < 4 ; i++)
       if (ide_devices[i].Reserved == 1) {
          LogINFO(" Found %s Drive %dB - %s\n",
-            (const char *[]){"ATA", "ATAPI"}[ide_devices[i].Type],         /* Type */
+            names[ide_devices[i].Type],         /* Type */
             ide_devices[i].Size,               /* Size */
             ide_devices[i].Model);
+
             ATADevice dev;
             dev.parent = this;
             dev.index_inside_parent = i;

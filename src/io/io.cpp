@@ -1,7 +1,6 @@
 #include <util/stdint.h>
 #include <drivers/memory/memory.h>
 
-//TODO: fix this mess
 
 int iter = 0;
 int line_num = 0;
@@ -58,56 +57,7 @@ outb8(0x3d4,0x0e);
 outb8(0x3d5,(uint_8)((pos >> 8) & 0xff));
 CursorPos = pos;
 }
-
-// prints a string
-void print(const int_8* str,uint_8 color)
-{
-    //set up some internal varibles
-    static uint_16* VideoMemory = (uint_16*)0xb8000;
-    int i = 0;
-    int iter = CursorPos;
-    //loops trough the string and outputs to the screen
-    while(str[i] != '\0'){
-            switch (str[i])
-            {
-            case 10://newline
-
-                iter += 80;
-                iter -= iter % 80;//automaticly returns on newlines like unix
-                line_num += 1;
-                break;
-            case 13://return
-
-                iter -= iter % 80;
-                break;
-            
-            default:
-                //if(iter > 80*20){
-                //    memcpy(VideoMemory,VideoMemory + 80,80*19);
-                //    memset(VideoMemory + 80*19,0,80);
-                //    iter = 80*19;
-                //}
-                
-                /*
-                internal output format:
-                1 byte - ASCII charachter
-                1 byte - color data
-                1 byte - ASCII charachter
-                1 byte - color data
-                and so on until the end of the buffer
-                */
-                VideoMemory[iter] = (VideoMemory[iter] & (color << 8)) | str[i];
-                iter++;
-            }
-            vga_line_lengths[line_num] += iter;
-            i++;
-    }
-    
-    //adds the displayed string lenght to the cursor position and updates the line number
-    setCursorpos(iter);
-    line_num = CursorPos / 80;
-}
-
+ 
 //prints a char
 void printchar(char chr, uint_8 color)
 {
@@ -116,63 +66,62 @@ void printchar(char chr, uint_8 color)
     
     //set up some internal varibles
     static uint_16* VideoMemory = (uint_16*)0xb8000;
-    int iter = CursorPos;
-
     //outputs charachther the screen
     switch (chr)
     {
     case 10://newline
-        iter += 80;
-        iter -= iter % 80;//automaticly returns on newlines like unix
-        line_num += 1;
+        CursorPos += 80;
+        CursorPos -= CursorPos % 80;//automaticly returns on newlines like unix
         break;
     case 13://return
-        iter -= iter % 80;
+        CursorPos -= CursorPos % 80;
         break;
     
     default:
-        if(iter > 80*22){
-            memcpy(VideoMemory,VideoMemory + 80,80*60);
-            memset(VideoMemory + 80*60,0,80);
-            iter = 80*22;
+
+        if(CursorPos > 80*22){
+            memcpy(VideoMemory,VideoMemory + 80,80*40);
+            memset(VideoMemory + 80*23,0,80 * 3);  
+            CursorPos = 80*21;
         }
 
-        VideoMemory[iter] = (VideoMemory[iter] & (color << 8)) | chr;
-        iter++;
+        VideoMemory[CursorPos] = (VideoMemory[CursorPos] & (color << 8)) | chr;
+        CursorPos++;
+
+        line_num = CursorPos / 80;
         vga_line_lengths[line_num]++;
     }
-    setCursorpos(iter);   
-    line_num = CursorPos / 80;
+
+    setCursorpos(CursorPos);   
+    
 }
 
-//adds a backspace and moves the 
+//adds a backspace and moves the cursor
 void backspace(){
-    //set up some internal varibles
     static uint_16* VideoMemory = (uint_16*)0xb8000;
-    register int iter = CursorPos;
 
-    
-    if(iter > 0){
-        //decreese iter and delete the charachter right before the cursor
-        iter--;
+    if(CursorPos > 0){
+
+        if(CursorPos % 80 == 0) {
+            line_num--;
+            CursorPos -= 80 - vga_line_lengths[line_num];
+            goto finish;
+        }
+
+        CursorPos--;
         vga_line_lengths[line_num]--;
-        VideoMemory[iter] = ' ' | (VideoMemory[iter] & 0x0f00);
-        setCursorpos(iter);
+
+        finish:
+        VideoMemory[CursorPos] = ' ' | (VideoMemory[CursorPos] & 0x0f00);
+        setCursorpos(CursorPos);
     }
-    //if(iter % 80 == 0 && iter != 0) { // this is broken
-    //    //go to the previous line and delete the charachter right before the cursor
-    //    line_num--;
-    //    iter -= 80 - vga_line_lengths[line_num];
-    //    VideoMemory[iter] = ' ' | (VideoMemory[iter] & 0x0f00);
-    //    setCursorpos(iter);
-    //}
     
 }
 //clears the screen with color!!
 void Clearscr(uint_8 color){
-//set up some internal varibles
-uint_64 value = 0;
+
 //create a 64-bit loop of color,0,color,0...
+uint_64 value = 0;
 value += (uint_64)color << 8;
 value += (uint_64)color << 24;
 value += (uint_64)color << 40;
@@ -183,57 +132,6 @@ for(uint_64* i = (uint_64*)0xb8000;i < (uint_64*)0xb8000 + 4000;i++){
 }
 //set the cursor position to the top right
 setCursorpos(0);
-}
-int_8 hex2strout[128];
-//turns a number to a string(hex version)
-const char* hex2str(uint_64 value){
-    //set up some internal varibles
-    uint_8 size = 0;
-    uint_64 sizetest = value;
-    //put "0x" at the beggining
-    hex2strout[0] = '0';
-    hex2strout[1] = 'x';
-    //idk I forgot...
-    while(sizetest / 16 > 0){
-        sizetest /= 16;
-        size++;
-    }
-    uint_8 index = 0;
-    uint_64 newvalue = value;
-    while(newvalue / 16 > 0){
-        uint_8 remainder = newvalue % 16;
-        newvalue /= 16;
-        hex2strout[size-(index-2)] = remainder + (remainder > 9 ? 55 :48);
-        index++;
-    }
-    uint_8 remainder = newvalue % 16;
-    hex2strout[size - (index-2)] = remainder + (remainder > 9 ? 55 :48);
-    hex2strout[size + 3] = 0;
-    return hex2strout;
-}
-int_8 int2strout[128];
-//turns a number to a string(dec version)
-const char* int2str(uint_64 value){
-    //set up some internal varibles
-    uint_8 size = 0;
-    uint_64 sizetest = value;
-    //idk I forgot...
-    while(sizetest / 10 > 0){
-        sizetest /= 10;
-        size++;
-    }
-    uint_8 index = 0;
-    uint_64 newvalue = value;
-    while(newvalue / 10 > 0){
-        uint_8 remainder = newvalue % 10;
-        newvalue /= 10;
-        int2strout[size-index] = remainder + 48;
-        index++;
-    }
-    uint_8 remainder = newvalue % 10;
-    int2strout[size-index] = remainder + 48;
-    int2strout[size + 1] = 0;
-    return int2strout;
 }
 
 //enables text cursor trough hardware communication

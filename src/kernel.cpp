@@ -22,9 +22,9 @@ extern "C" int kernel_main()
     GDT gdt;
     gdt.AddSegment(0, 0, 0);//null
     gdt.AddSegment(0x00, 0x000FFFFF, GDT_CODE_PL0);//64 bit pl 0 code segment
-    gdt.AddSegment(0x00F, 0x000FFFFF, GDT_DATA_PL0);//64 bit pl 0 data segment
+    gdt.AddSegment(0x00, 0x000FFFFF, GDT_DATA_PL0);//64 bit pl 0 data segment
     gdt.AddSegment(0x00, 0x000FFFFF, GDT_CODE_PL3);//64 bit pl 3 code segment
-    gdt.AddSegment(0x00F, 0x000FFFFF, GDT_DATA_PL3);//64 bit pl 3 data segmen
+    gdt.AddSegment(0x00, 0x000FFFFF, GDT_DATA_PL3);//64 bit pl 3 data segmen
     gdt.AddSegment(0x00, 0x000FFFFF, GDT16_CODE_PL0);//16 bit pl 3 code segment
     gdt.AddSegment(0x00F, 0x000FFFFF, GDT16_DATA_PL0);//16 bit pl 3 data segmen
 
@@ -39,8 +39,8 @@ extern "C" int kernel_main()
 //    }
 //    printf("\n");
 
-    Clearscr(LIGHT_BLUE);
-    enable_text_cursor(14, 15);
+    //Clearscr(LIGHT_BLUE);
+    //enable_text_cursor(14, 15);
     
     DeshInit();
 

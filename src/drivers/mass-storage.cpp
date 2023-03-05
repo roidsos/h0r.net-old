@@ -18,8 +18,8 @@ namespace mass_storage_manager
         dev.parent_index = parent_index;
         dev.index_inside_parent = index_inside_parent;
 
-        uint_16 index = controllerssize;
-        devices[devicessize] = dev;
+        uint_16 index = devicessize;
+        devices[index] = dev;
         devicessize++;
         return index;
         
@@ -28,7 +28,7 @@ namespace mass_storage_manager
     uint_16 RegisterController(void (*RW_func)(int device,char direction,uint_8* destination,int address,int sector_count))
     {
         uint_16 index = controllerssize;
-        controllers[controllerssize].RW_func = RW_func;
+        controllers[index].RW_func = RW_func;
         controllerssize++;
         return index;
     }

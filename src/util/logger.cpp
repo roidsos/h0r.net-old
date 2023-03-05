@@ -3,10 +3,10 @@
 #include <lib/printf.h>
 #include <io/io.h>
 
-char *PREFIX_INFO   =  "[INFO]";
-char *PREFIX_ERR    =  "[ERROR]";
-char *PREFIX_WRN    =  "[WARN]";
-char *PREFIX_FATAL  =  "[FATAL]"; 
+char *PREFIX_INFO   =  "[INFO] ";
+char *PREFIX_ERR    =  "[ERROR] ";
+char *PREFIX_WRN    =  "[WARN] ";
+char *PREFIX_FATAL  =  "[FATAL] "; 
 
 void LogINFO(char *msg,...){
     va_list va;
@@ -15,7 +15,7 @@ void LogINFO(char *msg,...){
     dprintf(PREFIX_INFO);
     vdprintf(msg,va);
 
-    print(PREFIX_INFO,LIGHT_GREEN);
+    printf(PREFIX_INFO);
     vprintf(msg,va);
     va_end(va);
 }
@@ -27,7 +27,7 @@ void LogERR(char *msg,...){
     dprintf(PREFIX_ERR);
     vdprintf(msg,va);
 
-    print(PREFIX_ERR,LIGHT_RED);
+    printf(PREFIX_ERR);
     vprintf(msg,va);
     va_end(va);
 }
@@ -38,7 +38,7 @@ void LogWRN(char *msg,...){
     dprintf(PREFIX_WRN);
     vdprintf(msg,va);
 
-    print(PREFIX_WRN,LIGHT_YELLOW);
+    printf(PREFIX_WRN);
     vprintf(msg,va);
     va_end(va);
 }
@@ -49,7 +49,7 @@ void LogFATAL(char *msg,...){
     dprintf(PREFIX_FATAL);
     vdprintf(msg,va);
 
-    print(PREFIX_FATAL,RED);
+    printf(PREFIX_FATAL);
     vprintf(msg,va);
     va_end(va);
 
