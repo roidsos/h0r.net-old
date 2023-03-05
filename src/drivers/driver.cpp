@@ -1,4 +1,5 @@
 #include <drivers/arch/x86/IDT/IDT.h>
+#include <drivers/arch/x86/x86.h>
 #include <drivers/memory/Heap.h>
 #include <drivers/mass-storage.h>
 #include <drivers/pciide.h>
@@ -21,7 +22,7 @@ void InitDrivers(){
     LogINFO("Initalized heap \n");
 
     PIT::PitInit();
-    LogINFO("Initialized PIT \n");
+    LogINFO("Initalized PIT \n");
 
     initkeyboard();
     initmouse();
@@ -35,6 +36,9 @@ void InitDrivers(){
 
     PCI::SelectDrivers();
     LogINFO("Initalized PCI \n");
+
+    x86_Read_From_Drive();
+
     ATA::init();
 
     LogINFO("Initalized Mass Storage \n");

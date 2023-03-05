@@ -17,6 +17,7 @@ pop r10
 pop r11
 %endmacro
 %macro go2realmode 0
+    [bits 64]
     go2realmode:
         cli
         ;disable paging
@@ -26,6 +27,11 @@ pop r11
 
     ;copied from osdev.org
     reloadSegments:
+        ;disable protected mode
+        mov rax, cr0
+        and ax, ~1
+        mov cr0, rax
+
     ; Reload CS register:
         PUSH 0x18                      ; Push code segment to stack, 0x08 is a stand-in for your code segment
         LEA RAX, [rel .reload_CS]   ; Load address of .reload_CS into RAX here is the problem? maybe?
@@ -42,18 +48,42 @@ pop r11
         MOV   SS, AX
 
     [bits 16]
-    .pmode16:
-        ;disable protected mode
-        mov rax, cr0
-        and rax, ~1
-        mov cr0, rax
-
     .rmode16:
         ; Reload data segment registers
-        MOV   AX, 0 ; 0x10 is a stand-in for your data segment
+        MOV   AX, 0x38 ; 0x10 is a stand-in for your data segment
         MOV   DS, AX
         MOV   ES, AX
         MOV   FS, AX
         MOV   GS, AX
         MOV   SS, AX
+%endmacro
+
+%macro go2protectedmode 0
+    [bits 16]
+    go2protectedmode:
+        jmp 0x8:.pmode64
+
+
+    [bits 64]
+    .pmode64:
+        ; Reload data segment registers
+        MOV   AX, 0x10 ; 0x10 is a stand-in for your data segment
+        MOV   DS, AX
+        MOV   ES, AX
+        MOV   FS, AX
+        MOV   GS, AX
+        MOV   SS, AX
+
+        ;enable protected mode
+        mov rax, cr0
+        or rax, 1
+        mov cr0, rax
+        ret
+
+        ;enable paging
+        mov rax, cr0
+        or rax, 0x80000000
+        mov cr0, rax
+        
+        sti
 %endmacro
