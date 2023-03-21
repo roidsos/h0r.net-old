@@ -215,7 +215,8 @@ unsigned int BAR4){
          // (VIII) String indicates model of device (like Western Digital HDD and SONY DVD-RW...):
          for(k = 0; k < 40; k += 2) {
             ide_devices[count].Model[k] = ide_buf[ATA_IDENT_MODEL + k + 1];
-            ide_devices[count].Model[k + 1] = ide_buf[ATA_IDENT_MODEL + k];}
+            ide_devices[count].Model[k + 1] = ide_buf[ATA_IDENT_MODEL + k];
+         }
          ide_devices[count].Model[40] = 0; // Terminate String.
  
          count++;
@@ -313,18 +314,43 @@ unsigned char pciide::ide_ata_access(unsigned char direction, unsigned char driv
     ide_write(channel, ATA_REG_LBA1,   lba_io[1]);
     ide_write(channel, ATA_REG_LBA2,   lba_io[2]);
 
-    if (lba_mode == 0 && dma == 0 && direction == 0) cmd = ATA_CMD_READ_PIO;
-    if (lba_mode == 1 && dma == 0 && direction == 0) cmd = ATA_CMD_READ_PIO;   
-    if (lba_mode == 2 && dma == 0 && direction == 0) cmd = ATA_CMD_READ_PIO_EXT;   
-    if (lba_mode == 0 && dma == 1 && direction == 0) cmd = ATA_CMD_READ_DMA;
-    if (lba_mode == 1 && dma == 1 && direction == 0) cmd = ATA_CMD_READ_DMA;
-    if (lba_mode == 2 && dma == 1 && direction == 0) cmd = ATA_CMD_READ_DMA_EXT;
-    if (lba_mode == 0 && dma == 0 && direction == 1) cmd = ATA_CMD_WRITE_PIO;
-    if (lba_mode == 1 && dma == 0 && direction == 1) cmd = ATA_CMD_WRITE_PIO;
-    if (lba_mode == 2 && dma == 0 && direction == 1) cmd = ATA_CMD_WRITE_PIO_EXT;
-    if (lba_mode == 0 && dma == 1 && direction == 1) cmd = ATA_CMD_WRITE_DMA;
-    if (lba_mode == 1 && dma == 1 && direction == 1) cmd = ATA_CMD_WRITE_DMA;
-    if (lba_mode == 2 && dma == 1 && direction == 1) cmd = ATA_CMD_WRITE_DMA_EXT;
+    if (lba_mode == 0 && dma == 0 && direction == 0) 
+         cmd = ATA_CMD_READ_PIO;
+
+    if (lba_mode == 1 && dma == 0 && direction == 0) 
+         cmd = ATA_CMD_READ_PIO;
+
+    if (lba_mode == 2 && dma == 0 && direction == 0) 
+         cmd = ATA_CMD_READ_PIO_EXT;
+
+    if (lba_mode == 0 && dma == 1 && direction == 0) 
+         cmd = ATA_CMD_READ_DMA;
+
+    if (lba_mode == 1 && dma == 1 && direction == 0) 
+         cmd = ATA_CMD_READ_DMA;
+
+    if (lba_mode == 2 && dma == 1 && direction == 0) 
+         cmd = ATA_CMD_READ_DMA_EXT;
+
+    if (lba_mode == 0 && dma == 0 && direction == 1) 
+         cmd = ATA_CMD_WRITE_PIO;
+
+    if (lba_mode == 1 && dma == 0 && direction == 1) 
+         cmd = ATA_CMD_WRITE_PIO;
+
+    if (lba_mode == 2 && dma == 0 && direction == 1) 
+         cmd = ATA_CMD_WRITE_PIO_EXT;
+
+    if (lba_mode == 0 && dma == 1 && direction == 1) 
+         cmd = ATA_CMD_WRITE_DMA;
+
+    if (lba_mode == 1 && dma == 1 && direction == 1) 
+         cmd = ATA_CMD_WRITE_DMA;
+
+    if (lba_mode == 2 && dma == 1 && direction == 1) 
+         cmd = ATA_CMD_WRITE_DMA_EXT;
+
+
     ide_write(channel, ATA_REG_COMMAND, cmd);   
 
     if (dma)
@@ -341,17 +367,19 @@ unsigned char pciide::ide_ata_access(unsigned char direction, unsigned char driv
             for (size_t j = 0; j < words; j++)
             {
                uint_16 wdata = inb16(bus);
-               destination[i] = wdata & 0x00ff;
-               if (i+ 1 < words)
-                  destination[i+1] = (wdata >> 8) & 0x00ff;
+               dprintf("%x ", wdata);
+               destination[j + i*words] = wdata & 0x00ff;
+               if (i+ 1 < words){
+                  destination[j+1 + i*words] = (wdata >> 8) & 0x00ff;
+               }
             }
         } else {
         // PIO Write.
-           for (i = 0; i < numsects; i++) {
+         for (i = 0; i < numsects; i++) {
             ide_polling(channel, 0); // Polling.
             for (size_t j = 0; j < words; j++)
             {
-               outb16(bus,((uint_16*)destination)[j]);
+               outb16(bus,((uint_16*)destination)[j + i*words]);
             }
             
         }

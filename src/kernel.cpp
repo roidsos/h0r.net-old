@@ -42,10 +42,10 @@ extern "C" int kernel_main()
     //Clearscr(LIGHT_BLUE);
     //enable_text_cursor(14, 15);
     
-    DeshInit();
+    //DeshInit();
 
     while (1)
     {
-        DeshUpdate();
+     //   DeshUpdate();
     }
 }
