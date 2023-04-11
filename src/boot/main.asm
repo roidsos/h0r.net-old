@@ -16,7 +16,7 @@ start:
 
 	cmp ebx, stack_bottom + 4096 * 4
 	jne clstk
-
+	
 	;call DetectMemory ;does not work because the gdt does not have 16 bit protected mode
 
 
@@ -140,6 +140,7 @@ page_table_l2:
 stack_bottom:
 	resb 4096 * 4
 stack_top:
+
 
 section .rodata
 gdt64:

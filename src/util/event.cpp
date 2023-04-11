@@ -1,6 +1,10 @@
 #include <util/event.h>
+#include <lib/printf.h>
 
 
+extern "C" void event_IRQ(){
+printf("E vent");
+}
 
 int create_event(uint_8 event_num)
 {

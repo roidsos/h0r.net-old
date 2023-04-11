@@ -43,7 +43,7 @@ extern "C" int kernel_main()
     //enable_text_cursor(14, 15);
     
     DeshInit();
-
+    asm("int $0x10");
     while (1)
     {
         DeshUpdate();

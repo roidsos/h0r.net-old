@@ -58,7 +58,7 @@ extern loadidt
         jmp 0x8:.pmode64
 
 
-    [bits 32]
+    [bits 64]
     .pmode64:
         ; Reload data segment registers
         MOV   AX, 0x10 ; 0x10 is a stand-in for your data segment
@@ -70,13 +70,13 @@ extern loadidt
 
         ;enable protected mode
         mov rax, cr0
-        or rax, 1
+        or ax, 1
         mov cr0, rax
         
 
         ;enable paging
         mov rax, cr0
-        or rax, 0x80000000
+        or ax, 0x80000000
         mov cr0, rax
         
         call loadidt
