@@ -5,6 +5,7 @@
 #include <drivers/mouse.h>
 #include <lib/printf.h>
 #include <util/string.h>
+#include <util/event.h>
 #include <util/colors.h>
 #include <drivers/driver.h>
 #include <drivers/mass-storage.h>
@@ -42,7 +43,11 @@ extern "C" int kernel_main()
     //Clearscr(LIGHT_BLUE);
     //enable_text_cursor(14, 15);
     
-    asm("int $0x10");
+    create_event(0);
+    subscribe(0,[](void* args){
+        printf("%d",(int)args);
+    });
+    call_event(0,69);
     //DeshInit();
 
     while (1)
