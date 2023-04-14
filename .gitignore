@@ -33,7 +33,7 @@
 *.app
 
 # Kernel stuff
-kernel/kernel.bin
+src/kernel.bin
 iso/*
 os.iso
 .vscode
