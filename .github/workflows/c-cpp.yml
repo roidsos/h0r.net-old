@@ -15,4 +15,4 @@ jobs:
     - name: install
     - run: .devcontainer/install.sh
     - name: make
-      run: make
+    - run: make
