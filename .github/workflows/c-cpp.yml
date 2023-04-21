@@ -13,6 +13,6 @@ jobs:
 
     steps:
     - name: install
-    - run: .devcontainer/install.sh
+      run: .devcontainer/install.sh
     - name: make
-    - run: make
+      run: make
