@@ -12,6 +12,7 @@
 extern "C" void isrC();
 extern "C" void isr1();
 extern "C" void isr0();
+extern "C" void isr10();
 extern "C" void isrIgnore();
 extern "C" void loadidt();
 void RemapPIC(){
@@ -50,6 +51,7 @@ void InitIDT()
 {
     AddEntry((void*)&isr0,0b10001110,0);
     AddEntry((void*)&isr1,0b10001110,1);
+    AddEntry((void*)&isr10,0b10001110,16);
     AddEntry((void*)&isrC,0b10001110,12);
 
     RemapPIC();

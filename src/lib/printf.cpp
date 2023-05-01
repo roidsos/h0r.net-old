@@ -28,8 +28,8 @@
 //        Use this instead of the bloated standard/newlib printf cause these use
 //        malloc for printf (and may not be thread safe).
 //
+// Note: Edited
 ///////////////////////////////////////////////////////////////////////////////
-
 #include <stdbool.h>
 #include <stdint.h>
 #include <io/io.h>
@@ -139,6 +139,12 @@ static inline void _out_buffer(char character, void* buffer, size_t idx, size_t 
   }
 }
 
+static inline void _out_dbg(char character, void* buffer, size_t idx, size_t maxlen)
+{
+  if(character == 0)
+    return;
+  outb8(0xE9,character);
+}
 
 // internal null output
 static inline void _out_null(char character, void* buffer, size_t idx, size_t maxlen)
@@ -868,6 +874,17 @@ int printf_(const char* format, ...)
   return ret;
 }
 
+int dprintf_(const char* format, ...)
+{
+  va_list va;
+  va_start(va, format);
+  char buffer[1];
+  const int ret = _vsnprintf(_out_dbg, buffer, (size_t)-1, format, va);
+  va_end(va);
+  return ret;
+}
+
+
 
 int sprintf_(char* buffer, const char* format, ...)
 {
@@ -894,6 +911,12 @@ int vprintf_(const char* format, va_list va)
   char buffer[1];
   return _vsnprintf(_out_char, buffer, (size_t)-1, format, va);
 }
+int vdprintf_(const char* format, va_list va)
+{
+  char buffer[1];
+  return _vsnprintf(_out_dbg, buffer, (size_t)-1, format, va);
+}
+
 
 
 int vsnprintf_(char* buffer, size_t count, const char* format, va_list va)

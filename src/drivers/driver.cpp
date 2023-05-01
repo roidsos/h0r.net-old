@@ -21,7 +21,7 @@ void InitDrivers(){
     LogINFO("Initalized heap \n");
 
     PIT::PitInit();
-    LogINFO("Initialized PIT \n");
+    LogINFO("Initalized PIT \n");
 
     initkeyboard();
     initmouse();
@@ -35,6 +35,7 @@ void InitDrivers(){
 
     PCI::SelectDrivers();
     LogINFO("Initalized PCI \n");
+
     ATA::init();
 
     LogINFO("Initalized Mass Storage \n");

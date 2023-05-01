@@ -3,23 +3,22 @@
 #include <drivers/PIT.h>
 #include <drivers/mass-storage.h>
 #include <drivers/memory/Heap.h>
+#include <util/logger.h>
 #include <io/io.h>
 #include <lib/printf.h>
 
 //awful implementation sadly
 uint_16 controller_index;
 uint_16 devs_size;
-ATADevice::ATADevice()
-{
-   mass_storage_manager::RegisterDevice(controller_index,devs_size);
-}
 
 namespace ATA{
    ATADevice devs[1024];
 
    static void init()
    {
-      mass_storage_manager::RegisterController(&read_or_write);
+      controller_index = mass_storage_manager::RegisterController(&read_or_write);
+
+      //TODO: detect controllers
       pciide controller(0x1F0, 0x3F6, 0x170, 0x376, 0x000);
    }
    
@@ -30,7 +29,7 @@ namespace ATA{
    }
 
    
-}
+};
 //end of the awful stuff
 
 void pciide::ide_write(unsigned char channel, unsigned char reg, unsigned char data); // forward declaration
@@ -108,21 +107,21 @@ unsigned char pciide::ide_print_error(unsigned int drive, unsigned char err) {
    if (err == 0)
       return err;
  
-   printf("IDE:");
-   if (err == 1) {printf("- Device Fault\n     "); err = 19;}
+   
+   if (err == 1) {LogERR("IDE: - Device Fault\n     "); err = 19;}
    else if (err == 2) {
       unsigned char st = ide_read(ide_devices[drive].Channel, ATA_REG_ERROR);
-      if (st & ATA_ER_AMNF)   {printf("- No Address Mark Found\n     ");   err = 7;}
-      if (st & ATA_ER_TK0NF)   {printf("- No Media or Media Error\n     ");   err = 3;}
-      if (st & ATA_ER_ABRT)   {printf("- Command Aborted\n     ");      err = 20;}
-      if (st & ATA_ER_MCR)   {printf("- No Media or Media Error\n     ");   err = 3;}
-      if (st & ATA_ER_IDNF)   {printf("- ID mark not Found\n     ");      err = 21;}
-      if (st & ATA_ER_MC)   {printf("- No Media or Media Error\n     ");   err = 3;}
-      if (st & ATA_ER_UNC)   {printf("- Uncorrectable Data Error\n     ");   err = 22;}
-      if (st & ATA_ER_BBK)   {printf("- Bad Sectors\n     ");       err = 13;}
-   } else  if (err == 3)           {printf("- Reads Nothing\n     "); err = 23;}
-     else  if (err == 4)  {printf("- Write Protected\n     "); err = 8;}
-   printf("- [%s %s] %s\n",
+      if (st & ATA_ER_AMNF)      {LogERR("IDE: - No Address Mark Found\n     ");   err = 7;}
+      if (st & ATA_ER_TK0NF)     {LogERR("IDE: - No Media or Media Error\n     ");   err = 3;}
+      if (st & ATA_ER_ABRT)      {LogERR("IDE: - Command Aborted\n     ");      err = 20;}
+      if (st & ATA_ER_MCR)       {LogERR("IDE: - No Media or Media Error\n     ");   err = 3;}
+      if (st & ATA_ER_IDNF)      {LogERR("IDE: - ID mark not Found\n     ");      err = 21;}
+      if (st & ATA_ER_MC)        {LogERR("IDE: - No Media or Media Error\n     ");   err = 3;}
+      if (st & ATA_ER_UNC)       {LogERR("IDE: - Uncorrectable Data Error\n     ");   err = 22;}
+      if (st & ATA_ER_BBK)       {LogERR("IDE: - Bad Sectors\n     ");       err = 13;}
+   } else  if (err == 3)         {LogERR("IDE: - Reads Nothing\n     "); err = 23;}
+     else  if (err == 4)         {LogERR("IDE: - Write Protected\n     "); err = 8;}
+                                  LogERR("IDE: - [%s %s] %s\n",
       (const char *[]){"Primary", "Secondary"}[ide_devices[drive].Channel], // Use the channel as an index into the array
       (const char *[]){"Master", "Slave"}[ide_devices[drive].Drive], // Same as above, using the drive
       ide_devices[drive].Model);
@@ -163,7 +162,6 @@ unsigned int BAR4){
          // (II) Send ATA Identify Command:
          ide_write(i, ATA_REG_COMMAND, ATA_CMD_IDENTIFY);
          PIT::Sleep(1); // This function should be implemented in your OS. which waits for 1 ms.
-                   // it is based on System Timer Device Driver.
  
          // (III) Polling:
          if (ide_read(i, ATA_REG_STATUS) == 0) continue; // If Status = 0, No Device.
@@ -217,7 +215,8 @@ unsigned int BAR4){
          // (VIII) String indicates model of device (like Western Digital HDD and SONY DVD-RW...):
          for(k = 0; k < 40; k += 2) {
             ide_devices[count].Model[k] = ide_buf[ATA_IDENT_MODEL + k + 1];
-            ide_devices[count].Model[k + 1] = ide_buf[ATA_IDENT_MODEL + k];}
+            ide_devices[count].Model[k + 1] = ide_buf[ATA_IDENT_MODEL + k];
+         }
          ide_devices[count].Model[40] = 0; // Terminate String.
  
          count++;
@@ -226,15 +225,19 @@ unsigned int BAR4){
    // 4- Print Summary:
    for (i = 0; i < 4 ; i++)
       if (ide_devices[i].Reserved == 1) {
-         printf(" Found %s Drive %dB - %s\n",
-            (const char *[]){"ATA", "ATAPI"}[ide_devices[i].Type],         /* Type */
+         LogINFO(" Found %s Drive %dB - %s\n",
+            ide_devices[i].Type ? "ATA":"ATAPI",         /* Type */
             ide_devices[i].Size,               /* Size */
             ide_devices[i].Model);
+
             ATADevice dev;
             dev.parent = this;
             dev.index_inside_parent = i;
             ATA::devs[devs_size] = dev;
+            mass_storage_manager::RegisterDevice(controller_index,devs_size);
             devs_size++;
+
+            
       }
 }
 
@@ -311,18 +314,43 @@ unsigned char pciide::ide_ata_access(unsigned char direction, unsigned char driv
     ide_write(channel, ATA_REG_LBA1,   lba_io[1]);
     ide_write(channel, ATA_REG_LBA2,   lba_io[2]);
 
-    if (lba_mode == 0 && dma == 0 && direction == 0) cmd = ATA_CMD_READ_PIO;
-    if (lba_mode == 1 && dma == 0 && direction == 0) cmd = ATA_CMD_READ_PIO;   
-    if (lba_mode == 2 && dma == 0 && direction == 0) cmd = ATA_CMD_READ_PIO_EXT;   
-    if (lba_mode == 0 && dma == 1 && direction == 0) cmd = ATA_CMD_READ_DMA;
-    if (lba_mode == 1 && dma == 1 && direction == 0) cmd = ATA_CMD_READ_DMA;
-    if (lba_mode == 2 && dma == 1 && direction == 0) cmd = ATA_CMD_READ_DMA_EXT;
-    if (lba_mode == 0 && dma == 0 && direction == 1) cmd = ATA_CMD_WRITE_PIO;
-    if (lba_mode == 1 && dma == 0 && direction == 1) cmd = ATA_CMD_WRITE_PIO;
-    if (lba_mode == 2 && dma == 0 && direction == 1) cmd = ATA_CMD_WRITE_PIO_EXT;
-    if (lba_mode == 0 && dma == 1 && direction == 1) cmd = ATA_CMD_WRITE_DMA;
-    if (lba_mode == 1 && dma == 1 && direction == 1) cmd = ATA_CMD_WRITE_DMA;
-    if (lba_mode == 2 && dma == 1 && direction == 1) cmd = ATA_CMD_WRITE_DMA_EXT;
+    if (lba_mode == 0 && dma == 0 && direction == 0) 
+         cmd = ATA_CMD_READ_PIO;
+
+    if (lba_mode == 1 && dma == 0 && direction == 0) 
+         cmd = ATA_CMD_READ_PIO;
+
+    if (lba_mode == 2 && dma == 0 && direction == 0) 
+         cmd = ATA_CMD_READ_PIO_EXT;
+
+    if (lba_mode == 0 && dma == 1 && direction == 0) 
+         cmd = ATA_CMD_READ_DMA;
+
+    if (lba_mode == 1 && dma == 1 && direction == 0) 
+         cmd = ATA_CMD_READ_DMA;
+
+    if (lba_mode == 2 && dma == 1 && direction == 0) 
+         cmd = ATA_CMD_READ_DMA_EXT;
+
+    if (lba_mode == 0 && dma == 0 && direction == 1) 
+         cmd = ATA_CMD_WRITE_PIO;
+
+    if (lba_mode == 1 && dma == 0 && direction == 1) 
+         cmd = ATA_CMD_WRITE_PIO;
+
+    if (lba_mode == 2 && dma == 0 && direction == 1) 
+         cmd = ATA_CMD_WRITE_PIO_EXT;
+
+    if (lba_mode == 0 && dma == 1 && direction == 1) 
+         cmd = ATA_CMD_WRITE_DMA;
+
+    if (lba_mode == 1 && dma == 1 && direction == 1) 
+         cmd = ATA_CMD_WRITE_DMA;
+
+    if (lba_mode == 2 && dma == 1 && direction == 1) 
+         cmd = ATA_CMD_WRITE_DMA_EXT;
+
+
     ide_write(channel, ATA_REG_COMMAND, cmd);   
 
     if (dma)
@@ -339,17 +367,19 @@ unsigned char pciide::ide_ata_access(unsigned char direction, unsigned char driv
             for (size_t j = 0; j < words; j++)
             {
                uint_16 wdata = inb16(bus);
-               destination[i] = wdata & 0x00ff;
-               if (i+ 1 < words)
-                  destination[i+1] = (wdata >> 8) & 0x00ff;
+               dprintf("%x ", wdata);
+               destination[j + i*words] = wdata & 0x00ff;
+               if (i+ 1 < words){
+                  destination[j+1 + i*words] = (wdata >> 8) & 0x00ff;
+               }
             }
         } else {
         // PIO Write.
-           for (i = 0; i < numsects; i++) {
+         for (i = 0; i < numsects; i++) {
             ide_polling(channel, 0); // Polling.
             for (size_t j = 0; j < words; j++)
             {
-               outb16(bus,((uint_16*)destination)[j]);
+               outb16(bus,((uint_16*)destination)[j + i*words]);
             }
             
         }
@@ -380,7 +410,7 @@ void pciide::ide_read_slash_write(int device,char direction,uint_8* destination,
       if (ide_devices[device].Type == IDE_ATA)
          err = ide_ata_access(direction, device, address, sector_count, (unsigned char*)destination);
       else if (ide_devices[device].Type == IDE_ATAPI)
-            printf("ERROR: ATAPI not supported\n");
+            LogERR(" ATAPI not supported\n");
       ide_print_error(device, err);
    }
 }

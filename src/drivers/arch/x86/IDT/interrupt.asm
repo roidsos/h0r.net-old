@@ -1,11 +1,13 @@
 global isrC
 global isr1
 global isr0
+global isr10
 global isrIgnore
 global loadidt
 extern keyint
 extern musint
 extern Tick
+extern event_IRQ
 extern _idt
 
 idtdesc:
@@ -30,6 +32,13 @@ isr1:
 PUSHALL
 cld
 call keyint
+POPALL
+iretq
+
+isr10:
+PUSHALL
+cld
+call event_IRQ
 POPALL
 iretq
 

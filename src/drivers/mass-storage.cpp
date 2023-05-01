@@ -1,6 +1,7 @@
 #include <drivers/mass-storage.h>
 #include <drivers/memory/Heap.h>
 #include <drivers/memory/memory.h>
+#include <util/logger.h>
 #include <lib/printf.h>
 
 namespace mass_storage_manager
@@ -13,12 +14,17 @@ namespace mass_storage_manager
 
     uint_16 RegisterDevice(uint_16 parent_index,uint_16 index_inside_parent)
     {
+        if (parent_index >= controllerssize){
+            LogERR("Failed to register device: No Such Controller Regisrtered\n");
+            return;
+        }
+
         MSDevice dev;
         dev.parent_index = parent_index;
         dev.index_inside_parent = index_inside_parent;
 
-        uint_16 index = controllerssize;
-        devices[devicessize] = dev;
+        uint_16 index = devicessize;
+        devices[index] = dev;
         devicessize++;
         return index;
         
@@ -27,15 +33,15 @@ namespace mass_storage_manager
     uint_16 RegisterController(void (*RW_func)(int device,char direction,uint_8* destination,int address,int sector_count))
     {
         uint_16 index = controllerssize;
-        controllers[controllerssize].RW_func = RW_func;
+        controllers[index].RW_func = RW_func;
         controllerssize++;
         return index;
     }
     
     void Read28(uint_8 drive_num,uint_32 sector,uint_8* data,int count)
     {
-        if (devicessize == 0){
-            printf("ERROR:No Storage Devices Regisrtered\n");
+        if (drive_num >= devicessize){
+            LogERR("Failed to read from device: No Such Storage Device Regisrtered\n");
             return;
         }
         uint_16 controller_index = devices[drive_num].parent_index;
@@ -44,8 +50,8 @@ namespace mass_storage_manager
     
     void Write28(uint_8 drive_num,uint_32 sector,uint_8* data,int count)
     {
-        if (devicessize == 0){
-            printf("ERROR:No Storage Devices Regisrtered\n");
+        if (drive_num >= devicessize){
+            LogERR("Failed to write to device: No Such Storage Device Regisrtered\n");
             return;
         }        
         uint_16 controller_index = devices[drive_num].parent_index;
@@ -54,6 +60,6 @@ namespace mass_storage_manager
     
     void ListDevices()
     {
-        printf("nope, I was too lazy to implement this important debug tool \n");
+        LogWRN("nope, I was too lazy to implement this important debug tool \n");
     }
 }

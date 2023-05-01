@@ -1,5 +1,6 @@
 #include <drivers/pci.h>
 #include <io/io.h>
+#include <util/logger.h>
 #include <lib/printf.h>
 namespace PCI{
 
@@ -41,7 +42,7 @@ bool HasFunction(uint_16 bus, uint_16 device)
 void SelectDrivers()
 {
     //https://wiki.osdev.org/PCI
-    printf("PCI Devices: \n");
+    LogINFO("PCI Devices: \n");
     for(int bus = 0;bus < 8;bus++)
     {
         for(int device = 0;device < 32;device++)
@@ -57,7 +58,7 @@ void SelectDrivers()
                     continue;
                 }
                 
-                printf("VendorID: 0x%x ,DeviceID: 0x%x \n",dev.vendor_id,dev.device_id);
+                LogINFO("VendorID: 0x%x ,DeviceID: 0x%x \n",dev.vendor_id,dev.device_id);
             }
             
         }   
