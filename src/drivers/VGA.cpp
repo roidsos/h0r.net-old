@@ -59,7 +59,6 @@ uint_8* VGA::GetSeg()
 {
     outb8(GCindex,0x06);
     uint_8 segmentnum = ((inb8(GCdata) >> 2) & 0x03);
-    print(hex2str(segmentnum));
     return (uint_8*)0xA0000;
     switch(segmentnum){
         default:

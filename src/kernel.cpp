@@ -5,6 +5,7 @@
 #include <drivers/mouse.h>
 #include <lib/printf.h>
 #include <util/string.h>
+#include <util/event.h>
 #include <util/colors.h>
 #include <drivers/driver.h>
 #include <drivers/mass-storage.h>
@@ -19,15 +20,16 @@ extern "C" int kernel_main()
     Clearscr(LIGHT_BLUE);
     enable_text_cursor(14, 15);
 
-    //gdts are fucked
-    // GDT gdt;
-    // so does getch work rn?
-    // gdt.AddSegment(0, 0, 0);//null
-    // gdt.AddSegment(0x00AF, 0x000FFFFF, 0x9B);//code
-    // gdt.AddSegment(0x00AF, 0x000FFFFF, 0x93);//data
-    // gdt.AddSegment(0, 0x000FFFFF, (GDT_DATA_PL3));
+    GDT gdt;
+    gdt.AddSegment(0, 0, 0);//null
+    gdt.AddSegment(0x00, 0x000FFFFF, GDT_CODE_PL0);//64 bit pl 0 code segment
+    gdt.AddSegment(0x00, 0x000FFFFF, GDT_DATA_PL0);//64 bit pl 0 data segment
+    gdt.AddSegment(0x00, 0x000FFFFF, GDT_CODE_PL3);//64 bit pl 3 code segment
+    gdt.AddSegment(0x00, 0x000FFFFF, GDT_DATA_PL3);//64 bit pl 3 data segmen
+    gdt.AddSegment(0x00, 0x000FFFFF, GDT16_CODE_PL0);//16 bit pl 3 code segment
+    gdt.AddSegment(0x00F, 0x000FFFFF, GDT16_DATA_PL0);//16 bit pl 3 data segmen
 
-    // gdt.Load();
+    gdt.Load();
 
     InitDrivers();
 //    uint_8 test[512];
@@ -38,13 +40,18 @@ extern "C" int kernel_main()
 //    }
 //    printf("\n");
 
-    Clearscr(LIGHT_BLUE);
-    enable_text_cursor(14, 15);
+    //Clearscr(LIGHT_BLUE);
+    //enable_text_cursor(14, 15);
     
-    DeshInit();
+    create_event(0);
+    subscribe(0,[](void* args){
+        printf("%d",(int)args);
+    });
+    call_event(0,69);
+    //DeshInit();
 
     while (1)
     {
-        DeshUpdate();
+     //   DeshUpdate();
     }
 }

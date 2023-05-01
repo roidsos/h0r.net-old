@@ -16,7 +16,7 @@ start:
 
 	cmp ebx, stack_bottom + 4096 * 4
 	jne clstk
-
+	
 	;call DetectMemory ;does not work because the gdt does not have 16 bit protected mode
 
 
@@ -141,11 +141,13 @@ stack_bottom:
 	resb 4096 * 4
 stack_top:
 
+
 section .rodata
 gdt64:
 	dq 0 ; zero entry
 .code_segment: equ $ - gdt64
-	dq (1 << 43) | (1 << 44) | (1 << 47) | (1 << 53) ; code segment
+	dq 0x0020980000000000 ; code segment
 .pointer:
 	dw $ - gdt64 - 1 ; length
 	dq gdt64 ; address
+

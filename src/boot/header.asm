@@ -1,4 +1,3 @@
-extern kernel_main_EFI
 extern start
 
 section .multiboot_header
