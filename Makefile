@@ -7,7 +7,7 @@ all:
 	grub-mkrescue /usr/lib/grub/i386-pc -o os.iso ./iso
 
 run: all
-	qemu-system-x86_64 -cdrom os.iso  -device sb16 -drive file=hdd.img,if=ide,index=0,media=disk,format=raw -boot order=d -audiodev pa,id=audio0 -machine pcspk-audiodev=audio0
+	qemu-system-x86_64 -cdrom os.iso -debugcon stdio -device sb16 -drive file=hdd.img,if=ide,index=0,media=disk,format=raw -boot order=d -audiodev pa,id=audio0 -machine pcspk-audiodev=audio0
 # runs using qemu
 
 debug: all

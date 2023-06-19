@@ -2,8 +2,11 @@ global long_mode_start
 extern kernel_main
 
 section .text
+
 bits 64
 long_mode_start:
+    push rax
+
     ; load null into all data segment registers
     mov ax, 0
     mov ss, ax
@@ -11,8 +14,16 @@ long_mode_start:
     mov es, ax
     mov fs, ax
     mov gs, ax
-    
+
     call ActivateSSE
+    pop rax
+
+    mov rdi,0
+    mov rsi,0
+    
+    mov edi,eax ; back
+    mov esi,ebx
+
 	call kernel_main
     hlt
 

@@ -1,10 +1,12 @@
 global start
 extern long_mode_start
-;extern DetectMemory
 section .text
+
 bits 32
 start:
-	
+	push eax
+	push ebx
+
 	mov esp, stack_top
 
 	mov ebx, stack_bottom
@@ -16,9 +18,6 @@ start:
 
 	cmp ebx, stack_bottom + 4096 * 4
 	jne clstk
-	
-	;call DetectMemory ;does not work because the gdt does not have 16 bit protected mode
-
 
 	call check_multiboot
 	call check_cpuid
@@ -28,6 +27,10 @@ start:
 	call enable_paging
 
 	lgdt [gdt64.pointer]
+
+	pop eax
+	pop ebx
+
 	jmp gdt64.code_segment:long_mode_start
 
 	hlt
