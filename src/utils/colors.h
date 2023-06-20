@@ -1,6 +1,6 @@
 #include "utils/types.h"
 
-enum Color {
+typedef enum {
     Black = 0,
     Blue = 1,
     Green = 2,
@@ -17,14 +17,9 @@ enum Color {
     Pink = 13,
     Yellow = 14,
     White = 15
-};
+} Color;
 
-// I am porting my rust code to cpp
-class ColorCode {
-    public:
-        ColorCode(Color foreground, Color background) {
-            code = (static_cast<uint_8>(background) << 4) | static_cast<uint_8>(foreground);
-        }
-    private:
-        uint_8 code;
-};
+    uint_8 ColorCode(Color foreground, Color background) {
+       return ((uint_8)(background) << 4) | (uint_8)(foreground);
+    }
+
