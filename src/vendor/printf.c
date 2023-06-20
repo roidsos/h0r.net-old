@@ -33,7 +33,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <drivers/io/portio.h>
-#include <drivers/io/vga_buffer.h>
+#include <utils/screen.h>
 #include "printf.h"
 
 
@@ -155,7 +155,7 @@ static inline void _out_null(char character, void* buffer, size_t idx, size_t ma
 // internal _putchar wrapper
 static inline void _out_char(char character, void* buffer, size_t idx, size_t maxlen)
 {
-    print_char(character,0x0F);
+    RenderChar(character,0xFFFFFFFF);
 }
 
 
