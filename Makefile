@@ -21,17 +21,18 @@ all:
 	rm -rf iso_root
 
 run: all
-	qemu-system-x86_64 -cdrom os.iso -debugcon stdio -device sb16 -drive file=hdd.img,if=ide,index=0,media=disk,format=raw -boot order=d -audiodev pa,id=audio0 -machine pcspk-audiodev=audio0
 # runs using qemu
+	qemu-system-x86_64 -cdrom os.iso -debugcon stdio -device sb16 -drive file=hdd.img,if=ide,index=0,media=disk,format=raw -boot order=d -audiodev pa,id=audio0 -machine pcspk-audiodev=audio0
 
 debug: all
+# standard qemu debug
 	qemu-system-x86_64 -no-reboot -d int -no-shutdown -cdrom os.iso -device sb16 -drive file=hdd.img,if=ide,index=0,media=disk,format=raw -boot order=d
 
-# standard qemu debug
 debugr: all
+#remote debug using GDB
 	qemu-system-x86_64 -s -S -no-reboot -monitor stdio -d int -no-shutdown -cdrom os.iso -device sb16 -drive file=hdd.img,if=ide,index=0,media=disk,format=raw -boot order=d
 
-#remote debug using GDB
 clean:
 # JUST DELETES JUNK LIKE OBJECT FILES - fuck capslock
-	-rm -rf kernel/*/*.o kernel/kernel.bin iso/boot/kernel.bin
+	make -C src clean
+	rm -rf src/kernel.bin iso/boot/kernel.bin
