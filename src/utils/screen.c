@@ -12,18 +12,27 @@ void InitScreen(struct limine_framebuffer* _fb)
 {
     Cursorpos = 0;
     fb = _fb;
-    width = fb->width/8;
-    height = fb->height/13;
+    width = fb->width/CHAR_WIDTH;
+    height = fb->height/CHAR_HEIGHT;
 
     InitFB(_fb);
 }
 
 void RenderChar(char chr,int color)
 {
-    int x = (Cursorpos % width) * 8;
-    int y = (Cursorpos / width) * 13;
-    renderChar(chr,x,y,1,color);
-    Cursorpos++;
+    switch (chr)
+    {
+	case '\n':
+	    Cursorpos += width - (Cursorpos % width) - 1;
+	    break;
+        
+	default:
+        int x = (Cursorpos % width) * CHAR_WIDTH;
+        int y = (Cursorpos / width) * CHAR_HEIGHT;
+        renderChar(chr,x,y,1,color);
+        Cursorpos++;
+
+    }
 }
 
 void SetCursorpos(int pos)
