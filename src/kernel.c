@@ -1,6 +1,5 @@
 #include "../limine/limine.h"
 
-#include "vendor/multiboot.h"
 #include "utils/screen.h"
 
 #include <stdint.h>
