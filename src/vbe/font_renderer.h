@@ -1,6 +1,9 @@
 #ifndef __FONT_RENDERER_H__
 #define __FONT_RENDERER_H__
 
+#define CHAR_WIDTH 8
+#define CHAR_HEIGHT 13
+
 #include "../limine/limine.h"
 
 void InitFB(struct limine_framebuffer* fb);
