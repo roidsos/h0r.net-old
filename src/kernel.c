@@ -53,13 +53,22 @@ void _start(void) {
     InitScreen(data.framebuffer);
     printf_("========System Info========\n");
     printf_("UEFI mode: %d\n",data.is_uefi_mode);
-    printf_("Memmap entry count: %i\n\n",data.memmap_resp->entry_count);
-    for(int i=0; i < data.memmap_resp->entry_count;i++){
-        printf_("  -Memmap entry #%i: Base: 0x%x,Length: 0x%x,Type: 0x%x \n",i
-			,data.memmap_resp->entries[i]->base
-			    ,data.memmap_resp->entries[i]->length
-			        ,data.memmap_resp->entries[i]->type);
 
+    // Print information about the UEFI system table
+    printf_("EFI System Table Address: 0x%p\n", data.efi_system_table_address);
+
+    // Print information about the framebuffer
+    printf_("Framebuffer Address: 0x%p\n", data.framebuffer->address);
+    printf_("Framebuffer Width: %lu, Height: %lu, BPP: %u\n",
+           data.framebuffer->width, data.framebuffer->height, data.framebuffer->bpp);
+
+    // Print memory map details
+    printf_("Memmap entry count: %lu\n\n", data.memmap_resp->entry_count);
+    for (size_t i = 0; i < data.memmap_resp->entry_count; i++) {
+        printf_("--Memmap entry #%lu: Base: 0x%lx, Length: 0x%lx, Type: %u\n", i,
+               data.memmap_resp->entries[i]->base,
+               data.memmap_resp->entries[i]->length,
+               data.memmap_resp->entries[i]->type);
     }
     
     hcf();
