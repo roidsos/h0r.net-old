@@ -1,6 +1,6 @@
-kernel.c.o: kernel.c ../limine/limine.h vendor/multiboot.h utils/screen.h \
+kernel.c.o: kernel.c kernel.h ../limine/limine.h utils/screen.h \
  ../limine/limine.h
+kernel.h:
 ../limine/limine.h:
-vendor/multiboot.h:
 utils/screen.h:
 ../limine/limine.h:
