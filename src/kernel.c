@@ -1,6 +1,7 @@
 #include "kernel.h"
 
 #include "utils/screen.h"
+#include "arch/x86_64/GDT/gdt.h"
 
 // ===============Limine Requests======================
 static volatile struct limine_framebuffer_request framebuffer_request = {
@@ -15,7 +16,12 @@ static volatile struct limine_efi_system_table_request efi_system_table_request 
     .id = LIMINE_EFI_SYSTEM_TABLE_REQUEST,
     .revision = 0
 };
-
+void load_default_gdt(){
+    struct GDTDescriptor gdtDescriptor;
+    gdtDescriptor.Size = sizeof(struct GDT) - 1;
+    gdtDescriptor.Offset = (uint64_t)&DefaultGDT;
+    LoadGDT(&gdtDescriptor);
+}
 
 void handle_limine_requests(struct KernelData *_data) {
     //// Ensure we got a framebuffer.
@@ -47,9 +53,20 @@ void handle_limine_requests(struct KernelData *_data) {
 //create the single instance of the struct
 struct KernelData data;
 
-void _start(void) {
-    handle_limine_requests(&data);
+uint64_t CalculateTotalMemorySize(struct limine_memmap_response* memmap) {
+    uint64_t totalSize = 0;
     
+    for (size_t i = 0; i < memmap->entry_count; i++) {
+	totalSize += memmap->entries[i]->length;
+    }
+    return totalSize;
+}
+
+void _start(void) {
+
+    handle_limine_requests(&data);
+    load_default_gdt();
+
     InitScreen(data.framebuffer);
     printf_("========System Info========\n");
     printf_("UEFI mode: %d\n",data.is_uefi_mode);
@@ -61,11 +78,11 @@ void _start(void) {
     printf_("Framebuffer Address: 0x%p\n", data.framebuffer->address);
     printf_("Framebuffer Width: %lu, Height: %lu, BPP: %u\n",
            data.framebuffer->width, data.framebuffer->height, data.framebuffer->bpp);
-
+    printf_("Total system memory size: %llu bytes\n", CalculateTotalMemorySize(data.memmap_resp));
     // Print memory map details
     printf_("Memmap entry count: %lu\n\n", data.memmap_resp->entry_count);
     for (size_t i = 0; i < data.memmap_resp->entry_count; i++) {
-        printf_("--Memmap entry #%lu: Base: 0x%lx, Length: 0x%lx, Type: %u\n", i,
+        printf_("  -Memmap entry #%lu: Base: 0x%lx, Length: 0x%lx, Type: %u\n", i,
                data.memmap_resp->entries[i]->base,
                data.memmap_resp->entries[i]->length,
                data.memmap_resp->entries[i]->type);
