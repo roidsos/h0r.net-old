@@ -1,7 +1,7 @@
 #ifndef KERNEL_H
 #define KERNEL_H
 
-#include "../limine/limine.h"
+#include "limine.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>

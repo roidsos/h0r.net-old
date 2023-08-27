@@ -2,34 +2,34 @@
 
 //output functions
 
-void outb8(uint_16 port, uint_8 value) {
+void outb8(uint16_t port, uint8_t value) {
     asm("outb %1, %0" : : "dN" (port), "a" (value));
 }
 
-void outb16(uint_16 port, uint_16 value) {
+void outb16(uint16_t port, uint16_t value) {
     asm("outw %1, %0" : : "dN" (port), "a" (value));
 }
 
-void outb32(uint_16 port, uint_32 value) {
+void outb32(uint16_t port, uint32_t value) {
     asm("outl %1, %0" : : "dN" (port), "a" (value));
 }
 
 //input functions
 
-uint_8 inb8(uint_16 port) {
-    uint_8 r;
+uint8_t inb8(uint16_t port) {
+    uint8_t r;
     asm("inb %1, %0" : "=a" (r) : "dN" (port));
     return r;
 }
 
-uint_16 inb16(uint_16 port){
-    uint_16 r;
+uint16_t inb16(uint16_t port){
+    uint16_t r;
     asm("inw %1, %0" : "=a" (r) : "dN" (port));
     return r;
 }
 
-uint_32 inb32(uint_16 port){
-    uint_32 r;
+uint32_t inb32(uint16_t port){
+    uint32_t r;
     asm("inl %1, %0" : "=a" (r) : "dN"(port));
     return r;
 }

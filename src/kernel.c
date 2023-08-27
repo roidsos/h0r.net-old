@@ -4,6 +4,7 @@
 
 #include "utils/screen.h"
 #include "arch/x86_64/GDT/gdt.h"
+#include <drivers/Memory/Memory.h>
 
 // ===============Limine Requests======================
 static volatile struct limine_framebuffer_request framebuffer_request = {
@@ -56,14 +57,6 @@ void handle_limine_requests(struct KernelData *_data) {
 //create the single instance of the struct
 struct KernelData data;
 
-uint64_t CalculateTotalMemorySize(struct limine_memmap_response* memmap) {
-    uint64_t totalSize = 0;
-    
-    for (size_t i = 0; i < memmap->entry_count; i++) {
-	totalSize += memmap->entries[i]->length;
-    }
-    return totalSize;
-}
 
 void _start(void) {
     logger_set_output(LOGGER_OUTPUT_DEBUG);
@@ -87,10 +80,10 @@ void _start(void) {
     // Print memory map details
     printf_("Memmap entry count: %lu\n\n", data.memmap_resp->entry_count);
     for (size_t i = 0; i < data.memmap_resp->entry_count; i++) {
-        printf_("  -Memmap entry #%lu: Base: 0x%lx, Length: 0x%lx, Type: %u\n", i,
+        printf_("  -Memmap entry #%lu: Base: 0x%lx, Length: 0x%lx, Type: %s\n", i,
                data.memmap_resp->entries[i]->base,
                data.memmap_resp->entries[i]->length,
-               data.memmap_resp->entries[i]->type);
+               memmap_type_names[data.memmap_resp->entries[i]->type]);
     }
     
     hcf();

@@ -1,5 +1,3 @@
-#include "utils/types.h"
-
 typedef enum {
     Black = 0,
     Blue = 1,
@@ -19,7 +17,7 @@ typedef enum {
     White = 15
 } Color;
 
-    uint_8 ColorCode(Color foreground, Color background) {
-       return ((uint_8)(background) << 4) | (uint_8)(foreground);
-    }
+char ColorCode(Color foreground, Color background) {
+    return ((char)(background) << 4) | (char)(foreground);
+}
 
