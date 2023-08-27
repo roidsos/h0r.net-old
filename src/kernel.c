@@ -18,6 +18,7 @@ static volatile struct limine_efi_system_table_request efi_system_table_request 
     .id = LIMINE_EFI_SYSTEM_TABLE_REQUEST,
     .revision = 0
 };
+
 void load_default_gdt(){
     struct GDTDescriptor gdtDescriptor;
     gdtDescriptor.Size = sizeof(struct GDT) - 1;
