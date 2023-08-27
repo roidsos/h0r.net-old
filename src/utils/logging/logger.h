@@ -5,6 +5,10 @@
 #define LOGGER_OUTPUT_DEBUG  1
 #define LOGGER_OUTPUT_SERIAL 2
 
+#define LOGGER_PREFIX_INFO         "[INFO=]"
+#define LOGGER_PREFIX_ERR          "[ERROR]"
+#define LOGGER_PREFIX_WRN          "[WARN=]"
+#define LOGGER_PREFIX_CRITICAL     "[FATAL]"
 char logger_set_output(char ID);
 
 char log_error(char* format,...);

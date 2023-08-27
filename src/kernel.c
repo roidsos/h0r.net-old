@@ -1,5 +1,7 @@
 #include "kernel.h"
 
+#include <utils/logging/logger.h>
+
 #include "utils/screen.h"
 #include "arch/x86_64/GDT/gdt.h"
 
@@ -63,9 +65,11 @@ uint64_t CalculateTotalMemorySize(struct limine_memmap_response* memmap) {
 }
 
 void _start(void) {
+    logger_set_output(LOGGER_OUTPUT_DEBUG);
 
     handle_limine_requests(&data);
     load_default_gdt();
+    log_info("Logger Works ;)");
 
     InitScreen(data.framebuffer);
     printf_("========System Info========\n");
