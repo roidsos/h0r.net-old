@@ -87,7 +87,7 @@ void initPFA(struct limine_memmap_response* memmap)
     size_t largest_free_memseg_size = 0;
     for (size_t i = 0; i < memmap->entry_count; i++)
     {
-        struct limine_memmap_entry* desc = &memmap->entries[i];
+        struct limine_memmap_entry* desc = memmap->entries[i];
         if (desc->type == LIMINE_MEMMAP_USABLE && desc->length > largest_free_memseg_size){
             largest_free_memseg      = (void*)desc->base;
             largest_free_memseg_size = desc->length;
@@ -118,7 +118,7 @@ void initPFA(struct limine_memmap_response* memmap)
     //Reserve Non-Usable Memory
     for (size_t i = 0; i < memmap->entry_count; i++)
     {
-        struct limine_memmap_entry* desc = &memmap->entries[i];
+        struct limine_memmap_entry* desc = memmap->entries[i];
         if (desc->type != LIMINE_MEMMAP_USABLE){
             reserve_pages(desc->base,desc->length / 4096);
         }
