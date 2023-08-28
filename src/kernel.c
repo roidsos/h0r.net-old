@@ -5,6 +5,7 @@
 #include "utils/screen.h"
 #include "arch/x86_64/GDT/gdt.h"
 #include <drivers/Memory/Memory.h>
+#include <drivers/Memory/PFA.h>
 
 // ===============Limine Requests======================
 static volatile struct limine_framebuffer_request framebuffer_request = {
@@ -60,24 +61,28 @@ struct KernelData data;
 
 void _start(void) {
     logger_set_output(LOGGER_OUTPUT_DEBUG);
-
+    
     handle_limine_requests(&data);
     load_default_gdt();
-    log_info("Logger Works ;)");
+    initPFA(data.memmap_resp);
+    
+    log_info("Kernel Initialized Successfully");
 
     InitScreen(data.framebuffer);
     printf_("========System Info========\n");
+    
     printf_("UEFI mode: %d\n",data.is_uefi_mode);
-
-    // Print information about the UEFI system table
     printf_("EFI System Table Address: 0x%p\n", data.efi_system_table_address);
-
-    // Print information about the framebuffer
+    
     printf_("Framebuffer Address: 0x%p\n", data.framebuffer->address);
     printf_("Framebuffer Width: %lu, Height: %lu, BPP: %u\n",
            data.framebuffer->width, data.framebuffer->height, data.framebuffer->bpp);
-    printf_("Total system memory size: %llu bytes\n", CalculateTotalMemorySize(data.memmap_resp));
-    // Print memory map details
+    
+    printf_("Total system memory: %llu bytes\n", get_total_RAM());
+    printf_("Free system memory: %llu bytes\n", get_free_RAM());
+    printf_("Used system memory: %llu bytes\n", get_used_RAM());
+    printf_("Reserved system memory: %llu bytes\n", get_reserved_RAM());
+    
     printf_("Memmap entry count: %lu\n\n", data.memmap_resp->entry_count);
     for (size_t i = 0; i < data.memmap_resp->entry_count; i++) {
         printf_("  -Memmap entry #%lu: Base: 0x%lx, Length: 0x%lx, Type: %s\n", i,
