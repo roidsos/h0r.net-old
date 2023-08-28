@@ -8,9 +8,12 @@ size_t reserved_mem = 0;
 bool initialized = false;
 struct Bitmap page_bitmap;
 
+extern void* kernel_start;
+extern void* kernel_end;
+
 void lock_page(void* addr){
     size_t index = (size_t)addr / 4096;
-    bitmap_set(page_bitmap,index,false);
+    bitmap_set(page_bitmap,index,true);
     free_mem -= 4096;
     used_mem += 4096;
 
@@ -25,7 +28,7 @@ void free_page(void* addr){
 
 void reserve_page(void* addr){
     size_t index = (size_t)addr / 4096;
-    bitmap_set(page_bitmap,index,false);
+    bitmap_set(page_bitmap,index,true);
     free_mem -= 4096;
     reserved_mem += 4096;
 }
@@ -77,6 +80,24 @@ size_t get_total_RAM(){
     return total_mem;
 }
 
+void* request_page()
+{
+   for (size_t i = 0; i < page_bitmap.size*8; i++)
+   {
+        //Note for Idiots: you do not need == true since it is a stupid bool.
+        if (bitmap_get(page_bitmap,i)) continue;
+        
+        //Means Page Pointer, not the funny one.
+        void* PP = (void*)(i * 4096);
+        lock_page(PP);
+        return PP;
+        
+   }
+    
+    log_CRITICAL(0,"Out of Memory");
+return NULL;
+}
+
 void initPFA(struct limine_memmap_response* memmap)
 {
     if (initialized)
@@ -99,9 +120,6 @@ void initPFA(struct limine_memmap_response* memmap)
 
     if(bitmap_size > largest_free_memseg_size)
         log_CRITICAL(0,"Page bitmap does not fit in largest free segment");
-    
-    log_info("%i",largest_free_memseg);
-    log_info("%i",largest_free_memseg_size);
 
     //Initialize bitmap
     page_bitmap.size    =  bitmap_size;
@@ -116,13 +134,17 @@ void initPFA(struct limine_memmap_response* memmap)
     lock_pages(page_bitmap.buffer,(page_bitmap.size / 4096) + 1);
 
     //Reserve Non-Usable Memory
+    reserve_page((void*)0);//reserve first page
     for (size_t i = 0; i < memmap->entry_count; i++)
     {
         struct limine_memmap_entry* desc = memmap->entries[i];
         if (desc->type != LIMINE_MEMMAP_USABLE){
-            reserve_pages(desc->base,desc->length / 4096);
+            reserve_pages(desc->base,desc->length / 4096 + 1);
         }
     }
+    //Lock Kernel Pages(the fuck needs this)
+    //size_t kernel_size_pages = ((size_t)kernel_end - (size_t)kernel_start) / 4096 + 1;
+    //reserve_pages(kernel_start,kernel_size_pages);
 
     //Initialization Done
     initialized = true; 

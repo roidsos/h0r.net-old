@@ -18,6 +18,7 @@ SECTIONS
     /* that is the beginning of the region. */
     . = 0xffffffff80000000;
 
+    kernel_start = .;
     .text : {
         *(.text .text.*)
     } :text
@@ -44,6 +45,7 @@ SECTIONS
         *(COMMON)
         *(.bss .bss.*)
     } :data
+    kernel_end = .;
 
     /* Discard .note.* and .eh_frame since they may cause issues on some hosts. */
     /DISCARD/ : {

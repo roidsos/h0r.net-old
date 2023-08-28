@@ -1,4 +1,5 @@
 #include "bitmap.h"
+#include <utils/logging/logger.h>
 
 //Bit Magic: dont touch unless you have 2000000 IQ
 //it took me half an hour in godbolt.org to figure out
@@ -8,7 +9,7 @@ void bitmap_set(struct Bitmap bm,size_t index,bool setto)
     register size_t byteIndex = index / 8;
     register uint8_t bitIndex = index % 8;
 
-    register uint8_t bitMask = (0b10000000 >> (7 - bitIndex));
+    register uint8_t bitMask = (1 << (bitIndex));
 
     register uint8_t temp = bm.buffer[byteIndex] ^ (bm.buffer[byteIndex] & bitMask);
 

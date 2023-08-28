@@ -90,6 +90,12 @@ void _start(void) {
                data.memmap_resp->entries[i]->length,
                memmap_type_names[data.memmap_resp->entries[i]->type]);
     }
+    for (size_t i = 0; i < 20; i++)
+    {
+        void* addr = request_page();
+        printf_("0x%x ",addr);
+    }
+    
     
     hcf();
 }
