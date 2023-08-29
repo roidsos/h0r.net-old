@@ -13,7 +13,7 @@ struct stackframe* get_stackframe(){
     return stk;
 }
 void stacktrace() {
-    struct stackframe *stk = get_stackframe();
+    struct stackframe *stk = __builtin_frame_address(0);
     printf_("Stack trace:");
     while (stk->eip) {
         printf_(" %x\n", stk->eip);

@@ -1,4 +1,10 @@
 #include "drivers/io/portio.h"
+#define UNUSED_PORT         0x80
+
+void iowait()
+{
+    outb8(UNUSED_PORT, 0);
+}
 
 //output functions
 

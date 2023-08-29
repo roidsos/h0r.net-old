@@ -94,10 +94,8 @@ void _start(void) {
     printf_("CPU Family: %d\n", data.cpu_info.family);
     printf_("CPU Model: %d\n", data.cpu_info.model);
     printf_("CPU Stepping: %d\n", data.cpu_info.stepping);
-    printf_("Extended Family: %d\n", data.cpu_info.ext_family);
-    printf_("Extended Model: %d\n", data.cpu_info.ext_model);
-
-    // Display CPU capabilities
+    printf_("CPU Extended Family: %d\n", data.cpu_info.ext_family);
+    printf_("CPU Extended Model: %d\n", data.cpu_info.ext_model);
     printf_("CPU Capabilities (EDX): 0x%.8X\n", data.cpu_info.features[0]);
     printf_("CPU Capabilities (ECX): 0x%.8X\n", data.cpu_info.features[1]);
 
@@ -117,7 +115,6 @@ void _start(void) {
                data.memmap_resp->entries[i]->length,
                memmap_type_names[data.memmap_resp->entries[i]->type]);
     }
-    stacktrace();
 
     hcf();
 }
