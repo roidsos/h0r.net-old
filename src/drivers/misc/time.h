@@ -2,6 +2,8 @@
 #define __TIME_H__
 
 
+// "good artists borrow, great artists steal"
+// https://github.com/elydre/profanOS/
 typedef struct {
     int seconds;
     int minutes;
