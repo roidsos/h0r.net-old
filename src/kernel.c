@@ -117,6 +117,7 @@ void _start(void) {
                data.memmap_resp->entries[i]->length,
                memmap_type_names[data.memmap_resp->entries[i]->type]);
     }
-    
+    stacktrace();
+
     hcf();
 }

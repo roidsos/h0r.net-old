@@ -8,6 +8,16 @@ static int Cursorpos;
 static int width;
 static int height;
 
+int get_offset(int col, int row) {
+    return 2 * (row * width + col);
+}
+int get_offset_row(int offset) {
+    return offset / (2 * width);
+}
+int get_offset_col(int offset) {
+    return (offset - (get_offset_row(offset) * 2 * width)) / 2;
+}
+
 void InitScreen(struct limine_framebuffer* _fb)
 {
     Cursorpos = 0;
