@@ -6,6 +6,7 @@
 #include "arch/x86_64/GDT/gdt.h"
 #include <drivers/Memory/Memory.h>
 #include <drivers/Memory/PFA.h>
+#include <drivers/misc/time.h>
 
 // ===============Limine Requests======================
 static volatile struct limine_framebuffer_request framebuffer_request = {
@@ -65,7 +66,12 @@ void _start(void) {
     handle_limine_requests(&data);
     load_default_gdt();
     initPFA(data.memmap_resp);
-    
+    rtc_init();
+
+    i_time_t time;
+    time_get(&time);    
+
+
     log_info("Kernel Initialized Successfully");
 
     InitScreen(data.framebuffer);
@@ -73,7 +79,10 @@ void _start(void) {
     
     printf_("UEFI mode: %d\n",data.is_uefi_mode);
     printf_("EFI System Table Address: 0x%p\n", data.efi_system_table_address);
-    
+
+    printf_("Date: %02d/%02d/%d\n", time.month, time.day_of_month, time.year);
+    printf_("Time: %02d:%02d:%02d\n", time.hours, time.minutes, time.seconds);
+
     printf_("Framebuffer Address: 0x%p\n", data.framebuffer->address);
     printf_("Framebuffer Width: %lu, Height: %lu, BPP: %u\n",
            data.framebuffer->width, data.framebuffer->height, data.framebuffer->bpp);
@@ -90,12 +99,6 @@ void _start(void) {
                data.memmap_resp->entries[i]->length,
                memmap_type_names[data.memmap_resp->entries[i]->type]);
     }
-    for (size_t i = 0; i < 20; i++)
-    {
-        void* addr = request_page();
-        printf_("0x%x ",addr);
-    }
-    
     
     hcf();
 }
