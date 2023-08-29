@@ -1,5 +1,6 @@
 #ifndef LOGGER_H
 #define LOGGER_H
+#include "utils/error-handling/error.h"
 
 #define LOGGER_OUTPUT_VGA    0
 #define LOGGER_OUTPUT_DEBUG  1

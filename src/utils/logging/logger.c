@@ -1,4 +1,5 @@
 #include <vendor/printf.h>
+#include "utils/error-handling/error-screen.h"
 #include "logger.h"
 
 char current_output;
@@ -63,12 +64,16 @@ char log_CRITICAL(char error_code,char* format,...){
     if(current_output == LOGGER_OUTPUT_VGA){
         printf(LOGGER_PREFIX_CRITICAL);
         vprintf(format,va);
-        printf("\n");
+        printf("(%s)\n",Hornet_error_codes[error_code]);
     }
     if(current_output == LOGGER_OUTPUT_DEBUG){
         dprintf(LOGGER_PREFIX_CRITICAL);
         vdprintf(format,va);
-        dprintf("\n");
+        dprintf("(%s)\n",Hornet_error_codes[error_code]);
     }
+    char resolve[256];
+    vsnprintf_(resolve,256,format,va);
+
     va_end(va);
+    trigger_error(error_code,resolve);
 }

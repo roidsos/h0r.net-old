@@ -9,6 +9,7 @@
 #include <drivers/misc/time.h>
 
 #include "utils/screen.h"
+#include "utils/error-handling/falut-handler.h"
 
 // ===============Limine Requests======================
 static volatile struct limine_framebuffer_request framebuffer_request = {
@@ -62,7 +63,7 @@ void init_kernel(){
 
     //Initialize screen and logger
     InitScreen(data.framebuffer);
-    logger_set_output(LOGGER_OUTPUT_VGA);
+    logger_set_output(LOGGER_OUTPUT_DEBUG);
     
     //Init Memory stuff
     load_default_gdt();
@@ -71,9 +72,10 @@ void init_kernel(){
     //initialize interrupts
     initialize_interrupts();
     
-    //Init random drivers
+    //Init the drivers
     rtc_init();
     sys_init_fpu();
+    init_falut_handler();
 
     enable_interrupts();
     log_info("Kernel Initialized Successfully");
@@ -123,6 +125,7 @@ void _start(void) {
                data.memmap_resp->entries[i]->length,
                memmap_type_names[data.memmap_resp->entries[i]->type]);
     }
+    *(void*)0;
 
     hcf();
 }

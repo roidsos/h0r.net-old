@@ -1,5 +1,4 @@
-#include <stdint.h>
-#include <stddef.h>
+#include "essential.h"
 // GCC and Clang reserve the right to generate calls to the following
 // 4 functions even if they are not directly called.
 // Implement them as the C specification mandates.
@@ -55,6 +54,16 @@ int memcmp(const void *s1, const void *s2, size_t n) {
     }
 
     return 0;
+}
+int strlen(char* str){
+   int i = 0;
+   while (*str)
+   {
+    i++;
+    str++;
+   }
+   return i;
+    
 }
 
 // Halt and catch fire function.
