@@ -139,7 +139,8 @@ void initPFA(struct limine_memmap_response* memmap)
     {
         struct limine_memmap_entry* desc = memmap->entries[i];
         if (desc->type != LIMINE_MEMMAP_USABLE){
-            reserve_pages(desc->base,desc->length / 4096 + 1);
+            //log_info("0x%x 0x%x",desc->base,desc->length / 4096 + 1);
+            reserve_pages((void*)desc->base,desc->length / 4096 + 1);
         }
     }
     //Lock Kernel Pages(the fuck needs this)

@@ -1,0 +1,6 @@
+arch/x86_64/interrupts/ISR.c.o: arch/x86_64/interrupts/ISR.c \
+ arch/x86_64/interrupts/IDT.h arch/x86_64/interrupts/ISR.h \
+ arch/x86_64/i8259.h
+arch/x86_64/interrupts/IDT.h:
+arch/x86_64/interrupts/ISR.h:
+arch/x86_64/i8259.h:

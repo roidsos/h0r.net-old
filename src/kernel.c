@@ -1,6 +1,7 @@
 #include "kernel.h"
 
 #include <utils/logging/logger.h>
+#include <arch/x86_64/interrupts/interrupts.h>
 
 #include "arch/x86_64/GDT/gdt.h"
 #include <drivers/Memory/Memory.h>
@@ -66,17 +67,24 @@ void init_kernel(){
     //Init Memory stuff
     load_default_gdt();
     initPFA(data.memmap_resp);
+
+    //initialize interrupts
+    initialize_interrupts();
     
     //Init random drivers
     rtc_init();
     sys_init_fpu();
 
-    
+    enable_interrupts();
     log_info("Kernel Initialized Successfully");
 
 }
 
 void _start(void) {
+    // no unhandled interrupts plzz
+    disable_interrupts();
+
+
     init_kernel();    
 
     printf_("========System Info========\n");
