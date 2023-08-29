@@ -2,11 +2,12 @@
 
 #include <utils/logging/logger.h>
 
-#include "utils/screen.h"
 #include "arch/x86_64/GDT/gdt.h"
 #include <drivers/Memory/Memory.h>
 #include <drivers/Memory/PFA.h>
 #include <drivers/misc/time.h>
+
+#include "utils/screen.h"
 
 // ===============Limine Requests======================
 static volatile struct limine_framebuffer_request framebuffer_request = {
@@ -22,12 +23,6 @@ static volatile struct limine_efi_system_table_request efi_system_table_request 
     .revision = 0
 };
 
-void load_default_gdt(){
-    struct GDTDescriptor gdtDescriptor;
-    gdtDescriptor.Size = sizeof(struct GDT) - 1;
-    gdtDescriptor.Offset = (uint64_t)&DefaultGDT;
-    LoadGDT(&gdtDescriptor);
-}
 
 void handle_limine_requests(struct KernelData *_data) {
     //// Ensure we got a framebuffer.
@@ -59,29 +54,52 @@ void handle_limine_requests(struct KernelData *_data) {
 //create the single instance of the struct
 struct KernelData data;
 
-
-void _start(void) {
-    logger_set_output(LOGGER_OUTPUT_DEBUG);
-    
+void init_kernel(){
+    // Gather Data 
     handle_limine_requests(&data);
+    get_cpu_capabilities(&data.cpu_info);
+
+    //Initialize screen and logger
+    InitScreen(data.framebuffer);
+    logger_set_output(LOGGER_OUTPUT_VGA);
+    
+    //Init Memory stuff
     load_default_gdt();
     initPFA(data.memmap_resp);
+    
+    //Init random drivers
     rtc_init();
+    sys_init_fpu();
 
-    i_time_t time;
-    time_get(&time);    
-
-
+    
     log_info("Kernel Initialized Successfully");
 
-    InitScreen(data.framebuffer);
+}
+
+void _start(void) {
+    init_kernel();    
+
     printf_("========System Info========\n");
     
     printf_("UEFI mode: %d\n",data.is_uefi_mode);
-    printf_("EFI System Table Address: 0x%p\n", data.efi_system_table_address);
+    if(data.is_uefi_mode)
+        printf_("EFI System Table Address: 0x%p\n", data.efi_system_table_address);
 
+    i_time_t time;
+    time_get(&time);    
     printf_("Date: %02d/%02d/%d\n", time.month, time.day_of_month, time.year);
     printf_("Time: %02d:%02d:%02d\n", time.hours, time.minutes, time.seconds);
+
+    printf_("CPU Vendor ID: %s\n", data.cpu_info.vendor);
+    printf_("CPU Family: %d\n", data.cpu_info.family);
+    printf_("CPU Model: %d\n", data.cpu_info.model);
+    printf_("CPU Stepping: %d\n", data.cpu_info.stepping);
+    printf_("Extended Family: %d\n", data.cpu_info.ext_family);
+    printf_("Extended Model: %d\n", data.cpu_info.ext_model);
+
+    // Display CPU capabilities
+    printf_("CPU Capabilities (EDX): 0x%.8X\n", data.cpu_info.features[0]);
+    printf_("CPU Capabilities (ECX): 0x%.8X\n", data.cpu_info.features[1]);
 
     printf_("Framebuffer Address: 0x%p\n", data.framebuffer->address);
     printf_("Framebuffer Width: %lu, Height: %lu, BPP: %u\n",

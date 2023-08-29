@@ -26,7 +26,5 @@ struct GDT {
 } __attribute__((packed)) 
 __attribute((aligned(0x1000)));
 
-extern struct GDT DefaultGDT;
-
-void LoadGDT(struct GDTDescriptor* gdtDescriptor);
+void load_default_gdt();
 #endif
