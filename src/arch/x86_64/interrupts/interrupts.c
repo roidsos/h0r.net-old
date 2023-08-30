@@ -3,12 +3,12 @@
 #include <arch/x86_64/i8259.h>
 #include <stdbool.h>
 
-#define PIC_REMAP_OFFSET        0x20
 
 void initialize_interrupts()
 {
-    i8259_Configure(PIC_REMAP_OFFSET, PIC_REMAP_OFFSET + 8, false);
+    enable_IDT();
     RegisterAllISRs();
+    i8259_Configure(PIC_REMAP_OFFSET, PIC_REMAP_OFFSET + 8, false);
 }
 void register_ISR(int irq,ISRHandler handler){
     ISR_RegisterHandler(irq,handler);
@@ -16,7 +16,6 @@ void register_ISR(int irq,ISRHandler handler){
     i8259_Unmask(irq);
 }
 void enable_interrupts(){
-    enable_IDT();
     asm volatile("sti");
 } 
 void disable_interrupts(){

@@ -86,7 +86,6 @@ void _start(void) {
     // no unhandled interrupts plzz
     disable_interrupts();
 
-
     init_kernel();    
 
     printf_("========System Info========\n");
@@ -125,7 +124,7 @@ void _start(void) {
                data.memmap_resp->entries[i]->length,
                memmap_type_names[data.memmap_resp->entries[i]->type]);
     }
-    *(void*)0;
+    ((int*)0)[0] = 0;
 
     hcf();
 }
