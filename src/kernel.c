@@ -124,7 +124,7 @@ void _start(void) {
                data.memmap_resp->entries[i]->length,
                memmap_type_names[data.memmap_resp->entries[i]->type]);
     }
-    ((int*)0)[0] = 0;
+    //((int*)0)[0] = 0;
 
     hcf();
 }
