@@ -11,19 +11,19 @@ the h0r.net project was started just for fun, but Im planning to use it.</br>
   Install packages from aur: [x86_64-elf-gcc](https://aur.archlinux.org/packages/x86_64-elf-gcc) [x86_64-elf-binutils](https://aur.archlinux.org/packages/x86_64-elf-binutils)</br>
   Install packages from normal repositories: [libisoburn](https://archlinux.org/packages/extra/x86_64/libisoburn/) [grub](https://archlinux.org/packages/core/x86_64/grub/) [mtools](https://archlinux.org/packages/extra/x86_64/mtools/)</br>
 In case any package is missing please open up an issue!</br>
-<!--
+
 ## Current features and TODO(stolen from  ilobilo )
 
 ### System
-- [ ] GDT
-- [ ] IDT
+- [x] GDT
+- [x] IDT
 - [ ] TSS
 - [ ] PCI
 - [ ] PCIe
 - [ ] MSI
 - [ ] MSI-X
 - [ ] Modules
-
+<!--
 ### Memory
 - [ ] PMM
 - [ ] VMM (5 and 4 level)
