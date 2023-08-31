@@ -7,6 +7,7 @@
 
 #include <drivers/Memory/Memory.h>
 #include <drivers/Memory/PFA.h>
+#include <drivers/Memory/paging.h>
 #include <drivers/misc/time.h>
 #include <drivers/io/pci.h>
 
@@ -70,6 +71,7 @@ void init_kernel(){
     //Init Memory stuff
     load_default_gdt();
     initPFA(data.memmap_resp);
+    //data.PML4 = init_mem_and_identmap();
 
     //initialize interrupts
     initialize_interrupts();

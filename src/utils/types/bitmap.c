@@ -6,6 +6,8 @@
 
 void bitmap_set(struct Bitmap bm,size_t index,bool setto)
 {
+    if (index > bm.size * 8)
+        return;
     register size_t byteIndex = index / 8;
     register uint8_t bitIndex = index % 8;
 

@@ -2,6 +2,7 @@
 #define KERNEL_H
 
 #include "arch/x86_64/cpu.h"
+#include <drivers/Memory/paging.h>
 
 #include "limine.h"
 #include <stdint.h>
@@ -14,6 +15,7 @@ struct KernelData {
     bool is_uefi_mode;
     CPUInfo cpu_info;
 
+    struct PageTable* PML4;
     struct limine_framebuffer *framebuffer;
     struct limine_memmap_response *memmap_resp;
 };

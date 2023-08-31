@@ -4,7 +4,7 @@
 #include <vendor/printf.h>
 
 struct PCIDevice devices[2048];
-bool initialized;
+bool pci_initialized;
 
 uint32_t Read(uint16_t bus,uint16_t device,uint16_t function,uint32_t offset)
 {
@@ -41,7 +41,7 @@ bool HasFunction(uint16_t bus, uint16_t device)
 void init_PCI()
 {
     //https://wiki.osdev.org/PCI
-    Log_INFO("PCI Devices: \n");
+    log_info("PCI Devices: \n");
     for(int bus = 0;bus < 8;bus++)
     {
         for(int device = 0;device < 32;device++)
@@ -57,12 +57,12 @@ void init_PCI()
                     continue;
                 }
                 
-                Log_INFO("VendorID: 0x%x ,DeviceID: 0x%x \n",dev.vendor_id,dev.device_id);
+                log_info("VendorID: 0x%x ,DeviceID: 0x%x \n",dev.vendor_id,dev.device_id);
             }
             
         }   
     }
-    initialized = true;
+    pci_initialized = true;
 }
 void list_PCI_devices(){
     printf_("PCI Devices: \n");
@@ -85,7 +85,7 @@ void list_PCI_devices(){
 
 struct PCIDevice GetDevice(uint16_t bus, uint16_t device, uint16_t function)
 {
-    if(initialized){
+    if(pci_initialized){
         return devices[(bus * 8) + (device * 32) + function]; 
     }
 

@@ -5,7 +5,7 @@ size_t total_mem    = 0;
 size_t free_mem     = 0;
 size_t used_mem     = 0;
 size_t reserved_mem = 0;
-bool initialized = false;
+bool pfa_initialized = false;
 struct Bitmap page_bitmap;
 
 extern size_t kernel_start;
@@ -100,7 +100,7 @@ return NULL;
 
 void initPFA(struct limine_memmap_response* memmap)
 {
-    if (initialized)
+    if (pfa_initialized)
         return;
 
     //Get Largest Free Segment
@@ -145,5 +145,5 @@ void initPFA(struct limine_memmap_response* memmap)
     }
 
     //Initialization Done
-    initialized = true; 
+    pfa_initialized = true; 
 }

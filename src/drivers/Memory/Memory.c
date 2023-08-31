@@ -18,7 +18,7 @@ uint64_t CalculateTotalMemorySize(struct limine_memmap_response* memmap) {
     if(totalSize > 0) return totalSize;
     
     for (size_t i = 0; i < memmap->entry_count; i++) {
-	totalSize += memmap->entries[i]->length;
+	    totalSize += memmap->entries[i]->length;
     }
     return totalSize;
 }
