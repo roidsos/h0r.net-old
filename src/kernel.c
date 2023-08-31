@@ -10,6 +10,9 @@
 #include <drivers/Memory/paging.h>
 #include <drivers/misc/time.h>
 #include <drivers/io/pci.h>
+#include <drivers/misc/keyboard.h>
+
+#include <interface/desh.h>
 
 #include "utils/screen.h"
 #include "utils/error-handling/falut-handler.h"
@@ -80,6 +83,7 @@ void init_kernel(){
     rtc_init();
     sys_init_fpu();
     init_falut_handler();
+    initkeyboard();
     init_PCI();
 
     enable_interrupts();
@@ -123,19 +127,25 @@ void _start(void) {
     printf_("Reserved system memory: %llu bytes\n", get_reserved_RAM());
     list_PCI_devices();
     
-    //printf_("Memmap entry count: %lu\n\n", data.memmap_resp->entry_count);
-    //for (size_t i = 0; i < data.memmap_resp->entry_count; i++) {
-    //    printf_("  -Memmap entry #%lu: Base: 0x%lx, Length: 0x%lx, Type: %s\n", i,
-    //           data.memmap_resp->entries[i]->base,
-    //           data.memmap_resp->entries[i]->length,
-    //           memmap_type_names[data.memmap_resp->entries[i]->type]);
-    //}
-    for (size_t i = 0; i < 7; i++)
-    {
-        void* addr = request_page();
-        printf_("0x%x\n",(size_t)addr);
+    printf_("Memmap entry count: %lu\n\n", data.memmap_resp->entry_count);
+    for (size_t i = 0; i < data.memmap_resp->entry_count; i++) {
+        printf_("  -Memmap entry #%lu: Base: 0x%lx, Length: 0x%lx, Type: %s\n", i,
+               data.memmap_resp->entries[i]->base,
+               data.memmap_resp->entries[i]->length,
+               memmap_type_names[data.memmap_resp->entries[i]->type]);
     }
+    //for (size_t i = 0; i < 7; i++)
+    //{
+    //    void* addr = request_page();
+    //    printf_("0x%x\n",(size_t)addr);
+    //}
 
+    DeshInit();
 
+    while (true)
+    {
+        DeshUpdate();
+    }
+    
     hcf();
 }

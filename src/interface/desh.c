@@ -35,7 +35,7 @@ void parseCommand(char *command)
     {
         for (size_t i = 1; args[i] != 0; i++)
         {
-            printf_("%s ", args[i]);
+            printf_("%s", args[i]);
         }   
         printf_("\n");
     }
