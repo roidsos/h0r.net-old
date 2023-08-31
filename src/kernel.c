@@ -1,12 +1,14 @@
 #include "kernel.h"
 
 #include <utils/logging/logger.h>
-#include <arch/x86_64/interrupts/interrupts.h>
 
+#include <arch/x86_64/interrupts/interrupts.h>
 #include "arch/x86_64/GDT/gdt.h"
+
 #include <drivers/Memory/Memory.h>
 #include <drivers/Memory/PFA.h>
 #include <drivers/misc/time.h>
+#include <drivers/io/pci.h>
 
 #include "utils/screen.h"
 #include "utils/error-handling/falut-handler.h"
@@ -76,6 +78,7 @@ void init_kernel(){
     rtc_init();
     sys_init_fpu();
     init_falut_handler();
+    init_PCI();
 
     enable_interrupts();
     log_info("Kernel Initialized Successfully");
@@ -116,6 +119,7 @@ void _start(void) {
     printf_("Free system memory: %llu bytes\n", get_free_RAM());
     printf_("Used system memory: %llu bytes\n", get_used_RAM());
     printf_("Reserved system memory: %llu bytes\n", get_reserved_RAM());
+    list_PCI_devices();
     
     //printf_("Memmap entry count: %lu\n\n", data.memmap_resp->entry_count);
     //for (size_t i = 0; i < data.memmap_resp->entry_count; i++) {
@@ -129,7 +133,7 @@ void _start(void) {
         void* addr = request_page();
         printf_("0x%x\n",(size_t)addr);
     }
-    
+
 
     hcf();
 }

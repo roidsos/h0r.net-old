@@ -55,16 +55,6 @@ int memcmp(const void *s1, const void *s2, size_t n) {
 
     return 0;
 }
-int strlen(char* str){
-   int i = 0;
-   while (*str)
-   {
-    i++;
-    str++;
-   }
-   return i;
-    
-}
 
 // Halt and catch fire function.
 void hcf(void) {

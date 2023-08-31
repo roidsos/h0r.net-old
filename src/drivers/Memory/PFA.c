@@ -8,8 +8,8 @@ size_t reserved_mem = 0;
 bool initialized = false;
 struct Bitmap page_bitmap;
 
-extern void* kernel_start;
-extern void* kernel_end;
+extern size_t kernel_start;
+extern size_t kernel_end;
 
 void lock_page(void* addr){
     size_t index = (size_t)addr / 4096;
@@ -143,9 +143,6 @@ void initPFA(struct limine_memmap_response* memmap)
             reserve_pages((void*)desc->base,desc->length / 4096 + 1);
         }
     }
-    //Lock Kernel Pages(the fuck needs this)
-    //size_t kernel_size_pages = ((size_t)kernel_end - (size_t)kernel_start) / 4096 + 1;
-    //reserve_pages(kernel_start,kernel_size_pages);
 
     //Initialization Done
     initialized = true; 

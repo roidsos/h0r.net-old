@@ -1,3 +1,6 @@
+#ifndef __COLORS_H__
+#define __COLORS_H__
+
 typedef enum {
     Black = 0,
     Blue = 1,
@@ -21,3 +24,5 @@ char ColorCode(Color foreground, Color background) {
     return ((char)(background) << 4) | (char)(foreground);
 }
 
+
+#endif // __COLORS_H__
