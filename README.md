@@ -18,17 +18,17 @@ In case any package is missing please open up an issue!</br>
 - [x] GDT
 - [x] IDT
 - [ ] TSS
-- [ ] PCI
+- [x] PCI
 - [ ] PCIe
 - [ ] MSI
 - [ ] MSI-X
 - [ ] Modules
-<!--
-### Memory
-- [ ] PMM
-- [ ] VMM (5 and 4 level)
-- [ ] Heap
 
+### Memory
+- [x] PMM
+- [x] VMM (5 and 4 level)
+- [ ] Heap
+<!--
 ### ACPI
 - [ ] ACPI
 - [ ] LAPIC
