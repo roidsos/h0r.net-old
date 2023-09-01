@@ -2,18 +2,20 @@
 #define __HEAP_H__
 
 #include <stdint.h>
-typedef struct {
+#include <stdbool.h>
+
+struct MemorySegment{
     uint64_t length;
-    MemorySegment* next;
-    MemorySegment* previous;
-    MemorySegment* nextfree;
-    MemorySegment* previousfree;
+    struct MemorySegment* next;
+    struct MemorySegment* previous;
+    struct MemorySegment* nextfree;
+    struct MemorySegment* previousfree;
     bool isfree;
-}MemorySegment;
-typedef struct {
+};
+struct AlignedMemorySegment{
     uint64_t MemorySegmentAddr : 63;
     bool IsAligned : 1;
-}AlignedMemorySegment;
+};
 
 void InitHeap(uint64_t heapstart ,uint64_t heaplength);
 void* malloc(uint64_t size);

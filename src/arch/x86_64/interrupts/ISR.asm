@@ -1,4 +1,5 @@
 %macro ISR_NOERRORCODE 1
+%include "utils/asmmacros.inc"
 
 global ISR%1:
 ISR%1:
@@ -19,14 +20,7 @@ ISR%1:
 
 extern ISR_Handler
 isr_common:
-    push rax
-    push rcx
-    push rdx
-    push rbx
-    push rsp
-    push rbp
-    push rsi
-    push rdi
+    PUSHALL
 
     xor rax, rax        ; push ds
     mov ax, ds
@@ -48,14 +42,7 @@ isr_common:
     mov fs, ax
     mov gs, ax
 
-    pop rax
-    pop rcx
-    pop rdx
-    pop rbx
-    pop rsp
-    pop rbp
-    pop rsi
-    pop rdi
+    POPALL
     
     add esp, 8          ; remove error code and interrupt number
     iretq                ; will pop: cs, eip, eflags, ss, esp

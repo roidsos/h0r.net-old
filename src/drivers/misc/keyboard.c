@@ -68,6 +68,15 @@ void initkeyboard()
     keyboard.backspace = false;
 
     register_ISR(1,kb_handler);
+
+    if(inb8(0x64) & 0x1)// initialize the ps2 controller
+        inb8(0x60);
+    outb8(0x64,0x60);
+    outb8(0x60,0b01100111);
+
+    outb8(0x64,0xAE);
+    outb8(0x60,0xf4);
+
 }
 
 char turn_into_ASCII(uint16_t scancode)
