@@ -27,7 +27,7 @@ In case any package is missing please open up an issue!</br>
 ### Memory
 - [x] PMM
 - [x] VMM (5 and 4 level)
-- [ ] Heap
+- [x] Heap
 <!--
 ### ACPI
 - [ ] ACPI
