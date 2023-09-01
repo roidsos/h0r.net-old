@@ -52,9 +52,12 @@ bool is_visible(char keyascii) {
 
 void kb_handler(Registers* regs){
     char scancode = inb8(0x60);
-    if(scancode == 0)
+    if(scancode == 0){
         log_error("GOD DAMNIT KEYBOARD NO WORKIE"); 
-
+        EOI(1);
+        return;
+    }
+    log_info("key #%i pressed",scancode);
     EOI(1);
 }
 
