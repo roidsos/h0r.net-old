@@ -21,9 +21,6 @@ void EOI(int irq){
 }
 void enable_interrupts(){
     asm volatile("sti");
-
-    outb8(0x21,0xfd);
-    outb8(0xa1,0xff);
 } 
 void disable_interrupts(){
     asm volatile("cli");

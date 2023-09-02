@@ -7,10 +7,11 @@
 
 #include <drivers/Memory/Memory.h>
 #include <drivers/Memory/PFA.h>
+#include <drivers/Memory/Heap.h>
 #include <drivers/Memory/paging.h>
 #include <drivers/misc/time.h>
 #include <drivers/io/pci.h>
-#include <drivers/misc/keyboard.h>
+#include <drivers/hid/keyboard.h>
 
 #include <interface/desh.h>
 
@@ -67,13 +68,18 @@ void init_kernel(){
     handle_limine_requests(&data);
     get_cpu_capabilities(&data.cpu_info);
 
+    //Init the CPU
+    sys_init_fpu();
+
     //Initialize screen and logger
     InitScreen(data.framebuffer);
     logger_set_output(LOGGER_OUTPUT_DEBUG);
-    
+        
     //Init Memory stuff
     load_default_gdt();
     initPFA(data.memmap_resp);
+    InitHeap(0x10000);
+
     //data.PML4 = init_mem_and_identmap();
 
     //initialize interrupts
@@ -81,7 +87,6 @@ void init_kernel(){
     
     //Init the drivers
     rtc_init();
-    sys_init_fpu();
     init_falut_handler();
     initkeyboard();
     init_PCI();

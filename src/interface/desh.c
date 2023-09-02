@@ -1,7 +1,7 @@
 #include "desh.h"
 #include <vbe/font_renderer.h>
 #include <vendor/printf.h>
-#include <drivers/misc/keyboard.h>
+#include <drivers/hid/keyboard.h>
 #include <arch/x86_64/essential.h>
 #include <arch/x86_64/power.h>
 #include <utils/string.h>

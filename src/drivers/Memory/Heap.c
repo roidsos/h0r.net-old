@@ -1,8 +1,12 @@
 #include "Heap.h"
 #include <arch/x86_64/essential.h>
+#include "PFA.h"
 struct MemorySegment* first_free;
 
-void InitHeap(uint64_t heapstart ,uint64_t heaplength){
+void InitHeap(uint64_t heaplength){
+    void* heapstart = request_page();
+    lock_pages(heapstart,heaplength / 0x1000 + 1);
+
     first_free = (struct MemorySegment*)heapstart;
     first_free->length          = heaplength - sizeof(struct MemorySegment);
     first_free->next            = 0;

@@ -17,7 +17,7 @@ struct AlignedMemorySegment{
     bool IsAligned : 1;
 };
 
-void InitHeap(uint64_t heapstart ,uint64_t heaplength);
+void InitHeap(uint64_t heaplength);
 void* malloc(uint64_t size);
 void* aligned_alloc(uint64_t alignment,uint64_t size);
 void* calloc(uint64_t size);
