@@ -2,6 +2,7 @@
 #include <drivers/Memory/Heap.h>
 #include <drivers/Memory/PFA.h>
 #include <arch/x86_64/interrupts/interrupts.h>
+
 // "hippity hoppity,SCUBA DEEZ NUTZ"
 // https://github.com/elydre/profanOS/
 
@@ -51,25 +52,26 @@ int scuba_init() {
     // allocate a page directory
     kernel_directory = scuba_directory_create(0);
 
-    g_map_to_addr = SCUBA_MAP_TO;
     uint64_t physical_end = get_total_RAM();
-
-    if (g_map_to_addr > physical_end) {
-        g_map_to_addr = physical_end;
-        log_warning("Cannot map memory to desired limit");
-    }
+    g_map_to_addr = physical_end;
 
     // map the memory to itself
-    for (uint64_t i = 0; i < g_map_to_addr; i += 0x1000) {
+    for (uint64_t i = 0; i < physical_end; i += 0x1000) {
         scuba_map(kernel_directory, i, i);
     }
+
 
     struct limine_memmap_entry* kernel_region = get_memmap_entry_of_type(LIMINE_MEMMAP_KERNEL_AND_MODULES); 
     // map the kernel memory to itself
     for (uint64_t i = kernel_region->base; i < kernel_region->base + kernel_region->length; i += 0x1000) {
         scuba_map(kernel_directory, i, i);
     }
-
+    
+    struct limine_memmap_entry* HEAP_region = get_memmap_entry_of_type(LIMINE_MEMMAP_USABLE); 
+    // map the kernel memory to itself
+    for (uint64_t i = HEAP_region->base; i < HEAP_region->base + HEAP_region->length; i += 0x1000) {
+        scuba_map(kernel_directory, i, i);
+    }
 
     struct limine_memmap_entry* fb_region = get_memmap_entry_of_type(LIMINE_MEMMAP_FRAMEBUFFER); 
     // map the FB memory to itself

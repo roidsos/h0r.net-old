@@ -1,5 +1,6 @@
 #include <arch/x86_64/interrupts/IDT.h>
 #include <arch/x86_64/interrupts/ISR.h>
+#include <drivers/Memory/PFA.h>
 #include <arch/x86_64/i8259.h>
 #include <utils/logging/logger.h>
 
@@ -260,14 +261,14 @@ void __attribute((cdecl)) ISR253();
 void __attribute((cdecl)) ISR254();
 void __attribute((cdecl)) ISR255();
 
-ISRHandler ISRHandlers[256];
+ISRHandler* ISRHandlers;
 
 void ISR_RegisterHandler(int irq, ISRHandler handler)
 {
     ISRHandlers[irq] = handler;
 }
 
-void ISR_Handler(Registers* regs){
+void __attribute__((cdecl)) ISR_Handler(Registers* regs){
     if (ISRHandlers[regs->interrupt] != 0){
         ISRHandlers[regs->interrupt](regs);
     }else{
@@ -277,8 +278,10 @@ void ISR_Handler(Registers* regs){
     i8259_SendEndOfInterrupt(regs->interrupt);
 }
 
-void RegisterAllISRs()
+void init_ISR()
 {
+    ISRHandlers = (ISRHandler*)request_page();
+
     SetGate(0, ISR0, 8, 0b10001110 );
     SetGate(1, ISR1, 8, 0b10001110 );
     SetGate(2, ISR2, 8, 0b10001110 );

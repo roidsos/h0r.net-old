@@ -27,11 +27,5 @@ struct limine_memmap_entry* get_memmap_entry_of_type(int type){
 }
 
 uint64_t CalculateTotalMemorySize() {
-    static uint64_t totalSize = 0;
-    if(totalSize > 0) return totalSize;
-    
-    for (size_t i = 0; i < internal_memmap->entry_count; i++) {
-	    totalSize += internal_memmap->entries[i]->length;
-    }
-    return totalSize;
+    return internal_memmap->entries[internal_memmap->entry_count - 1]->base + internal_memmap->entries[internal_memmap->entry_count - 1]->length;
 }

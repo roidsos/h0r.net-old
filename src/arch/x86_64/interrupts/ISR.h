@@ -13,7 +13,7 @@ typedef struct
 
 typedef void (*ISRHandler)(Registers* regs);
 
-void RegisterAllISRs();
+void init_ISR();
 void ISR_RegisterHandler(int irq, ISRHandler handler);
 
 #endif // __ISR_H__

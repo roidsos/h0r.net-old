@@ -9,7 +9,6 @@
 // stadard page size
 #define PAGE_SIZE 4096
 #define SCUBA_MAX_TO_FREE 512
-#define SCUBA_MAP_TO    0x7800000   // scuba map to 120MB
 #define SCUBA_VEXPD   16
 
 // Max 4KB per page

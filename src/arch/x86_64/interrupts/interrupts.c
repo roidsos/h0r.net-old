@@ -7,7 +7,7 @@
 
 void initialize_interrupts()
 {
-    RegisterAllISRs();
+    init_ISR();
     i8259_Configure(PIC_REMAP_OFFSET, PIC_REMAP_OFFSET + 8, false);
     enable_IDT();
 }
