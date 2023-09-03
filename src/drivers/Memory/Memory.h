@@ -3,7 +3,9 @@
 #include <stdint.h>
 #include <limine.h>
 
-uint64_t CalculateTotalMemorySize(struct limine_memmap_response* memmap);
+uint64_t CalculateTotalMemorySize();
+void mem_init(struct limine_memmap_response* memmap);
+struct limine_memmap_entry* get_memmap_entry_of_type(int type);
 extern const char* memmap_type_names[];
 
 #endif // __MEMORY_H__

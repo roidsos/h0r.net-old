@@ -94,7 +94,7 @@ void* request_page()
         
    }
     
-    log_CRITICAL(0,"Out of Memory");
+    log_CRITICAL(HN_ERR_OUT_OF_MEM,"Out of Memory");
 return NULL;
 }
 
@@ -114,7 +114,7 @@ void initPFA(struct limine_memmap_response* memmap)
             largest_free_memseg_size = desc->length;
         }
     }
-    total_mem = CalculateTotalMemorySize(memmap);
+    total_mem = CalculateTotalMemorySize();
     free_mem  = total_mem;
     size_t bitmap_size = (total_mem / 4096 / 8) + 1;
 

@@ -81,6 +81,7 @@ void init_kernel(){
 
     //Init Memory stuff
     load_default_gdt();
+    mem_init(data.memmap_resp);
     initPFA(data.memmap_resp);
     InitHeap(0x10000);
     //data.PML4 = init_mem_and_identmap();

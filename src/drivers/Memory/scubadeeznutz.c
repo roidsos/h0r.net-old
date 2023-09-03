@@ -52,7 +52,7 @@ int scuba_init() {
     kernel_directory = scuba_directory_create(0);
 
     g_map_to_addr = SCUBA_MAP_TO;
-    uint64_t physical_end = get_total_RAM(0, 0);
+    uint64_t physical_end = get_total_RAM();
 
     if (g_map_to_addr > physical_end) {
         g_map_to_addr = physical_end;
@@ -64,12 +64,18 @@ int scuba_init() {
         scuba_map(kernel_directory, i, i);
     }
 
-    //uint64_t from = (uint64_t) vesa_get_framebuffer();
-    //uint64_t to = from + vesa_get_pitch() * vesa_get_height() * 4 + 0x1000;
-    //for (uint64_t i = from; i < to; i += 0x1000) {
-    //    scuba_map(kernel_directory, i, i);
-    //}
+    struct limine_memmap_entry* kernel_region = get_memmap_entry_of_type(LIMINE_MEMMAP_KERNEL_AND_MODULES); 
+    // map the kernel memory to itself
+    for (uint64_t i = kernel_region->base; i < kernel_region->base + kernel_region->length; i += 0x1000) {
+        scuba_map(kernel_directory, i, i);
+    }
 
+
+    struct limine_memmap_entry* fb_region = get_memmap_entry_of_type(LIMINE_MEMMAP_FRAMEBUFFER); 
+    // map the FB memory to itself
+    for (uint64_t i = fb_region->base; i < fb_region->base + fb_region->length; i += 0x1000) {
+        scuba_map(kernel_directory, i, i);
+    }
     // switch to the new page directory
     scuba_switch(kernel_directory);
 
