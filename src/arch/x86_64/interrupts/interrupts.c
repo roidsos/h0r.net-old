@@ -13,7 +13,6 @@ void initialize_interrupts()
 }
 void register_ISR(int irq,ISRHandler handler){
     ISR_RegisterHandler(irq,handler);
-    EnableGate(irq);
     i8259_Unmask(irq);
 }
 void EOI(int irq){

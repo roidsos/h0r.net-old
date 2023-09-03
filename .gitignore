@@ -55,4 +55,5 @@ dkms.conf
 src/kernel.bin
 iso/boot/kernel.bin
 os.iso
+replay.bin
 .vscode

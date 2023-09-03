@@ -8,9 +8,6 @@ dataport:       32bit   = 0xCFC
 commandport:    32bit   = 0xCF8
 */
 struct PCIDevice{
-    uint32_t portBase;
-    uint32_t interrupt;
-
     uint16_t bus;
     uint16_t device;
     uint16_t function;
@@ -22,7 +19,15 @@ struct PCIDevice{
     uint8_t subclass_id;
     uint8_t interface_id;
 
+    uint32_t BAR0;
+    uint32_t BAR1;
+    uint32_t BAR2;
+    uint32_t BAR3;
+    uint32_t BAR4;
+    uint32_t BAR5;
+
     uint8_t revision;
+    uint32_t interrupt;
 };
 
 

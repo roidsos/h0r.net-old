@@ -24,12 +24,21 @@ run: all
 # runs using qemu
 	qemu-system-x86_64 -cdrom os.iso -m 256M -debugcon file:hornet.log -device sb16 -drive file=hdd.img,if=ide,index=0,media=disk,format=raw -boot order=d -audiodev pa,id=audio0 -machine pcspk-audiodev=audio0
 
+record: all
+# runs using qemu
+	qemu-system-x86_64 -icount shift=auto,rr=record,rrfile=replay.bin -cdrom os.iso -m 256M -debugcon file:hornet.log -device sb16 -drive file=hdd.img,if=ide,index=0,media=disk,format=raw -boot order=d -audiodev pa,id=audio0 -machine pcspk-audiodev=audio0
+
 runuefi: all
 # runs using qemu
 	qemu-system-x86_64 -cdrom os.iso -m 256M -debugcon file:hornet.log -device sb16 -drive file=hdd.img,if=ide,index=0,media=disk,format=raw -boot order=d -audiodev pa,id=audio0 -machine pcspk-audiodev=audio0 -drive if=pflash,format=raw,unit=0,file="OVMFbin/OVMF_CODE-pure-efi.fd",readonly=on -drive if=pflash,format=raw,unit=1,file="OVMFbin/OVMF_VARS-pure-efi.fd"
 debug: all
 # standard qemu debug
 	qemu-system-x86_64 -no-reboot -debugcon file:hornet.log  -d int -no-shutdown -cdrom os.iso -m 256M -device sb16 -drive file=hdd.img,if=ide,index=0,media=disk,format=raw -boot order=d
+
+debugrp: all
+# standard qemu debug
+	qemu-system-x86_64 -icount shift=auto,rr=replay,rrfile=replay.bin  -no-reboot -debugcon file:hornet.log  -d int -no-shutdown -cdrom os.iso -m 256M -device sb16 -drive file=hdd.img,if=ide,index=0,media=disk,format=raw -boot order=d
+
 
 debugr: all
 #remote debug using GDB

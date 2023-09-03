@@ -3,6 +3,7 @@
 
 #include "arch/x86_64/cpu.h"
 #include <drivers/Memory/paging.h>
+#include <drivers/misc/time.h>
 
 #include "limine.h"
 #include <stdint.h>
@@ -13,6 +14,7 @@
 struct KernelData {
     void *efi_system_table_address;
     bool is_uefi_mode;
+    i_time_t time;
     CPUInfo cpu_info;
 
     struct PageTable* PML4;

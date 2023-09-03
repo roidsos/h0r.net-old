@@ -103,6 +103,14 @@ struct PCIDevice GetDevice(uint16_t bus, uint16_t device, uint16_t function)
 
     result.revision = Read(bus,device,function,0x08) & 0x000000FF;
     result.interrupt = Read(bus,device,function,0x3c) & 0x000000FF;
+
+    result.BAR0 = Read(bus,device,function,0x10);
+    result.BAR1 = Read(bus,device,function,0x14);
+    result.BAR2 = Read(bus,device,function,0x18);
+    result.BAR3 = Read(bus,device,function,0x1C);
+    result.BAR4 = Read(bus,device,function,0x20);
+    result.BAR5 = Read(bus,device,function,0x24);
+
     return result;
 }
 

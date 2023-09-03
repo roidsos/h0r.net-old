@@ -20,7 +20,4 @@ typedef enum
 
 void enable_IDT();
 void SetGate(int interrupt, void* base, uint16_t segmentDescriptor, uint8_t flags);
-
-void EnableGate(int interrupt);
-void DisableGate(int interrupt);
 #endif // __IDT_H__

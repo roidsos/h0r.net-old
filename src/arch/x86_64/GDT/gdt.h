@@ -23,8 +23,7 @@ struct GDT {
     struct GDTEntry UserNull;
     struct GDTEntry UserCode;
     struct GDTEntry UserData;
-} __attribute__((packed)) 
-__attribute((aligned(0x1000)));
+} __attribute__((packed));
 
 void load_default_gdt();
 #endif

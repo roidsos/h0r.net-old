@@ -1,5 +1,6 @@
 #include "IDT.h"
 #include <utils/binary.h>
+#include <utils/logging/logger.h>
 struct IDT64
 {
     uint16_t offset_low;
@@ -11,18 +12,9 @@ struct IDT64
     uint32_t zero;
 } __attribute__ ((packed));
 
-struct IDTDescriptor
-{
-    uint16_t Limit;
-    struct IDT64* Ptr;
-} __attribute__((packed));
-
-
 struct IDT64 g_IDT[256];
 
-struct IDTDescriptor g_IDTDescriptor = { sizeof(g_IDT) - 1, g_IDT };
-
-void __attribute__((cdecl)) IDT_Load(struct IDTDescriptor* idtDescriptor);
+void IDT_Load();
 
 void SetGate(int interrupt, void* base, uint16_t segmentDescriptor, uint8_t flags)
 {
@@ -35,17 +27,8 @@ void SetGate(int interrupt, void* base, uint16_t segmentDescriptor, uint8_t flag
     g_IDT[interrupt].types_attr = flags;
 }
 
-void EnableGate(int interrupt)
-{
-    FLAG_SET(g_IDT[interrupt].types_attr, IDT_FLAG_PRESENT);
-}
-
-void DisableGate(int interrupt)
-{
-    FLAG_UNSET(g_IDT[interrupt].types_attr, IDT_FLAG_PRESENT);
-}
-
 void enable_IDT()
 {
-   IDT_Load(&g_IDTDescriptor); 
+   log_info("IDT #1: 0x%x",g_IDT[1].selector);
+   IDT_Load(); 
 }
