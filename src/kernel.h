@@ -2,7 +2,6 @@
 #define KERNEL_H
 
 #include "arch/x86_64/cpu.h"
-#include <drivers/Memory/paging.h>
 #include <drivers/misc/time.h>
 
 #include "limine.h"
@@ -17,7 +16,6 @@ struct KernelData {
     i_time_t time;
     CPUInfo cpu_info;
 
-    struct PageTable* PML4;
     struct limine_framebuffer *framebuffer;
     struct limine_memmap_response *memmap_resp;
 };

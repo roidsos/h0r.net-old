@@ -9,7 +9,7 @@
 #include <drivers/Memory/Memory.h>
 #include <drivers/Memory/PFA.h>
 #include <drivers/Memory/Heap.h>
-#include <drivers/Memory/paging.h>
+#include <drivers/Memory/scubadeeznutz.h>
 #include <drivers/misc/time.h>
 #include <drivers/io/pci.h>
 #include <drivers/hid/keyboard.h>
@@ -92,6 +92,7 @@ void init_kernel(){
     rtc_init();
     init_falut_handler();
     init_drivers();
+    scuba_init();
 
     enable_interrupts();
     log_info("Kernel Initialized Successfully");
