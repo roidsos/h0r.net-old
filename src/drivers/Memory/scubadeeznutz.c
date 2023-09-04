@@ -58,8 +58,8 @@ void scuba_init(struct limine_memmap_response* memmap) {
     // map the memory to itself
     for (size_t i = 0; i < memmap->entry_count; i++)
     {
-        for (uint64_t i = memmap->entries[i]->base; i < memmap->entries[i]->base + memmap->entries[i]->length ; i += 0x1000) {
-            scuba_map(kernel_directory, i, i);
+        for (uint64_t j = memmap->entries[i]->base; j < memmap->entries[i]->base + memmap->entries[i]->length; j += 0x1000) {
+            scuba_map(kernel_directory, j, j);
         }
     }
     
@@ -103,8 +103,9 @@ void scuba_directory_init(scuba_directory_t *dir) {
     // map the memory to itself
     for (size_t i = 0; i < g_memmap->entry_count; i++)
     {
-        for (uint64_t i = g_memmap->entries[i]->base; i < g_memmap->entries[i]->base + g_memmap->entries[i]->length ; i += 0x1000) {
-            scuba_map_from_kernel(dir, i, i);
+
+        for (uint64_t j = g_memmap->entries[i]->base; j < g_memmap->entries[i]->base + g_memmap->entries[i]->length ; j += 0x1000) {
+            scuba_map_from_kernel(dir, j, j);
         }
     }
 }
