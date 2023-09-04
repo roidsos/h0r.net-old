@@ -5,10 +5,10 @@
 typedef struct 
 {
     // in the reverse order they are pushed:
-    uint64_t ds;                                            // data segment pushed by us
-    uint64_t edi, esi, ebp, useless, ebx, edx, ecx, eax;    // pusha
-    uint64_t interrupt, error;                              // we push interrupt, error is pushed automatically (or our dummy)
-    uint64_t eip, cs, eflags, esp, ss;                      // pushed automatically by CPU
+    uint64_t r11,r10,rsi,rdi,rdx,rcx,rbx,data_seg;    // pusha64
+    uint64_t interrupt, error;                        // we push interrupt, error is pushed automatically (or our dummy)
+    uint64_t rip, cs, rflags, rsp, ss;                // pushed automatically by CPU
+    
 } __attribute__((packed)) Registers;
 
 typedef void (*ISRHandler)(Registers* regs);

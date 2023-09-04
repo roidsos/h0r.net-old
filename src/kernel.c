@@ -78,24 +78,24 @@ void init_kernel(){
     //Initialize screen and logger
     InitScreen(data.framebuffer);
     logger_set_output(LOGGER_OUTPUT_DEBUG);
+    
+    //initialize interrupts
+    initialize_interrupts();
+    enable_interrupts();
 
     //Init Memory stuff
     load_default_gdt();
     mem_init(data.memmap_resp);
     initPFA(data.memmap_resp);
-    InitHeap(0x10000);
-    //data.PML4 = init_mem_and_identmap();
-
-    //initialize interrupts
-    initialize_interrupts();
+    InitHeap(0x20000);
+    scuba_init(data.memmap_resp);
     
     //Init the drivers
     rtc_init();
     init_falut_handler();
     init_drivers();
-    scuba_init();
 
-    enable_interrupts();
+    
     log_info("Kernel Initialized Successfully");
 
 }

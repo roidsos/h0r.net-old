@@ -8,16 +8,17 @@
 
 scuba_directory_t *kernel_directory;
 scuba_directory_t *current_directory;
-uint64_t g_map_to_addr;
+struct limine_memmap_response* g_memmap;
 
 scuba_directory_t *scuba_get_kernel_directory() {
     return kernel_directory;
 }
 
 void *i_allign_calloc(uint64_t size) {
-    void *ptr = (void *) aligned_alloc(0x1000, size); // we need to allign to 4KB
-    memset(ptr, 0, size);
-    return ptr;
+    void* start = request_page();
+    lock_pages(start,size / 0x1000 + 1); 
+    memset(start, 0, size);
+    return start;
 }
 
 
@@ -48,59 +49,27 @@ void scuba_flush_tlb() {
 **************************/
 void scuba_fault_handler(Registers* regs);
 
-int scuba_init() {
+void scuba_init(struct limine_memmap_response* memmap) {
     // allocate a page directory
     kernel_directory = scuba_directory_create(0);
+    g_memmap = memmap;
 
-    uint64_t physical_end = get_total_RAM();
-    g_map_to_addr = physical_end;
-
+    scuba_map(kernel_directory,0,0);
     // map the memory to itself
-    for (uint64_t i = 0; i < physical_end; i += 0x1000) {
-        scuba_map(kernel_directory, i, i);
-    }
-
-
-    struct limine_memmap_entry* kernel_region = get_memmap_entry_of_type(LIMINE_MEMMAP_KERNEL_AND_MODULES); 
-    // map the kernel memory to itself
-    for (uint64_t i = kernel_region->base; i < kernel_region->base + kernel_region->length; i += 0x1000) {
-        scuba_map(kernel_directory, i, i);
+    for (size_t i = 0; i < memmap->entry_count; i++)
+    {
+        for (uint64_t i = memmap->entries[i]->base; i < memmap->entries[i]->base + memmap->entries[i]->length ; i += 0x1000) {
+            scuba_map(kernel_directory, i, i);
+        }
     }
     
-    struct limine_memmap_entry* HEAP_region = get_memmap_entry_of_type(LIMINE_MEMMAP_USABLE); 
-    // map the kernel memory to itself
-    for (uint64_t i = HEAP_region->base; i < HEAP_region->base + HEAP_region->length; i += 0x1000) {
-        scuba_map(kernel_directory, i, i);
-    }
 
-    struct limine_memmap_entry* fb_region = get_memmap_entry_of_type(LIMINE_MEMMAP_FRAMEBUFFER); 
-    // map the FB memory to itself
-    for (uint64_t i = fb_region->base; i < fb_region->base + fb_region->length; i += 0x1000) {
-        scuba_map(kernel_directory, i, i);
-    }
-    // switch to the new page directory
-    scuba_switch(kernel_directory);
+    scuba_directory_init(kernel_directory);
 
     register_ISR(0xE,scuba_fault_handler);
-
-    return 0;
-}
-
-/**************************
- *                       *
- *     SCUBA PROCESS     *
- *                       *
-**************************/
-
-void scuba_process_switch(scuba_directory_t *dir) {
-    if (current_directory == dir) return;
-    if (dir->pid == 1) return;
-
+    
     // switch to the new page directory
-    scuba_switch(dir);
-
-    // flush the TLB
-    scuba_flush_tlb();
+    scuba_switch(kernel_directory);
 }
 
 /**************************
@@ -130,22 +99,13 @@ scuba_directory_t *scuba_directory_create(int target_pid) {
 }
 
 void scuba_directory_init(scuba_directory_t *dir) {
+    scuba_map_from_kernel(dir,0,0);
     // map the memory to itself
-    for (uint64_t i = 0; i < g_map_to_addr; i += 0x1000) {
-        scuba_map_from_kernel(dir, i, i);
-    }
-
-    // video memory
-    uint64_t from, to;
-
-    //if (vesa_does_enable()) {
-    //    // pixel buffer
-    //    from = (uint64_t) vesa_get_framebuffer();
-    //    to = from + vesa_get_pitch() * vesa_get_height() * 4 + 0x1000;
-    //}
-
-    for (uint64_t i = from; i < to; i += 0x1000) {
-        scuba_map_from_kernel(dir, i, i);
+    for (size_t i = 0; i < g_memmap->entry_count; i++)
+    {
+        for (uint64_t i = g_memmap->entries[i]->base; i < g_memmap->entries[i]->base + g_memmap->entries[i]->length ; i += 0x1000) {
+            scuba_map_from_kernel(dir, i, i);
+        }
     }
 }
 
@@ -308,7 +268,7 @@ void scuba_fault_handler(Registers* regs) {
     asm volatile("mov %%cr2, %0" : "=r" (faulting_address));
 
     //TODO: multitasking
-    int pid = 0;
+    //int pid = 0;
 
     // check if the faulting address is after RUN_BIN_VBASE
     //if (faulting_address >= RUN_BIN_VBASE) {

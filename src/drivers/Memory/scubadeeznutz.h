@@ -5,10 +5,11 @@
 // https://github.com/elydre/profanOS/
 
 #include <stdint.h>
+#include <limine.h>
 
 // stadard page size
 #define PAGE_SIZE 4096
-#define SCUBA_MAX_TO_FREE 512
+#define SCUBA_MAX_TO_FREE 1024
 #define SCUBA_VEXPD   16
 
 // Max 4KB per page
@@ -53,9 +54,7 @@ typedef struct {
 
 scuba_directory_t *scuba_get_kernel_directory();
 
-int scuba_init();
-
-void scuba_process_switch(scuba_directory_t *dir);
+void scuba_init(struct limine_memmap_response* memmap);
 
 scuba_directory_t *scuba_directory_create(int target_pid);
 void scuba_directory_init(scuba_directory_t *dir);

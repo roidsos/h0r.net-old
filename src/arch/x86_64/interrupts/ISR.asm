@@ -1,6 +1,6 @@
-%macro ISR_NOERRORCODE 1
 %include "utils/asmmacros.inc"
 
+%macro ISR_NOERRORCODE 1
 global ISR%1:
 ISR%1:
     push 0              ; push dummy error code
@@ -20,35 +20,41 @@ ISR%1:
 
 extern ISR_Handler
 isr_common:
-    PUSHALL
 
-    xor rax, rax        ; push ds
-    mov ax, ds
-    push rax
+    PUSHA64
 
-    mov ax, 0x10        ; use kernel data segment
-    mov ds, ax
-    mov es, ax
-    mov fs, ax
-    mov gs, ax
-    
-    push rsp            ; pass pointer to stack to C, so we can access all the pushed information
+    mov rdi, rsp            ; pass pointer to stack to C, so we can access all the pushed information
     call ISR_Handler
-    add rsp, 4
-
-    pop rax             ; restore old segment
-    mov ds, ax
+    add rsp, 8
+    
+    POPA64
+    
+    add rsp, 16          ; remove error code and interrupt number
+    iretq    
+global isr_special_0
+extern special_isr_0_handlr
+isr_special_0:
+    push rax
+    mov ax, 0x10
     mov es, ax
+    mov ds, ax
     mov fs, ax
     mov gs, ax
+    mov ss, ax
+    pop rax
 
-    POPALL
-    
-    add esp, 8          ; remove error code and interrupt number
-    iretq                ; will pop: cs, eip, eflags, ss, esp
+    SAVESTATE
+    cld
+    mov rdi, .tss
+    call special_isr_0_handlr
+    mov rdi, rax
+
+    RESTORESTATE
+    iretq
+.tss:
+    times 0x400 / 8 dq 0
 
 
-ISR_NOERRORCODE 0
 ISR_NOERRORCODE 1
 ISR_NOERRORCODE 2
 ISR_NOERRORCODE 3

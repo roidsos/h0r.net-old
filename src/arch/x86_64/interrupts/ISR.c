@@ -4,7 +4,7 @@
 #include <arch/x86_64/i8259.h>
 #include <utils/logging/logger.h>
 
-void __attribute((cdecl)) ISR0();
+void __attribute((cdecl)) isr_special_0();
 void __attribute((cdecl)) ISR1();
 void __attribute((cdecl)) ISR2();
 void __attribute((cdecl)) ISR3();
@@ -261,14 +261,13 @@ void __attribute((cdecl)) ISR253();
 void __attribute((cdecl)) ISR254();
 void __attribute((cdecl)) ISR255();
 
-ISRHandler* ISRHandlers;
+ISRHandler ISRHandlers[255];
 
 void ISR_RegisterHandler(int irq, ISRHandler handler)
 {
     ISRHandlers[irq] = handler;
 }
-
-void __attribute__((cdecl)) ISR_Handler(Registers* regs){
+void ISR_Handler(Registers* regs){
     if (ISRHandlers[regs->interrupt] != 0){
         ISRHandlers[regs->interrupt](regs);
     }else{
@@ -280,9 +279,7 @@ void __attribute__((cdecl)) ISR_Handler(Registers* regs){
 
 void init_ISR()
 {
-    ISRHandlers = (ISRHandler*)request_page();
-
-    SetGate(0, ISR0, 8, 0b10001110 );
+    SetGate(0, isr_special_0, 8, 0b10001110 );
     SetGate(1, ISR1, 8, 0b10001110 );
     SetGate(2, ISR2, 8, 0b10001110 );
     SetGate(3, ISR3, 8, 0b10001110 );

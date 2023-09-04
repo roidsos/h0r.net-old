@@ -29,6 +29,5 @@ void SetGate(int interrupt, void* base, uint16_t segmentDescriptor, uint8_t flag
 
 void enable_IDT()
 {
-   log_info("IDT #1: 0x%x",g_IDT[1].selector);
    IDT_Load(); 
 }
