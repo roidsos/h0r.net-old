@@ -1,10 +1,12 @@
 #include "PFA.h"
 #include <utils/logging/logger.h>
 
-size_t total_mem    = 0;
-size_t free_mem     = 0;
-size_t used_mem     = 0;
-size_t reserved_mem = 0;
+size_t total_mem     = 0;
+size_t free_mem      = 0;
+size_t used_mem      = 0;
+size_t reserved_mem  = 0;
+size_t highest_block = 0;
+
 bool pfa_initialized = false;
 struct Bitmap page_bitmap;
 
@@ -79,7 +81,9 @@ size_t get_reserved_RAM(){
 size_t get_total_RAM(){
     return total_mem;
 }
-
+size_t get_highest_block(){
+    return highest_block;
+}
 void* request_page()
 {
    for (size_t i = 0; i < page_bitmap.size*8; i++)
@@ -97,6 +101,11 @@ void* request_page()
     log_CRITICAL(HN_ERR_OUT_OF_MEM,"Out of Memory");
 return NULL;
 }
+void* request_pages(int num){
+    void* start = request_page();
+    lock_pages(start,num);
+    return start;
+}
 
 void initPFA(struct limine_memmap_response* memmap)
 {
@@ -113,6 +122,11 @@ void initPFA(struct limine_memmap_response* memmap)
             largest_free_memseg      = (void*)desc->base;
             largest_free_memseg_size = desc->length;
         }
+        uint64_t new_limit = desc->base + desc->length;
+
+		if (new_limit > highest_block) {
+			highest_block = new_limit;
+		}
     }
     total_mem = CalculateTotalMemorySize();
     free_mem  = total_mem;

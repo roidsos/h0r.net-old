@@ -1,70 +1,51 @@
-#ifndef SCUBASUIT_H
-#define SCUBASUIT_H
+#ifndef __SCUBADEEZNUTZ_H__
+#define __SCUBADEEZNUTZ_H__
 
 // "hippity hoppity,SCUBA DEEZ NUTZ"
-// https://github.com/elydre/profanOS/
+// https://github.com/schkwve/luxe/
 
 #include <stdint.h>
+#include <stdbool.h>
+#include <utils/vector.h>
 #include <limine.h>
 
-// stadard page size
-#define PAGE_SIZE 4096
-#define SCUBA_MAX_TO_FREE 1024
-#define SCUBA_VEXPD   16
+#define VIRT_FLAG_PRESENT (1 << 0)
+#define VIRT_FLAG_RW (1 << 1)
+#define VIRT_FLAG_USER (1 << 2)
+#define VIRT_FLAG_WTHRU (1 << 3)
+#define VIRT_FLAG_CACHE_DISABLE (1 << 4)
+#define VIRT_FLAG_WCOMB (1 << 7)
 
-// Max 4KB per page
-typedef struct {
-    uint32_t present :  1;
-    uint32_t rw :       1;
-    uint32_t user :     1;
-    uint32_t accessed : 1;
-    uint32_t dirty :    1;
-    uint32_t unused :   7;
-    uint32_t frame :   20;
-} scuba_page_t;
+#define VIRT_FLAGS_DEFAULT (VIRT_FLAG_PRESENT | VIRT_FLAG_RW)
+#define VIRT_FLAGS_MMIO (VIRT_FLAGS_DEFAULT | VIRT_FLAG_CACHE_DISABLE)
+#define VIRT_FLAGS_USERMODE (VIRT_FLAGS_DEFAULT | VIRT_FLAG_USER)
 
-// Max 4MB per table
-typedef struct {
-    scuba_page_t pages[1024];
-} scuba_page_table_t;
+#define BLOCK_SIZE 0x1000
+#define NUM_BLOCKS(num) (((num) + BLOCK_SIZE - 1) / BLOCK_SIZE)
 
 typedef struct {
-    uint32_t present :  1;
-    uint32_t rw :       1;
-    uint32_t user :     1;
-    uint32_t accessed : 1;
-    uint32_t dirty :    1;
-    uint32_t unused :   7;
-    uint32_t frame :   20;
-} scuba_dir_entry_t;
+	uint64_t virt_addr;
+	uint64_t phys_addr;
+	uint64_t flags;
+	uint64_t np;
+} mem_map_t;
 
-// Max 4GB per directory
 typedef struct {
-    scuba_dir_entry_t entries[1024];
-    scuba_page_table_t *tables[1024];
+	uint64_t *pml4;
+	vector_struct(uint64_t) mem_list;
+} addr_space_t;
 
-    uint32_t to_free_index;
-    void *to_free[SCUBA_MAX_TO_FREE];
+void scuba_init(struct limine_memmap_response *mmap,struct limine_kernel_address_response *kernel_addr,struct limine_hhdm_response *hhdm_resp);
 
-    uint32_t pid;
-} scuba_directory_t;
+void scuba_map(addr_space_t *ads, uint64_t virt_addr, uint64_t phys_addr,
+			  uint64_t np, uint64_t flags, bool us);
+void scuba_unmap(addr_space_t *ads, uint64_t virt_addr, uint64_t np, bool us);
 
-#define scuba_map(dir, virt, phys) scuba_map_func(dir, virt, phys, 0)
-#define scuba_map_from_kernel(dir, virt, phys) scuba_map_func(dir, virt, phys, 1)
+addr_space_t *create_ads();
 
-scuba_directory_t *scuba_get_kernel_directory();
+void _scuba_map(addr_space_t *ads, uint64_t virt_addr, uint64_t phys_addr,
+			   uint64_t flags);
+void _scuba_unmap(addr_space_t *ads, uint64_t virt_addr);
+uint64_t scuba_get_phys_addr(addr_space_t *ads, uint64_t virt_addr);
 
-void scuba_init(struct limine_memmap_response* memmap);
-
-scuba_directory_t *scuba_directory_create(int target_pid);
-void scuba_directory_init(scuba_directory_t *dir);
-void scuba_directory_destroy(scuba_directory_t *dir);
-
-int scuba_map_func(scuba_directory_t *dir, uint64_t virt, uint64_t phys, int from_kernel);
-int scuba_unmap(scuba_directory_t *dir, uint64_t virt);
-
-int scuba_create_virtual(scuba_directory_t *dir, uint64_t virt, int count);
-
-uint64_t scuba_get_phys(scuba_directory_t *dir, uint64_t virt);
-
-#endif
+#endif // __SCUBADEEZNUTZ_H__

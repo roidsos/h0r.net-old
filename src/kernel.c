@@ -32,7 +32,14 @@ static volatile struct limine_efi_system_table_request efi_system_table_request 
     .id = LIMINE_EFI_SYSTEM_TABLE_REQUEST,
     .revision = 0
 };
-
+static volatile struct limine_kernel_address_request kernel_address_request = {
+    .id = LIMINE_KERNEL_ADDRESS_REQUEST,
+    .revision = 0
+};
+static volatile struct limine_hhdm_request hhdm_request = {
+    .id = LIMINE_HHDM_REQUEST,
+    .revision = 0
+};
 
 void handle_limine_requests(struct KernelData *_data) {
     //// Ensure we got a framebuffer.
@@ -59,6 +66,12 @@ void handle_limine_requests(struct KernelData *_data) {
 
     // Fetch the memory map.
     _data->memmap_resp = memmap_request.response;
+
+    // Fetch the memory map.
+    _data->kernel_addr_resp = kernel_address_request.response;
+
+    // Fetch the memory map.
+    _data->hhdm_resp = hhdm_request.response;
 }
 
 //create the single instance of the struct
@@ -88,7 +101,7 @@ void init_kernel(){
     mem_init(data.memmap_resp);
     initPFA(data.memmap_resp);
     InitHeap(0x20000);
-    scuba_init(data.memmap_resp);
+    scuba_init(data.memmap_resp,data.kernel_addr_resp,data.hhdm_resp);
     
     //Init the drivers
     rtc_init();
