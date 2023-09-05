@@ -20,17 +20,15 @@ ISR%1:
 
 extern ISR_Handler
 isr_common:
+	PUSHA64
+	cld
+	mov rdi, rsp
+	push 0 ; stack alignment
+	call ISR_Handler
+	POPA64
+	add rsp, 24
+	iretq
 
-    PUSHA64
-
-    mov rdi, rsp            ; pass pointer to stack to C, so we can access all the pushed information
-    call ISR_Handler
-    add rsp, 8
-    
-    POPA64
-    
-    add rsp, 16          ; remove error code and interrupt number
-    iretq    
 global isr_special_0
 extern special_isr_0_handlr
 isr_special_0:
@@ -50,7 +48,7 @@ isr_special_0:
     mov rdi, rax
 
     RESTORESTATE
-    iretq
+    retq
 .tss:
     times 0x400 / 8 dq 0
 

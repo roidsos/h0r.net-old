@@ -1,40 +1,38 @@
 %macro PUSHA64 0
-    
-    push rax
-    mov ax, ds
-    push rax
-
-    mov ax, 0x10
-    mov es, ax
-    mov ds, ax
-    mov fs, ax
-    mov gs, ax
-    mov ss, ax
-
-    push rbx
-    push rcx
-    push rdx
-    push rdi
-    push rsi
-    push r10
-    push r11
+	push r15
+	push r14
+	push r13
+	push r12
+	push r11
+	push r10
+	push r9
+	push r8
+	push rbp
+	push rdi
+	push rsi
+	push rdx
+	push rcx
+	push rbx
+	push rax
 
 %endmacro
 
 %macro POPA64 0
-    pop r11
-    pop r10
+    pop rax
+    pop rbx
+    pop rcx
+    pop rdx
     pop rsi
     pop rdi
-    pop rdx
-    pop rcx
-    pop rbx
-    pop rax
-    mov es, ax
-    mov ds, ax
-    mov fs, ax
-    mov gs, ax
-    pop rax
+    pop rbp
+    pop r8
+    pop r9
+    pop r10
+    pop r11
+    pop r12
+    pop r13
+    pop r14
+    pop r15
 %endmacro
 
 %macro SAVESTATE 0

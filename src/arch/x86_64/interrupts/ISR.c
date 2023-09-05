@@ -3,6 +3,7 @@
 #include <drivers/Memory/PFA.h>
 #include <arch/x86_64/i8259.h>
 #include <utils/logging/logger.h>
+#include "softTSS.h"
 
 void __attribute((cdecl)) isr_special_0();
 void __attribute((cdecl)) ISR1();

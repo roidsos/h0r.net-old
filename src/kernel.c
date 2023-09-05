@@ -94,7 +94,6 @@ void init_kernel(){
     
     //initialize interrupts
     initialize_interrupts();
-    enable_interrupts();
 
     //Init Memory stuff
     load_default_gdt();
@@ -109,6 +108,7 @@ void init_kernel(){
     init_drivers();
 
     
+    enable_interrupts();
     log_info("Kernel Initialized Successfully");
 
 }
