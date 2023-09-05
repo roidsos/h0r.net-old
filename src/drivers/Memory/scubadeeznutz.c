@@ -37,12 +37,14 @@ static inline void write_cr3(uint64_t value)
 
 void scuba_init(struct limine_memmap_response *mmap,struct limine_kernel_address_response *kernel_addr,struct limine_hhdm_response *hhdm_resp)
 {
+	vector_init(&mmap_list);
     g_mmap = mmap;
     g_kernel_addr = kernel_addr;
     g_hhdm_resp = hhdm_resp;
 
 	g_kern_ads.pml4 = malloc(8 * BLOCK_SIZE);
 	memset(g_kern_ads.pml4, 0, 8 * BLOCK_SIZE);
+	vector_init(&g_kern_ads.mem_list);
 
 	scuba_map(NULL, MEM_VIRT_OFF, 0, NUM_BLOCKS(get_highest_block()),
 			 VIRT_FLAGS_DEFAULT | VIRT_FLAGS_USERMODE, true);

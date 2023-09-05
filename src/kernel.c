@@ -92,17 +92,20 @@ void init_kernel(){
     InitScreen(data.framebuffer);
     logger_set_output(LOGGER_OUTPUT_DEBUG);
     
+    //Initialize GDT
+    load_default_gdt();
+ 
+    
     //initialize interrupts
     initialize_interrupts();
     init_falut_handler();
 
     //Init Memory stuff
-    load_default_gdt();
     mem_init(data.memmap_resp);
     initPFA(data.memmap_resp);
     InitHeap(0x20000);
     scuba_init(data.memmap_resp,data.kernel_addr_resp,data.hhdm_resp);
-    
+
     //Init the drivers
     rtc_init();
     init_drivers();

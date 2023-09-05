@@ -10,7 +10,7 @@ struct Bitmap{
     uint8_t* buffer;
 };
 
-void bitmap_set(struct Bitmap bm,size_t index,bool setto);
+bool bitmap_set(struct Bitmap bm,size_t index,bool setto);
 bool bitmap_get(struct Bitmap bm,size_t index);
 
 #endif // __BITMAP_H__

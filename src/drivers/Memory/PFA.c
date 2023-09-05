@@ -13,60 +13,76 @@ struct Bitmap page_bitmap;
 extern size_t kernel_start;
 extern size_t kernel_end;
 
-void lock_page(void* addr){
+bool lock_page(void* addr){
     size_t index = (size_t)addr / 4096;
-    bitmap_set(page_bitmap,index,true);
-    free_mem -= 4096;
-    used_mem += 4096;
+    if(bitmap_set(page_bitmap,index,true)){
+        free_mem -= 4096;
+        used_mem += 4096;
+        return true;
+    }else{
+        return false;
+    }
 
 }
 
-void free_page(void* addr){
+bool free_page(void* addr){
     size_t index = (size_t)addr / 4096;
-    bitmap_set(page_bitmap,index,false);
-    free_mem += 4096;
-    used_mem -= 4096;
+    if(bitmap_set(page_bitmap,index,false)){
+        free_mem += 4096;
+        used_mem -= 4096;
+        return true;
+    }else{
+        return false;
+    }
 }
 
-void reserve_page(void* addr){
+bool reserve_page(void* addr){
     size_t index = (size_t)addr / 4096;
-    bitmap_set(page_bitmap,index,true);
-    free_mem -= 4096;
-    reserved_mem += 4096;
+    if(bitmap_set(page_bitmap,index,true)){
+        free_mem -= 4096;
+        reserved_mem += 4096;
+        return true;
+    }else{
+        return false;
+    }
 }
 
-void unreserve_page(void* addr){
+bool unreserve_page(void* addr){
     size_t index = (size_t)addr / 4096;
-    bitmap_set(page_bitmap,index,false);
-    free_mem += 4096;
-    reserved_mem -= 4096;
+    if(bitmap_set(page_bitmap,index,false)){
+        free_mem += 4096;
+        reserved_mem -= 4096;
+        return true;
+    }else{
+        return false;
+    }
 }
 
 void lock_pages(void* addr,size_t num){
     for (size_t i = 0; i < num; i++)
     {
-        lock_page((void*)((size_t)addr + i*4096));
+        if(!lock_page((void*)((size_t)addr + i*4096))) break;
     }
 }
 
 void free_pages(void* addr,size_t num){
     for (size_t i = 0; i < num; i++)
     {
-        free_page((void*)((size_t)addr + i*4096));
+        if(!free_page((void*)((size_t)addr + i*4096))) break;
     }
 }
 
 void reserve_pages(void* addr,size_t num){
 for (size_t i = 0; i < num; i++)
     {
-        reserve_page((void*)((size_t)addr + i*4096));
+        if(!reserve_page((void*)((size_t)addr + i*4096))) break;
     }
 }
 
 void unreserve_pages(void* addr,size_t num){
     for (size_t i = 0; i < num; i++)
     {
-        unreserve_page((void*)((size_t)addr + i*4096));
+        if(!unreserve_page((void*)((size_t)addr + i*4096))) break;
     }
 }
 size_t get_free_RAM(){
@@ -153,7 +169,7 @@ void initPFA(struct limine_memmap_response* memmap)
     {
         struct limine_memmap_entry* desc = memmap->entries[i];
         if (desc->type != LIMINE_MEMMAP_USABLE){
-            //log_info("0x%x 0x%x",desc->base,desc->length / 4096 + 1);
+            //log_info("%i 0x%x 0x%x",i,desc->base,desc->length / 4096 + 1);
             reserve_pages((void*)desc->base,desc->length / 4096 + 1);
         }
     }

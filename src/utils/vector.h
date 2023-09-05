@@ -17,6 +17,12 @@
 #define vector(type, name) vector_struct(type) name = { 0 }
 #define vector_static(type, name) static vector(type, name)
 
+#define vector_init(vec) 			\
+(vec)->len = 0; 					\
+(vec)->cap = 500; 					\
+(vec)->data = malloc((vec)->cap)	\
+
+
 #define vector_push_back(vec, elem)                          \
 	{                                                        \
 		(vec)->len++;                                        \
@@ -42,7 +48,7 @@
 		(vec)->len = 0;          \
 		(vec)->cap = 0;          \
 		if ((vec)->data != NULL) \
-			kfree((vec)->data);  \
+			free((vec)->data);  \
 		(vec)->data = NULL;      \
 	}
 

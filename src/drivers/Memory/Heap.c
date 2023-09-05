@@ -140,7 +140,7 @@ void* realloc(void* old,uint64_t size){
         oldseg = (struct MemorySegment*)(uint64_t)ams->MemorySegmentAddr;//establishing the target but its aligned
     }
     else{
-    oldseg = ((struct MemorySegment*)old) - 1;//establishing the target
+        oldseg = ((struct MemorySegment*)old) - 1;//establishing the target
     }
     //recording the smaller size
     uint64_t smallersize = size;
@@ -180,7 +180,7 @@ void* aligned_alloc(uint64_t alignment,uint64_t size)
     if (remainder2 != 0){
         address += alignment;
         //creating an aligned segment
-        struct AlignedMemorySegment* ams = (struct AlignedMemorySegment*)address -1;
+        struct AlignedMemorySegment* ams = (struct AlignedMemorySegment*)address -sizeof(struct AlignedMemorySegment);
         ams->IsAligned           = true;
         ams->MemorySegmentAddr   = (unsigned long long)mallocval - sizeof(struct MemorySegment);
     }
