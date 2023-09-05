@@ -20,6 +20,10 @@ all:
 	limine/limine-deploy os.iso
 	rm -rf iso_root
 
+override CFILES := $(shell find -L . -type f -name '*.c')
+format:
+	clang-format -i ${CFILES}
+
 run: all
 # runs using qemu
 	qemu-system-x86_64 -cdrom os.iso -m 256M -debugcon file:hornet.log -device sb16 -drive file=hdd.img,if=ide,index=0,media=disk,format=raw -boot order=d -audiodev pa,id=audio0 -machine pcspk-audiodev=audio0

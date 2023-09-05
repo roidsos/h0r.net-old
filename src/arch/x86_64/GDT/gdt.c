@@ -8,11 +8,11 @@ struct GDT DefaultGDT = {
     {0, 0, 0, 0b11111010, 0b10100000, 0}, // user code segment
     {0, 0, 0, 0b11110010, 0b10100000, 0}, // user data segment
 };
-void LoadGDT(struct GDTDescriptor* gdtDescriptor);
+void LoadGDT(struct GDTDescriptor *gdtDescriptor);
 
-void load_default_gdt(){
-    struct GDTDescriptor gdtDescriptor;
-    gdtDescriptor.Size = sizeof(struct GDT) - 1;
-    gdtDescriptor.Offset = (uint64_t)&DefaultGDT;
-    LoadGDT(&gdtDescriptor);
+void load_default_gdt() {
+  struct GDTDescriptor gdtDescriptor;
+  gdtDescriptor.Size = sizeof(struct GDT) - 1;
+  gdtDescriptor.Offset = (uint64_t)&DefaultGDT;
+  LoadGDT(&gdtDescriptor);
 }

@@ -23,6 +23,15 @@
 #define BLOCK_SIZE 0x1000
 #define NUM_BLOCKS(num) (((num) + BLOCK_SIZE - 1) / BLOCK_SIZE)
 
+extern struct limine_memmap_response *g_mmap;
+extern struct limine_kernel_address_response *g_kernel_addr;
+extern struct limine_hhdm_response *g_hhdm_resp;
+
+#define MEM_VIRT_OFF g_hhdm_resp->offset
+
+#define VIRT_TO_PHYS(a) ((uint64_t)(a)- MEM_VIRT_OFF)
+#define PHYS_TO_VIRT(a) ((uint64_t)(a)+ MEM_VIRT_OFF)
+
 typedef struct {
 	uint64_t virt_addr;
 	uint64_t phys_addr;
