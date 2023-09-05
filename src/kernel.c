@@ -94,6 +94,7 @@ void init_kernel(){
     
     //initialize interrupts
     initialize_interrupts();
+    init_falut_handler();
 
     //Init Memory stuff
     load_default_gdt();
@@ -104,7 +105,6 @@ void init_kernel(){
     
     //Init the drivers
     rtc_init();
-    init_falut_handler();
     init_drivers();
 
     

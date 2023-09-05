@@ -20,7 +20,7 @@ char log_error(char* format,...){
     if(current_output == LOGGER_OUTPUT_DEBUG){
         dprintf(LOGGER_PREFIX_ERR);
         vdprintf(format,va);
-        printf("\n");
+        dprintf("\n");
     }
     va_end(va);
 }
