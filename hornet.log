@@ -1,0 +1,25 @@
+[INFO=]PCI Devices: 
+
+[INFO=]VendorID: 0x8086 ,DeviceID: 0x1237 
+
+[INFO=]VendorID: 0x8086 ,DeviceID: 0x7000 
+
+[INFO=]VendorID: 0x8086 ,DeviceID: 0x7010 
+
+[INFO=]VendorID: 0x8086 ,DeviceID: 0x7113 
+
+[INFO=]VendorID: 0x1234 ,DeviceID: 0x1111 
+
+[INFO=]VendorID: 0x8086 ,DeviceID: 0x100e 
+
+[INFO=] key fffffffa
+[INFO=]Kernel Initialized Successfully
+[INFO=] key 20
+[INFO=] key 20
+[INFO=] key 20
+[INFO=] key 20
+[INFO=] key 20
+[INFO=] key 20
+[INFO=] key 24
+[INFO=] key ffffffe0
+[INFO=] key 5b

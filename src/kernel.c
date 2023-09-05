@@ -104,7 +104,9 @@ void init_kernel(){
     mem_init(data.memmap_resp);
     initPFA(data.memmap_resp);
     InitHeap(0x20000);
-    scuba_init(data.memmap_resp,data.kernel_addr_resp,data.hhdm_resp);
+    //still no workie
+    //TODO: fix scuba
+    //scuba_init(data.memmap_resp,data.kernel_addr_resp,data.hhdm_resp);
 
     //Init the drivers
     rtc_init();

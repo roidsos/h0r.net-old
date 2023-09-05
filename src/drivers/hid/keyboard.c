@@ -4,6 +4,8 @@
 #include <drivers/io/portio.h>
 #include <utils/logging/logger.h>
 
+char* keybuffer;
+
 uint8_t keyboard_layout_us[2][128] = {
     {
         KEY_NULL, KEY_ESC, '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
@@ -51,23 +53,28 @@ bool is_visible(char keyascii) {
 }
 
 void kb_handler(Registers* regs){
+    
     char scancode = inb8(0x60);
     if(scancode == 0){
         log_error("GOD DAMNIT KEYBOARD NO WORKIE"); 
         EOI(1);
         return;
     }
-    log_info("key #%i pressed",scancode);
+    keybuffer[0] = scancode;
+    keyboard.keys[(uint8_t) (scancode & 0x7F)] = KEY_IS_PRESS(scancode);
+    keyboard.chars[KEY_CHAR(scancode)] = KEY_IS_PRESS(scancode);
+    log_info(" key %x",scancode);
     EOI(1);
 }
 
 void initkeyboard()
 {
+    keybuffer = malloc(1);
     keyboard.shift = false;
     keyboard.capslock = false;
     keyboard.backspace = false;
 
-    register_ISR(1,kb_handler);
+    register_ISR(PIC_REMAP_OFFSET + 1,kb_handler);
 
     if(inb8(0x64) & 0x1)// initialize the ps2 controller
         inb8(0x60);
@@ -81,11 +88,11 @@ void initkeyboard()
 
 char turn_into_ASCII(uint16_t scancode)
 {
-     
     if (KEY_SCANCODE(scancode) == KEY_LSHIFT || KEY_SCANCODE(scancode) == KEY_RSHIFT) {
                 keyboard.shift = !keyboard.shift;
     }
     if (KEY_IS_PRESS(scancode)) { 
+        log_info("a");
             if (keyboard.shift) { 
                return keyboard_layout_us[1][scancode];
             } else {
@@ -93,33 +100,51 @@ char turn_into_ASCII(uint16_t scancode)
           }
           
     }
-    /* } */
     return 0; 
 }
 
 void getstr(char* buffer,int size)
 {
     int idx = 0;
-    while (idx < size) {
-        char ch = getch();
-        if (ch == 0) {
-           // TODO: timer here 100ms
-        } else if (is_visible(ch)) {
-            buffer[idx++] = ch;
-            printchar(ch);
-        } else if (ch == KEY_BACKSPACE) {
-            if (idx > 0){
-                buffer[--idx] = 0;
-                Backspace(); 
+    bool repeat = false;
+    int repeat_count = 0;
+    int repeat_delay = 100;
+
+    do {
+        char _char = getch();
+        if (_char) {
+            if (_char == -1) {
+                buffer[idx--] = ' ';
+            } else {
+                if (repeat) {
+                    if (++repeat_count >= 10) {
+                        repeat_count = 0;
+                        printf_("%c",_char);
+                        buffer[idx] = _char;
+                        idx++;
+                    }
+                } else {
+                    printf_("%c",_char);
+                    buffer[idx] = _char;
+                    idx++;
+                }
+                repeat = true;
             }
-        } else if (ch == KEY_ENTER) {
-            break;
+        } else {
+            repeat = false;
+            repeat_count = 0;
         }
-    }
+        if (idx >= size) return;
+        //PIT::Sleep(repeat ? repeat_delay / 10 : repeat_delay);
+    } while (!keyboard_key(KEY_ENTER));
     buffer[idx] = 0;
 }
 
 char getch()
 {
-    return  0; 
+    if (turn_into_ASCII(keybuffer[0])){
+    return turn_into_ASCII(keybuffer[0]);
+    keybuffer[0] = 0;
+    }
+    return 0;
 }

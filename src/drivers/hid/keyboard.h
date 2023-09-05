@@ -12,7 +12,12 @@
 #define KEY_IS_RELEASE(_s) (!!((_s) & KEYBOARD_RELEASE))
 #define KEY_SCANCODE(_s) ((_s) & 0x7F)
 #define KEY_MOD(_s, _m) (!!((_s) & (_m)))
-#define KEY_CHAR(_s) KEY_SCANCODE(_s) < 128 ? keyboard_layout_us[KEY_MOD(_s, KEY_MOD_SHIFT) ? 1 : 0][KEY_SCANCODE(_s)] : 0;
+#define KEY_CHAR(_s) __extension__({\
+        __typeof__(_s) __s = (_s);\
+        KEY_SCANCODE(__s) < 128 ?\
+            keyboard_layout_us[KEY_MOD(__s, KEY_MOD_SHIFT) ? 1 : 0][KEY_SCANCODE(__s)] :\
+            0;\
+    })
 
 struct Keyboard{
     uint16_t mods;
