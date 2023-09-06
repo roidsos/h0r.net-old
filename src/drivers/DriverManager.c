@@ -4,8 +4,8 @@
 #include <drivers/io/pci.h>
 
 void init_drivers() {
-  initkeyboard();
-  init_PCI();
+    initkeyboard();
+    init_PCI();
 }
 
 void load_driver_for_device(struct Device dev) {}

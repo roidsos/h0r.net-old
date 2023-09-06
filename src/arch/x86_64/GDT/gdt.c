@@ -11,8 +11,8 @@ struct GDT DefaultGDT = {
 void LoadGDT(struct GDTDescriptor *gdtDescriptor);
 
 void load_default_gdt() {
-  struct GDTDescriptor gdtDescriptor;
-  gdtDescriptor.Size = sizeof(struct GDT) - 1;
-  gdtDescriptor.Offset = (uint64_t)&DefaultGDT;
-  LoadGDT(&gdtDescriptor);
+    struct GDTDescriptor gdtDescriptor;
+    gdtDescriptor.Size = sizeof(struct GDT) - 1;
+    gdtDescriptor.Offset = (uint64_t)&DefaultGDT;
+    LoadGDT(&gdtDescriptor);
 }
