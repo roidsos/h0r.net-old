@@ -56,12 +56,12 @@ override CFLAGS += \
     -m64 \
     -march=x86-64 \
     -mabi=sysv \
+    -mcmodel=kernel \
     -mno-80387 \
     -mno-mmx \
     -mno-sse \
     -mno-sse2 \
     -mno-red-zone \
-    -mcmodel=kernel \
 	-DPRINTF_DISABLE_SUPPORT_FLOAT
 	
 # Internal C preprocessor flags that should not be changed by the user.
