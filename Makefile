@@ -20,7 +20,7 @@ all:
 	limine/limine-deploy os.iso
 	rm -rf iso_root
 
-override CFILES := $(shell find -L . -type f -name '*.c')
+override CFILES := $(shell find -L src -type f -name '*.c')
 format:
 	clang-format -i ${CFILES}
 
