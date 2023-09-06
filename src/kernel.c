@@ -97,7 +97,7 @@ void init_kernel() {
     InitHeap(0x20000);
     // still no workie
     // TODO: fix scuba
-    scuba_init(data.memmap_resp, data.kernel_addr_resp, data.hhdm_resp);
+    //scuba_init(data.memmap_resp, data.kernel_addr_resp, data.hhdm_resp);
 
     // Init the drivers
     rtc_init();
