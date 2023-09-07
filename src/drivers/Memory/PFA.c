@@ -108,7 +108,7 @@ void *request_page() {
         return PP;
     }
 
-    log_CRITICAL(HN_ERR_OUT_OF_MEM, "Out of Memory");
+    log_CRITICAL(NULL,HN_ERR_OUT_OF_MEM, "Out of Memory");
     return NULL;
 }
 void *request_pages(int num) {
@@ -143,7 +143,7 @@ void initPFA(struct limine_memmap_response *memmap) {
     size_t bitmap_size = (total_mem / 4096 / 8) + 1;
 
     if (bitmap_size > largest_free_memseg_size)
-        log_CRITICAL(HN_ERR_OUT_OF_MEM,
+        log_CRITICAL(NULL,HN_ERR_OUT_OF_MEM,
                      "Page bitmap does not fit in largest free segment");
 
     // Initialize bitmap

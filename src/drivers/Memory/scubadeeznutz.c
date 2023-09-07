@@ -8,24 +8,17 @@
 
 struct limine_memmap_response *g_mmap;
 struct limine_kernel_address_response *g_kernel_addr;
-struct limine_hhdm_response *g_hhdm_resp;
-
-#define MEM_VIRT_OFF g_hhdm_resp->offset
-
-#define VIRT_TO_PHYS(a) ((uint64_t)(a)-MEM_VIRT_OFF)
-#define PHYS_TO_VIRT(a) ((uint64_t)(a) + MEM_VIRT_OFF)
 
 static addr_space_t g_kern_as;
 vector_static(mem_map_t, mmap_list);
 
 void scuba_init(struct limine_memmap_response *mmap,
-                struct limine_kernel_address_response *kernel_addr,
-                struct limine_hhdm_response *hhdm_resp) {
+                struct limine_kernel_address_response *kernel_addr) {
+
     // General Initialization
     vector_init(&mmap_list);
     g_mmap = mmap;
     g_kernel_addr = kernel_addr;
-    g_hhdm_resp = hhdm_resp;
 
     // Initializing the Adress Space
     g_kern_as.pml4 = malloc(8 * BLOCK_SIZE);

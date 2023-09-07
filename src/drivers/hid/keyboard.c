@@ -40,7 +40,7 @@ void kb_handler(Registers *regs) {
     keybuffer[0] = scancode;
     keyboard.keys[(uint8_t)(scancode & 0x7F)] = KEY_IS_PRESS(scancode);
     keyboard.chars[KEY_CHAR(scancode)] = KEY_IS_PRESS(scancode);
-    if(KEY_IS_PRESS(scancode)){
+    if (KEY_IS_PRESS(scancode)) {
         log_info(" key %x", scancode);
     }
     EOI(1);

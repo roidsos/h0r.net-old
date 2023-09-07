@@ -10,6 +10,7 @@
 #include <drivers/Memory/Memory.h>
 #include <drivers/Memory/PFA.h>
 #include <drivers/Memory/scubadeeznutz.h>
+#include <drivers/acpi_tables/acpi.h>
 #include <drivers/hid/keyboard.h>
 #include <drivers/io/pci.h>
 #include <drivers/misc/time.h>
@@ -29,8 +30,8 @@ static volatile struct limine_efi_system_table_request
                                 .revision = 0};
 static volatile struct limine_kernel_address_request kernel_address_request = {
     .id = LIMINE_KERNEL_ADDRESS_REQUEST, .revision = 0};
-static volatile struct limine_hhdm_request hhdm_request = {
-    .id = LIMINE_HHDM_REQUEST, .revision = 0};
+static volatile struct limine_rsdp_request rsdp_request = {
+    .id = LIMINE_RSDP_REQUEST, .revision = 0};
 
 void handle_limine_requests(struct KernelData *_data) {
     //// Ensure we got a framebuffer.
@@ -62,11 +63,10 @@ void handle_limine_requests(struct KernelData *_data) {
     // Fetch the memory map.
     _data->kernel_addr_resp = kernel_address_request.response;
 
-    // Fetch the memory map.
-    _data->hhdm_resp = hhdm_request.response;
+    _data->rsdp = rsdp_request.response->address;
 }
 
-// create the single instance of the struct
+// ================= KERNEL MAIN ============================
 struct KernelData data;
 
 void init_kernel() {
@@ -97,11 +97,12 @@ void init_kernel() {
     InitHeap(0x20000);
     // still no workie
     // TODO: fix scuba
-    //scuba_init(data.memmap_resp, data.kernel_addr_resp, data.hhdm_resp);
+    // scuba_init(data.memmap_resp, data.kernel_addr_resp);
 
     // Init the drivers
     rtc_init();
     init_drivers();
+    init_acpi(data.rsdp);
 
     enable_interrupts();
     log_info("Kernel Initialized Successfully");

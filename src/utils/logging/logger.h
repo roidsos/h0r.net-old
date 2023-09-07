@@ -1,6 +1,7 @@
 #ifndef LOGGER_H
 #define LOGGER_H
 #include "utils/error-handling/error.h"
+#include "utils/error-handling/error-screen.h"
 
 #define LOGGER_OUTPUT_VGA    0
 #define LOGGER_OUTPUT_DEBUG  1
@@ -16,5 +17,5 @@ char log_error(char* format,...);
 char log_info(char* format,...);
 char log_warning(char* format,...);
 //Note: log_CRITICAL causes KERNEL PANIC
-char log_CRITICAL(char error_code,char* format,...);
+char log_CRITICAL(Registers* regs,char error_code,char* format,...);
 #endif

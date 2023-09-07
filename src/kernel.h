@@ -15,6 +15,7 @@ struct KernelData {
     bool is_uefi_mode;
     i_time_t time;
     CPUInfo cpu_info;
+    void* rsdp;
 
     struct limine_framebuffer *framebuffer;
     struct limine_memmap_response *memmap_resp;

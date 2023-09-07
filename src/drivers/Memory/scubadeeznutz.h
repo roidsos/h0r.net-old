@@ -25,9 +25,8 @@
 
 extern struct limine_memmap_response *g_mmap;
 extern struct limine_kernel_address_response *g_kernel_addr;
-extern struct limine_hhdm_response *g_hhdm_resp;
 
-#define MEM_VIRT_OFF g_hhdm_resp->offset
+#define MEM_VIRT_OFF 0xffffffff80000000
 
 #define VIRT_TO_PHYS(a) ((uint64_t)(a)- MEM_VIRT_OFF)
 #define PHYS_TO_VIRT(a) ((uint64_t)(a)+ MEM_VIRT_OFF)
@@ -44,7 +43,7 @@ typedef struct {
 	vector_struct(uint64_t) mem_list;
 } addr_space_t;
 
-void scuba_init(struct limine_memmap_response *mmap,struct limine_kernel_address_response *kernel_addr,struct limine_hhdm_response *hhdm_resp);
+void scuba_init(struct limine_memmap_response *mmap,struct limine_kernel_address_response *kernel_addr);
 
 void scuba_map(addr_space_t *ads, uint64_t virt_addr, uint64_t phys_addr,
 			  uint64_t np, uint64_t flags, bool us);
