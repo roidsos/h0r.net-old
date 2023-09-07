@@ -22,7 +22,7 @@ struct SDTHeader* find_table(struct XSDT* xsdt, char* signature){
 }
 void list_tables(struct XSDT* xsdt){
     for (int t = 0; t < xsdt_entries; t++){
-        struct SDTHeader* newSDTHeader = (struct SDTHeader*)(xsdt->PointerToOtherSDT[t]);
+        struct SDTHeader* newSDTHeader = (struct SDTHeader*)PHYS_TO_VIRT(xsdt->PointerToOtherSDT[t]);
         log_info("%u",newSDTHeader->Length);
         //log_info("ACPI table #%u: %c%c%c%c",t,newSDTHeader->Signature[0],newSDTHeader->Signature[1],newSDTHeader->Signature[2],newSDTHeader->Signature[3]);
     }
