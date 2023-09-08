@@ -26,27 +26,18 @@ format:
 
 run: all
 # runs using qemu
-	qemu-system-x86_64 -cdrom os.iso -m 256M -debugcon file:hornet.log -device sb16 -drive file=hdd.img,if=ide,index=0,media=disk,format=raw -boot order=d -audiodev pa,id=audio0 -machine pcspk-audiodev=audio0
-
-record: all
-# runs using qemu
-	qemu-system-x86_64 -icount shift=auto,rr=record,rrfile=replay.bin -cdrom os.iso -m 256M -debugcon file:hornet.log -device sb16 -drive file=hdd.img,if=ide,index=0,media=disk,format=raw -boot order=d -audiodev pa,id=audio0 -machine pcspk-audiodev=audio0
+	qemu-system-x86_64 -cdrom os.iso -smp 2 -m 256M -debugcon file:hornet.log -device sb16 -drive file=hdd.img,if=ide,index=0,media=disk,format=raw -boot order=d -audiodev pa,id=audio0 -machine pcspk-audiodev=audio0
 
 runuefi: all
 # runs using qemu
-	qemu-system-x86_64 -cdrom os.iso -m 256M -debugcon file:hornet.log -device sb16 -drive file=hdd.img,if=ide,index=0,media=disk,format=raw -boot order=d -audiodev pa,id=audio0 -machine pcspk-audiodev=audio0 -drive if=pflash,format=raw,unit=0,file="OVMFbin/OVMF_CODE-pure-efi.fd",readonly=on -drive if=pflash,format=raw,unit=1,file="OVMFbin/OVMF_VARS-pure-efi.fd"
+	qemu-system-x86_64 -smp 2 -cdrom os.iso -m 256M -debugcon file:hornet.log -device sb16 -drive file=hdd.img,if=ide,index=0,media=disk,format=raw -boot order=d -audiodev pa,id=audio0 -machine pcspk-audiodev=audio0 -drive if=pflash,format=raw,unit=0,file="OVMFbin/OVMF_CODE-pure-efi.fd",readonly=on -drive if=pflash,format=raw,unit=1,file="OVMFbin/OVMF_VARS-pure-efi.fd"
 debug: all
 # standard qemu debug
-	qemu-system-x86_64 -no-reboot -debugcon file:hornet.log  -d int -no-shutdown -cdrom os.iso -m 256M -device sb16 -drive file=hdd.img,if=ide,index=0,media=disk,format=raw -boot order=d
-
-debugrp: all
-# standard qemu debug
-	qemu-system-x86_64 -icount shift=auto,rr=replay,rrfile=replay.bin  -no-reboot -debugcon file:hornet.log  -d int -no-shutdown -cdrom os.iso -m 256M -device sb16 -drive file=hdd.img,if=ide,index=0,media=disk,format=raw -boot order=d
-
+	qemu-system-x86_64 -smp 2 -no-reboot -debugcon file:hornet.log  -d int -no-shutdown -cdrom os.iso -m 256M -device sb16 -drive file=hdd.img,if=ide,index=0,media=disk,format=raw -boot order=d
 
 debugr: all
 #remote debug using GDB
-	qemu-system-x86_64 -s -S -no-reboot -debugcon file:hornet.log -monitor stdio -d int -no-shutdown -cdrom os.iso -m 256M -device sb16 -drive file=hdd.img,if=ide,index=0,media=disk,format=raw -boot order=d
+	qemu-system-x86_64 -smp 2 -s -S -no-reboot -debugcon file:hornet.log -monitor stdio -d int -no-shutdown -cdrom os.iso -m 256M -device sb16 -drive file=hdd.img,if=ide,index=0,media=disk,format=raw -boot order=d
 
 clean:
 # JUST DELETES JUNK LIKE OBJECT FILES - fuck capslock
