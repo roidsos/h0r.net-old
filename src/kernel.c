@@ -26,6 +26,8 @@ static volatile struct limine_smp_request smp_request = {
     .id = LIMINE_SMP_REQUEST, .revision = 0
     };
 
+
+struct KernelData data;
 void handle_limine_requests() {
     //// Ensure we got a framebuffer.
     if (framebuffer_request.response == NULL ||
@@ -56,11 +58,10 @@ void handle_limine_requests() {
     // Fetch the memory map.
     data.kernel_addr_resp = kernel_address_request.response;
 
-    data.rsdp = rsdp_request.response->address;s
+    data.rsdp = rsdp_request.response->address;
 }
 
 // ================= KERNEL MAIN ============================
-struct KernelData data;
 
 void _start(void) {
     // no unhandled interrupts plzz
