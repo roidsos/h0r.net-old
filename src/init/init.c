@@ -5,12 +5,8 @@
 #include <drivers/Memory/Memory.h>
 #include <drivers/Memory/PFA.h>
 #include <drivers/Memory/scubadeeznutz.h>
-#include <drivers/acpi_tables/acpi.h>
-#include <drivers/hid/keyboard.h>
-#include <drivers/io/pci.h>
-#include <drivers/misc/time.h>
 
-
+#include <arch/x86_64/PIT.h>
 #include <utils/logging/logger.h>
 
 extern struct KernelData data;
@@ -45,12 +41,11 @@ void init_HW()
     // TODO: fix scuba
     // scuba_init(data.memmap_resp, data.kernel_addr_resp);
 
-    // Init the drivers
-    rtc_init();
+    // Init the HW drivers
     init_drivers();
-    // ACPI can wait 
-    // TODO: finish ACPI
-    //init_acpi(data.rsdp);
+
+    // Init x86 specific drivers
+    pit_init();
 
     enable_interrupts();
     log_info("Kernel Initialized Successfully");

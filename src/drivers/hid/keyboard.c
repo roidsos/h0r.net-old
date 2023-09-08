@@ -31,7 +31,7 @@ bool is_visible(char keyascii) {
 
 void kb_handler(Registers *regs) {
 
-    char scancode = inb8(0x60);
+    uint8_t scancode = inb8(0x60);
     if (scancode == 0) {
         log_error("GOD DAMNIT KEYBOARD NO WORKIE");
         EOI(1);
@@ -69,7 +69,6 @@ char turn_into_ASCII(uint16_t scancode) {
         keyboard.shift = !keyboard.shift;
     }
     if (KEY_IS_PRESS(scancode)) {
-        log_info("a");
         if (keyboard.shift) {
             return keyboard_layout_us[1][scancode];
         } else {
