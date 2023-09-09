@@ -9,6 +9,6 @@ softTSS *special_isr_0_handlr(softTSS *state) {
     log_info("special interrupt 0 recieved");
     pit_callback(state);
 
-    i8259_SendEndOfInterrupt(0);
+    i8259_SendEndOfInterrupt(0x0);
     return state;
 }

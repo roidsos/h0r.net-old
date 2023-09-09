@@ -11,8 +11,7 @@
 
 extern struct KernelData data;
 
-void init_HW()
-{
+void init_HW() {
     // Gather Data
     get_cpu_capabilities(&data.cpu_info);
 
@@ -51,12 +50,6 @@ void init_HW()
     log_info("Kernel Initialized Successfully");
 }
 
-void init_sched()
-{
-    
-}
+void init_sched() {}
 
-void init_sys()
-{
-    
-}
+void init_sys() {}

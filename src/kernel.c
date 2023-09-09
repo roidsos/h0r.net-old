@@ -2,8 +2,8 @@
 #include <init/init.h>
 
 #include "arch/x86_64/GDT/gdt.h"
-#include <utils/logging/logger.h>
 #include <arch/x86_64/interrupts/interrupts.h>
+#include <utils/logging/logger.h>
 
 #include <interface/desh.h>
 
@@ -23,9 +23,7 @@ static volatile struct limine_kernel_address_request kernel_address_request = {
 static volatile struct limine_rsdp_request rsdp_request = {
     .id = LIMINE_RSDP_REQUEST, .revision = 0};
 static volatile struct limine_smp_request smp_request = {
-    .id = LIMINE_SMP_REQUEST, .revision = 0
-    };
-
+    .id = LIMINE_SMP_REQUEST, .revision = 0};
 
 struct KernelData data;
 void handle_limine_requests() {
@@ -77,7 +75,7 @@ void _start(void) {
         printf_("EFI System Table Address: 0x%p\n",
                 data.efi_system_table_address);
 
-    printf_("CPU count: %u\n",smp_request.response->cpu_count);
+    printf_("CPU count: %u\n", smp_request.response->cpu_count);
     printf_("CPU Vendor ID: %s\n", data.cpu_info.vendor);
     printf_("CPU Family: %d\n", data.cpu_info.family);
     printf_("CPU Model: %d\n", data.cpu_info.model);
@@ -102,13 +100,14 @@ void _start(void) {
     printf_("Used system memory: %llu bytes\n", get_used_RAM());
     printf_("Reserved system memory: %llu bytes\n", get_reserved_RAM());
 
-    //printf_("Memmap entry count: %lu\n\n", data.memmap_resp->entry_count);
-    //for (size_t i = 0; i < data.memmap_resp->entry_count; i++) {
-    //    printf_("  -Memmap entry #%lu: Base: 0x%lx, Length: 0x%lx, Type: %s\n",
-    //            i, data.memmap_resp->entries[i]->base,
-    //            data.memmap_resp->entries[i]->length,
-    //            memmap_type_names[data.memmap_resp->entries[i]->type]);
-    //}
+    // printf_("Memmap entry count: %lu\n\n", data.memmap_resp->entry_count);
+    // for (size_t i = 0; i < data.memmap_resp->entry_count; i++) {
+    //     printf_("  -Memmap entry #%lu: Base: 0x%lx, Length: 0x%lx, Type:
+    //     %s\n",
+    //             i, data.memmap_resp->entries[i]->base,
+    //             data.memmap_resp->entries[i]->length,
+    //             memmap_type_names[data.memmap_resp->entries[i]->type]);
+    // }
 
     //((char*)0)[0] = 0;
 
