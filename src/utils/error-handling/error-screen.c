@@ -8,7 +8,7 @@ void trigger_error(int code, Registers *regs, char *details) {
 
     ClearScreen(0x00FFFF00);
 
-    //title,error type and details
+    // title,error type and details
     centeredStringRenderer("FUCKING HALT!", 0, 2, 0x00AA0000);
     centeredStringRenderer(Hornet_error_codes[code], 30, 2, 0x00AA0000);
     centeredStringRenderer(details, 60, 2, 0x00AA0000);
@@ -39,8 +39,9 @@ void trigger_error(int code, Registers *regs, char *details) {
     basicStringRender(resolve, 0, 165, 1, 0x00AA0000);
     log_info(resolve);
 
-    snprintf_(resolve, 256, "R14=0x%016llx ,R15=0x%016llx ,ERROR_CODE=0x%016llx",
-              regs->r14, regs->r15, regs->error);
+    snprintf_(resolve, 256,
+              "R14=0x%016llx ,R15=0x%016llx ,ERROR_CODE=0x%016llx", regs->r14,
+              regs->r15, regs->error);
     basicStringRender(resolve, 0, 180, 1, 0x00AA0000);
     log_info(resolve);
 

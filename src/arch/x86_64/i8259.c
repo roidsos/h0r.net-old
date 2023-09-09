@@ -63,9 +63,7 @@ void i8259_SetMask(uint16_t newMask) {
     iowait();
 }
 
-uint16_t i8259_GetMask() {
-    return inb8(PIC1_DATA) | (inb8(PIC2_DATA) << 8);
-}
+uint16_t i8259_GetMask() { return inb8(PIC1_DATA) | (inb8(PIC2_DATA) << 8); }
 
 void i8259_Configure(uint8_t offsetPic1, uint8_t offsetPic2, bool autoEoi) {
     // Mask everything

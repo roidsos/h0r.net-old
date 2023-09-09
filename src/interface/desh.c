@@ -3,15 +3,15 @@
 #include <arch/x86_64/power.h>
 #include <drivers/hid/keyboard.h>
 #include <drivers/io/pci.h>
-#include <utils/string.h>
 #include <utils/screen.h>
+#include <utils/string.h>
 #include <vbe/font_renderer.h>
 #include <vendor/printf.h>
 
 char typedstring[255];
 char idx;
 void DeshInit() {
-    memset(typedstring,sizeof(typedstring),0);
+    memset(typedstring, sizeof(typedstring), 0);
     printf(">");
 }
 

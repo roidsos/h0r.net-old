@@ -5,7 +5,7 @@
 // https://github.com/elydre/profanOS/
 
 // BCD == binary coded decimal
-// its like fucking around with the bits 
+// its like fucking around with the bits
 // to make the hexadeimal digits be equal to the decimal digits
 char bcd;
 

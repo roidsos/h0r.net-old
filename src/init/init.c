@@ -53,7 +53,7 @@ void init_HW() {
     // Init the HW drivers
     init_drivers();
     log_info("Init Target Reached: Misc Drivers");
-    
+
     enable_interrupts();
     log_info("Kernel Initialized Successfully");
 }

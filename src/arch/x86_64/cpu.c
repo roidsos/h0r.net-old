@@ -11,13 +11,13 @@ void stacktrace() {
     __asm__ volatile("movq %%rbp, %0\r\n" : "=r"(rbp) :);
 
     while (rbp) {
-      uint64_t rip = *(rbp + 1);
-      rbp = (uint64_t *)*rbp;
+        uint64_t rip = *(rbp + 1);
+        rbp = (uint64_t *)*rbp;
 
-      if (!rip) {
-        break;
-      }
-      printf_("0x%016llx\n",rip);
+        if (!rip) {
+            break;
+        }
+        printf_("0x%016llx\n", rip);
     }
     printf_("\n");
 }
