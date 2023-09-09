@@ -5,14 +5,20 @@
 
 #define LOGGER_OUTPUT_VGA    0
 #define LOGGER_OUTPUT_DEBUG  1
-//TODO: implement serial
-//#define LOGGER_OUTPUT_SERIAL 2
+#define LOGGER_OUTPUT_COM1 0x3F8
+#define LOGGER_OUTPUT_COM2 0x2F8
+#define LOGGER_OUTPUT_COM3 0x3E8
+#define LOGGER_OUTPUT_COM4 0x2E8
+#define LOGGER_OUTPUT_COM5 0x5F8
+#define LOGGER_OUTPUT_COM6 0x4F8
+#define LOGGER_OUTPUT_COM7 0x5E8
+#define LOGGER_OUTPUT_COM8 0x4E8 
 
 #define LOGGER_PREFIX_INFO         "[INFO=]"
 #define LOGGER_PREFIX_ERR          "[ERROR]"
 #define LOGGER_PREFIX_WRN          "[WARN=]"
 #define LOGGER_PREFIX_CRITICAL     "[FATAL]"
-void logger_set_output(char ID);
+void logger_set_output(uint16_t ID);
 
 void log_error(char* format,...);
 void log_info(char* format,...);

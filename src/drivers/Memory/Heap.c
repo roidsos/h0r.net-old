@@ -199,7 +199,6 @@ void *aligned_alloc(uint64_t alignment, uint64_t size) {
     // allign the address
     uint64_t remainder2 = address % alignment;
     address -= remainder2;
-    // TODO: the AMS might be in another memory segment fix
     if (remainder2 != 0) {
         address += alignment;
         // creating an aligned segment

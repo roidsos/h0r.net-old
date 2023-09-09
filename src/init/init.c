@@ -19,7 +19,7 @@ extern struct KernelData data;
 void init_HW() {
     // Initialize screen and logger
     InitScreen(data.framebuffer);
-    logger_set_output(LOGGER_OUTPUT_DEBUG);
+    logger_set_output(LOGGER_OUTPUT_COM1);
     log_info("Init Target Reached: IO");
 
     // Gather Data

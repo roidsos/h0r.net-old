@@ -26,7 +26,7 @@ format:
 
 run: all
 # runs using qemu
-	qemu-system-x86_64 -cdrom os.iso -smp 2 -m 256M -debugcon file:hornet.log -device sb16 -drive file=hdd.img,if=ide,index=0,media=disk,format=raw -boot order=d -audiodev pa,id=audio0 -machine pcspk-audiodev=audio0
+	qemu-system-x86_64 -cdrom os.iso -smp 2 -m 256M -serial stdio -debugcon file:hornet.log -device sb16 -drive file=hdd.img,if=ide,index=0,media=disk,format=raw -boot order=d -audiodev pa,id=audio0 -machine pcspk-audiodev=audio0
 
 runuefi: all
 # runs using qemu
