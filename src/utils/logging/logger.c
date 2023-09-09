@@ -1,6 +1,6 @@
 #include "logger.h"
 #include <vendor/printf.h>
-#include <drivers/misc/serial.h>
+#include <drivers/io/serial.h>
 uint16_t current_output;
 
 void logger_set_output(uint16_t ID) { current_output = ID; }

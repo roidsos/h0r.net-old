@@ -21,6 +21,7 @@ struct KernelData {
     struct limine_memmap_response *memmap_resp;
     struct limine_hhdm_response *hhdm_resp;
     struct limine_kernel_address_response *kernel_addr_resp;
+    struct limine_smp_response *smp_resp;
 };
 
 #endif
