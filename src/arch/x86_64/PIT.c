@@ -35,6 +35,6 @@ void pit_set_count(uint16_t count) {
     return;
 }
 
-void pit_callback(softTSS *state) {}
+void pit_callback(__attribute__((unused)) softTSS *state) {}
 
 void pit_init() { pit_set_divisor(2000); }

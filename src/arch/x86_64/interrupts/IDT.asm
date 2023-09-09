@@ -1,10 +1,10 @@
-global IDT_Load
+global enable_IDT
 extern g_IDT
 
 idt_desc:
 dw 4095
 dq g_IDT
 
-IDT_Load:
+enable_IDT:
     lidt [idt_desc]
     ret

@@ -1,14 +1,11 @@
 #include "kernel.h"
+
+#include <arch/x86_64/essential.h>
+#include <drivers/Memory/PFA.h>
 #include <init/init.h>
-
-#include "arch/x86_64/GDT/gdt.h"
-#include <arch/x86_64/interrupts/interrupts.h>
-#include <utils/logging/logger.h>
-
 #include <interface/desh.h>
-
-#include "utils/error-handling/falut-handler.h"
-#include "utils/screen.h"
+#include <utils/logging/logger.h>
+#include <vendor/printf.h>
 
 // ===============Limine Requests======================
 static volatile struct limine_framebuffer_request framebuffer_request = {

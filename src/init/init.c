@@ -6,6 +6,11 @@
 #include <drivers/Memory/PFA.h>
 #include <drivers/Memory/scubadeeznutz.h>
 
+#include "arch/x86_64/GDT/gdt.h"
+#include <arch/x86_64/interrupts/interrupts.h>
+
+#include "utils/error-handling/falut-handler.h"
+#include "utils/screen.h"
 #include <arch/x86_64/PIT.h>
 #include <utils/logging/logger.h>
 

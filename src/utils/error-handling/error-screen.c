@@ -1,7 +1,9 @@
 #include "error-screen.h"
 #include <arch/x86_64/essential.h>
+#include <utils/logging/logger.h>
 #include <vbe/font_renderer.h>
 #include <vendor/printf.h>
+
 void trigger_error(int code, Registers *regs, char *details) {
     ClearScreen(0x00FFFF00);
     centeredStringRenderer("FUCKING HALT!", 0, 2, 0x00AA0000);

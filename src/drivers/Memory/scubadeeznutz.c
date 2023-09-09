@@ -1,7 +1,9 @@
 #include "scubadeeznutz.h"
+#include <arch/x86_64/essential.h>
 #include <arch/x86_64/interrupts/interrupts.h>
 #include <drivers/Memory/Heap.h>
 #include <drivers/Memory/PFA.h>
+#include <utils/logging/logger.h>
 
 // "hippity hoppity,SCUBA DEEZ NUTZ"
 // https://github.com/schkwve/luxe/
@@ -204,7 +206,7 @@ void _scuba_unmap(addr_space_t *as, uint64_t virt_addr) {
     }
 
     pd[pde] = 0;
-    free_pages(VIRT_TO_PHYS(pt), 8);
+    free_pages((void *)VIRT_TO_PHYS(pt), 8);
 
     for (int i = 0; i < 512 * 8; i++) {
         if (pd[i] != 0) {
@@ -213,7 +215,7 @@ void _scuba_unmap(addr_space_t *as, uint64_t virt_addr) {
     }
 
     pdpt[pdpe] = 0;
-    free_pages(VIRT_TO_PHYS(pd), 8);
+    free_pages((void *)VIRT_TO_PHYS(pd), 8);
 
     for (int i = 0; i < 512 * 8; i++) {
         if (pdpt[i] != 0) {
@@ -222,7 +224,7 @@ void _scuba_unmap(addr_space_t *as, uint64_t virt_addr) {
     }
 
     pml4[pml4e] = 0;
-    free_pages(VIRT_TO_PHYS(pdpt), 8);
+    free_pages((void *)VIRT_TO_PHYS(pdpt), 8);
 }
 
 uint64_t scuba_get_phys_addr(addr_space_t *as, uint64_t virt_addr) {

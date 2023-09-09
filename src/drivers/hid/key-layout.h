@@ -1,5 +1,5 @@
-#ifndef __KEY-LAYOUT_H__
-#define __KEY-LAYOUT_H__
+#ifndef __KEY_LAYOUT_H__
+#define __KEY_LAYOUT_H__
 
 uint8_t keyboard_layout_us[2][128] = {{KEY_NULL,
                                        KEY_ESC,
@@ -180,4 +180,4 @@ uint8_t keyboard_layout_us[2][128] = {{KEY_NULL,
                                        KEY_F11,
                                        KEY_F12}};
 
-#endif // __KEY-LAYOUT_H__
+#endif // __KEY_LAYOUT_H__

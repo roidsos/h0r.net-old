@@ -3,9 +3,9 @@
 
 char current_output;
 
-char logger_set_output(char ID) { current_output = ID; }
+void logger_set_output(char ID) { current_output = ID; }
 
-char log_error(char *format, ...) {
+void log_error(char *format, ...) {
     va_list va;
     va_start(va, format);
 
@@ -21,7 +21,7 @@ char log_error(char *format, ...) {
     }
     va_end(va);
 }
-char log_info(char *format, ...) {
+void log_info(char *format, ...) {
     va_list va;
     va_start(va, format);
 
@@ -37,7 +37,7 @@ char log_info(char *format, ...) {
     }
     va_end(va);
 }
-char log_warning(char *format, ...) {
+void log_warning(char *format, ...) {
     va_list va;
     va_start(va, format);
 
@@ -54,9 +54,9 @@ char log_warning(char *format, ...) {
     va_end(va);
 }
 // Note: log_CRITICAL causes KERNEL PANIC
-char log_CRITICAL(Registers *regs, char error_code, char *format, ...) {
+void log_CRITICAL(Registers *regs, uint8_t error_code, char *format, ...) {
+    Registers newregs;
     if (regs == NULL) {
-        Registers newregs;
         asm("movq %%rax, %0\r\n" : "=r"(newregs.rax) :);
         asm("movq %%rbx, %0\r\n" : "=r"(newregs.rbx) :);
         asm("movq %%rcx, %0\r\n" : "=r"(newregs.rcx) :);

@@ -11,11 +11,11 @@
 #define LOGGER_PREFIX_ERR          "[ERROR]"
 #define LOGGER_PREFIX_WRN          "[WARN=]"
 #define LOGGER_PREFIX_CRITICAL     "[FATAL]"
-char logger_set_output(char ID);
+void logger_set_output(char ID);
 
-char log_error(char* format,...);
-char log_info(char* format,...);
-char log_warning(char* format,...);
+void log_error(char* format,...);
+void log_info(char* format,...);
+void log_warning(char* format,...);
 //Note: log_CRITICAL causes KERNEL PANIC
-char log_CRITICAL(Registers* regs,char error_code,char* format,...);
+void log_CRITICAL(Registers* regs,uint8_t error_code,char* format,...);
 #endif

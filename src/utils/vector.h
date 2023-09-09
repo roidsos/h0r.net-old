@@ -2,6 +2,7 @@
 #define __VECTOR_H__
 #include <stddef.h>
 #include <drivers/Memory/Heap.h>
+#include <arch/x86_64/essential.h>
 
 // "hippity hoppity,your vectors are now my property"
 // https://github.com/schkwve/luxe/

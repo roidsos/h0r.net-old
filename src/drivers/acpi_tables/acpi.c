@@ -29,12 +29,11 @@ void list_tables(struct XSDT *xsdt) {
         // log_info("ACPI table #%u:
         // %c%c%c%c",t,newSDTHeader->Signature[0],newSDTHeader->Signature[1],newSDTHeader->Signature[2],newSDTHeader->Signature[3]);
     }
-    return 0;
 }
 bool do_checksum(struct XSDT *table) {
     unsigned char sum = 0;
 
-    for (int i = 0; i < table->h.Length; i++) {
+    for (uint32_t i = 0; i < table->h.Length; i++) {
         sum += ((char *)table)[i];
     }
 

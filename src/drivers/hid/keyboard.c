@@ -1,8 +1,10 @@
 #include "keyboard.h"
 #include <arch/x86_64/interrupts/interrupts.h>
+#include <drivers/Memory/Heap.h>
 #include <drivers/io/portio.h>
 #include <utils/logging/logger.h>
 #include <utils/screen.h>
+#include <vendor/printf.h>
 
 char *keybuffer;
 
@@ -29,7 +31,7 @@ bool is_visible(char keyascii) {
     return false;
 }
 
-void kb_handler(Registers *regs) {
+void kb_handler(__attribute__((unused)) Registers *regs) {
 
     uint8_t scancode = inb8(0x60);
     if (scancode == 0) {
@@ -47,7 +49,7 @@ void kb_handler(Registers *regs) {
 }
 
 void initkeyboard() {
-    keybuffer = malloc(1);
+    keybuffer = (char *)malloc(1);
     keyboard.shift = false;
     keyboard.capslock = false;
     keyboard.backspace = false;
@@ -82,7 +84,7 @@ void getstr(char *buffer, int size) {
     int idx = 0;
     bool repeat = false;
     int repeat_count = 0;
-    int repeat_delay = 100;
+    // int repeat_delay = 100; TODO: add timer back
 
     do {
         char _char = getch();

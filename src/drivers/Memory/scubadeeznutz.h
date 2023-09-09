@@ -28,8 +28,8 @@ extern struct limine_kernel_address_response *g_kernel_addr;
 
 #define MEM_VIRT_OFF 0xffffffff80000000
 
-#define VIRT_TO_PHYS(a) ((uint64_t)(a)- MEM_VIRT_OFF)
-#define PHYS_TO_VIRT(a) ((uint64_t)(a)+ MEM_VIRT_OFF)
+#define VIRT_TO_PHYS(a) ((uint64_t)(a)- (uint64_t)MEM_VIRT_OFF)
+#define PHYS_TO_VIRT(a) ((uint64_t)(a)+ (uint64_t)MEM_VIRT_OFF)
 
 typedef struct {
 	uint64_t virt_addr;

@@ -14,4 +14,4 @@ void init_drivers() {
     // init_acpi(data.rsdp);
 }
 
-void load_driver_for_device(struct Device dev) {}
+void load_driver_for_device(__attribute__((unused)) struct Device dev) {}

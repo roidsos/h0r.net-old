@@ -16,6 +16,6 @@ void register_ISR(int irq, ISRHandler handler) {
 void EOI(int irq) { i8259_SendEndOfInterrupt(irq); }
 void enable_interrupts() {
     asm volatile("sti");
-    i8259_Unmask(0);
+    i8259_Unmask(PIC_REMAP_OFFSET);
 }
 void disable_interrupts() { asm volatile("cli"); }

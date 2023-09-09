@@ -54,7 +54,6 @@ enum {
 } PIC_CMD;
 
 static uint16_t g_PicMask = 0xffff;
-static bool g_AutoEoi = false;
 
 void i8259_SetMask(uint16_t newMask) {
     g_PicMask = newMask;

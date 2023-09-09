@@ -116,6 +116,8 @@
 #include <float.h>
 #endif
 
+#define UNUSED __attribute__((unused))
+
 // output function type
 typedef void (*out_fct_type)(char character, void *buffer, size_t idx,
                              size_t maxlen);
@@ -134,8 +136,8 @@ static inline void _out_buffer(char character, void *buffer, size_t idx,
     }
 }
 
-static inline void _out_dbg(char character, void *buffer, size_t idx,
-                            size_t maxlen) {
+static inline void _out_dbg(char character, UNUSED void *buffer,
+                            UNUSED size_t idx, UNUSED size_t maxlen) {
     if (character == 0)
         return;
     outb8(0xE9,
@@ -153,8 +155,8 @@ static inline void _out_null(char character, void *buffer, size_t idx,
 }
 
 // internal _putchar wrapper
-static inline void _out_char(char character, void *buffer, size_t idx,
-                             size_t maxlen) {
+static inline void _out_char(char character, UNUSED void *buffer,
+                             UNUSED size_t idx, UNUSED size_t maxlen) {
     RenderChar(character, 0xFFFFFFFF);
 }
 

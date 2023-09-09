@@ -2,6 +2,7 @@
 #include "font.h"
 #include <arch/x86_64/essential.h>
 #include <stdint.h>
+#include <utils/string.h>
 
 static struct limine_framebuffer *fb;
 
@@ -38,15 +39,15 @@ void renderChar(char chr, int x, int y, int scale, int color) {
             uint32_t *fb_ptr = fb->address;
             if (((letters[chr - 32]
                          [CHAR_HEIGHT - 1 - ((_y % height) / scale)] >>
-                  CHAR_WIDTH - (_x % width) / scale) &
-                 1) != 0)
+                      (CHAR_WIDTH - (_x % width) / scale) &
+                  1)) != 0)
                 fb_ptr[(y + _y) * (fb->pitch / 4) + (x + _x)] = color;
         }
     }
 }
 void ClearScreen(int color) {
-    for (int i = 0; i < fb->height; i++) {
-        for (int j = 0; j < fb->width; j++) {
+    for (uint64_t i = 0; i < fb->height; i++) {
+        for (uint64_t j = 0; j < fb->width; j++) {
             ((int *)fb->address)[i * (fb->pitch / 4) + j] = color;
         }
     }

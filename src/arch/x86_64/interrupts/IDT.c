@@ -13,8 +13,6 @@ struct IDT64 {
 
 struct IDT64 g_IDT[256];
 
-void IDT_Load();
-
 void SetGate(int interrupt, void *base, uint16_t segmentDescriptor,
              uint8_t flags) {
     g_IDT[interrupt].zero = 0;
@@ -28,5 +26,3 @@ void SetGate(int interrupt, void *base, uint16_t segmentDescriptor,
     g_IDT[interrupt].selector = segmentDescriptor;
     g_IDT[interrupt].types_attr = flags;
 }
-
-void enable_IDT() { IDT_Load(); }
