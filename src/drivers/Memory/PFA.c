@@ -96,13 +96,14 @@ size_t get_used_RAM() { return used_mem; }
 size_t get_reserved_RAM() { return reserved_mem; }
 size_t get_total_RAM() { return total_mem; }
 size_t get_highest_block() { return highest_block; }
+
 void *request_page() {
     for (; page_bmp_idx < page_bitmap.size * 8; page_bmp_idx++) {
         // Note for Idiots: you do not need == true since it is a stupid bool.
         if (bitmap_get(page_bitmap, page_bmp_idx))
             continue;
 
-        // Means Page Pointer, not the funny one.
+        // Means Page Pointer, not dick.
         void *PP = (void *)(page_bmp_idx * 4096);
         lock_page(PP);
         return PP;

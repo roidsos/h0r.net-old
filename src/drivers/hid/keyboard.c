@@ -33,7 +33,7 @@ bool is_visible(char keyascii) {
 
 void kb_handler(__attribute__((unused)) Registers *regs) {
 
-    uint8_t scancode = inb8(0x60);
+    uint8_t scancode = inb8(PS2_DATA);
     if (scancode == 0) {
         log_error("GOD DAMNIT KEYBOARD NO WORKIE");
         EOI(1);
@@ -56,13 +56,13 @@ void initkeyboard() {
 
     register_ISR(PIC_REMAP_OFFSET + 1, kb_handler);
 
-    if (inb8(0x64) & 0x1) // initialize the ps2 controller
-        inb8(0x60);
-    outb8(0x64, 0x60);
-    outb8(0x60, 0b01100111);
+    if (inb8(PS2_COMMAND) & 0x1) // initialize the ps2 controller
+        inb8(PS2_DATA);
+    outb8(PS2_COMMAND, 0x60);
+    outb8(PS2_DATA, 0b01100111);
 
-    outb8(0x64, 0xAE);
-    outb8(0x60, 0xf4);
+    outb8(PS2_COMMAND, 0xAE);
+    outb8(PS2_DATA, 0xf4);
 }
 
 char turn_into_ASCII(uint16_t scancode) {

@@ -5,7 +5,8 @@
 
 #define LOGGER_OUTPUT_VGA    0
 #define LOGGER_OUTPUT_DEBUG  1
-#define LOGGER_OUTPUT_SERIAL 2
+//TODO: implement serial
+//#define LOGGER_OUTPUT_SERIAL 2
 
 #define LOGGER_PREFIX_INFO         "[INFO=]"
 #define LOGGER_PREFIX_ERR          "[ERROR]"

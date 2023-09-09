@@ -4,10 +4,10 @@
 // "good artists borrow, great artists steal"
 // https://github.com/nanobyte-dev/nanobyte_os/
 
-#define PIC1_COMMAND_PORT 0x20
-#define PIC1_DATA_PORT 0x21
-#define PIC2_COMMAND_PORT 0xA0
-#define PIC2_DATA_PORT 0xA1
+#define PIC1_COMMAND 0x20
+#define PIC1_DATA 0x21
+#define PIC2_COMMAND 0xA0
+#define PIC2_DATA 0xA1
 
 // Initialization Control Word 1
 // -----------------------------
@@ -57,14 +57,14 @@ static uint16_t g_PicMask = 0xffff;
 
 void i8259_SetMask(uint16_t newMask) {
     g_PicMask = newMask;
-    outb8(PIC1_DATA_PORT, g_PicMask & 0xFF);
+    outb8(PIC1_DATA, g_PicMask & 0xFF);
     iowait();
-    outb8(PIC2_DATA_PORT, g_PicMask >> 8);
+    outb8(PIC2_DATA, g_PicMask >> 8);
     iowait();
 }
 
 uint16_t i8259_GetMask() {
-    return inb8(PIC1_DATA_PORT) | (inb8(PIC2_DATA_PORT) << 8);
+    return inb8(PIC1_DATA) | (inb8(PIC2_DATA) << 8);
 }
 
 void i8259_Configure(uint8_t offsetPic1, uint8_t offsetPic2, bool autoEoi) {
@@ -72,22 +72,22 @@ void i8259_Configure(uint8_t offsetPic1, uint8_t offsetPic2, bool autoEoi) {
     i8259_SetMask(0xFFFF);
 
     // initialization control word 1
-    outb8(PIC1_COMMAND_PORT, PIC_ICW1_ICW4 | PIC_ICW1_INITIALIZE);
+    outb8(PIC1_COMMAND, PIC_ICW1_ICW4 | PIC_ICW1_INITIALIZE);
     iowait();
-    outb8(PIC2_COMMAND_PORT, PIC_ICW1_ICW4 | PIC_ICW1_INITIALIZE);
+    outb8(PIC2_COMMAND, PIC_ICW1_ICW4 | PIC_ICW1_INITIALIZE);
     iowait();
 
     // initialization control word 2 - the offsets
-    outb8(PIC1_DATA_PORT, offsetPic1);
+    outb8(PIC1_DATA, offsetPic1);
     iowait();
-    outb8(PIC2_DATA_PORT, offsetPic2);
+    outb8(PIC2_DATA, offsetPic2);
     iowait();
 
     // initialization control word 3
-    outb8(PIC1_DATA_PORT,
+    outb8(PIC1_DATA,
           0x4); // tell PIC1 that it has a slave at IRQ2 (0000 0100)
     iowait();
-    outb8(PIC2_DATA_PORT, 0x2); // tell PIC2 its cascade identity (0000 0010)
+    outb8(PIC2_DATA, 0x2); // tell PIC2 its cascade identity (0000 0010)
     iowait();
 
     // initialization control word 4
@@ -96,9 +96,9 @@ void i8259_Configure(uint8_t offsetPic1, uint8_t offsetPic2, bool autoEoi) {
         icw4 |= PIC_ICW4_AUTO_EOI;
     }
 
-    outb8(PIC1_DATA_PORT, icw4);
+    outb8(PIC1_DATA, icw4);
     iowait();
-    outb8(PIC2_DATA_PORT, icw4);
+    outb8(PIC2_DATA, icw4);
     iowait();
 
     // mask all interrupts until they are enabled by the device driver
@@ -107,8 +107,8 @@ void i8259_Configure(uint8_t offsetPic1, uint8_t offsetPic2, bool autoEoi) {
 
 void i8259_SendEndOfInterrupt(int irq) {
     if (irq >= 8)
-        outb8(PIC2_COMMAND_PORT, PIC_CMD_END_OF_INTERRUPT);
-    outb8(PIC1_COMMAND_PORT, PIC_CMD_END_OF_INTERRUPT);
+        outb8(PIC2_COMMAND, PIC_CMD_END_OF_INTERRUPT);
+    outb8(PIC1_COMMAND, PIC_CMD_END_OF_INTERRUPT);
 }
 
 void i8259_Disable() { i8259_SetMask(0xFFFF); }
@@ -118,15 +118,15 @@ void i8259_Mask(int irq) { i8259_SetMask(g_PicMask | (1 << irq)); }
 void i8259_Unmask(int irq) { i8259_SetMask(g_PicMask & ~(1 << irq)); }
 
 uint16_t i8259_ReadIrqRequestRegister() {
-    outb8(PIC1_COMMAND_PORT, PIC_CMD_READ_IRR);
-    outb8(PIC2_COMMAND_PORT, PIC_CMD_READ_IRR);
-    return ((uint16_t)inb8(PIC2_COMMAND_PORT)) |
-           (((uint16_t)inb8(PIC2_COMMAND_PORT)) << 8);
+    outb8(PIC1_COMMAND, PIC_CMD_READ_IRR);
+    outb8(PIC2_COMMAND, PIC_CMD_READ_IRR);
+    return ((uint16_t)inb8(PIC2_COMMAND)) |
+           (((uint16_t)inb8(PIC2_COMMAND)) << 8);
 }
 
 uint16_t i8259_ReadInServiceRegister() {
-    outb8(PIC1_COMMAND_PORT, PIC_CMD_READ_ISR);
-    outb8(PIC2_COMMAND_PORT, PIC_CMD_READ_ISR);
-    return ((uint16_t)inb8(PIC2_COMMAND_PORT)) |
-           (((uint16_t)inb8(PIC2_COMMAND_PORT)) << 8);
+    outb8(PIC1_COMMAND, PIC_CMD_READ_ISR);
+    outb8(PIC2_COMMAND, PIC_CMD_READ_ISR);
+    return ((uint16_t)inb8(PIC2_COMMAND)) |
+           (((uint16_t)inb8(PIC2_COMMAND)) << 8);
 }

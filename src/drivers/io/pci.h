@@ -3,10 +3,10 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-/*
-dataport:       32bit   = 0xCFC
-commandport:    32bit   = 0xCF8
-*/
+
+#define PCI_COMMAND 0xCF8
+#define PCI_DATA 0xCFC
+
 struct PCIDevice{
     uint16_t bus;
     uint16_t device;

@@ -4,6 +4,9 @@
 #include <stdbool.h>
 #include <utils/keys.h>
 
+#define PS2_COMMAND     0x64
+#define PS2_DATA        0x60
+
 #define KEYBOARD_RELEASE 0x7f
 
 #define KEYBOARD_BUFFER_SIZE 255

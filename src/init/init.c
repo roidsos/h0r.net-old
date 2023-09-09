@@ -17,25 +17,24 @@
 extern struct KernelData data;
 
 void init_HW() {
-    // Gather Data
-    get_cpu_capabilities(&data.cpu_info);
-
-    // Init the CPU
-    sys_init_fpu();
-
-    // Get Time
-    time_get(&data.time);
-
     // Initialize screen and logger
     InitScreen(data.framebuffer);
     logger_set_output(LOGGER_OUTPUT_DEBUG);
+    log_info("Init Target Reached: IO");
+
+    // Gather Data
+    get_cpu_capabilities(&data.cpu_info);
+    sys_init_fpu();
+    log_info("Init Target Reached: CPU");
 
     // Initialize GDT
     load_default_gdt();
+    log_info("Init Target Reached: GDT");
 
     // initialize interrupts
     initialize_interrupts();
     init_falut_handler();
+    log_info("Init Target Reached: Interrupts");
 
     // Init Memory stuff
     mem_init(data.memmap_resp);
@@ -44,13 +43,17 @@ void init_HW() {
     // still no workie
     // TODO: fix scuba
     // scuba_init(data.memmap_resp, data.kernel_addr_resp);
+    log_info("Init Target Reached: Memory");
+
+    // Init x86 PC specific drivers
+    pit_init();
+    time_get(&data.time);
+    log_info("Init Target Reached: x86 PC drivers");
 
     // Init the HW drivers
     init_drivers();
-
-    // Init x86 specific drivers
-    pit_init();
-
+    log_info("Init Target Reached: Misc Drivers");
+    
     enable_interrupts();
     log_info("Kernel Initialized Successfully");
 }

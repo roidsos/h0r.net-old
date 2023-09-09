@@ -10,6 +10,7 @@ void sys_reboot() {
     asm volatile("cli");
     asm volatile("hlt");
 }
+// !!!VM ONLY!!!
 void sys_shutdown_vm_only() {
     outb16(0x604, 0x2000);  // qemu
     outb16(0xB004, 0x2000); // bochs

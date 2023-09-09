@@ -1,3 +1,9 @@
+[INFO=]Init Target Reached: IO
+[INFO=]Init Target Reached: CPU
+[INFO=]Init Target Reached: GDT
+[INFO=]Init Target Reached: Interrupts
+[INFO=]Init Target Reached: Memory
+[INFO=]Init Target Reached: x86 PC drivers
 [INFO=]PCI Devices: 
 
 [INFO=]VendorID: 0x8086 ,DeviceID: 0x1237 
@@ -12,4 +18,10 @@
 
 [INFO=]VendorID: 0x8086 ,DeviceID: 0x100e 
 
-[INFO=]Kernel Initialized Successfully
+[INFO=]Init Target Reached: Misc Drivers
+[FATAL]Paging fault(HN_ERR_GDT_FAULT)
+[INFO=]RIP=0xffffffff80006e7f ,RSP=0xffff80000ff68fa8 ,CS =0x0000000000000008 ,SS =0x0000000000000010
+[INFO=]RAX=0x00000000000000fc ,RBX=0x00000000000000f4 ,RCX=0xffffffffffffffff ,RDX=0x0000000000000021
+[INFO=]RSI=0x00000000000000fc ,RDI=0x0000000000000021 ,RBP=0x0000000000000060 ,R9 =0x00000000ffffffff
+[INFO=]R10=0x00000000ffffffff ,R11=0x00000000ffffffff ,R12=0x0000000000000000 ,R13=0x0000000000000000
+[INFO=]R14=0x0000000000000000 ,R15=0x0000000000000000 ,ERROR_CODE=0x0000000000000003

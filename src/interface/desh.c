@@ -4,12 +4,16 @@
 #include <drivers/hid/keyboard.h>
 #include <drivers/io/pci.h>
 #include <utils/string.h>
+#include <utils/screen.h>
 #include <vbe/font_renderer.h>
 #include <vendor/printf.h>
 
 char typedstring[255];
-char idx = 0;
-void DeshInit() { printf(">"); }
+char idx;
+void DeshInit() {
+    memset(typedstring,sizeof(typedstring),0);
+    printf(">");
+}
 
 void parseCommand(char *command) {
     char **args = split(command, ' ');
@@ -20,14 +24,13 @@ void parseCommand(char *command) {
         sys_reboot();
     } else if (strcmp(args[0], "clear") || strcmp(args[0], "cls")) {
         ClearScreen(0x00000000);
+        SetCursorpos(0);
     } else if (strcmp(args[0], "echo")) {
         for (size_t i = 1; args[i] != 0; i++) {
             printf_("%s", args[i]);
         }
         printf_("\n");
-    } else if (strcmp(args[0], "k")) // shortened it to k so if I try to type
-                                     // the command I dont get a fucking stroke
-    {
+    } else if (strcmp(args[0], "k")) {
         printf_("H 0 R N E T\n");
         list_PCI_devices();
         // printf("Current uptime (MS): %i\n",PIT::UptmeInMillis);

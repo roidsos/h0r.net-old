@@ -1,38 +1,40 @@
 #include "drivers/io/portio.h"
-#define UNUSED_PORT 0x80
+#define UNUSED 0x80
 
-void iowait() { outb8(UNUSED_PORT, 0); }
+void iowait() { outb8(UNUSED, 0); }
 
 // output functions
 
+//outputs 8 bits TO THE IO BUS
 void outb8(uint16_t port, uint8_t value) {
-    asm("outb %1, %0" : : "dN"(port), "a"(value));
+    __asm__ volatile("outb %1, %0" : : "dN"(port), "a"(value));
 }
-
+//outputs 16 bits TO THE IO BUS
 void outb16(uint16_t port, uint16_t value) {
-    asm("outw %1, %0" : : "dN"(port), "a"(value));
+    __asm__ volatile("outw %1, %0" : : "dN"(port), "a"(value));
 }
-
+//outputs 32 bits TO THE IO BUS
 void outb32(uint16_t port, uint32_t value) {
-    asm("outl %1, %0" : : "dN"(port), "a"(value));
+    __asm__ volatile("outl %1, %0" : : "dN"(port), "a"(value));
 }
 
 // input functions
 
+//reads 8 bits TO THE IO BUS
 uint8_t inb8(uint16_t port) {
     uint8_t r;
-    asm("inb %1, %0" : "=a"(r) : "dN"(port));
+    __asm__ volatile("inb %1, %0" : "=a"(r) : "dN"(port));
     return r;
 }
-
+//reads 16 bits TO THE IO BUS
 uint16_t inb16(uint16_t port) {
     uint16_t r;
-    asm("inw %1, %0" : "=a"(r) : "dN"(port));
+    __asm__ volatile("inw %1, %0" : "=a"(r) : "dN"(port));
     return r;
 }
-
+//reads 32 bits TO THE IO BUS
 uint32_t inb32(uint16_t port) {
     uint32_t r;
-    asm("inl %1, %0" : "=a"(r) : "dN"(port));
+    __asm__ volatile("inl %1, %0" : "=a"(r) : "dN"(port));
     return r;
 }

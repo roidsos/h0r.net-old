@@ -1,6 +1,11 @@
 [bits 64]
-LoadGDT:   
-    lgdt [rdi]
+extern DefaultGDT
+gdtr:
+dw 47
+dq DefaultGDT
+
+load_default_gdt:   
+    lgdt [gdtr]
     mov ax, 0x10
     mov ds, ax
     mov es, ax
@@ -12,4 +17,4 @@ LoadGDT:
     push rax
     push rdi
     retfq
-GLOBAL LoadGDT
+global load_default_gdt

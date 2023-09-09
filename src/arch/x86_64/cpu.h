@@ -20,7 +20,6 @@ struct stackframe {
 };
 void cpuid(uint32_t eax, uint32_t *a, uint32_t *b, uint32_t *c, uint32_t *d);
 void get_cpu_capabilities(CPUInfo *cpuInfo);
-struct stackframe* get_stackframe();
 void stacktrace();
 int sys_init_fpu();
 

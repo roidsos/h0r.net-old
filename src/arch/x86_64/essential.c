@@ -58,8 +58,8 @@ int memcmp(const void *s1, const void *s2, size_t n) {
 
 // Halt and catch fire function.
 void hcf(void) {
-    asm("cli");
+    __asm__ volatile("cli");
     for (;;) {
-        asm("hlt");
+        __asm__ volatile("hlt");
     }
 }

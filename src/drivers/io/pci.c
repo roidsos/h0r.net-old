@@ -16,8 +16,8 @@ uint32_t Read(uint16_t bus, uint16_t device, uint16_t function,
         |
         (offset & 0xFC); // the remaining bits are the offset, so every function
                          // gets 255 bytes of registers minus the header
-    outb32(0xCF8, id);
-    register uint32_t result = inb32(0xCFC);
+    outb32(PCI_COMMAND, id);
+    register uint32_t result = inb32(PCI_DATA);
     return result >> (8 * (offset % 4));
 }
 
@@ -26,8 +26,8 @@ void Write(uint16_t bus, uint16_t device, uint16_t function, uint32_t offset,
 
     uint32_t id = 0x1 << 31 | ((bus & 0xFF) << 16) | ((device & 0x1F) << 11) |
                   ((function & 0x07) << 8) | (offset & 0xFC);
-    outb32(0xCF8, id);
-    outb32(0xCFC, value);
+    outb32(PCI_COMMAND, id);
+    outb32(PCI_DATA, value);
 }
 
 bool HasFunction(uint16_t bus, uint16_t device) {

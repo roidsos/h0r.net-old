@@ -7,6 +7,7 @@
 static struct limine_framebuffer *fb;
 
 void InitFB(struct limine_framebuffer *_fb) { fb = _fb; }
+
 void centeredStringRenderer(char *string, int y, int scale, int color) {
     int offset = (strlen(string) / 2) * CHAR_WIDTH * scale;
     basicStringRender(string, (fb->width / 2) - offset, y, scale, color);

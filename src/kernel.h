@@ -13,7 +13,7 @@
 struct KernelData {
     void *efi_system_table_address;
     bool is_uefi_mode;
-    i_time_t time;
+    rtc_time_point time;
     CPUInfo cpu_info;
     void* rsdp;
 
