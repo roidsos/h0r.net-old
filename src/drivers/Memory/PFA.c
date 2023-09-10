@@ -168,6 +168,12 @@ void initPFA(struct limine_memmap_response *memmap) {
         }
     }
 
+
+    log_info("Total system memory: %llu bytes", get_total_RAM());
+    log_info("Free system memory: %llu bytes", get_free_RAM());
+    log_info("Used system memory: %llu bytes", get_used_RAM());
+    log_info("Reserved system memory: %llu bytes", get_reserved_RAM());
+
     // Initialization Done
     pfa_initialized = true;
 }

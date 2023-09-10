@@ -1,101 +1,71 @@
-[INFO=]Init Target Reached: IO
-[INFO=]Init Target Reached: CPU
-[INFO=]Init Target Reached: GDT
-[INFO=]Init Target Reached: Interrupts
-[INFO=]Init Target Reached: Memory
-[INFO=]Init Target Reached: x86 PC drivers
-[INFO=]PCI Devices: 
-
-[INFO=]VendorID: 0x8086 ,DeviceID: 0x1237 
-
-[INFO=]VendorID: 0x8086 ,DeviceID: 0x7000 
-
-[INFO=]VendorID: 0x8086 ,DeviceID: 0x7010 
-
-[INFO=]VendorID: 0x8086 ,DeviceID: 0x7113 
-
-[INFO=]VendorID: 0x1234 ,DeviceID: 0x1111 
-
-[INFO=]VendorID: 0x8086 ,DeviceID: 0x100e 
-
-[INFO=]Init Target Reached: Misc Drivers
-[INFO=]Kernel Initialized Successfully
-[INFO=]========System Info========
-
-[INFO=]UEFI mode: 0
-
-[INFO=]CPU count: 2
-
-[INFO=]CPU Vendor ID: AuthenticAMD
-
-[INFO=]CPU Family: 15
-
-[INFO=]CPU Model: 11
-
-[INFO=]CPU Stepping: 1
-
-[INFO=]CPU Extended Family: 0
-
-[INFO=]CPU Extended Model: 6
-
-[INFO=]CPU Capabilities (EDX): 0x178BFBFD
-
-[INFO=]CPU Capabilities (ECX): 0x80002001
-
 [INFO=]Framebuffer Address: 0xFFFF8000FD000000
 
 [INFO=]Framebuffer Width: 1280, Height: 800, BPP: 32
 
-[INFO=]Date: 09/09/35
+[INFO=]Kernel Init Target reached: IO
 
-[INFO=]Time: 21:08:56
+[INFO=]CPU Vendor ID: AuthenticAMD
+[INFO=]CPU Family: 15
+[INFO=]CPU Model: 11
+[INFO=]CPU Stepping: 1
+[INFO=]CPU Extended Family: 0
+[INFO=]CPU Extended Model: 6
+[INFO=]CPU Capabilities (EDX): 0x178BFBFD
+[INFO=]CPU Capabilities (ECX): 0x80002001
+[INFO=]Kernel Init Target reached: CPU
+
+[INFO=]Kernel Init Target reached: GDT
+
+[INFO=]Kernel Init Target reached: Interrupts
 
 [INFO=]Total system memory: 13157360640 bytes
+[INFO=]Free system memory: 13150741504 bytes
+[INFO=]Used system memory: 405504 bytes
+[INFO=]Reserved system memory: 6213632 bytes
+[INFO=]Kernel Init Target reached: Memory
 
-[INFO=]Free system memory: 13150614528 bytes
+[INFO=]Date: 09/16/35
+[INFO=]Time: 08:81:17
+[INFO=]Kernel Init Target reached: x86 PC drivers
 
-[INFO=]Used system memory: 544768 bytes
+[INFO=]PCI Devices: 
+[INFO=]VendorID: 0x8086 ,DeviceID: 0x1237
+[INFO=]VendorID: 0x8086 ,DeviceID: 0x7000
+[INFO=]VendorID: 0x8086 ,DeviceID: 0x7010
+[INFO=]VendorID: 0x8086 ,DeviceID: 0x7113
+[INFO=]VendorID: 0x1234 ,DeviceID: 0x1111
+[INFO=]VendorID: 0x8086 ,DeviceID: 0x100e
+[INFO=]Kernel Init Target reached: Misc Drivers
 
-[INFO=]Reserved system memory: 6201344 bytes
+[INFO=]Kernel Initialized Successfully
 
+[INFO=]========Kernel's Execution Enviroment========
+
+[INFO=]UEFI mode: 0
 [INFO=]Memmap entry count: 14
 
+[INFO=]-Memmap entry #0: Base: 0x1000, Length: 0x53000, Type:LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE
+[INFO=]-Memmap entry #1: Base: 0x54000, Length: 0x4b000, Type:LIMINE_MEMMAP_USABLE
+[INFO=]-Memmap entry #2: Base: 0x9fc00, Length: 0x400, Type:LIMINE_MEMMAP_RESERVED
+[INFO=]-Memmap entry #3: Base: 0xf0000, Length: 0x10000, Type:LIMINE_MEMMAP_RESERVED
+[INFO=]-Memmap entry #4: Base: 0x100000, Length: 0xf9df000, Type:LIMINE_MEMMAP_USABLE
+[INFO=]-Memmap entry #5: Base: 0xfadf000, Length: 0x3000, Type:LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE
+[INFO=]-Memmap entry #6: Base: 0xfae2000, Length: 0x26000, Type:LIMINE_MEMMAP_KERNEL_AND_MODULES
+[INFO=]-Memmap entry #7: Base: 0xfb08000, Length: 0x37000, Type:LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE
+[INFO=]-Memmap entry #8: Base: 0xfb3f000, Length: 0x3ca000, Type:LIMINE_MEMMAP_USABLE
+[INFO=]-Memmap entry #9: Base: 0xff09000, Length: 0xd7000, Type:LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE
+[INFO=]-Memmap entry #10: Base: 0xffe0000, Length: 0x20000, Type:LIMINE_MEMMAP_RESERVED
+[INFO=]-Memmap entry #11: Base: 0xfd000000, Length: 0x3e8000, Type:LIMINE_MEMMAP_FRAMEBUFFER
+[INFO=]-Memmap entry #12: Base: 0xfffc0000, Length: 0x40000, Type:LIMINE_MEMMAP_RESERVED
+[INFO=]-Memmap entry #13: Base: 0xfd00000000, Length: 0x300000000, Type:LIMINE_MEMMAP_RESERVED
+[INFO=]CPU count: 2
+[INFO=]-Core #0 Extra Argument: 0
+[INFO=]-Core #0 Goto Address: 0
+[INFO=]-Core #0 Lapic ID: 0
+[INFO=]-Core #0 Processor ID: 0
 
-[INFO=]  -Memmap entry #0: Base: 0x1000, Length: 0x53000, Type:LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE
-
-[INFO=]  -Memmap entry #1: Base: 0x54000, Length: 0x4b000, Type:LIMINE_MEMMAP_USABLE
-
-[INFO=]  -Memmap entry #2: Base: 0x9fc00, Length: 0x400, Type:LIMINE_MEMMAP_RESERVED
-
-[INFO=]  -Memmap entry #3: Base: 0xf0000, Length: 0x10000, Type:LIMINE_MEMMAP_RESERVED
-
-[INFO=]  -Memmap entry #4: Base: 0x100000, Length: 0xf9e2000, Type:LIMINE_MEMMAP_USABLE
-
-[INFO=]  -Memmap entry #5: Base: 0xfae2000, Length: 0x3000, Type:LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE
-
-[INFO=]  -Memmap entry #6: Base: 0xfae5000, Length: 0x26000, Type:LIMINE_MEMMAP_KERNEL_AND_MODULES
-
-[INFO=]  -Memmap entry #7: Base: 0xfb0b000, Length: 0x36000, Type:LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE
-
-[INFO=]  -Memmap entry #8: Base: 0xfb41000, Length: 0x3ca000, Type:LIMINE_MEMMAP_USABLE
-
-[INFO=]  -Memmap entry #9: Base: 0xff0b000, Length: 0xd5000, Type:LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE
-
-[INFO=]  -Memmap entry #10: Base: 0xffe0000, Length: 0x20000, Type:LIMINE_MEMMAP_RESERVED
-
-[INFO=]  -Memmap entry #11: Base: 0xfd000000, Length: 0x3e8000, Type:LIMINE_MEMMAP_FRAMEBUFFER
-
-[INFO=]  -Memmap entry #12: Base: 0xfffc0000, Length: 0x40000, Type:LIMINE_MEMMAP_RESERVED
-
-[INFO=]  -Memmap entry #13: Base: 0xfd00000000, Length: 0x300000000, Type:LIMINE_MEMMAP_RESERVED
-
-[INFO=]Core #0 Extra Argument: 0
-[INFO=]Core #0 Goto Address: 0
-[INFO=]Core #0 Lapic ID: 0
-[INFO=]Core #0 Processor ID: 0
-
-[INFO=]Core #1 Extra Argument: 0
-[INFO=]Core #1 Goto Address: 0
-[INFO=]Core #1 Lapic ID: 1
-[INFO=]Core #1 Processor ID: 1
+[INFO=]-Core #1 Extra Argument: 0
+[INFO=]-Core #1 Goto Address: 0
+[INFO=]-Core #1 Lapic ID: 1
+[INFO=]-Core #1 Processor ID: 1
 

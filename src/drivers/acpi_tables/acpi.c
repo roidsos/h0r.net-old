@@ -54,10 +54,18 @@ void init_acpi(void *rsdp_addr) {
     xsdt = (struct XSDT *)PHYS_TO_VIRT(rsdp->XSDTAddress);
     xsdt_entries = (xsdt->h.Length - sizeof(xsdt)) / 8;
 
-    // if(!do_checksum(xsdt)){
-    //     log_error("XSDT corrupted or not found");
-    //     return;
-    // }
+    log_info("XSDT Checksum: %u",xsdt->h.Checksum);
+    log_info("XSDT CreatorID: %u",xsdt->h.CreatorID);
+    log_info("XSDT CreatorRevision: %u",xsdt->h.CreatorRevision);
+    log_info("XSDT Length: %u",xsdt->h.Length);
+    log_info("XSDT Revision: %u",xsdt->h.Revision);
+    log_info("XSDT Entries: %u",xsdt_entries);
+    
+
+    if(!do_checksum(xsdt)){
+        log_error("XSDT corrupted or not found");
+        return;
+    }
     log_info("XSDT found");
 
     list_tables(xsdt);

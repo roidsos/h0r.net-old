@@ -1,5 +1,6 @@
 #include "screen.h"
 #include "vbe/font_renderer.h"
+#include <utils/logging/logger.h>
 
 static struct limine_framebuffer *fb;
 
@@ -19,6 +20,11 @@ void InitScreen(struct limine_framebuffer *_fb) {
     fb = _fb;
     width = fb->width / CHAR_WIDTH;
     height = fb->height / CHAR_HEIGHT;
+
+    log_info("Framebuffer Address: 0x%p\n", fb->address);
+    log_info("Framebuffer Width: %lu, Height: %lu, BPP: %u\n",
+            fb->width, fb->height,
+            fb->bpp);
 
     InitFB(_fb);
 }

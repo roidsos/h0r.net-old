@@ -24,4 +24,5 @@ struct KernelData {
     struct limine_smp_response *smp_resp;
 };
 
+extern struct KernelData data;
 #endif
