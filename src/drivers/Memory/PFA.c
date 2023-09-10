@@ -118,7 +118,8 @@ void *request_pages(int num) {
     return start;
 }
 
-void initPFA(struct limine_memmap_response *memmap) {
+void PFA_init() {
+    struct limine_memmap_response* memmap = get_internal_memmmap();
     page_bmp_idx = 0;
     if (pfa_initialized)
         return;

@@ -5,7 +5,7 @@
 #include "utils/types/bitmap.h"
 #include <limine.h>
 
-void initPFA(struct limine_memmap_response* memmap);
+void PFA_init();
 void free_pages(void* addr,size_t num);
 void lock_pages(void* addr,size_t num);
 

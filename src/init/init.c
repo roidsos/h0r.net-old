@@ -46,8 +46,8 @@ void init_HW() {
     log_info("Kernel Init Target reached: Interrupts\n");
 
     // Init Memory stuff
-    mem_init(data.memmap_resp);
-    initPFA(data.memmap_resp);
+    mem_init();
+    PFA_init();
     InitHeap(0x20000);
     // still no workie
     // TODO: fix scuba
