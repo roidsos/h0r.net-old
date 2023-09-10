@@ -119,7 +119,7 @@ void *request_pages(int num) {
 }
 
 void PFA_init() {
-    struct limine_memmap_response* memmap = get_internal_memmmap();
+    struct limine_memmap_response *memmap = get_internal_memmmap();
     page_bmp_idx = 0;
     if (pfa_initialized)
         return;
@@ -168,7 +168,6 @@ void PFA_init() {
             reserve_pages((void *)desc->base, desc->length / 4096 + 1);
         }
     }
-
 
     log_info("Total system memory: %llu bytes", get_total_RAM());
     log_info("Free system memory: %llu bytes", get_free_RAM());

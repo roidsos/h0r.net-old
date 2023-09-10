@@ -1,6 +1,6 @@
 #include "Memory.h"
-#include <stddef.h>
 #include <kernel.h>
+#include <stddef.h>
 
 struct limine_memmap_response *internal_memmap;
 
@@ -14,12 +14,10 @@ const char *memmap_type_names[] = {
     "LIMINE_MEMMAP_KERNEL_AND_MODULES",
     "LIMINE_MEMMAP_FRAMEBUFFER",
 };
-struct limine_memmap_response *get_internal_memmmap(){
+struct limine_memmap_response *get_internal_memmmap() {
     return internal_memmap;
 }
-void mem_init() {
-    internal_memmap = data.memmap_resp;
-}
+void mem_init() { internal_memmap = data.memmap_resp; }
 struct limine_memmap_entry *get_memmap_entry_of_type(uint32_t type) {
     for (size_t i = 0; i < internal_memmap->entry_count; i++) {
         if (internal_memmap->entries[i]->type == type) {

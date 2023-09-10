@@ -18,4 +18,7 @@ void enable_interrupts() {
     __asm__ volatile("sti");
     // i8259_Unmask(PIC_REMAP_OFFSET);
 }
-void disable_interrupts() { __asm__ volatile("cli"); }
+void disable_interrupts() {
+    i8259_Disable();
+    __asm__ volatile("cli");
+}

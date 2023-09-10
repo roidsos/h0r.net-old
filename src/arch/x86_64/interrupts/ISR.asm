@@ -23,35 +23,10 @@ isr_common:
 	PUSHA64
 	cld
 	mov rdi, rsp
-	push 0 ; stack alignment
 	call ISR_Handler
 	POPA64
-	add rsp, 24
+	add rsp, 16
 	iretq
-
-global isr_special_0
-extern special_isr_0_handlr
-isr_special_0:
-    push rax
-    mov ax, 0x10
-    mov es, ax
-    mov ds, ax
-    mov fs, ax
-    mov gs, ax
-    mov ss, ax
-    pop rax
-
-    SAVESTATE
-    cld
-    mov rdi, .tss
-    call special_isr_0_handlr
-    mov rdi, rax
-
-    RESTORESTATE
-    retq
-.tss:
-    times 0x400 / 8 dq 0
-
 
 ISR_NOERRORCODE 0
 ISR_NOERRORCODE 1
@@ -85,7 +60,7 @@ ISR_NOERRORCODE 28
 ISR_NOERRORCODE 29
 ISR_NOERRORCODE 30
 ISR_NOERRORCODE 31
-;special interrupt (PIC_REMAP_OFFSET +) 0
+ISR_NOERRORCODE 32
 ISR_NOERRORCODE 33
 ISR_NOERRORCODE 34
 ISR_NOERRORCODE 35

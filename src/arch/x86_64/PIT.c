@@ -1,5 +1,5 @@
 #include "PIT.h"
-#include "interrupts/softTSS.h"
+#include <arch/x86_64/i8259.h>
 #include <drivers/io/portio.h>
 
 void pit_set_divisor(uint16_t divisor) {
@@ -35,6 +35,4 @@ void pit_set_count(uint16_t count) {
     return;
 }
 
-void pit_callback(__attribute__((unused)) softTSS *state) {}
-
-void pit_init() { pit_set_divisor(2000); }
+void pit_init() { pit_set_divisor(5000); }

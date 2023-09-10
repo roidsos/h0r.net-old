@@ -14,7 +14,8 @@
 #include <arch/x86_64/PIT.h>
 #include <utils/logging/logger.h>
 
-extern struct KernelData data;
+// Forward decls for drivers not worth making .h-s for
+void spisr_init();
 
 void init_HW() {
     // Initialize screen and logger
@@ -59,14 +60,15 @@ void init_HW() {
     time_get(&data.time);
 
     log_info("Date: %02d/%02d/%d", data.time.month, data.time.day_of_month,
-            data.time.year);
+             data.time.year);
     log_info("Time: %02d:%02d:%02d", data.time.hours, data.time.minutes,
-            data.time.seconds);
+             data.time.seconds);
 
     log_info("Kernel Init Target reached: x86 PC drivers\n");
 
     // Init the HW drivers
     init_drivers();
+    spisr_init();
     log_info("Kernel Init Target reached: Misc Drivers\n");
 
     enable_interrupts();

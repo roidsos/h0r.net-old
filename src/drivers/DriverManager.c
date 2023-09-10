@@ -12,7 +12,7 @@ void init_drivers() {
     init_PCI();
     // ACPI can wait
     // TODO: finish ACPI
-    //init_acpi(data.rsdp);
+    // init_acpi(data.rsdp);
 }
 
 void load_driver_for_device(__attribute__((unused)) struct Device dev) {}

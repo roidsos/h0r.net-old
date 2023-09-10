@@ -22,9 +22,8 @@ void InitScreen(struct limine_framebuffer *_fb) {
     height = fb->height / CHAR_HEIGHT;
 
     log_info("Framebuffer Address: 0x%p\n", fb->address);
-    log_info("Framebuffer Width: %lu, Height: %lu, BPP: %u\n",
-            fb->width, fb->height,
-            fb->bpp);
+    log_info("Framebuffer Width: %lu, Height: %lu, BPP: %u\n", fb->width,
+             fb->height, fb->bpp);
 
     InitFB(_fb);
 }

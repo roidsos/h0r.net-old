@@ -1,4 +1,3 @@
-#include "softTSS.h"
 #include <arch/x86_64/i8259.h>
 #include <arch/x86_64/interrupts/IDT.h>
 #include <arch/x86_64/interrupts/ISR.h>
@@ -37,7 +36,7 @@ void ISR28();
 void ISR29();
 void ISR30();
 void ISR31();
-void isr_special_0();
+void ISR32();
 void ISR33();
 void ISR34();
 void ISR35();
@@ -310,7 +309,7 @@ void init_ISR() {
     SetGate(29, ISR29, 8, 0b10001110);
     SetGate(30, ISR30, 8, 0b10001110);
     SetGate(31, ISR31, 8, 0b10001110);
-    SetGate(32, isr_special_0, 8, 0b10001110);
+    SetGate(32, ISR32, 8, 0b10001110);
     SetGate(33, ISR33, 8, 0b10001110);
     SetGate(34, ISR34, 8, 0b10001110);
     SetGate(35, ISR35, 8, 0b10001110);
