@@ -3,7 +3,6 @@
 #include <arch/x86_64/essential.h>
 #include <drivers/Memory/PFA.h>
 #include <init/init.h>
-#include <interface/desh.h>
 #include <utils/logging/logger.h>
 #include <vendor/printf.h>
 
@@ -93,12 +92,9 @@ void _start(void) {
     init_HW();
     debug_kernel_info();
 
-    ((char *)0)[0] = 0;
-    DeshInit();
-
-    while (true) {
-        DeshUpdate();
+    init_sched();
+    while (true)
+    {
+        __asm__ volatile("hlt");
     }
-
-    hcf();
 }

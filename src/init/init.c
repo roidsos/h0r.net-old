@@ -13,6 +13,9 @@
 #include "utils/screen.h"
 #include <arch/x86_64/PIT.h>
 #include <utils/logging/logger.h>
+#include <sched/sched.h>
+#include <interface/desh.h>
+#include <vendor/printf.h>
 
 // Forward decls for drivers not worth making .h-s for
 void spisr_init();
@@ -75,6 +78,37 @@ void init_HW() {
     log_info("Kernel Initialized Successfully\n");
 }
 
-void init_sched() {}
+void spam_As();
+void spam_Bs();
+void init_sys() {
+    printf("WE MADE IT LESSGOOOOO\n");
+    create_process(spam_As);
+    create_process(spam_Bs);
+    //DeshInit();
 
-void init_sys() {}
+    while (true) {
+        //DeshUpdate();
+    }
+
+}
+void spam_As(){
+    for (size_t i = 0; i < 30; i++)
+    {
+        printf("A");
+    }
+    while (true){}
+    
+}
+void spam_Bs(){
+    for (size_t i = 0; i < 30; i++)
+    {
+        printf("B");
+    }
+    while (true){}
+}
+
+void init_sched() {
+    sched_init();
+    create_process(init_sys);
+    sched_enable();
+}
