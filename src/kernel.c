@@ -4,6 +4,7 @@
 #include <drivers/Memory/PFA.h>
 #include <init/init.h>
 #include <utils/logging/logger.h>
+#include <utils/string.h>
 #include <vendor/printf.h>
 
 // ===============Limine Requests======================
@@ -20,6 +21,8 @@ static volatile struct limine_rsdp_request rsdp_request = {
     .id = LIMINE_RSDP_REQUEST, .revision = 0};
 static volatile struct limine_smp_request smp_request = {
     .id = LIMINE_SMP_REQUEST, .revision = 0};
+static volatile struct limine_module_request mod_request = {
+    .id = LIMINE_MODULE_REQUEST, .revision = 0};
 
 struct KernelData data;
 void handle_limine_requests() {
@@ -56,6 +59,13 @@ void handle_limine_requests() {
 
     data.smp_resp = smp_request.response;
 }
+void load_limine_modules() {
+    for (size_t i = 0; i < mod_request.response->module_count; i++) {
+        struct limine_file *mod = mod_request.response->modules[i];
+        log_info("%s found", mod->path);
+        log_info("%s contents:\n %s", mod->path, mod->address);
+    }
+}
 
 // ================= KERNEL MAIN ============================
 void debug_kernel_info() {
@@ -91,6 +101,7 @@ void _start(void) {
     handle_limine_requests();
     init_HW();
     debug_kernel_info();
+    load_limine_modules();
 
     init_sched();
     while (true) {

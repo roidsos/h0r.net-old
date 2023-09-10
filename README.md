@@ -22,7 +22,7 @@ In case any package is missing please open up an issue!</br>
 - [ ] PCIe
 - [ ] MSI
 - [ ] MSI-X
-- [ ] Modules
+- [x] Modules
 
 ### Memory
 - [x] PMM

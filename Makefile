@@ -1,24 +1,20 @@
 all:
 # builds the kernel
 	cd src && make && cd .. 
-# copies the kernel
-	cp src/kernel.bin iso/boot/kernel.bin
 # build limine
 	$(MAKE) -C limine
 #make an ISO
-	rm -rf iso_root
-	mkdir -p iso_root
+	mkdir -p iso
 	cp src/kernel.bin \
-		limine.cfg limine/limine.sys limine/limine-cd.bin limine/limine-cd-efi.bin iso_root/
-	mkdir -p iso_root/EFI/BOOT
-	cp limine/BOOT*.EFI iso_root/EFI/BOOT/
+		limine.cfg limine/limine.sys limine/limine-cd.bin limine/limine-cd-efi.bin iso/
+	mkdir -p iso/EFI/BOOT
+	cp limine/BOOT*.EFI iso/EFI/BOOT/
 	xorriso -as mkisofs -b limine-cd.bin \
 		-no-emul-boot -boot-load-size 4 -boot-info-table \
 		--efi-boot limine-cd-efi.bin \
 		-efi-boot-part --efi-boot-image --protective-msdos-label \
-		iso_root -o os.iso
+		iso -o os.iso
 	limine/limine-deploy os.iso
-	rm -rf iso_root
 
 override CFILES := $(shell find -L src -type f -name '*.c')
 format:
