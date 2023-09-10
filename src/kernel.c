@@ -93,8 +93,7 @@ void _start(void) {
     debug_kernel_info();
 
     init_sched();
-    while (true)
-    {
+    while (true) {
         __asm__ volatile("hlt");
     }
 }

@@ -12,9 +12,9 @@
 #include "utils/error-handling/falut-handler.h"
 #include "utils/screen.h"
 #include <arch/x86_64/PIT.h>
-#include <utils/logging/logger.h>
-#include <sched/sched.h>
 #include <interface/desh.h>
+#include <sched/sched.h>
+#include <utils/logging/logger.h>
 #include <vendor/printf.h>
 
 // Forward decls for drivers not worth making .h-s for
@@ -84,27 +84,25 @@ void init_sys() {
     printf("WE MADE IT LESSGOOOOO\n");
     create_process(spam_As);
     create_process(spam_Bs);
-    //DeshInit();
+    // DeshInit();
 
     while (true) {
-        //DeshUpdate();
+        // DeshUpdate();
     }
-
 }
-void spam_As(){
-    for (size_t i = 0; i < 30; i++)
-    {
+void spam_As() {
+    for (size_t i = 0; i < 30; i++) {
         printf("A");
     }
-    while (true){}
-    
+    while (true) {
+    }
 }
-void spam_Bs(){
-    for (size_t i = 0; i < 30; i++)
-    {
+void spam_Bs() {
+    for (size_t i = 0; i < 30; i++) {
         printf("B");
     }
-    while (true){}
+    while (true) {
+    }
 }
 
 void init_sched() {

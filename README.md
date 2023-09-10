@@ -26,7 +26,7 @@ In case any package is missing please open up an issue!</br>
 
 ### Memory
 - [x] PMM
-- [x] VMM (5 and 4 level)
+- [ ] VMM (5 and 4 level)
 - [x] Heap
 <!--
 ### ACPI
@@ -41,11 +41,12 @@ In case any package is missing please open up an issue!</br>
 - [ ] AC97
 - [ ] Intel High Definition Audio
 - [ ] SB16
+-->
 #### I/O
 - [ ] PS/2 Keyboard
 - [ ] PS/2 Mouse
-- [ ] COM
-
+- [x] COM
+<!--
 #### VMs
 - [ ] VMWare Tools
 - [ ] VBox Guest Additions
@@ -66,17 +67,19 @@ In case any package is missing please open up an issue!</br>
 - [ ] OHCI
 - [ ] EHCI
 - [ ] XHCI 
-
+-->
 ### Timers
 - [ ] HPET
-- [ ] PIT
+- [x] PIT
 - [ ] RTC
 - [ ] LAPIC Timer
 
 ### Tasking
 - [ ] SMP
-- [ ] Scheduler
+- [x] Scheduler
 - [ ] Signals
+
+<!--
 
 ### Partition tables
 - [ ] MBR
