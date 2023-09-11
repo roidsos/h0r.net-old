@@ -6,6 +6,7 @@
 
 #include "limine.h"
 #include <types/stdtypes.h>
+#include <parsing/tar.h>
 
 // Struct to hold globals
 struct KernelData {
@@ -13,6 +14,7 @@ struct KernelData {
     bool is_uefi_mode;
     rtc_time_point time;
     CPUInfo cpu_info;
+    struct tar_contents initramfs;
     void* rsdp;
 
     struct limine_framebuffer *framebuffer;

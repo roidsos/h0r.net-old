@@ -9,7 +9,7 @@ typedef struct {
 } process_t;
 
 static bool is_active;
-
+static bool not_first_tick;
 queue(uint64_t, process_queue);
 vector_static(process_t, processes);
 uint64_t current_process;
@@ -17,9 +17,10 @@ uint64_t current_process;
 void schedule(Registers *regs) {
     if (!is_active)
         return;
-    if (vector_length(&processes) != 1)
-        memcpy(&processes.data[current_process].status, regs,
+    if(not_first_tick)
+    memcpy(&processes.data[current_process].status, regs,
                sizeof(Registers));
+    not_first_tick = true;
 
     while (true) {
         if (process_queue.fullness == 0) {

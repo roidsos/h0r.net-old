@@ -16,6 +16,8 @@
 #include <logging/logger.h>
 #include <sched/sched.h>
 #include <vendor/printf.h>
+#include <limine.h>
+
 
 // Forward decls for drivers not worth making .h-s for
 void spisr_init();
@@ -78,31 +80,24 @@ void init_HW() {
     log_info("Kernel Initialized Successfully\n");
 }
 
-void spam_As();
-void spam_Bs();
 void init_sys() {
     printf("WE MADE IT LESSGOOOOO\n");
-    create_process(spam_As);
-    create_process(spam_Bs);
     // DeshInit();
 
     while (true) {
         // DeshUpdate();
     }
 }
-void spam_As() {
-    for (size_t i = 0; i < 30; i++) {
-        printf("A");
-    }
-    while (true) {
-    }
+void load_config(__attribute__((unused)) struct limine_file* cfg_file)
+{
+    log_info("config file found");   
 }
-void spam_Bs() {
-    for (size_t i = 0; i < 30; i++) {
-        printf("B");
-    }
-    while (true) {
-    }
+
+void load_initramfs(struct limine_file* tar_file)
+{
+    data.initramfs = parse_tar(tar_file->address,tar_file->size);
+    struct tar_header* hello = find_file(&data.initramfs,(uint8_t*)"hello.txt");
+    log_info("hello file contents: %s",(char*)hello + 512);
 }
 
 void init_sched() {

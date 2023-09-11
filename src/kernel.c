@@ -66,6 +66,8 @@ void load_limine_modules() {
         if (strcmp(mod->path, "/boot/hornet.conf")) {
             config_found = true;
 
+        } else if(strcmp(mod->path, "/boot/initramfs.tar")){
+            load_initramfs(mod);
         } else {
             log_info("%s found", mod->path);
             log_info("%s contents:\n %s", mod->path, mod->address);
