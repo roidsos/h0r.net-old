@@ -1,6 +1,6 @@
 #ifndef __ACPI_H__
 #define __ACPI_H_    
-#include <stdint.h>
+#include <types/stdtypes.h>
     
 struct RSDP {
     unsigned char Signature[8];

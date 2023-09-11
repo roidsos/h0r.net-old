@@ -1,10 +1,10 @@
 #include "desh.h"
-#include <arch/x86_64/essential.h>
-#include <arch/x86_64/power.h>
+#include <arch/x86/essential.h>
+#include <arch/x86/power.h>
 #include <drivers/hid/keyboard.h>
 #include <drivers/io/pci.h>
+#include <types/string.h>
 #include <utils/screen.h>
-#include <utils/string.h>
 #include <vbe/font_renderer.h>
 #include <vendor/printf.h>
 

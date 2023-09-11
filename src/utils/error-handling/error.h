@@ -5,6 +5,7 @@
 #define HN_ERR_GDT_FAULT 1
 #define HN_ERR_UNIMPLEMENTED 2
 #define HN_ERR_ACPI_FAULT 3
+#define HN_ERR_INVALID_CONF 4
 
 extern char* Hornet_error_codes[];
 

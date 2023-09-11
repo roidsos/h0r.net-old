@@ -1,6 +1,6 @@
 #include "Heap.h"
 #include "PFA.h"
-#include <arch/x86_64/essential.h>
+#include <arch/x86/essential.h>
 struct MemorySegment *first_free;
 
 void InitHeap(uint64_t heaplength) {

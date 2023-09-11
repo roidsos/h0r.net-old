@@ -1,7 +1,6 @@
 #ifndef __KEYBOARD_H__
 #define __KEYBOARD_H__
-#include <stdint.h>
-#include <stdbool.h>
+#include <types/stdtypes.h>
 #include <utils/keys.h>
 
 #define PS2_COMMAND     0x64

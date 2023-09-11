@@ -2,7 +2,7 @@
 #define __PFA_H__
 
 #include "Memory.h"
-#include "utils/types/bitmap.h"
+#include "types/bitmap.h"
 #include <limine.h>
 
 void PFA_init();

@@ -1,8 +1,8 @@
-#include <arch/x86_64/i8259.h>
-#include <arch/x86_64/interrupts/IDT.h>
-#include <arch/x86_64/interrupts/ISR.h>
+#include <arch/x86/i8259.h>
+#include <arch/x86/interrupts/IDT.h>
+#include <arch/x86/interrupts/ISR.h>
 #include <drivers/Memory/PFA.h>
-#include <utils/logging/logger.h>
+#include <logging/logger.h>
 
 void ISR0();
 void ISR1();

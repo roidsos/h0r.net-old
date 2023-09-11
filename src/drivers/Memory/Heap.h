@@ -1,8 +1,7 @@
 #ifndef __HEAP_H__
 #define __HEAP_H__
 
-#include <stdint.h>
-#include <stdbool.h>
+#include <types/stdtypes.h>
 
 struct MemorySegment{
     uint64_t length;

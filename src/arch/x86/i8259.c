@@ -1,5 +1,4 @@
-#include <drivers/io/portio.h>
-#include <stdbool.h>
+#include <io/portio.h>
 
 // "good artists borrow, great artists steal"
 // https://github.com/nanobyte-dev/nanobyte_os/

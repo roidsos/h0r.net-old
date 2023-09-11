@@ -1,6 +1,6 @@
 #ifndef __MEMORY_H__
 #define __MEMORY_H__
-#include <stdint.h>
+#include <types/stdtypes.h>
 #include <limine.h>
 
 struct limine_memmap_response *get_internal_memmmap();

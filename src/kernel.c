@@ -1,10 +1,10 @@
 #include "kernel.h"
 
-#include <arch/x86_64/essential.h>
+#include <arch/x86/essential.h>
 #include <drivers/Memory/PFA.h>
 #include <init/init.h>
-#include <utils/logging/logger.h>
-#include <utils/string.h>
+#include <logging/logger.h>
+#include <types/string.h>
 #include <vendor/printf.h>
 
 // ===============Limine Requests======================
@@ -60,10 +60,19 @@ void handle_limine_requests() {
     data.smp_resp = smp_request.response;
 }
 void load_limine_modules() {
+    bool config_found = false;
     for (size_t i = 0; i < mod_request.response->module_count; i++) {
         struct limine_file *mod = mod_request.response->modules[i];
-        log_info("%s found", mod->path);
-        log_info("%s contents:\n %s", mod->path, mod->address);
+        if (strcmp(mod->path, "/boot/hornet.conf")) {
+            config_found = true;
+
+        } else {
+            log_info("%s found", mod->path);
+            log_info("%s contents:\n %s", mod->path, mod->address);
+        }
+    }
+    if (!config_found) {
+        log_CRITICAL(NULL, HN_ERR_INVALID_CONF, "No configuration file found");
     }
 }
 

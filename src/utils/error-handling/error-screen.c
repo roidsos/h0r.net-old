@@ -1,7 +1,7 @@
 #include "error-screen.h"
-#include <arch/x86_64/essential.h>
-#include <arch/x86_64/interrupts/interrupts.h>
-#include <utils/logging/logger.h>
+#include <arch/x86/essential.h>
+#include <arch/x86/interrupts/interrupts.h>
+#include <logging/logger.h>
 #include <vbe/font_renderer.h>
 #include <vendor/printf.h>
 

@@ -1,9 +1,9 @@
 #include "DriverManager.h"
 
+#include <arch/x86/rtc.h>
 #include <drivers/acpi_tables/acpi.h>
 #include <drivers/hid/keyboard.h>
 #include <drivers/io/pci.h>
-#include <drivers/misc/time.h>
 #include <kernel.h>
 
 void init_drivers() {

@@ -1,8 +1,7 @@
 #ifndef __PCI_H__
 #define __PCI_H__
 
-#include <stdint.h>
-#include <stdbool.h>
+#include <types/stdtypes.h>
 
 #define PCI_COMMAND 0xCF8
 #define PCI_DATA 0xCFC

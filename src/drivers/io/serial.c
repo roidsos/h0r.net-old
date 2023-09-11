@@ -1,5 +1,5 @@
 #include "serial.h"
-#include <drivers/io/portio.h>
+#include <io/portio.h>
 uint8_t ports_present;
 
 // Util funcs

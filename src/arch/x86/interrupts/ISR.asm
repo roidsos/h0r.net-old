@@ -1,4 +1,4 @@
-%include "utils/asmmacros.inc"
+%include "vendor/libkrnl-essentials/utils/asmmacros.inc"
 
 %macro ISR_NOERRORCODE 1
 global ISR%1:

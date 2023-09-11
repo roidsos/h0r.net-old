@@ -1,5 +1,5 @@
-#include <arch/x86_64/interrupts/interrupts.h>
-#include <utils/logging/logger.h>
+#include <arch/x86/interrupts/interrupts.h>
+#include <logging/logger.h>
 void GDT_fault_handler(Registers *regs) {
     log_CRITICAL(regs, HN_ERR_GDT_FAULT, "General Protection fault");
     EOI(0xD);

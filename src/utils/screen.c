@@ -1,6 +1,6 @@
 #include "screen.h"
 #include "vbe/font_renderer.h"
-#include <utils/logging/logger.h>
+#include <logging/logger.h>
 
 static struct limine_framebuffer *fb;
 

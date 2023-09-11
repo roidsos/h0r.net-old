@@ -1,8 +1,8 @@
 #include "keyboard.h"
-#include <arch/x86_64/interrupts/interrupts.h>
+#include <arch/x86/interrupts/interrupts.h>
 #include <drivers/Memory/Heap.h>
-#include <drivers/io/portio.h>
-#include <utils/logging/logger.h>
+#include <io/portio.h>
+#include <logging/logger.h>
 #include <utils/screen.h>
 #include <vendor/printf.h>
 

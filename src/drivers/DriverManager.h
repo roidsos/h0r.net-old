@@ -1,6 +1,6 @@
 #ifndef __DRIVERMANAGER_H__
 #define __DRIVERMANAGER_H__
-#include <stdint.h>
+#include <types/stdtypes.h>
 
 #define HN_DEV_TYPE_PCI 0
 #define HN_DEV_TYPE_PCIE 1

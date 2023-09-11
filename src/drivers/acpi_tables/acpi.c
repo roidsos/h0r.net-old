@@ -1,7 +1,7 @@
 #include "acpi.h"
 #include <drivers/Memory/scubadeeznutz.h>
-#include <utils/logging/logger.h>
-#include <utils/string.h>
+#include <logging/logger.h>
+#include <types/string.h>
 
 struct XSDT *xsdt;
 uint16_t xsdt_entries;

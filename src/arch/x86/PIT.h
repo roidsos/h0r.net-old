@@ -1,6 +1,6 @@
 #ifndef __PIT_H__
 #define __PIT_H__
-#include <stdint.h>
+#include <types/stdtypes.h>
 
 #define PIT_COMMAND     0x43
 #define PIT_DATA        0x40

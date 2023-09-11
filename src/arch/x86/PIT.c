@@ -1,6 +1,6 @@
 #include "PIT.h"
-#include <arch/x86_64/i8259.h>
-#include <drivers/io/portio.h>
+#include <arch/x86/i8259.h>
+#include <io/portio.h>
 
 void pit_set_divisor(uint16_t divisor) {
     if (divisor < 100)

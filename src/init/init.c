@@ -6,15 +6,15 @@
 #include <drivers/Memory/PFA.h>
 #include <drivers/Memory/scubadeeznutz.h>
 
-#include "arch/x86_64/GDT/gdt.h"
-#include <arch/x86_64/interrupts/interrupts.h>
+#include "drop-in/ezgdt.h"
+#include <arch/x86/interrupts/interrupts.h>
 
 #include "utils/error-handling/falut-handler.h"
 #include "utils/screen.h"
-#include <arch/x86_64/PIT.h>
+#include <arch/x86/PIT.h>
 #include <interface/desh.h>
+#include <logging/logger.h>
 #include <sched/sched.h>
-#include <utils/logging/logger.h>
 #include <vendor/printf.h>
 
 // Forward decls for drivers not worth making .h-s for

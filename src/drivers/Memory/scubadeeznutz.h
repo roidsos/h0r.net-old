@@ -4,9 +4,8 @@
 // "hippity hoppity,SCUBA DEEZ NUTZ"
 // https://github.com/schkwve/luxe/
 
-#include <stdint.h>
-#include <stdbool.h>
-#include <utils/vector.h>
+#include <types/stdtypes.h>
+#include <types/vector.h>
 #include <limine.h>
 
 #define VIRT_FLAG_PRESENT (1 << 0)

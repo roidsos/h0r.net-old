@@ -32,9 +32,8 @@
 // Note: Edited
 ///////////////////////////////////////////////////////////////////////////////
 #include "printf.h"
-#include <drivers/io/portio.h>
-#include <stdbool.h>
-#include <stdint.h>
+#include <io/portio.h>
+#include <types/stdtypes.h>
 #include <utils/screen.h>
 
 // define this globally (e.g. gcc -DPRINTF_INCLUDE_CONFIG_H ...) to include the

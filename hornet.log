@@ -19,13 +19,13 @@
 [INFO=]Kernel Init Target reached: Interrupts
 
 [INFO=]Total system memory: 13157360640 bytes
-[INFO=]Free system memory: 13150737408 bytes
+[INFO=]Free system memory: 13150696448 bytes
 [INFO=]Used system memory: 405504 bytes
-[INFO=]Reserved system memory: 6217728 bytes
+[INFO=]Reserved system memory: 6258688 bytes
 [INFO=]Kernel Init Target reached: Memory
 
-[INFO=]Date: 09/16/35
-[INFO=]Time: 23:57:64
+[INFO=]Date: 09/17/35
+[INFO=]Time: 19:52:56
 [INFO=]Kernel Init Target reached: x86 PC drivers
 
 [INFO=]PCI Devices: 
@@ -42,25 +42,27 @@
 [INFO=]========Kernel's Execution Enviroment========
 
 [INFO=]UEFI mode: 0
-[INFO=]Memmap entry count: 17
+[INFO=]Memmap entry count: 19
 
 [INFO=]-Memmap entry #0: Base: 0x1000, Length: 0x53000, Type:LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE
 [INFO=]-Memmap entry #1: Base: 0x54000, Length: 0x4b000, Type:LIMINE_MEMMAP_USABLE
 [INFO=]-Memmap entry #2: Base: 0x9fc00, Length: 0x400, Type:LIMINE_MEMMAP_RESERVED
 [INFO=]-Memmap entry #3: Base: 0xf0000, Length: 0x10000, Type:LIMINE_MEMMAP_RESERVED
-[INFO=]-Memmap entry #4: Base: 0x100000, Length: 0xf9de000, Type:LIMINE_MEMMAP_USABLE
-[INFO=]-Memmap entry #5: Base: 0xfade000, Length: 0x1000, Type:LIMINE_MEMMAP_KERNEL_AND_MODULES
-[INFO=]-Memmap entry #6: Base: 0xfadf000, Length: 0x1000, Type:LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE
-[INFO=]-Memmap entry #7: Base: 0xfae0000, Length: 0x2000, Type:LIMINE_MEMMAP_USABLE
-[INFO=]-Memmap entry #8: Base: 0xfae2000, Length: 0x9000, Type:LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE
-[INFO=]-Memmap entry #9: Base: 0xfaeb000, Length: 0x26000, Type:LIMINE_MEMMAP_KERNEL_AND_MODULES
-[INFO=]-Memmap entry #10: Base: 0xfb11000, Length: 0x38000, Type:LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE
-[INFO=]-Memmap entry #11: Base: 0xfb49000, Length: 0x3ca000, Type:LIMINE_MEMMAP_USABLE
-[INFO=]-Memmap entry #12: Base: 0xff13000, Length: 0xcd000, Type:LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE
-[INFO=]-Memmap entry #13: Base: 0xffe0000, Length: 0x20000, Type:LIMINE_MEMMAP_RESERVED
-[INFO=]-Memmap entry #14: Base: 0xfd000000, Length: 0x3e8000, Type:LIMINE_MEMMAP_FRAMEBUFFER
-[INFO=]-Memmap entry #15: Base: 0xfffc0000, Length: 0x40000, Type:LIMINE_MEMMAP_RESERVED
-[INFO=]-Memmap entry #16: Base: 0xfd00000000, Length: 0x300000000, Type:LIMINE_MEMMAP_RESERVED
+[INFO=]-Memmap entry #4: Base: 0x100000, Length: 0xf9d5000, Type:LIMINE_MEMMAP_USABLE
+[INFO=]-Memmap entry #5: Base: 0xfad5000, Length: 0x1000, Type:LIMINE_MEMMAP_KERNEL_AND_MODULES
+[INFO=]-Memmap entry #6: Base: 0xfad6000, Length: 0x1000, Type:LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE
+[INFO=]-Memmap entry #7: Base: 0xfad7000, Length: 0x1000, Type:LIMINE_MEMMAP_USABLE
+[INFO=]-Memmap entry #8: Base: 0xfad8000, Length: 0x1000, Type:LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE
+[INFO=]-Memmap entry #9: Base: 0xfad9000, Length: 0x1000, Type:LIMINE_MEMMAP_USABLE
+[INFO=]-Memmap entry #10: Base: 0xfada000, Length: 0x9000, Type:LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE
+[INFO=]-Memmap entry #11: Base: 0xfae3000, Length: 0x26000, Type:LIMINE_MEMMAP_KERNEL_AND_MODULES
+[INFO=]-Memmap entry #12: Base: 0xfb09000, Length: 0x38000, Type:LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE
+[INFO=]-Memmap entry #13: Base: 0xfb41000, Length: 0x3ca000, Type:LIMINE_MEMMAP_USABLE
+[INFO=]-Memmap entry #14: Base: 0xff0b000, Length: 0xd5000, Type:LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE
+[INFO=]-Memmap entry #15: Base: 0xffe0000, Length: 0x20000, Type:LIMINE_MEMMAP_RESERVED
+[INFO=]-Memmap entry #16: Base: 0xfd000000, Length: 0x3e8000, Type:LIMINE_MEMMAP_FRAMEBUFFER
+[INFO=]-Memmap entry #17: Base: 0xfffc0000, Length: 0x40000, Type:LIMINE_MEMMAP_RESERVED
+[INFO=]-Memmap entry #18: Base: 0xfd00000000, Length: 0x300000000, Type:LIMINE_MEMMAP_RESERVED
 [INFO=]CPU count: 2
 [INFO=]-Core #0 Extra Argument: 0
 [INFO=]-Core #0 Goto Address: 0
@@ -72,6 +74,3 @@
 [INFO=]-Core #1 Lapic ID: 1
 [INFO=]-Core #1 Processor ID: 1
 
-[INFO=]/ass.txt found
-[INFO=]/ass.txt contents:
- hehehehehehehehllooooooooooooo

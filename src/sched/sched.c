@@ -1,9 +1,8 @@
 #include "sched.h"
-#include <arch/x86_64/interrupts/interrupts.h>
-#include <stdbool.h>
-#include <utils/logging/logger.h>
-#include <utils/queue.h>
-#include <utils/vector.h>
+#include <arch/x86/interrupts/interrupts.h>
+#include <logging/logger.h>
+#include <types/queue.h>
+#include <types/vector.h>
 typedef struct {
     Registers status;
     // TODO:add more stuff

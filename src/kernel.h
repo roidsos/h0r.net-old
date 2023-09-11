@@ -1,13 +1,11 @@
 #ifndef KERNEL_H
 #define KERNEL_H
 
-#include "arch/x86_64/cpu.h"
-#include <drivers/misc/time.h>
+#include "arch/x86/cpu.h"
+#include <arch/x86/rtc.h>
 
 #include "limine.h"
-#include <stdint.h>
-#include <stdbool.h>
-#include <stddef.h>
+#include <types/stdtypes.h>
 
 // Struct to hold globals
 struct KernelData {

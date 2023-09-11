@@ -1,9 +1,9 @@
 #include "scubadeeznutz.h"
-#include <arch/x86_64/essential.h>
-#include <arch/x86_64/interrupts/interrupts.h>
+#include <arch/x86/essential.h>
+#include <arch/x86/interrupts/interrupts.h>
 #include <drivers/Memory/Heap.h>
 #include <drivers/Memory/PFA.h>
-#include <utils/logging/logger.h>
+#include <logging/logger.h>
 
 // "hippity hoppity,SCUBA DEEZ NUTZ"
 // https://github.com/schkwve/luxe/

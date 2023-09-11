@@ -10,8 +10,7 @@
 #define COM7 0x5E8
 #define COM8 0x4E8 
 
-#include <stdbool.h>
-#include <stdint.h>
+#include <types/stdtypes.h>
 
 bool serial_is_present(int port);
 char serial_read(int port);

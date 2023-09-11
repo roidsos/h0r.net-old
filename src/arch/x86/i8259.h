@@ -1,7 +1,6 @@
 #ifndef __I8259_H__
 #define __I8259_H__
-#include <stdint.h>
-#include <stdbool.h>
+#include <types/stdtypes.h>
 // "good artists borrow, great artists steal"
 // https://github.com/nanobyte-dev/nanobyte_os/ 
 

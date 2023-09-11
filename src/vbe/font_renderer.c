@@ -1,8 +1,8 @@
 #include "font_renderer.h"
 #include "font.h"
-#include <arch/x86_64/essential.h>
-#include <stdint.h>
-#include <utils/string.h>
+#include <arch/x86/essential.h>
+#include <types/stdtypes.h>
+#include <types/string.h>
 
 static struct limine_framebuffer *fb;
 

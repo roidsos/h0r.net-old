@@ -5,3 +5,6 @@
 [submodule "OVMFbin"]
 	path = OVMFbin
 	url = https://github.com/Absurdponcho/OVMFbin
+[submodule "src/vendor/libkrnl-essentials"]
+	path = src/vendor/libkrnl-essentials
+	url = https://github.com/lolguy91/libkrnl-essentials
