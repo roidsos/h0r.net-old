@@ -9,8 +9,8 @@ the h0r.net project was started just for fun, but Im planning to use it.</br>
 ## How to get it running?
 ## on debian
 2 commands:</br>
-´sh .devcontainer/install.sh´</br>
-´make run´
+`sh .devcontainer/install.sh`</br>
+`make run`
 
 ## Current features and TODO(stolen from  ilobilo )
 
