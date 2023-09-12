@@ -86,10 +86,10 @@ void init_HW() {
 
 void init_sys() {
     printf("WE MADE IT LESSGOOOOO\n");
-    // DeshInit();
+    DeshInit();
 
     while (true) {
-        // DeshUpdate();
+        DeshUpdate();
     }
 }
 void load_config(__attribute__((unused)) struct limine_file* cfg_file)

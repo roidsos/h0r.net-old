@@ -5,8 +5,12 @@
 #include <logging/logger.h>
 #include <flanterm.h>
 #include <vendor/printf.h>
-
+#include <arch/x86/PIT.h>
+#include <kernel.h>
 char *keybuffer;
+int bufindex = 0;
+int getindex = 0;
+bool bufstuck = false;
 
 #include "key-layout.h"
 
@@ -39,17 +43,21 @@ void kb_handler(__attribute__((unused)) Registers *regs) {
         EOI(1);
         return;
     }
-    keybuffer[0] = scancode;
+    if ((bufindex != getindex) || !bufstuck) {
+        keybuffer[bufindex] = scancode;
+        bufindex = (bufindex + 1) % 128;
+        if (bufindex == getindex) {
+            bufstuck = true;
+        }
+    }
     keyboard.keys[(uint8_t)(scancode & 0x7F)] = KEY_IS_PRESS(scancode);
     keyboard.chars[KEY_CHAR(scancode)] = KEY_IS_PRESS(scancode);
-    if (KEY_IS_PRESS(scancode)) {
-        log_info(" key %x", scancode);
-    }
+    log_info(" key %x, %u", scancode,KEY_IS_PRESS(scancode));
     EOI(1);
 }
 
 void initkeyboard() {
-    keybuffer = (char *)malloc(1);
+    keybuffer = (char*)calloc(128);
     keyboard.shift = false;
     keyboard.capslock = false;
     keyboard.backspace = false;
@@ -69,6 +77,8 @@ char turn_into_ASCII(uint16_t scancode) {
     if (KEY_SCANCODE(scancode) == KEY_LSHIFT ||
         KEY_SCANCODE(scancode) == KEY_RSHIFT) {
         keyboard.shift = !keyboard.shift;
+    }else if (KEY_SCANCODE(scancode) == KEY_BACKSPACE) {
+            return -1;
     }
     if (KEY_IS_PRESS(scancode)) {
         if (keyboard.shift) {
@@ -84,25 +94,30 @@ void getstr(char *buffer, int size) {
     int idx = 0;
     bool repeat = false;
     int repeat_count = 0;
-    // int repeat_delay = 100; TODO: add timer back
+    int repeat_delay = 70;
 
     do {
         char _char = getch();
         if (_char) {
             if (_char == -1) {
                 buffer[idx--] = ' ';
+                flanterm_write(data.ft_ctx,"\b \b",3);
             } else {
                 if (repeat) {
                     if (++repeat_count >= 10) {
                         repeat_count = 0;
-                        printf_("%c", _char);
+                        if(is_visible(_char)){
+                            printf("%c", _char);
+                            buffer[idx] = _char;
+                            idx++;
+                        }
+                    }
+                } else {
+                    if(is_visible(_char)){
+                        printf("%c", _char);
                         buffer[idx] = _char;
                         idx++;
                     }
-                } else {
-                    printf_("%c", _char);
-                    buffer[idx] = _char;
-                    idx++;
                 }
                 repeat = true;
             }
@@ -112,15 +127,21 @@ void getstr(char *buffer, int size) {
         }
         if (idx >= size)
             return;
-        // PIT::Sleep(repeat ? repeat_delay / 10 : repeat_delay);
+         pit_sleep(repeat ? repeat_delay / 10 : repeat_delay);
     } while (!keyboard_key(KEY_ENTER));
     buffer[idx] = 0;
+    pit_sleep(100);
 }
 
 char getch() {
-    if (turn_into_ASCII(keybuffer[0])) {
-        return turn_into_ASCII(keybuffer[0]);
-        keybuffer[0] = 0;
+    if ((bufindex != getindex) || bufstuck) {
+        if (bufstuck) {
+            bufstuck = false;
+        }
+        char keyout = keybuffer[getindex];
+        keybuffer[getindex] = 0;
+        getindex = (getindex + 1) % 128;
+        return turn_into_ASCII(keyout);
     }
     return 0;
 }

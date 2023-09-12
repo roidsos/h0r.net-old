@@ -5,8 +5,10 @@
 #include <logging/logger.h>
 
 void schedule(Registers *regs);
+void pit_int();
 
 void special_isr_0_handlr(__attribute__((unused)) Registers *state) {
+    pit_int();
     schedule(state);
 }
 

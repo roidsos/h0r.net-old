@@ -45,7 +45,7 @@ void init_PCI() {
                 devices[(bus * 8) + (device * 32) + function] = dev;
 
                 if (dev.vendor_id == 0x0000 || dev.vendor_id == 0xFFFF) {
-                    // printf_("nothing\n");
+                    // printf("nothing\n");
                     continue;
                 }
 
@@ -57,7 +57,7 @@ void init_PCI() {
     pci_initialized = true;
 }
 void list_PCI_devices() {
-    printf_("PCI Devices: \n");
+    printf("PCI Devices: \n");
     for (int bus = 0; bus < 8; bus++) {
         for (int device = 0; device < 32; device++) {
             int numfuncs = HasFunction(bus, device) ? 8 : 1;
@@ -66,7 +66,7 @@ void list_PCI_devices() {
                 if (dev.vendor_id == 0x0000 || dev.vendor_id == 0xFFFF) {
                     continue;
                 }
-                printf_("VendorID: 0x%x,DeviceID: 0x%x \n", dev.vendor_id,
+                printf("VendorID: 0x%x,DeviceID: 0x%x \n", dev.vendor_id,
                         dev.device_id);
             }
         }

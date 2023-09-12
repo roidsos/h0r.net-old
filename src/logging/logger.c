@@ -21,7 +21,7 @@ void log_error(char *format, ...) {
         serial_write_string(LOGGER_PREFIX_ERR, current_output);
 
         char resolve[256];
-        vsnprintf_(resolve, 256, format, va);
+        vsnprintf(resolve, 256, format, va);
         serial_write_string(resolve, current_output);
 
         serial_write_string("\n", current_output);
@@ -45,7 +45,7 @@ void log_info(char *format, ...) {
         serial_write_string(LOGGER_PREFIX_INFO, current_output);
 
         char resolve[256];
-        vsnprintf_(resolve, 256, format, va);
+        vsnprintf(resolve, 256, format, va);
         serial_write_string(resolve, current_output);
 
         serial_write_string("\n", current_output);
@@ -68,7 +68,7 @@ void log_warning(char *format, ...) {
         serial_write_string(LOGGER_PREFIX_WRN, current_output);
 
         char resolve[256];
-        vsnprintf_(resolve, 256, format, va);
+        vsnprintf(resolve, 256, format, va);
         serial_write_string(resolve, current_output);
 
         serial_write_string("\n", current_output);
@@ -114,13 +114,13 @@ void log_CRITICAL(Registers *regs, uint8_t error_code, char *format, ...) {
         serial_write_string(LOGGER_PREFIX_CRITICAL, current_output);
 
         char resolve[256];
-        vsnprintf_(resolve, 256, format, va);
+        vsnprintf(resolve, 256, format, va);
         serial_write_string(resolve, current_output);
 
         serial_write_string("\n", current_output);
     }
     char resolve[256];
-    vsnprintf_(resolve, 256, format, va);
+    vsnprintf(resolve, 256, format, va);
 
     va_end(va);
     trigger_error(error_code, regs, resolve);
