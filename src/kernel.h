@@ -7,6 +7,7 @@
 #include "limine.h"
 #include <types/stdtypes.h>
 #include <parsing/tar.h>
+#include "flanterm.h"
 
 // Struct to hold globals
 struct KernelData {
@@ -16,6 +17,7 @@ struct KernelData {
     CPUInfo cpu_info;
     struct tar_contents initramfs;
     void* rsdp;
+    struct flanterm_context* ft_ctx;  
 
     struct limine_framebuffer *framebuffer;
     struct limine_memmap_response *memmap_resp;

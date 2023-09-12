@@ -8,3 +8,6 @@
 [submodule "src/vendor/libkrnl-essentials"]
 	path = src/vendor/libkrnl-essentials
 	url = https://github.com/lolguy91/libkrnl-essentials
+[submodule "src/vendor/flanterm"]
+	path = src/vendor/flanterm
+	url = https://github.com/mintsuki/flanterm

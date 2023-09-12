@@ -34,7 +34,8 @@
 #include "printf.h"
 #include <io/portio.h>
 #include <types/stdtypes.h>
-#include <utils/screen.h>
+#include <flanterm.h>
+#include <kernel.h>
 
 // define this globally (e.g. gcc -DPRINTF_INCLUDE_CONFIG_H ...) to include the
 // printf_config.h header file
@@ -156,7 +157,7 @@ static inline void _out_null(char character, void *buffer, size_t idx,
 // internal _putchar wrapper
 static inline void _out_char(char character, UNUSED void *buffer,
                              UNUSED size_t idx, UNUSED size_t maxlen) {
-    RenderChar(character, 0xFFFFFFFF);
+    flanterm_write(data.ft_ctx,&character, 1);
 }
 
 // internal output function wrapper

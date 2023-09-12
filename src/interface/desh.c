@@ -4,8 +4,9 @@
 #include <drivers/hid/keyboard.h>
 #include <drivers/io/pci.h>
 #include <types/string.h>
-#include <utils/screen.h>
-#include <vbe/font_renderer.h>
+#include <kernel.h>
+#include <flanterm.h>
+#include <font/font_renderer.h>
 #include <vendor/printf.h>
 
 char typedstring[255];
@@ -23,8 +24,7 @@ void parseCommand(char *command) {
     } else if (strcmp(args[0], "reboot")) {
         sys_reboot();
     } else if (strcmp(args[0], "clear") || strcmp(args[0], "cls")) {
-        ClearScreen(0x00000000);
-        SetCursorpos(0);
+        flanterm_context_reinit(data.ft_ctx);
     } else if (strcmp(args[0], "echo")) {
         for (size_t i = 1; args[i] != 0; i++) {
             printf_("%s", args[i]);

@@ -3,7 +3,7 @@
 #include <drivers/Memory/Heap.h>
 #include <io/portio.h>
 #include <logging/logger.h>
-#include <utils/screen.h>
+#include <flanterm.h>
 #include <vendor/printf.h>
 
 char *keybuffer;

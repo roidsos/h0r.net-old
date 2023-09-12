@@ -45,6 +45,7 @@ $(eval $(call DEFAULT_VAR,LDFLAGS,$(DEFAULT_LDFLAGS)))
 override CFLAGS += \
     -I../limine \
     -Ivendor/libkrnl-essentials \
+    -Ivendor/flanterm \
     -Wall \
     -Wextra \
     -Werror \

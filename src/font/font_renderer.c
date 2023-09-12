@@ -6,14 +6,14 @@
 
 static struct limine_framebuffer *fb;
 
-void InitFB(struct limine_framebuffer *_fb) { fb = _fb; }
+void fr_init(struct limine_framebuffer *_fb) { fb = _fb; }
 
-void centeredStringRenderer(char *string, int y, int scale, int color) {
+void fr_render_centered_string(char *string, int y, int scale, int color) {
     int offset = (strlen(string) / 2) * CHAR_WIDTH * scale;
-    basicStringRender(string, (fb->width / 2) - offset, y, scale, color);
+    fr_render_string(string, (fb->width / 2) - offset, y, scale, color);
 }
 
-void basicStringRender(char *str, int x, int y, int scale, int color) {
+void fr_render_string(char *str, int x, int y, int scale, int color) {
     int _x = x;
     int _y = y;
     while (*str) {
@@ -23,7 +23,7 @@ void basicStringRender(char *str, int x, int y, int scale, int color) {
             break;
 
         default:
-            renderChar(*str, _x, _y, scale, color);
+            fr_render_char(*str, _x, _y, scale, color);
             _x += CHAR_WIDTH * scale;
             break;
         }
@@ -31,7 +31,7 @@ void basicStringRender(char *str, int x, int y, int scale, int color) {
     }
 }
 
-void renderChar(char chr, int x, int y, int scale, int color) {
+void fr_render_char(char chr, int x, int y, int scale, int color) {
     int width = CHAR_WIDTH * scale;
     int height = CHAR_HEIGHT * scale;
     // Note: we assume the framebuffer model is RGB with 32-bit pixels.
@@ -46,7 +46,7 @@ void renderChar(char chr, int x, int y, int scale, int color) {
         }
     }
 }
-void ClearScreen(int color) {
+void fr_clear_screen(int color) {
     for (uint64_t i = 0; i < fb->height; i++) {
         for (uint64_t j = 0; j < fb->width; j++) {
             ((int *)fb->address)[i * (fb->pitch / 4) + j] = color;

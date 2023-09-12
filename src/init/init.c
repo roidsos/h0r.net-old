@@ -8,9 +8,10 @@
 
 #include "drop-in/ezgdt.h"
 #include <arch/x86/interrupts/interrupts.h>
+#include <backends/fb.h>
 
 #include "utils/error-handling/falut-handler.h"
-#include "utils/screen.h"
+#include "flanterm.h"
 #include <arch/x86/PIT.h>
 #include <interface/desh.h>
 #include <logging/logger.h>
@@ -25,7 +26,10 @@ void spisr_init();
 void init_HW() {
     // Initialize screen and logger
     logger_set_output(LOGGER_OUTPUT_COM1);
-    InitScreen(data.framebuffer);
+    data.ft_ctx = flanterm_fb_simple_init(
+        data.framebuffer->address, data.framebuffer->width, data.framebuffer->height, data.framebuffer->pitch
+    );
+
     log_info("Kernel Init Target reached: IO\n");
 
     // Gather Data
