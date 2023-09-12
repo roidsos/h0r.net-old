@@ -17,7 +17,7 @@
 #include <sched/sched.h>
 #include <vendor/printf.h>
 #include <limine.h>
-
+#include <parsing/ini.h>
 
 // Forward decls for drivers not worth making .h-s for
 void spisr_init();
@@ -90,7 +90,9 @@ void init_sys() {
 }
 void load_config(__attribute__((unused)) struct limine_file* cfg_file)
 {
-    log_info("config file found");   
+    //log_info("config file found");  
+    struct parsed_ini config = parse_ini(cfg_file->address); 
+    log_info("%s = %s",config.data[0].key,config.data[0].value);
 }
 
 void load_initramfs(struct limine_file* tar_file)
