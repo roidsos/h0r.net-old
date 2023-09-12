@@ -1,14 +1,14 @@
 #include "desh.h"
+#include <arch/x86/PIT.h>
 #include <arch/x86/essential.h>
 #include <arch/x86/power.h>
 #include <drivers/hid/keyboard.h>
 #include <drivers/io/pci.h>
-#include <types/string.h>
-#include <kernel.h>
 #include <flanterm.h>
 #include <font/font_renderer.h>
+#include <kernel.h>
+#include <types/string.h>
 #include <vendor/printf.h>
-#include <arch/x86/PIT.h>
 
 char typedstring[255];
 char idx;
@@ -25,19 +25,19 @@ void parseCommand(char *command) {
     } else if (strcmp(args[0], "reboot")) {
         sys_reboot();
     } else if (strcmp(args[0], "clear") || strcmp(args[0], "cls")) {
-        flanterm_write(data.ft_ctx,"\e[2J\e[H",7);
+        flanterm_write(data.ft_ctx, "\e[2J\e[H", 7);
     } else if (strcmp(args[0], "echo")) {
         for (size_t i = 1; args[i] != 0; i++) {
-            printf("%s", args[i]);
+            printf("%s ", args[i]);
         }
         printf("\n");
     } else if (strcmp(args[0], "k")) {
         printf("H 0 R N E T\n");
         list_PCI_devices();
-        printf("Current uptime %u secs %u ms\n",pit_get_uptime_secs(),pit_get_uptime_milis());
-    }else if (strcmp(args[0],"")){
+        printf("Current uptime %u secs %u ms\n", pit_get_uptime_secs(),
+               pit_get_uptime_milis());
+    } else if (strcmp(args[0], "")) {
     } else {
-
 
         printf("No such command as \"%s\" sorry :P\n", args[0]);
     }

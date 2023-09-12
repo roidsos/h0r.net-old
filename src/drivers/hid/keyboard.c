@@ -1,12 +1,12 @@
 #include "keyboard.h"
+#include <arch/x86/PIT.h>
 #include <arch/x86/interrupts/interrupts.h>
 #include <drivers/Memory/Heap.h>
-#include <io/portio.h>
-#include <logging/logger.h>
 #include <flanterm.h>
-#include <vendor/printf.h>
-#include <arch/x86/PIT.h>
+#include <io/portio.h>
 #include <kernel.h>
+#include <logging/logger.h>
+#include <vendor/printf.h>
 char *keybuffer;
 int bufindex = 0;
 int getindex = 0;
@@ -52,12 +52,12 @@ void kb_handler(__attribute__((unused)) Registers *regs) {
     }
     keyboard.keys[(uint8_t)(scancode & 0x7F)] = KEY_IS_PRESS(scancode);
     keyboard.chars[KEY_CHAR(scancode)] = KEY_IS_PRESS(scancode);
-    log_info(" key %x, %u", scancode,KEY_IS_PRESS(scancode));
+    log_info(" key %x, %u", scancode, KEY_IS_PRESS(scancode));
     EOI(1);
 }
 
 void initkeyboard() {
-    keybuffer = (char*)calloc(128);
+    keybuffer = (char *)calloc(128);
     keyboard.shift = false;
     keyboard.capslock = false;
     keyboard.backspace = false;
@@ -77,8 +77,8 @@ char turn_into_ASCII(uint16_t scancode) {
     if (KEY_SCANCODE(scancode) == KEY_LSHIFT ||
         KEY_SCANCODE(scancode) == KEY_RSHIFT) {
         keyboard.shift = !keyboard.shift;
-    }else if (KEY_SCANCODE(scancode) == KEY_BACKSPACE) {
-            return -1;
+    } else if (KEY_SCANCODE(scancode) == KEY_BACKSPACE) {
+        return -1;
     }
     if (KEY_IS_PRESS(scancode)) {
         if (keyboard.shift) {
@@ -101,19 +101,19 @@ void getstr(char *buffer, int size) {
         if (_char) {
             if (_char == -1) {
                 buffer[idx--] = ' ';
-                flanterm_write(data.ft_ctx,"\b \b",3);
+                flanterm_write(data.ft_ctx, "\b \b", 3);
             } else {
                 if (repeat) {
                     if (++repeat_count >= 10) {
                         repeat_count = 0;
-                        if(is_visible(_char)){
+                        if (is_visible(_char)) {
                             printf("%c", _char);
                             buffer[idx] = _char;
                             idx++;
                         }
                     }
                 } else {
-                    if(is_visible(_char)){
+                    if (is_visible(_char)) {
                         printf("%c", _char);
                         buffer[idx] = _char;
                         idx++;
@@ -127,7 +127,7 @@ void getstr(char *buffer, int size) {
         }
         if (idx >= size)
             return;
-         pit_sleep(repeat ? repeat_delay / 10 : repeat_delay);
+        pit_sleep(repeat ? repeat_delay / 10 : repeat_delay);
     } while (!keyboard_key(KEY_ENTER));
     buffer[idx] = 0;
     pit_sleep(100);

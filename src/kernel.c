@@ -66,7 +66,7 @@ void load_limine_modules() {
         if (strcmp(mod->path, "/boot/hornet.conf")) {
             config_found = true;
             load_config(mod);
-        } else if(strcmp(mod->path, "/boot/initramfs.tar")){
+        } else if (strcmp(mod->path, "/boot/initramfs.tar")) {
             load_initramfs(mod);
         } else {
             log_info("%s found", mod->path);
@@ -115,7 +115,7 @@ void _start(void) {
     load_limine_modules();
 
     init_sched();
-    
+
     while (true) {
         __asm__ volatile("hlt");
     }

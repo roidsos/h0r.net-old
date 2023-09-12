@@ -53,7 +53,8 @@ dkms.conf
 
 
 src/kernel.bin
-iso/boot/kernel.bin
+iso/kernel.bin
+hornet.log
 os.iso
 replay.bin
 .vscode

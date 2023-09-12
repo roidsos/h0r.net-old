@@ -10,15 +10,15 @@
 #include <arch/x86/interrupts/interrupts.h>
 #include <backends/fb.h>
 
-#include "utils/error-handling/falut-handler.h"
 #include "flanterm.h"
+#include "utils/error-handling/falut-handler.h"
 #include <arch/x86/PIT.h>
 #include <interface/desh.h>
+#include <limine.h>
 #include <logging/logger.h>
+#include <parsing/ini.h>
 #include <sched/sched.h>
 #include <vendor/printf.h>
-#include <limine.h>
-#include <parsing/ini.h>
 
 // Forward decls for drivers not worth making .h-s for
 void spisr_init();
@@ -27,8 +27,8 @@ void init_HW() {
     // Initialize screen and logger
     logger_set_output(LOGGER_OUTPUT_COM1);
     data.ft_ctx = flanterm_fb_simple_init(
-        data.framebuffer->address, data.framebuffer->width, data.framebuffer->height, data.framebuffer->pitch
-    );
+        data.framebuffer->address, data.framebuffer->width,
+        data.framebuffer->height, data.framebuffer->pitch);
 
     log_info("Kernel Init Target reached: IO\n");
 
@@ -92,18 +92,17 @@ void init_sys() {
         DeshUpdate();
     }
 }
-void load_config(__attribute__((unused)) struct limine_file* cfg_file)
-{
-    //log_info("config file found");  
-    struct parsed_ini config = parse_ini(cfg_file->address); 
-    log_info("%s = %s",config.data[0].key,config.data[0].value);
+void load_config(__attribute__((unused)) struct limine_file *cfg_file) {
+    // log_info("config file found");
+    struct parsed_ini config = parse_ini(cfg_file->address);
+    log_info("%s = %s", config.data[0].key, config.data[0].value);
 }
 
-void load_initramfs(struct limine_file* tar_file)
-{
-    data.initramfs = parse_tar(tar_file->address,tar_file->size);
-    struct tar_header* hello = find_file(&data.initramfs,(uint8_t*)"hello.txt");
-    log_info("hello file contents: %s",(char*)hello + 512);
+void load_initramfs(struct limine_file *tar_file) {
+    data.initramfs = parse_tar(tar_file->address, tar_file->size);
+    struct tar_header *hello =
+        find_file(&data.initramfs, (uint8_t *)"hello.txt");
+    log_info("hello file contents: %s", (char *)hello + 512);
 }
 
 void init_sched() {

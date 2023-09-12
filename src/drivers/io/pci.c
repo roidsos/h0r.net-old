@@ -67,7 +67,7 @@ void list_PCI_devices() {
                     continue;
                 }
                 printf("VendorID: 0x%x,DeviceID: 0x%x \n", dev.vendor_id,
-                        dev.device_id);
+                       dev.device_id);
             }
         }
     }

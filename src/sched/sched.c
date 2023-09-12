@@ -17,8 +17,8 @@ uint64_t current_process;
 void schedule(Registers *regs) {
     if (!is_active)
         return;
-    if(not_first_tick)
-    memcpy(&processes.data[current_process].status, regs,
+    if (not_first_tick)
+        memcpy(&processes.data[current_process].status, regs,
                sizeof(Registers));
     not_first_tick = true;
 
