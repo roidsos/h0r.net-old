@@ -85,7 +85,7 @@ void init_HW() {
 }
 
 void init_sys() {
-    printf("WE MADE IT LESSGOOOOO\n");
+    printf("\e[0;97mWE MADE IT LESSGOOOOO\n");
     DeshInit();
 
     while (true) {
