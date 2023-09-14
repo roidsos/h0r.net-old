@@ -2,7 +2,7 @@
 #define __DEFINES_H__
 #include <types/stdtypes.h>
 
-struct file
+struct node
 {
     char* name;
     uint8_t flags;
@@ -15,6 +15,7 @@ struct ext_file
     uint8_t owner_group;
     uint64_t creation_date_unix_time;
     uint64_t last_modified_unix_time;
+    uint16_t disk_id;
     uint64_t contents_on_disk_ptr;
     
 };
@@ -24,12 +25,13 @@ struct ext_dir
     uint8_t owner_group;
     uint64_t creation_date_unix_time;
     uint64_t last_modified_unix_time;
+    uint16_t disk_id;
     uint64_t contents_on_disk_ptr;
-    file* files;
+    node* files;
 };
 
 struct ext_link{
-    file* linkto;
+    node* linkto;
 };
 
 
