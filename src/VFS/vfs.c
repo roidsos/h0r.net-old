@@ -44,7 +44,7 @@ void vfs_init()
 
 struct node* get_file(char* path)
 {
-    char** splitstring = split(path,"/");
+    char** splitstring = split(path,'/');
     struct node* currnode = &first_node;
     uint32_t i = 1;
     while (true)
@@ -57,7 +57,7 @@ struct node* get_file(char* path)
         if(!(currnode->flags & ~FLAGS_ISDIR)){
             return NULL;
         }  
-        bool found;
+        bool found = false;
         for (size_t j = 0; j < ((struct ext_dir*)currnode->ext)->num_dirs; j++)
         {
             if (strcmp(((struct ext_dir*)currnode->ext)->files[j].name,splitstring[i]))
