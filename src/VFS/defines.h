@@ -2,12 +2,15 @@
 #define __DEFINES_H__
 #include <types/stdtypes.h>
 
+#define FLAGS_PRESENT 1
+#define FLAGS_ISDIR 1 << 1
+
 struct node
 {
     char* name;
     uint8_t flags;
 
-    void* ext;
+    uint8_t ext[22];
 };
 struct ext_file
 {
@@ -18,6 +21,7 @@ struct ext_file
     uint16_t disk_id;
     uint64_t contents_on_disk_ptr;
     
+    uint8_t filler[2];
 };
 struct ext_dir
 {
@@ -26,12 +30,14 @@ struct ext_dir
     uint64_t creation_date_unix_time;
     uint64_t last_modified_unix_time;
     uint16_t disk_id;
-    uint64_t contents_on_disk_ptr;
-    node* files;
+    uint16_t num_dirs;
+    struct node* files;
+
 };
 
 struct ext_link{
-    node* linkto;
+    struct node* linkto;
+    uint8_t filler[14];
 };
 
 

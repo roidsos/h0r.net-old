@@ -9,6 +9,14 @@ void* get_file_contents(int device_id,char* path)
     }
     return drivers[device_id].get_file_contents(path);
 }
+struct node* get_dir_contents(int device_id,char* path)
+{
+    if(!drivers[device_id].present){
+        return 0;
+    }
+    return drivers[device_id].get_dir_contents(path);
+    
+}
 
 struct node* get_file_header(int device_id,char* path)
 {
@@ -27,3 +35,4 @@ void fs_driver_register(struct fs_driver driver)
     }
 
 }
+
