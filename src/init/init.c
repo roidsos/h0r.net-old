@@ -19,6 +19,7 @@
 #include <parsing/ini.h>
 #include <sched/sched.h>
 #include <vendor/printf.h>
+#include <VFS/vfs.h>
 
 // Forward decls for drivers not worth making .h-s for
 void spisr_init();
@@ -85,6 +86,9 @@ void init_HW() {
 }
 
 void init_sys() {
+    vfs_init();
+    log_info("Kernel Init Target reached: VFS\n");
+
     printf("\e[0;97mWE MADE IT LESSGOOOOO\n");
     DeshInit();
 
@@ -92,21 +96,20 @@ void init_sys() {
         DeshUpdate();
     }
 }
-void load_config(__attribute__((unused)) struct limine_file *cfg_file) {
+void load_config(struct limine_file *cfg_file) {
     // log_info("config file found");
-    struct parsed_ini config = parse_ini(cfg_file->address);
-    log_info("%s = %s", config.data[0].key, config.data[0].value);
+    __attribute__((unused))  struct parsed_ini config = parse_ini(cfg_file->address);
 }
 
+void tar_init();
 void load_initramfs(struct limine_file *tar_file) {
     data.initramfs = parse_tar(tar_file->address, tar_file->size);
-    struct tar_header *hello =
-        find_file(&data.initramfs, (uint8_t *)"hello.txt");
-    log_info("hello file contents: %s", (char *)hello + 512);
+    tar_init();
 }
 
 void init_sched() {
     sched_init();
     create_process(init_sys);
     sched_enable();
+    
 }

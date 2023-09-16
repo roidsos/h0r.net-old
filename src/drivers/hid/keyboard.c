@@ -52,7 +52,6 @@ void kb_handler(__attribute__((unused)) Registers *regs) {
     }
     keyboard.keys[(uint8_t)(scancode & 0x7F)] = KEY_IS_PRESS(scancode);
     keyboard.chars[KEY_CHAR(scancode)] = KEY_IS_PRESS(scancode);
-    log_info(" key %x, %u", scancode, KEY_IS_PRESS(scancode));
     EOI(1);
 }
 

@@ -41,6 +41,11 @@ struct node* tar_get_dir_contents  (char* path){
             vector_push_back(&nodes,*tar_get_file_header((char*)hdr->filename));
         }
     }
+    
+    struct node zero;
+    zero.flags = 0;    
+    vector_push_back(&nodes,zero);
+
     return nodes.data;
 }
 void* tar_get_file_contents (char* path){
