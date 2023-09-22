@@ -9,11 +9,12 @@
 #include <kernel.h>
 #include <types/string.h>
 #include <vendor/printf.h>
-#include <VFS/drive_manager.h>
+#include <VFS/vfs.h>
 
 char typedstring[255];
 char currentpath[255];
 char idx;
+
 void DeshInit() {
     memset(typedstring, 0, 255);
     memset(currentpath, 0, 255);
@@ -43,19 +44,29 @@ void parseCommand(char *command) {
     } else if (strcmp(args[0], "")) {
 
     } else if (strcmp(args[0], "ls")) {
-        struct node* folder_contents = get_dir_contents(0,currentpath);
-        for (size_t i = 0;; i++)
+        struct node* folder_contents = get_file(currentpath);
+        if (!is_dir(currentpath))
         {
-            if (!folder_contents[i].flags)
+            printf("you are not in a directory...\n");
+        }else
+        {
+            for (size_t i = 0;; i++)
             {
-                break;
+                if (!((struct ext_dir*)folder_contents->ext)->files[i].flags)
+                {
+                    break;
+                }
+                if(((struct ext_dir*)folder_contents->ext)->files[i].name){
+                    printf("%s ",((struct ext_dir*)folder_contents->ext)->files[i].name);
+                }
             }
-            printf("%s ",folder_contents->name);
+            printf("\n");
         }
+        
     } else if (strcmp(args[0], "cd")) {
-        if (args[1] == 0)
+        if (args[1] == 0 || !is_dir(args[1]))
         {
-            printf("you need to provide the folder to change to :P\n");
+            printf("you need to provide a DIRECTORY to change to :P\n");
         }else if (args[1][0] == '/')
         {
             memcpy(currentpath,args[1],strlen(args[1]) + 1);
@@ -66,7 +77,6 @@ void parseCommand(char *command) {
         }
         
     } else {
-
         printf("No such command as \"%s\" sorry :P\n", args[0]);
     }
 }
