@@ -19,6 +19,9 @@ void DeshInit() {
     memset(typedstring, 0, 255);
     memset(currentpath, 0, 255);
     currentpath[0] = '/';
+    currentpath[1] = 'b';
+    currentpath[2] = 'i';
+    currentpath[3] = 'n';
     printf("%s >",currentpath);
 }
 
