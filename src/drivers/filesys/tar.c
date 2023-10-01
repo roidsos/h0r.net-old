@@ -13,7 +13,7 @@ struct node* tar_get_file_header   (char* path){
     struct node* node_ = malloc(sizeof(struct node));
 
     char** splitpath = split(path,'/');
-    for (size_t i = 0; splitpath[i][0]; i++)
+    for (size_t i = 0; splitpath[i]; i++)
     {
         node_->name = splitpath[i];
     }

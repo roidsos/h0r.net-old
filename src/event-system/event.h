@@ -4,6 +4,7 @@
 typedef void* (*event_handler)(void*args);
 
 struct event{
+    //TODO: security stuff like permissions and shit
     bool exists;
     uint8_t subcount;
     event_handler* subscribers;

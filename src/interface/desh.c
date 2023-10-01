@@ -78,7 +78,13 @@ void parseCommand(char *command) {
             snprintf(currpcopy,255,"%s%s/",currentpath,args[1]);
             memcpy(currentpath,currpcopy,255);
         }
-        
+    } else if (strcmp(args[0],"cat")){
+        if(is_dir(args[1])){
+            printf("you cant cat a directory, moron :P\n");
+        } else {
+            struct node* file_to_cat = get_file(args[0]);
+            get_file_contents(((struct ext_file*)file_to_cat->ext)->disk_id,args[0]);
+        }
     } else {
         printf("No such command as \"%s\" sorry :P\n", args[0]);
     }

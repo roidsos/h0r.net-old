@@ -14,6 +14,6 @@ void fucking_halt_handler(Registers *regs) {
     EOI(0xE);
 }
 void init_falut_handler() {
-    register_ISR(0xD, GDT_fault_handler);
-    register_ISR(0xE, fucking_halt_handler);
+    //register_ISR(0xD, GDT_fault_handler);
+    //register_ISR(0xE, fucking_halt_handler);
 }

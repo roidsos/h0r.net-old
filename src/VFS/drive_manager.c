@@ -32,6 +32,7 @@ void fs_driver_register(struct fs_driver driver)
     {
         if(drivers[i].present) continue;
         drivers[i] = driver;
+        break;
     }
 
 }

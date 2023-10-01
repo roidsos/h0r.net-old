@@ -2,7 +2,7 @@
 #include <utils/heapdef.h>
 #include <logging/logger.h>
 
-struct event events[];
+struct event events[255];
 
 int create_event(uint8_t event_num)
 {
@@ -10,7 +10,9 @@ int create_event(uint8_t event_num)
         events[event_num].exists = true;
         events[event_num].subscribers = calloc(256*sizeof(event_handler));
         events[event_num].subcount = 0;
+        return true;
     }
+    return false;
 }
 
 void call_event(uint8_t event_num,void* args)
@@ -27,6 +29,6 @@ void subscribe(uint8_t event_num,event_handler e)
         events[event_num].subscribers[events[event_num].subcount] = e;
         events[event_num].subcount++;
     }else{
-        log_error("Event #%u does not exist",event_num);
+        log_error("[subscribe]Event #%u does not exist(not present)",event_num);
     }
 }
