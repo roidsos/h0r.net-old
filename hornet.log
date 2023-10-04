@@ -21,7 +21,7 @@
 [INFO=]Kernel Init Target reached: Memory
 
 [INFO=]Date: 16/01/35
-[INFO=]Time: 21:56:48
+[INFO=]Time: 21:69:20
 [INFO=]Kernel Init Target reached: x86 PC drivers
 
 [INFO=]PCI Devices: 
@@ -70,6 +70,4 @@
 [INFO=]-Core #1 Goto Address: 0
 [INFO=]-Core #1 Lapic ID: 1
 [INFO=]-Core #1 Processor ID: 1
-
-[INFO=]Kernel Init Target reached: VFS
 

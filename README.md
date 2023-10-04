@@ -43,7 +43,7 @@ In case any package is missing please open up an issue!</br>
 - [ ] SB16
 -->
 #### I/O
-- [ ] PS/2 Keyboard
+- [X] PS/2 Keyboard
 - [ ] PS/2 Mouse
 - [x] COM
 <!--
