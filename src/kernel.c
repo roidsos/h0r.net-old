@@ -23,6 +23,8 @@ static volatile struct limine_smp_request smp_request = {
     .id = LIMINE_SMP_REQUEST, .revision = 0};
 static volatile struct limine_module_request mod_request = {
     .id = LIMINE_MODULE_REQUEST, .revision = 0};
+static volatile struct limine_hhdm_request hhdm_request = {
+    .id = LIMINE_HHDM_REQUEST, .revision = 0};
 
 struct KernelData data;
 void handle_limine_requests() {
@@ -52,10 +54,9 @@ void handle_limine_requests() {
     // Fetch the memory map.
     data.memmap_resp = memmap_request.response;
 
-    // Fetch the memory map.
-    data.kernel_addr_resp = kernel_address_request.response;
-
     data.rsdp = rsdp_request.response->address;
+
+    data.hhdm_addr = (void*)hhdm_request.response->offset;
 
     data.smp_resp = smp_request.response;
 }

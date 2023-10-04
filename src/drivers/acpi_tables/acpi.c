@@ -2,23 +2,32 @@
 #include <drivers/Memory/scubadeeznutz.h>
 #include <logging/logger.h>
 #include <types/string.h>
+#include <kernel.h>
 
 struct XSDT *xsdt;
 uint16_t xsdt_entries;
 struct RSDP *rsdp;
+bool use_xsdt;
+
+bool sign_check(struct SDTHeader *h,char* sig){
+    for (int i = 0; i < 4; i++) {
+        if (h->Signature[i] != sig[i]) {
+            break;
+        }
+        if (i == 3)
+            return true;
+    }
+    return false;
+}
+#define PHYS_TO_VIRT_HHDM(a) ((uint64_t)(a)+ (uint64_t)data.hhdm_addr)
 
 struct SDTHeader *find_table(struct XSDT *xsdt, char *signature) {
     for (int t = 0; t < xsdt_entries; t++) {
         struct SDTHeader *newSDTHeader =
-            (struct SDTHeader *)PHYS_TO_VIRT(xsdt->PointerToOtherSDT[t]);
-        for (int i = 0; i < 4; i++) {
-            if (newSDTHeader->Signature[i] != signature[i]) {
-                break;
-            }
-            if (i == 3)
-                return newSDTHeader;
-        }
-    }
+            (struct SDTHeader *)PHYS_TO_VIRT_HHDM(xsdt->PointerToOtherSDT[t]);
+        if(sign_check(newSDTHeader,signature))
+            return newSDTHeader;
+}
     return 0;
 }
 void list_tables(struct XSDT *xsdt) {
@@ -31,7 +40,11 @@ void list_tables(struct XSDT *xsdt) {
     }
 }
 bool do_checksum(struct XSDT *table) {
-    // thanks to @schkwve on discord, he is the best
+    log_info(" %c%c%c%c",  table->h.Signature[0],
+                 table->h.Signature[1],table->h.Signature[2],
+                 table->h.Signature[3]);
+
+    // thanks to @static.link on discord, he is the best
     uint8_t xsdp_checksum = 0;
     uint8_t *xsdp_ptr = (uint8_t *)table;
 
@@ -54,18 +67,15 @@ void init_acpi(void *rsdp_addr) {
     log_info("RSDP found");
 
     bool use_xsdt = false;
-    if (rsdp->Revision != 0) {
-        xsdt = (struct XSDT *)PHYS_TO_VIRT(rsdp->XSDTAddress);
-        if (do_checksum(xsdt)) {
-            log_info("XSDT found");
-            xsdt_entries = (xsdt->h.Length - sizeof(xsdt)) / 8;
-            use_xsdt = true;
-        } else {
-            log_error("XSDT corrupted ,falling back to RSDT");
-        }
+    xsdt = (struct XSDT *)PHYS_TO_VIRT_HHDM(rsdp->XSDTAddress);
+    if (sign_check(&xsdt->h,"XSDT")) {
+        log_info("XSDT found");
+        xsdt_entries = (xsdt->h.Length - sizeof(xsdt)) / 8;
+        use_xsdt = true;
     } else {
-        xsdt = (struct XSDT *)PHYS_TO_VIRT(rsdp->RSDTAddress);
-        if (do_checksum(xsdt)) {
+        log_error("XSDT corrupted or not found,falling back to RSDT");
+        xsdt = (struct XSDT *)PHYS_TO_VIRT_HHDM(rsdp->RSDTAddress);
+        if (sign_check(&xsdt->h,"RSDT")) {
             log_info("RSDT found");
             xsdt_entries = (xsdt->h.Length - sizeof(xsdt)) / 4;
             use_xsdt = false;

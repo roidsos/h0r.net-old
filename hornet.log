@@ -1,4 +1,6 @@
-[INFO=]Kernel Init Target reached: IO
+[2J[01;01H[=3h[2J[01;01H[0m[35m[40m[0m[37m[40mBdsDxe: loading Boot0001 "UEFI QEMU DVD-ROM QM00003 " from PciRoot(0x0)/Pci(0x1,0x1)/Ata(Secondary,Master,0x0)
+BdsDxe: starting Boot0001 "UEFI QEMU DVD-ROM QM00003 " from PciRoot(0x0)/Pci(0x1,0x1)/Ata(Secondary,Master,0x0)
+[2J[01;01H[01;01H[2J[01;01H[01;01H[INFO=]Kernel Init Target reached: IO
 
 [INFO=]CPU Vendor ID: AuthenticAMD
 [INFO=]CPU Family: 15
@@ -14,14 +16,14 @@
 
 [INFO=]Kernel Init Target reached: Interrupts
 
-[INFO=]Total system memory: 13157360640 bytes
-[INFO=]Free system memory: 13083259904 bytes
-[INFO=]Used system memory: 405504 bytes
-[INFO=]Reserved system memory: 73695232 bytes
+[INFO=]Total system memory: 278429696 bytes
+[INFO=]Free system memory: 204128256 bytes
+[INFO=]Used system memory: 12288 bytes
+[INFO=]Reserved system memory: 74289152 bytes
 [INFO=]Kernel Init Target reached: Memory
 
-[INFO=]Date: 16/01/35
-[INFO=]Time: 21:69:20
+[INFO=]Date: 16/04/35
+[INFO=]Time: 22:80:09
 [INFO=]Kernel Init Target reached: x86 PC drivers
 
 [INFO=]PCI Devices: 
@@ -31,43 +33,5 @@
 [INFO=]VendorID: 0x8086 ,DeviceID: 0x7113
 [INFO=]VendorID: 0x1234 ,DeviceID: 0x1111
 [INFO=]VendorID: 0x8086 ,DeviceID: 0x100e
-[INFO=]Kernel Init Target reached: Misc Drivers
-
-[INFO=]Kernel Initialized Successfully
-
-[INFO=]========Kernel's Execution Enviroment========
-
-[INFO=]UEFI mode: 0
-[INFO=]Memmap entry count: 20
-
-[INFO=]-Memmap entry #0: Base: 0x1000, Length: 0x53000, Type:LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE
-[INFO=]-Memmap entry #1: Base: 0x54000, Length: 0x4b000, Type:LIMINE_MEMMAP_USABLE
-[INFO=]-Memmap entry #2: Base: 0x9fc00, Length: 0x400, Type:LIMINE_MEMMAP_RESERVED
-[INFO=]-Memmap entry #3: Base: 0xf0000, Length: 0x10000, Type:LIMINE_MEMMAP_RESERVED
-[INFO=]-Memmap entry #4: Base: 0x100000, Length: 0xb9a6000, Type:LIMINE_MEMMAP_USABLE
-[INFO=]-Memmap entry #5: Base: 0xbaa6000, Length: 0x3000, Type:LIMINE_MEMMAP_KERNEL_AND_MODULES
-[INFO=]-Memmap entry #6: Base: 0xbaa9000, Length: 0x1000, Type:LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE
-[INFO=]-Memmap entry #7: Base: 0xbaaa000, Length: 0x1000, Type:LIMINE_MEMMAP_USABLE
-[INFO=]-Memmap entry #8: Base: 0xbaab000, Length: 0x1000, Type:LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE
-[INFO=]-Memmap entry #9: Base: 0xbaac000, Length: 0x1000, Type:LIMINE_MEMMAP_USABLE
-[INFO=]-Memmap entry #10: Base: 0xbaad000, Length: 0x1000, Type:LIMINE_MEMMAP_KERNEL_AND_MODULES
-[INFO=]-Memmap entry #11: Base: 0xbaae000, Length: 0xf000, Type:LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE
-[INFO=]-Memmap entry #12: Base: 0xbabd000, Length: 0x4033000, Type:LIMINE_MEMMAP_KERNEL_AND_MODULES
-[INFO=]-Memmap entry #13: Base: 0xfaf0000, Length: 0x41000, Type:LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE
-[INFO=]-Memmap entry #14: Base: 0xfb31000, Length: 0x3aa000, Type:LIMINE_MEMMAP_USABLE
-[INFO=]-Memmap entry #15: Base: 0xfedb000, Length: 0x105000, Type:LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE
-[INFO=]-Memmap entry #16: Base: 0xffe0000, Length: 0x20000, Type:LIMINE_MEMMAP_RESERVED
-[INFO=]-Memmap entry #17: Base: 0xfd000000, Length: 0x3e8000, Type:LIMINE_MEMMAP_FRAMEBUFFER
-[INFO=]-Memmap entry #18: Base: 0xfffc0000, Length: 0x40000, Type:LIMINE_MEMMAP_RESERVED
-[INFO=]-Memmap entry #19: Base: 0xfd00000000, Length: 0x300000000, Type:LIMINE_MEMMAP_RESERVED
-[INFO=]CPU count: 2
-[INFO=]-Core #0 Extra Argument: 0
-[INFO=]-Core #0 Goto Address: 0
-[INFO=]-Core #0 Lapic ID: 0
-[INFO=]-Core #0 Processor ID: 0
-
-[INFO=]-Core #1 Extra Argument: 0
-[INFO=]-Core #1 Goto Address: 0
-[INFO=]-Core #1 Lapic ID: 1
-[INFO=]-Core #1 Processor ID: 1
-
+[INFO=]RSDP found
+[INFO=]XSDT found

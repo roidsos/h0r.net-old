@@ -28,13 +28,13 @@ In case any package is missing please open up an issue!</br>
 - [x] PMM
 - [ ] VMM (5 and 4 level)
 - [x] Heap
-<!--
 ### ACPI
-- [ ] ACPI
+- [X] ACPI
 - [ ] LAPIC
 - [ ] IOAPIC
 - [ ] LAI
 
+<!--
 ### Device drivers
 #### Audio
 - [ ] PC speaker

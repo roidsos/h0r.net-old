@@ -17,12 +17,11 @@ struct KernelData {
     CPUInfo cpu_info;
     struct tar_contents initramfs;
     void* rsdp;
+    void* hhdm_addr;
     struct flanterm_context* ft_ctx;  
 
     struct limine_framebuffer *framebuffer;
     struct limine_memmap_response *memmap_resp;
-    struct limine_hhdm_response *hhdm_resp;
-    struct limine_kernel_address_response *kernel_addr_resp;
     struct limine_smp_response *smp_resp;
 };
 
