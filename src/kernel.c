@@ -56,7 +56,7 @@ void handle_limine_requests() {
 
     data.rsdp = rsdp_request.response->address;
 
-    data.hhdm_addr = (void*)hhdm_request.response->offset;
+    data.hhdm_addr = (void *)hhdm_request.response->offset;
 
     data.smp_resp = smp_request.response;
 }

@@ -12,8 +12,8 @@ int bufindex = 0;
 int getindex = 0;
 bool bufstuck = false;
 
-#include "key-layout.h"
 #include "event-system/event.h"
+#include "key-layout.h"
 
 char visible_ascii[102] = {
     '1', '2', '3', '4', '5', '6', '7', '8',  '9',  '0', '-',  '=', 'q',
@@ -53,7 +53,7 @@ void kb_handler(__attribute__((unused)) Registers *regs) {
     }
     keyboard.keys[(uint8_t)(scancode & 0x7F)] = KEY_IS_PRESS(scancode);
     keyboard.chars[KEY_CHAR(scancode)] = KEY_IS_PRESS(scancode);
-    call_event(1,&keybuffer[bufindex]);
+    call_event(1, &keybuffer[bufindex]);
     EOI(1);
 }
 

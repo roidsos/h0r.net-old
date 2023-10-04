@@ -12,6 +12,7 @@
 
 #include "flanterm.h"
 #include "utils/error-handling/falut-handler.h"
+#include <VFS/vfs.h>
 #include <arch/x86/PIT.h>
 #include <interface/desh.h>
 #include <limine.h>
@@ -19,7 +20,6 @@
 #include <parsing/ini.h>
 #include <sched/sched.h>
 #include <vendor/printf.h>
-#include <VFS/vfs.h>
 
 // Forward decls for drivers not worth making .h-s for
 void spisr_init();
@@ -98,7 +98,8 @@ void init_sys() {
 }
 void load_config(struct limine_file *cfg_file) {
     // log_info("config file found");
-    __attribute__((unused))  struct parsed_ini config = parse_ini(cfg_file->address);
+    __attribute__((unused)) struct parsed_ini config =
+        parse_ini(cfg_file->address);
 }
 
 void tar_init();
@@ -111,5 +112,4 @@ void init_sched() {
     sched_init();
     create_process(init_sys);
     sched_enable();
-    
 }
