@@ -34,14 +34,14 @@ In case any package is missing please open up an issue!</br>
 - [ ] IOAPIC
 - [ ] LAI
 
-<!--
+
 ### Device drivers
 #### Audio
 - [x] PC speaker
 - [ ] AC97
 - [ ] Intel High Definition Audio
 - [ ] SB16
--->
+
 #### I/O
 - [X] PS/2 Keyboard
 - [ ] PS/2 Mouse
