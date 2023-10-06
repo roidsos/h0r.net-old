@@ -37,7 +37,7 @@ In case any package is missing please open up an issue!</br>
 <!--
 ### Device drivers
 #### Audio
-- [ ] PC speaker
+- [x] PC speaker
 - [ ] AC97
 - [ ] Intel High Definition Audio
 - [ ] SB16
@@ -71,7 +71,7 @@ In case any package is missing please open up an issue!</br>
 ### Timers
 - [ ] HPET
 - [x] PIT
-- [ ] RTC
+- [x] RTC
 - [ ] LAPIC Timer
 
 ### Tasking
