@@ -19,9 +19,6 @@ void DeshInit() {
     memset(typedstring, 0, 255);
     memset(currentpath, 0, 255);
     currentpath[0] = '/';
-    currentpath[1] = 'b';
-    currentpath[2] = 'i';
-    currentpath[3] = 'n';
     printf("%s >", currentpath);
 }
 
@@ -47,25 +44,20 @@ void parseCommand(char *command) {
     } else if (strcmp(args[0], "")) {
 
     } else if (strcmp(args[0], "ls")) {
-        struct node *folder_contents = get_file(currentpath);
-        if (!is_dir(currentpath)) {
+        if (!vfs_is_dir(currentpath)) {
             printf("you are not in a directory...\n");
         } else {
-            for (size_t i = 0;; i++) {
-                if (!((struct ext_dir *)folder_contents->ext)->files[i].flags) {
-                    break;
-                }
-                if (((struct ext_dir *)folder_contents->ext)->files[i].name) {
-                    printf("%s ", ((struct ext_dir *)folder_contents->ext)
-                                      ->files[i]
-                                      .name);
-                }
+            struct dir_report nodes = vfs_iterate_dir(currentpath);
+            for (size_t i = 0; i < nodes.num_entries; i++)
+            {
+                printf("-\"%s\" \n",nodes.entries[i].name);
+
             }
             printf("\n");
         }
 
     } else if (strcmp(args[0], "cd")) {
-        if (args[1] == 0 || !is_dir(args[1])) {
+        if (args[1] == 0 || !vfs_is_dir(args[1])) {
             printf("you need to provide a DIRECTORY to change to :P\n");
         } else if (args[1][0] == '/') {
             memcpy(currentpath, args[1], strlen(args[1]) + 1);
@@ -75,13 +67,10 @@ void parseCommand(char *command) {
             memcpy(currentpath, currpcopy, 255);
         }
     } else if (strcmp(args[0], "cat")) {
-        if (is_dir(args[1])) {
+        if (vfs_is_dir(args[1])) {
             printf("you cant cat a directory, moron :P\n");
         } else {
-            struct node *file_to_cat = get_file(args[0]);
-            printf("%s\n", get_file_contents(
-                               ((struct ext_file *)file_to_cat->ext)->disk_id,
-                               args[0]));
+            printf("%s\n", (char*)vfs_read(args[1],0,2000).data);
         }
     } else {
         printf("No such command as \"%s\" sorry :P\n", args[0]);

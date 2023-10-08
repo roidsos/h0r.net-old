@@ -4,9 +4,9 @@
 #include <logging/logger.h>
 #include <types/string.h>
 
+struct RSDP *rsdp;
 struct XSDT *xsdt;
 uint16_t xsdt_entries;
-struct RSDP *rsdp;
 bool use_xsdt;
 
 bool sign_check(struct SDTHeader *h, char *sig) {
@@ -22,9 +22,16 @@ bool sign_check(struct SDTHeader *h, char *sig) {
 #define PHYS_TO_VIRT_HHDM(a) ((uint64_t)(a) + (uint64_t)data.hhdm_addr)
 
 struct SDTHeader *find_table(struct XSDT *xsdt, char *signature) {
+    struct SDTHeader *newSDTHeader;
     for (int t = 0; t < xsdt_entries; t++) {
-        struct SDTHeader *newSDTHeader =
-            (struct SDTHeader *)PHYS_TO_VIRT_HHDM(xsdt->PointerToOtherSDT[t]);
+        if (use_xsdt) {
+            newSDTHeader = (struct SDTHeader *)PHYS_TO_VIRT_HHDM(
+                xsdt->PointerToOtherSDT[t]);
+        } else {
+            newSDTHeader = (struct SDTHeader *)PHYS_TO_VIRT_HHDM(
+                (uint64_t)((uint32_t *)xsdt->PointerToOtherSDT)[t]);
+        }
+
         if (sign_check(newSDTHeader, signature))
             return newSDTHeader;
     }
@@ -40,9 +47,6 @@ void list_tables(struct XSDT *xsdt) {
     }
 }
 bool do_checksum(struct XSDT *table) {
-    log_info(" %c%c%c%c", table->h.Signature[0], table->h.Signature[1],
-             table->h.Signature[2], table->h.Signature[3]);
-
     // thanks to @static.link on discord, he is the best
     uint8_t xsdp_checksum = 0;
     uint8_t *xsdp_ptr = (uint8_t *)table;
@@ -97,8 +101,17 @@ void init_acpi(void *rsdp_addr) {
         log_info("XSDT Revision: %u", xsdt->h.Revision);
         log_info("XSDT Entries: %u", xsdt_entries);
     } else {
-        log_CRITICAL(NULL, HN_ERR_UNIMPLEMENTED,
-                     "Unimplemented RSDT parser, this is placeholder");
+        list_tables(xsdt);
+
+        struct SDTHeader *madt = find_table(xsdt, "APIC");
+        log_info("MADT found");
+        log_info("%u", madt->Length);
+
+        log_info("XSDT CreatorID: %u", xsdt->h.CreatorID);
+        log_info("XSDT CreatorRevision: %u", xsdt->h.CreatorRevision);
+        log_info("XSDT Length: %u", xsdt->h.Length);
+        log_info("XSDT Revision: %u", xsdt->h.Revision);
+        log_info("XSDT Entries: %u", xsdt_entries);
     }
 
     log_info("ACPI initialized successfully");

@@ -27,7 +27,7 @@ void scuba_init(struct limine_memmap_response *mmap,
     memset(g_kern_as.pml4, 0, 8 * BLOCK_SIZE);
     vector_init(&g_kern_as.mem_list);
 
-    // Map the whol mem space to MEM_VIRT_OFF
+    // Map the whole mem space to MEM_VIRT_OFF
     scuba_map(NULL, MEM_VIRT_OFF, 0, NUM_BLOCKS(get_highest_block()),
               VIRT_FLAGS_DEFAULT | VIRT_FLAGS_USERMODE, true);
     log_info("mapped %d bytes memory to 0x%llx", get_highest_block(),

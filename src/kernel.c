@@ -15,8 +15,6 @@ static volatile struct limine_memmap_request memmap_request = {
 static volatile struct limine_efi_system_table_request
     efi_system_table_request = {.id = LIMINE_EFI_SYSTEM_TABLE_REQUEST,
                                 .revision = 0};
-static volatile struct limine_kernel_address_request kernel_address_request = {
-    .id = LIMINE_KERNEL_ADDRESS_REQUEST, .revision = 0};
 static volatile struct limine_rsdp_request rsdp_request = {
     .id = LIMINE_RSDP_REQUEST, .revision = 0};
 static volatile struct limine_smp_request smp_request = {
@@ -25,6 +23,8 @@ static volatile struct limine_module_request mod_request = {
     .id = LIMINE_MODULE_REQUEST, .revision = 0};
 static volatile struct limine_hhdm_request hhdm_request = {
     .id = LIMINE_HHDM_REQUEST, .revision = 0};
+static volatile struct limine_kernel_address_request ka_request = {
+    .id = LIMINE_KERNEL_ADDRESS_REQUEST, .revision = 0};
 
 struct KernelData data;
 void handle_limine_requests() {
@@ -59,6 +59,8 @@ void handle_limine_requests() {
     data.hhdm_addr = (void *)hhdm_request.response->offset;
 
     data.smp_resp = smp_request.response;
+
+    data.ka_resp = ka_request.response;
 }
 void load_limine_modules() {
     bool config_found = false;

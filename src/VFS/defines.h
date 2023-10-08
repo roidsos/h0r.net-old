@@ -1,9 +1,16 @@
 #ifndef __DEFINES_H__
 #define __DEFINES_H__
-#include <types/stdtypes.h>
+#include <stdint.h>
+#include <stddef.h>
 
 #define FLAGS_PRESENT 1
 #define FLAGS_ISDIR 2
+#define FLAGS_LOADED 4
+#define FLAGS_MOUNT_POINT 8
+struct dir_report{
+    uint32_t num_entries;
+    struct node* entries;  
+};
 
 struct ext_file
 {
@@ -12,9 +19,7 @@ struct ext_file
     uint64_t creation_date_unix_time;
     uint64_t last_modified_unix_time;
     uint16_t disk_id;
-    uint64_t contents_on_disk_ptr;
-    
-    uint8_t filler[4];
+    char* contents_on_disk_path;
 };
 struct ext_dir
 {
@@ -29,7 +34,11 @@ struct ext_dir
 
 struct ext_link{
     struct node* linkto;
-    uint8_t filler[16];
+};
+
+struct file_buffer{
+    void*           data;
+    size_t          size;
 };
 
 struct node
@@ -37,7 +46,7 @@ struct node
     char* name;
     uint8_t flags;
 
-    uint8_t ext[sizeof(struct ext_file)];
+    uint8_t* ext;
 };
 
 

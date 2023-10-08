@@ -23,6 +23,7 @@ struct KernelData {
     struct limine_framebuffer *framebuffer;
     struct limine_memmap_response *memmap_resp;
     struct limine_smp_response *smp_resp;
+    struct limine_kernel_address_response *ka_resp;
 };
 
 extern struct KernelData data;

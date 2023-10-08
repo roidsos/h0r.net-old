@@ -14,6 +14,7 @@
 #include "utils/error-handling/falut-handler.h"
 #include <VFS/vfs.h>
 #include <arch/x86/PIT.h>
+#include <font/font_renderer.h>
 #include <interface/desh.h>
 #include <limine.h>
 #include <logging/logger.h>
@@ -27,6 +28,7 @@ void spisr_init();
 void init_HW() {
     // Initialize screen and logger
     logger_set_output(LOGGER_OUTPUT_COM1);
+    fr_init(data.framebuffer);
     data.ft_ctx = flanterm_fb_simple_init(
         data.framebuffer->address, data.framebuffer->width,
         data.framebuffer->height, data.framebuffer->pitch);
@@ -60,9 +62,8 @@ void init_HW() {
     mem_init();
     PFA_init();
     InitHeap(0x20000);
-    // still no workie
     // TODO: fix scuba
-    // scuba_init(data.memmap_resp, data.kernel_addr_resp);
+    // scuba_init(data.memmap_resp, data.ka_resp);
     log_info("Kernel Init Target reached: Memory\n");
 
     // Init x86 PC specific drivers
@@ -86,7 +87,7 @@ void init_HW() {
 }
 
 void init_sys() {
-    vfs_init();
+    vfs_mount(0,"/");
     log_info("Kernel Init Target reached: VFS\n");
 
     printf("\e[0;97mWE MADE IT LESSGOOOOO\n");
