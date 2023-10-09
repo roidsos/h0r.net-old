@@ -52,9 +52,31 @@ void init_acpi(void *rsdp_addr)
 	for(;;);
 }
 
+/**
+ * This function traverses through the RSDT/XSDT and finds a table
+ * with the specified signature.
+ */
 void *find_sdt(char *signature)
 {
-	(void)signature;
-	log_warning("find_sdt() is unimplemented as of yet; returning NULL");
+	// amount of possible SDT pointers is (*SDT->Header.Length - sizeof(*SDT->Header) / entry_divisor);
+	// entry_divisor is 8 if XSDT is present; otherwise 4
+	int entries = (use_xsdt ? ((xsdt->Header.Length - sizeof(xsdt->Header)) / 8) : 
+								((rsdt->Header.Length - sizeof(rsdt->Header)) / 4));
+	
+	// traverse through every possible entry
+	for (int i = 0; i < entries; i++) {
+		struct SDTHeader *Header = NULL;
+		if (use_xsdt) {
+			Header = (struct SDTHeader *)(uintptr_t)PHYS_TO_VIRT_HHDM(xsdt->SDTs[i]);
+		} else {
+			Header = (struct SDTHeader *)(uintptr_t)PHYS_TO_VIRT_HHDM(rsdt->SDTs[i]);
+		}
+
+		if (strncmp(Header->Signature, signature, 4)) {
+			log_info("Found SDT with signature '%s'", signature);
+			return (void *)Header;
+		}
+	}
+
 	return NULL;
 }

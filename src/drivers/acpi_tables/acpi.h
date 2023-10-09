@@ -15,7 +15,7 @@ struct RSDP {
 } __attribute__((packed));
 
 struct SDTHeader {
-    unsigned char Signature[4];
+    char Signature[4];
     uint32_t Length;
     uint8_t Revision;
     uint8_t Checksum;
@@ -25,6 +25,11 @@ struct SDTHeader {
     uint32_t CreatorID;
     uint32_t CreatorRevision;
 }__attribute__((packed));
+
+struct RSDT {
+  struct SDTHeader Header;
+  uint32_t SDTs[];
+};
 
 struct XSDT {
   struct SDTHeader Header;

@@ -7,5 +7,4 @@
 void init_madt(struct MADT *madt)
 {
 	(void)madt;
-	log_info("madt");
 }
