@@ -97,8 +97,12 @@ void init_acpi(void *rsdp_addr) {
         log_info("XSDT Revision: %u", xsdt->h.Revision);
         log_info("XSDT Entries: %u", xsdt_entries);
     } else {
-        log_CRITICAL(NULL, HN_ERR_UNIMPLEMENTED,
-                     "Unimplemented RSDT parser, this is placeholder");
+		// log_CRITICAL seems to have a bug where it tries to access 0x0000000000000010
+		// after printing
+
+        // log_CRITICAL(NULL, HN_ERR_UNIMPLEMENTED,
+                    //  "Unimplemented RSDT parser, this is placeholder");
+        log_info("Unimplemented RSDT");
     }
 
     log_info("ACPI initialized successfully");

@@ -15,6 +15,13 @@ define DEFAULT_VAR =
     endif
 endef
 
+# Make sure we're cross-compiling on M1 Macs
+override UNAME_M := $(shell uname -m)
+ifeq ($(UNAME_M),arm64)
+	CC := x86_64-elf-gcc
+	LD := x86_64-elf-ld
+endif
+
 # It is highly recommended to use a custom built cross toolchain to build a kernel.
 # We are only using "cc" as a placeholder here. It may work by using
 # the host system's toolchain, but this is not guaranteed.

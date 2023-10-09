@@ -1,3 +1,4 @@
+/*
 #include "PC-speaker.h"
 #include "arch/x86/portion.h"
 void play_sound(uint32_t nFrequence) {
@@ -23,3 +24,4 @@ void nosound() {
  
  	outb8(0x61, tmp);
  }
+*/
