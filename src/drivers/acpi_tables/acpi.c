@@ -47,14 +47,14 @@ void init_acpi(void *rsdp_addr)
 	//
 	struct MADT *madt = (struct MADT *)find_sdt("APIC");
 	init_madt(madt);
-
-	// temporary infinite loop
-	for(;;);
 }
 
 /**
  * This function traverses through the RSDT/XSDT and finds a table
  * with the specified signature.
+ * 
+ * This function returns a virtual address of the found SDT;
+ * 			or NULL if an SDT with the specified signature was not found.
  */
 void *find_sdt(char *signature)
 {

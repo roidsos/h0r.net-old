@@ -6,5 +6,13 @@
 
 void init_madt(struct MADT *madt)
 {
-	(void)madt;
+	// Make sure the MADT was found (!= NULL)
+	if (madt == NULL) {
+		return;
+	}
+
+	// What's left?
+	// - Traverse the MADT
+	// - Parse MADT entries
+	// - Initialize APIC
 }
