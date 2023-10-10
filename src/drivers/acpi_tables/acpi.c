@@ -5,50 +5,12 @@
 #include <logging/logger.h>
 #include <types/string.h>
 
-<<<<<<< HEAD
-struct RSDP *rsdp;
-struct XSDT *xsdt;
-uint16_t xsdt_entries;
-bool use_xsdt;
-=======
 struct RSDP *rsdp = NULL;
 struct RSDT *rsdt = NULL;
 struct XSDT *xsdt = NULL;
->>>>>>> eef1de8576deb0b9b12030f8576fe08beb1034d3
 
 bool use_xsdt = false;
 
-<<<<<<< HEAD
-struct SDTHeader *find_table(struct XSDT *xsdt, char *signature) {
-    struct SDTHeader *newSDTHeader;
-    for (int t = 0; t < xsdt_entries; t++) {
-        if (use_xsdt) {
-            newSDTHeader = (struct SDTHeader *)PHYS_TO_VIRT_HHDM(
-                xsdt->PointerToOtherSDT[t]);
-        } else {
-            newSDTHeader = (struct SDTHeader *)PHYS_TO_VIRT_HHDM(
-                (uint64_t)((uint32_t *)xsdt->PointerToOtherSDT)[t]);
-        }
-
-        if (sign_check(newSDTHeader, signature))
-            return newSDTHeader;
-    }
-    return 0;
-}
-void list_tables(struct XSDT *xsdt) {
-    for (int t = 0; t < xsdt_entries; t++) {
-        struct SDTHeader *newSDTHeader =
-            (struct SDTHeader *)PHYS_TO_VIRT_HHDM(xsdt->PointerToOtherSDT[t]);
-        log_info("ACPI table #%u: %c%c%c%c", t, newSDTHeader->Signature[0],
-                 newSDTHeader->Signature[1], newSDTHeader->Signature[2],
-                 newSDTHeader->Signature[3]);
-    }
-}
-bool do_checksum(struct XSDT *table) {
-    // thanks to @static.link on discord, he is the best
-    uint8_t xsdp_checksum = 0;
-    uint8_t *xsdp_ptr = (uint8_t *)table;
-=======
 // NOTE to @lolguy91:
 // You might want to move this macro elsewhere
 #define PHYS_TO_VIRT_HHDM(addr) ((uint64_t)(addr) + (uint64_t)data.hhdm_addr)
@@ -60,7 +22,6 @@ void init_acpi(void *rsdp_addr)
 		log_info("RSDP Address is NULL!");
 		for(;;);
 	}
->>>>>>> eef1de8576deb0b9b12030f8576fe08beb1034d3
 
 	// we can safely assume that the rsdp is correct,
 	// therefore we do not check for its checksum
