@@ -28,6 +28,7 @@ struct node
             uint8_t owner_group;
             uint64_t creation_date_unix_time;
             uint64_t last_modified_unix_time;
+            uint64_t size;
             uint16_t disk_id;
             char* contents_on_disk_path;
         } ext_file;

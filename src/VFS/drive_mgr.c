@@ -23,9 +23,9 @@ struct dir_report iterate_dir(uint32_t device_id, char *path) {
     return drives[device_id].iterate_dir(path);
 }
 
-struct node *inspect(uint32_t device_id, char *path) {
+struct node inspect(uint32_t device_id, char *path) {
     if (!drives[device_id].present) {
-        return 0;
+        return (struct node){};
     }
     return drives[device_id].inspect(path);
 }

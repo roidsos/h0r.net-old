@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-bool l_load_contents(struct node* node,char* path){
+bool vfs_load_contents(struct node* node,char* path){
     if ((node->flags & ~FLAGS_ISDIR) == 0) return false;
     struct dir_report rep = iterate_dir(node->ext.ext_dir.disk_id,path);
     node->ext.ext_dir.num_dirs = rep.num_entries;
@@ -21,7 +21,7 @@ bool vfs_is_dir(char *path) {
     struct node *fileinq = vfs_inspect(path);
     if (fileinq == NULL)
         return false;
-    return fileinq->flags & FLAGS_ISDIR;
+    return fileinq->flags ^ ~FLAGS_ISDIR;
 }
 
 bool vfs_mount(uint16_t disk_id,char* path)
@@ -62,7 +62,7 @@ bool vfs_mount(uint16_t disk_id,char* path)
                 return false;
             }
             if (!(currnode->flags & FLAGS_LOADED)) {
-                l_load_contents(currnode,currpath);
+                vfs_load_contents(currnode,currpath);
                 continue;
             }
             bool found = false;
@@ -133,7 +133,7 @@ struct node *vfs_inspect(char *path) {
             return NULL;
         }
         if (!(currnode->flags & FLAGS_LOADED)) {
-            l_load_contents(currnode, currpath);
+            vfs_load_contents(currnode, currpath);
             continue;
         }
         bool found = false;

@@ -59,21 +59,38 @@ void parseCommand(char *command) {
         }
 
     } else if (strcmp(args[0], "cd") == 0) {
-        if (args[1] == 0 || !vfs_is_dir(args[1])) {
-            printf("you need to provide a DIRECTORY to change to :P\n");
-        } else if (args[1][0] == '/') {
-            memcpy(currentpath, args[1], strlen(args[1]) + 1);
+        char path[255];
+        if (args[1][0] == '/') {
+            memcpy(path, currentpath, 255);
         } else {
-            char currpcopy[255];
-            snprintf(currpcopy, 255, "%s%s/", currentpath, args[1]);
-            memcpy(currentpath, currpcopy, 255);
+            if (currentpath[strlen(currentpath) - 1] == '/')
+            {
+                snprintf(path, 255, "%s%s", currentpath, args[1]);
+            }else{
+                snprintf(path, 255, "%s/%s", currentpath, args[1]);
+            }
         }
+        if (args[1] == 0 || !vfs_is_dir(path)) {
+            printf("you need to provide a DIRECTORY to change to :P\n");
+        }else{
+            memcpy(currentpath, path, strlen(path) + 1);
+            struct node* file = vfs_inspect(path);
+            if(!(file->flags & FLAGS_LOADED)){
+                vfs_load_contents(file,path);
+            }
+        }
+
     } else if (strcmp(args[0], "cat") == 0) {
         char path[255];
         if (args[1][0] == '/') {
             memcpy(path, currentpath, 255);
         } else {
-            snprintf(path, 255, "%s%s", currentpath, args[1]);
+            if (currentpath[strlen(currentpath) - 1] == '/')
+            {
+                snprintf(path, 255, "%s%s", currentpath, args[1]);
+            }else{
+                snprintf(path, 255, "%s/%s", currentpath, args[1]);
+            }
         }
         if(vfs_inspect(path) == NULL){
             printf("desh: no such file or directory \"%s\"\n",path);
