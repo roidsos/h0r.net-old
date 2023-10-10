@@ -44,9 +44,9 @@ void parseCommand(char *command) {
     } else if (strcmp(args[0], "") == 0) {
 
     } else if (strcmp(args[0], "ls") == 0) {
-        //if (!vfs_is_dir(currentpath)) {
-        //    printf("you are not in a directory...\n");
-        //} else {
+        if (!vfs_is_dir(currentpath)) {
+            printf("you are not in a directory...\n");
+        } else {
             struct dir_report nodes = vfs_iterate_dir(currentpath);
             if (nodes.num_entries == 0){
                 printf("empty");
@@ -57,7 +57,7 @@ void parseCommand(char *command) {
 
             }
             printf("\n");
-        //}
+        }
 
     } else if (strcmp(args[0], "cd") == 0) {
         if (args[1] == 0 || !vfs_is_dir(args[1])) {

@@ -6,7 +6,7 @@
 #include <drivers/Memory/PFA.h>
 #include <drivers/Memory/scubadeeznutz.h>
 
-#include "drop-in/ezgdt.h"
+#include "arch/x86/drop-in/ezgdt.h"
 #include <arch/x86/interrupts/interrupts.h>
 #include <backends/fb.h>
 
