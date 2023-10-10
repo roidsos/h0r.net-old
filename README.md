@@ -34,14 +34,14 @@ In case any package is missing please open up an issue!</br>
 - [ ] IOAPIC
 - [ ] LAI
 
-<!--
+
 ### Device drivers
 #### Audio
-- [ ] PC speaker
+- [x] PC speaker
 - [ ] AC97
 - [ ] Intel High Definition Audio
 - [ ] SB16
--->
+
 #### I/O
 - [X] PS/2 Keyboard
 - [ ] PS/2 Mouse
@@ -71,7 +71,7 @@ In case any package is missing please open up an issue!</br>
 ### Timers
 - [ ] HPET
 - [x] PIT
-- [ ] RTC
+- [x] RTC
 - [ ] LAPIC Timer
 
 ### Tasking
