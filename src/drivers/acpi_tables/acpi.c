@@ -117,36 +117,5 @@ void *find_sdt(char *signature)
 		}
 	}
 
-<<<<<<< HEAD
-    if (use_xsdt) {
-        list_tables(xsdt);
-
-        struct SDTHeader *madt = find_table(xsdt, "APIC");
-        log_info("MADT found");
-        log_info("%u", madt->Length);
-
-        log_info("XSDT CreatorID: %u", xsdt->h.CreatorID);
-        log_info("XSDT CreatorRevision: %u", xsdt->h.CreatorRevision);
-        log_info("XSDT Length: %u", xsdt->h.Length);
-        log_info("XSDT Revision: %u", xsdt->h.Revision);
-        log_info("XSDT Entries: %u", xsdt_entries);
-    } else {
-        list_tables(xsdt);
-
-        struct SDTHeader *madt = find_table(xsdt, "APIC");
-        log_info("MADT found");
-        log_info("%u", madt->Length);
-
-        log_info("XSDT CreatorID: %u", xsdt->h.CreatorID);
-        log_info("XSDT CreatorRevision: %u", xsdt->h.CreatorRevision);
-        log_info("XSDT Length: %u", xsdt->h.Length);
-        log_info("XSDT Revision: %u", xsdt->h.Revision);
-        log_info("XSDT Entries: %u", xsdt_entries);
-    }
-
-    log_info("ACPI initialized successfully");
-}
-=======
 	return NULL;
 }
->>>>>>> eef1de8576deb0b9b12030f8576fe08beb1034d3
