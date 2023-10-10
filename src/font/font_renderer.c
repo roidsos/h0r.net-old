@@ -1,6 +1,6 @@
 #include "font_renderer.h"
 #include "font.h"
-#include <arch/x86/essential.h>
+#include <klibc/memory.h>
 #include <types/stdtypes.h>
 #include <types/string.h>
 

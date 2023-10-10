@@ -1,7 +1,7 @@
 
 #include <arch/x86/i8259.h>
 #include <arch/x86/interrupts/interrupts.h>
-#include <io/portio.h>
+#include <arch/x86/io/portio.h>
 #include <logging/logger.h>
 
 void schedule(Registers *regs);

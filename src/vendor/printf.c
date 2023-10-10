@@ -33,7 +33,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "printf.h"
 #include <flanterm.h>
-#include <io/portio.h>
+#include <arch/x86/io/portio.h>
 #include <kernel.h>
 #include <types/stdtypes.h>
 

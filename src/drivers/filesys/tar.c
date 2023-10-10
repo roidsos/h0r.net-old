@@ -1,5 +1,5 @@
 #include <VFS/drive_mgr.h>
-#include <arch/x86/essential.h>
+#include <klibc/memory.h>
 #include <kernel.h>
 #include <parsing/tar.h>
 #include <types/string.h>

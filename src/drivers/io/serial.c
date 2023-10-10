@@ -1,5 +1,5 @@
 #include "serial.h"
-#include <io/portio.h>
+#include <arch/x86/io/portio.h>
 uint8_t ports_present;
 
 // Util funcs

@@ -1,5 +1,5 @@
 #include "error-screen.h"
-#include <arch/x86/essential.h>
+#include <klibc/memory.h>
 #include <arch/x86/interrupts/interrupts.h>
 #include <font/font_renderer.h>
 #include <logging/logger.h>

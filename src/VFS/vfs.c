@@ -21,7 +21,7 @@ bool vfs_is_dir(char *path) {
     struct node *fileinq = vfs_inspect(path);
     if (fileinq == NULL)
         return false;
-    return (fileinq->flags & FLAGS_ISDIR) >> 1;
+    return fileinq->flags & FLAGS_ISDIR;
 }
 
 bool vfs_mount(uint16_t disk_id,char* path)
@@ -160,5 +160,10 @@ struct node *vfs_inspect(char *path) {
 struct dir_report vfs_iterate_dir(char* path)
 {
     struct node* file = vfs_inspect(path);
-    return (struct dir_report){((struct ext_dir*)file->ext)->num_dirs,((struct ext_dir*)file->ext)->files};
+    if(file != NULL){
+        if (!(file->flags & FLAGS_ISDIR)) 
+            return (struct dir_report){0,0};
+        return (struct dir_report){((struct ext_dir*)file->ext)->num_dirs,((struct ext_dir*)file->ext)->files};
+    }
+    return (struct dir_report){0,0};
 }

@@ -1,6 +1,6 @@
 #include "kernel.h"
 
-#include <arch/x86/essential.h>
+#include <klibc/memory.h>
 #include <drivers/Memory/PFA.h>
 #include <init/init.h>
 #include <logging/logger.h>
@@ -66,10 +66,10 @@ void load_limine_modules() {
     bool config_found = false;
     for (size_t i = 0; i < mod_request.response->module_count; i++) {
         struct limine_file *mod = mod_request.response->modules[i];
-        if (strcmp(mod->path, "/boot/hornet.conf")) {
+        if (strcmp(mod->path, "/boot/hornet.conf") == 0) {
             config_found = true;
             load_config(mod);
-        } else if (strcmp(mod->path, "/boot/initramfs.tar")) {
+        } else if (strcmp(mod->path, "/boot/initramfs.tar") == 0) {
             load_initramfs(mod);
         } else {
             log_info("%s found", mod->path);

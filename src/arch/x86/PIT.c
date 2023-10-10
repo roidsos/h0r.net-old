@@ -1,6 +1,6 @@
 #include "PIT.h"
 #include <arch/x86/i8259.h>
-#include <io/portio.h>
+#include <arch/x86/io/portio.h>
 #include <logging/logger.h>
 
 uint64_t uptime_secs;

@@ -3,7 +3,7 @@
 #include <arch/x86/interrupts/interrupts.h>
 #include <drivers/Memory/Heap.h>
 #include <flanterm.h>
-#include <io/portio.h>
+#include <arch/x86/io/portio.h>
 #include <kernel.h>
 #include <logging/logger.h>
 #include <vendor/printf.h>

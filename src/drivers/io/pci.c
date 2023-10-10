@@ -1,5 +1,5 @@
 #include "pci.h"
-#include <io/portio.h>
+#include <arch/x86/io/portio.h>
 #include <logging/logger.h>
 #include <vendor/printf.h>
 
