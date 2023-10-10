@@ -19,8 +19,7 @@ void init_acpi(void *rsdp_addr)
 {
 	// make sure we're not trying to access a nullptr
 	if (rsdp_addr == NULL) {
-		log_info("RSDP Address is NULL!");
-		for(;;);
+		log_CRITICAL(NULL,HN_ERR_ACPI_FAULT,"RSDP Address is NULL!");
 	}
 
 	// we can safely assume that the rsdp is correct,
@@ -77,6 +76,6 @@ void *find_sdt(char *signature)
 			return (void *)Header;
 		}
 	}
-
+	log_error("Could not fing ACPI table with signature \"%s\"",signature);
 	return NULL;
 }

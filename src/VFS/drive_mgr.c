@@ -30,12 +30,12 @@ struct node *inspect(uint32_t device_id, char *path) {
     return drives[device_id].inspect(path);
 }
 
-bool fs_driver_register(struct fs_driver driver) {
+size_t fs_driver_register(struct fs_driver driver) {
     for (size_t i = 0; i < 16; i++) {
         if (drives[i].present)
             continue;
         drives[i] = driver;
-        return true;
+        return i;
     }
-    return false;
+    return 0;
 }

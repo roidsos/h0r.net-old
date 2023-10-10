@@ -6,6 +6,8 @@
 #include <types/vector.h>
 #include <utils/heapdef.h>
 
+static int disk_id;
+
 struct file_buffer tar_read_file(char *path,__attribute__((unused)) uint64_t offset,__attribute__((unused)) uint64_t size) { // ignore offset and size cuz fuck them 
     if(strcmp((char*)path,"/hello.txt") == 0){
         return (struct file_buffer){"Hello World!",13};
@@ -19,14 +21,12 @@ bool tar_write_file(__attribute__((unused)) char* path,__attribute__((unused)) u
 }
 struct  dir_report tar_iterate_dir(char *path) {
     if(strcmp((char*)path,"/") == 0){
-        struct ext_file* ext = malloc(sizeof(struct ext_file));
-        ext->disk_id = 0;
-        ext->contents_on_disk_path = malloc(11);
-        memcpy(ext->contents_on_disk_path,"/hello.txt",11);
         struct node* nodes = malloc(sizeof(struct node));
         nodes[0].name = "hello.txt";
         nodes[0].flags = FLAGS_PRESENT;
-        nodes[0].ext = (uint8_t*)ext;
+        nodes[0].ext.ext_file.disk_id = disk_id;
+        nodes[0].ext.ext_file.contents_on_disk_path = malloc(11);
+        memcpy(nodes[0].ext.ext_file.contents_on_disk_path,"/hello.txt",11);
         return (struct dir_report){1,nodes};
     }else{
         return (struct dir_report){0,0};
@@ -35,14 +35,12 @@ struct  dir_report tar_iterate_dir(char *path) {
 
 struct node *tar_inspect(char *path) {
     if(strcmp((char*)path,"/") == 0){
-        struct ext_file* ext = malloc(sizeof(struct ext_file));
-        ext->disk_id = 0;
-        ext->contents_on_disk_path = malloc(11);
-        memcpy(ext->contents_on_disk_path,"/hello.txt",11);
         struct node* nodes = malloc(sizeof(struct node));
         nodes[0].name = "hello.txt";
         nodes[0].flags = FLAGS_PRESENT;
-        nodes[0].ext = (uint8_t*)ext;
+        nodes[0].ext.ext_file.disk_id = disk_id;
+        nodes[0].ext.ext_file.contents_on_disk_path = malloc(11);
+        memcpy(nodes[0].ext.ext_file.contents_on_disk_path,"/hello.txt",11);
         return nodes;
     }
     return 0;
@@ -51,5 +49,5 @@ struct node *tar_inspect(char *path) {
 void tar_init() {
     struct fs_driver driver = {true, tar_inspect, tar_iterate_dir,tar_read_file,tar_write_file};
 
-    fs_driver_register(driver);
+    disk_id = fs_driver_register(driver);
 }

@@ -53,8 +53,7 @@ void parseCommand(char *command) {
             }
             for (size_t i = 0; i < nodes.num_entries; i++)
             {
-                printf("-\"%s\" \n",nodes.entries[i].name);
-
+                printf("%s ",nodes.entries[i].name);
             }
             printf("\n");
         }
@@ -70,10 +69,17 @@ void parseCommand(char *command) {
             memcpy(currentpath, currpcopy, 255);
         }
     } else if (strcmp(args[0], "cat") == 0) {
-        if (vfs_is_dir(args[1])) {
+        char path[255];
+        if (args[1][0] == '/') {
+            memcpy(path, currentpath, 255);
+        } else {
+            snprintf(path, 255, "%s%s/", currentpath, args[1]);
+        }
+        
+        if (vfs_is_dir(path)) {
             printf("you cant cat a directory, moron :P\n");
         } else {
-            printf("%s\n", (char*)vfs_read(args[1],0,2000).data);
+            printf("%s\n", (char*)vfs_read(path,0,2000).data);
         }
     } else {
         printf("No such command as \"%s\" sorry :P\n", args[0]);
