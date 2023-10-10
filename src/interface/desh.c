@@ -73,10 +73,11 @@ void parseCommand(char *command) {
         if (args[1][0] == '/') {
             memcpy(path, currentpath, 255);
         } else {
-            snprintf(path, 255, "%s%s/", currentpath, args[1]);
+            snprintf(path, 255, "%s%s", currentpath, args[1]);
         }
-        
-        if (vfs_is_dir(path)) {
+        if(vfs_inspect(path) == NULL){
+            printf("desh: no such file or directory \"%s\"\n",path);
+        }else if (vfs_is_dir(path)) {
             printf("you cant cat a directory, moron :P\n");
         } else {
             printf("%s\n", (char*)vfs_read(path,0,2000).data);

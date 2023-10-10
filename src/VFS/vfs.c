@@ -137,7 +137,7 @@ struct node *vfs_inspect(char *path) {
             continue;
         }
         bool found = false;
-        for (size_t j = 0;currnode->ext.ext_dir.files[j].flags; j++) {
+        for (size_t j = 0;j < currnode->ext.ext_dir.num_dirs; j++) {
             if (strcmp(currnode->ext.ext_dir.files[j].name, path + (currpathidx + 1)) == 0) {
                 currpath[currpathidx] = '/';
                 memcpy(&currpath[currpathidx + 1],currnode->ext.ext_dir.files[j].name, strlen(currnode->ext.ext_dir.files[j].name) + 1);

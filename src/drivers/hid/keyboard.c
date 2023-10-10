@@ -101,7 +101,7 @@ void getstr(char *buffer, int size) {
     do {
         char _char = getch();
         if (_char) {
-            if (_char == -1) {
+            if (_char == -1 && idx != 0) {
                 buffer[idx--] = ' ';
                 flanterm_write(data.ft_ctx, "\b \b", 3);
             } else {
