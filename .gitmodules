@@ -8,6 +8,7 @@
 [submodule "src/vendor/libkrnl-essentials"]
 	path = src/vendor/libkrnl-essentials
 	url = https://github.com/lolguy91/libkrnl-essentials
+	branch = master
 [submodule "src/vendor/flanterm"]
 	path = src/vendor/flanterm
 	url = https://github.com/mintsuki/flanterm
