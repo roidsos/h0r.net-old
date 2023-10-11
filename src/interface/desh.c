@@ -11,6 +11,9 @@
 #include <types/string.h>
 #include <vendor/printf.h>
 
+/* Irresponsible import */
+#include <drivers/audio/soundblaster16.h>
+
 char typedstring[255];
 char currentpath[255];
 
@@ -98,6 +101,9 @@ void parseCommand(char *command) {
         } else {
             printf("%s\n", (char*)vfs_read(path,0,2000).data);
         }
+    } else if(strcmp(args[0],"testsb") == 0){
+        printf("Testing soundblaster16\n");
+        testsb();
     } else {
         printf("No such command as \"%s\" sorry :P\n", args[0]);
     }
