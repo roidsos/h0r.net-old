@@ -13,7 +13,6 @@
 
 char typedstring[255];
 char currentpath[255];
-char idx;
 
 void DeshInit() {
     memset(typedstring, 0, 255);
@@ -45,7 +44,7 @@ void parseCommand(char *command) {
 
     } else if (strcmp(args[0], "ls") == 0) {
         if (!vfs_is_dir(currentpath)) {
-            printf("you are not in a directory...\n");
+            printf("you are not in a directory???\n");
         } else {
             struct dir_report nodes = vfs_iterate_dir(currentpath);
             if (nodes.num_entries == 0){
@@ -61,7 +60,7 @@ void parseCommand(char *command) {
     } else if (strcmp(args[0], "cd") == 0) {
         char path[255];
         if (args[1][0] == '/') {
-            memcpy(path, currentpath, 255);
+            memcpy(path, args[1], 255);
         } else {
             if (currentpath[strlen(currentpath) - 1] == '/')
             {
@@ -73,17 +72,17 @@ void parseCommand(char *command) {
         if (args[1] == 0 || !vfs_is_dir(path)) {
             printf("you need to provide a DIRECTORY to change to :P\n");
         }else{
-            memcpy(currentpath, path, strlen(path) + 1);
-            struct node* file = vfs_inspect(path);
-            if(!(file->flags & FLAGS_LOADED)){
-                vfs_load_contents(file,path);
-            }
+            strcpy(currentpath, path);
+            //struct node* file = vfs_inspect(path);
+            //if(!(file->flags & FLAGS_LOADED)){
+            //    vfs_load_contents(file,path);
+            //}
         }
 
     } else if (strcmp(args[0], "cat") == 0) {
         char path[255];
         if (args[1][0] == '/') {
-            memcpy(path, currentpath, 255);
+            memcpy(path, args[1], 255);
         } else {
             if (currentpath[strlen(currentpath) - 1] == '/')
             {
@@ -95,7 +94,7 @@ void parseCommand(char *command) {
         if(vfs_inspect(path) == NULL){
             printf("desh: no such file or directory \"%s\"\n",path);
         }else if (vfs_is_dir(path)) {
-            printf("you cant cat a directory, moron :P\n");
+            printf("\"%s\" is a directory, moron :P\n",path);
         } else {
             printf("%s\n", (char*)vfs_read(path,0,2000).data);
         }
@@ -105,7 +104,6 @@ void parseCommand(char *command) {
 }
 
 void DeshUpdate() {
-    idx = 0;
     getstr(typedstring, 255);
     parseCommand(typedstring);
 

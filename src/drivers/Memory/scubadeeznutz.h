@@ -37,22 +37,15 @@ typedef struct {
 	uint64_t np;
 } mem_map_t;
 
-typedef struct {
-	uint64_t *pml4;
-	vector_struct(uint64_t) mem_list;
-} addr_space_t;
-
 void scuba_init(struct limine_memmap_response *mmap,struct limine_kernel_address_response *kernel_addr);
 
-void scuba_map(addr_space_t *ads, uint64_t virt_addr, uint64_t phys_addr,
-			  uint64_t np, uint64_t flags, bool us);
-void scuba_unmap(addr_space_t *ads, uint64_t virt_addr, uint64_t np, bool us);
+void scuba_map(uint64_t *pml4, uint64_t virt_addr, uint64_t phys_addr,
+			  uint64_t np, uint64_t flags);
+void scuba_unmap(uint64_t *pml4, uint64_t virt_addr, uint64_t np);
 
-addr_space_t *create_ads();
-
-void _scuba_map(addr_space_t *ads, uint64_t virt_addr, uint64_t phys_addr,
+void _scuba_map(uint64_t *pml4, uint64_t virt_addr, uint64_t phys_addr,
 			   uint64_t flags);
-void _scuba_unmap(addr_space_t *ads, uint64_t virt_addr);
-uint64_t scuba_get_phys_addr(addr_space_t *ads, uint64_t virt_addr);
+void _scuba_unmap(uint64_t *pml4, uint64_t virt_addr);
+uint64_t scuba_get_phys_addr(uint64_t *pml4, uint64_t virt_addr);
 
 #endif // __SCUBADEEZNUTZ_H__

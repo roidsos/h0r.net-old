@@ -22,15 +22,24 @@ struct node tar_inspect(char *path) {
     if(strlen(path + latest_slash + 1) == 0){
         node_.name = malloc(strlen(path + pre_latest_slash));
         strcpy(node_.name,path + pre_latest_slash);
-        node_.name[strlen(node_.name) - 1] = 0;
+        if(node_.name[strlen(node_.name) - 1] == '/'){
+            node_.name[strlen(node_.name) - 1] = 0;
+        }
     }else
     {
-        node_.name = malloc(strlen(path + latest_slash + 1));
-        strcpy(node_.name,path + latest_slash + 1);
+        if (*(path + latest_slash) == '/')
+        {
+            node_.name = malloc(strlen(path + latest_slash + 1));
+            strcpy(node_.name,path + latest_slash + 1);
+        }else{
+            node_.name = malloc(strlen(path + latest_slash));
+            strcpy(node_.name,path + latest_slash);
+        }
+        
     }
     
 
-    if (header->typeflag == 5) {
+    if (header->typeflag == '5') {
         node_.flags = FLAGS_ISDIR | FLAGS_PRESENT;
         node_.ext.ext_dir.owner_group = parse_size(header->GID);
         node_.ext.ext_dir.owner_user = parse_size(header->UID);
@@ -40,6 +49,7 @@ struct node tar_inspect(char *path) {
             parse_size(header->mtime);
         node_.ext.ext_dir.disk_id = disk_id;
 
+        node_.ext.ext_dir.num_dirs = 0;
         node_.ext.ext_dir.files = NULL; // we dont want to load the contents
 
     } else {

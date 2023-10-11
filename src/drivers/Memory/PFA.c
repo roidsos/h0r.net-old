@@ -166,6 +166,8 @@ void PFA_init() {
         if (desc->type != LIMINE_MEMMAP_USABLE) {
             // log_info("%i 0x%x 0x%x",i,desc->base,desc->length / 4096 + 1);
             reserve_pages((void *)desc->base, desc->length / 4096 + 1);
+        }else{
+            unreserve_pages((void *)desc->base, desc->length / 4096 + 1);
         }
     }
 

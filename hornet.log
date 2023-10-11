@@ -15,61 +15,16 @@
 [INFO=]Kernel Init Target reached: Interrupts
 
 [INFO=]Total system memory: 13157360640 bytes
-[INFO=]Free system memory: 13083227136 bytes
+[INFO=]Free system memory: 13282038784 bytes
 [INFO=]Used system memory: 405504 bytes
-[INFO=]Reserved system memory: 73728000 bytes
-[INFO=]Kernel Init Target reached: Memory
-
-[INFO=]Date: 16/16/35
-[INFO=]Time: 23:87:20
-[INFO=]Kernel Init Target reached: x86 PC drivers
-
-[INFO=]PCI Devices: 
-[INFO=]VendorID: 0x8086 ,DeviceID: 0x1237
-[INFO=]VendorID: 0x8086 ,DeviceID: 0x7000
-[INFO=]VendorID: 0x8086 ,DeviceID: 0x7010
-[INFO=]VendorID: 0x8086 ,DeviceID: 0x7113
-[INFO=]VendorID: 0x1234 ,DeviceID: 0x1111
-[INFO=]VendorID: 0x8086 ,DeviceID: 0x100e
-[INFO=]Kernel Init Target reached: Misc Drivers
-
-[INFO=]Kernel Initialized Successfully
-
-[INFO=]========Kernel's Execution Enviroment========
-
-[INFO=]UEFI mode: 0
-[INFO=]Memmap entry count: 20
-
-[INFO=]-Memmap entry #0: Base: 0x1000, Length: 0x53000, Type:LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE
-[INFO=]-Memmap entry #1: Base: 0x54000, Length: 0x4b000, Type:LIMINE_MEMMAP_USABLE
-[INFO=]-Memmap entry #2: Base: 0x9fc00, Length: 0x400, Type:LIMINE_MEMMAP_RESERVED
-[INFO=]-Memmap entry #3: Base: 0xf0000, Length: 0x10000, Type:LIMINE_MEMMAP_RESERVED
-[INFO=]-Memmap entry #4: Base: 0x100000, Length: 0xb99e000, Type:LIMINE_MEMMAP_USABLE
-[INFO=]-Memmap entry #5: Base: 0xba9e000, Length: 0x3000, Type:LIMINE_MEMMAP_KERNEL_AND_MODULES
-[INFO=]-Memmap entry #6: Base: 0xbaa1000, Length: 0x1000, Type:LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE
-[INFO=]-Memmap entry #7: Base: 0xbaa2000, Length: 0x1000, Type:LIMINE_MEMMAP_USABLE
-[INFO=]-Memmap entry #8: Base: 0xbaa3000, Length: 0x1000, Type:LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE
-[INFO=]-Memmap entry #9: Base: 0xbaa4000, Length: 0x1000, Type:LIMINE_MEMMAP_USABLE
-[INFO=]-Memmap entry #10: Base: 0xbaa5000, Length: 0x1000, Type:LIMINE_MEMMAP_KERNEL_AND_MODULES
-[INFO=]-Memmap entry #11: Base: 0xbaa6000, Length: 0x10000, Type:LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE
-[INFO=]-Memmap entry #12: Base: 0xbab6000, Length: 0x4038000, Type:LIMINE_MEMMAP_KERNEL_AND_MODULES
-[INFO=]-Memmap entry #13: Base: 0xfaee000, Length: 0x43000, Type:LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE
-[INFO=]-Memmap entry #14: Base: 0xfb31000, Length: 0x3aa000, Type:LIMINE_MEMMAP_USABLE
-[INFO=]-Memmap entry #15: Base: 0xfedb000, Length: 0x105000, Type:LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE
-[INFO=]-Memmap entry #16: Base: 0xffe0000, Length: 0x20000, Type:LIMINE_MEMMAP_RESERVED
-[INFO=]-Memmap entry #17: Base: 0xfd000000, Length: 0x3e8000, Type:LIMINE_MEMMAP_FRAMEBUFFER
-[INFO=]-Memmap entry #18: Base: 0xfffc0000, Length: 0x40000, Type:LIMINE_MEMMAP_RESERVED
-[INFO=]-Memmap entry #19: Base: 0xfd00000000, Length: 0x300000000, Type:LIMINE_MEMMAP_RESERVED
-[INFO=]CPU count: 2
-[INFO=]-Core #0 Extra Argument: 0
-[INFO=]-Core #0 Goto Address: 0
-[INFO=]-Core #0 Lapic ID: 0
-[INFO=]-Core #0 Processor ID: 0
-
-[INFO=]-Core #1 Extra Argument: 0
-[INFO=]-Core #1 Goto Address: 0
-[INFO=]-Core #1 Lapic ID: 1
-[INFO=]-Core #1 Processor ID: 1
-
-[INFO=]Kernel Init Target reached: VFS
-
+[INFO=]Reserved system memory: 18446744073584467968 bytes
+[INFO=]mapped 0x1000 -> 0xffffffff80001000
+[INFO=]mapped 0x54000 -> 0xffffffff80054000
+[INFO=]mapped 0x9fc00 -> 0xffffffff8009fc00
+[INFO=]mapped 0xf0000 -> 0xffffffff800f0000
+[FATAL]Paging fault(faluting address: 0xffffffff841fe100)
+[INFO=]RIP=0xffffffff8000af87 ,RSP=0xffff80000ff5cee0 ,CS =0x0000000000000008 ,SS =0x0000000000000010
+[INFO=]RAX=0xffffffff841fe100 ,RBX=0x0000000000000000 ,RCX=0x0000000000000007 ,RDX=0x0000000000000100
+[INFO=]RSI=0xffffffff841ff000 ,RDI=0x0000000000054030 ,RBP=0xffff80000ff5cf40 ,R9 =0x0000000000000010
+[INFO=]R10=0xffff80000ff5cd17 ,R11=0x0000000000000010 ,R12=0x0000000000000000 ,R13=0x0000000000000000
+[INFO=]R14=0x0000000000000000 ,R15=0x0000000000000000 ,ERROR_CODE=0x0000000000000000

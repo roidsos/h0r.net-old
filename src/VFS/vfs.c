@@ -7,7 +7,6 @@
 #include <string.h>
 
 bool vfs_load_contents(struct node* node,char* path){
-    if ((node->flags & ~FLAGS_ISDIR) == 0) return false;
     struct dir_report rep = iterate_dir(node->ext.ext_dir.disk_id,path);
     node->ext.ext_dir.num_dirs = rep.num_entries;
     node->ext.ext_dir.files = rep.entries;
@@ -21,7 +20,7 @@ bool vfs_is_dir(char *path) {
     struct node *fileinq = vfs_inspect(path);
     if (fileinq == NULL)
         return false;
-    return fileinq->flags ^ ~FLAGS_ISDIR;
+    return fileinq->flags & FLAGS_ISDIR;
 }
 
 bool vfs_mount(uint16_t disk_id,char* path)
@@ -30,7 +29,6 @@ bool vfs_mount(uint16_t disk_id,char* path)
     if (strcmp(path, "/") != 0) {
         char currpath[255];
         uint8_t currpathidx = 0;
-        uint32_t i = 0;
         while (true) {
             if (path[currpathidx] == '\0') {
                 break;
@@ -66,19 +64,32 @@ bool vfs_mount(uint16_t disk_id,char* path)
                 continue;
             }
             bool found = false;
-            for (size_t j = 0; j <currnode->ext.ext_dir.num_dirs;
-                 j++) {
-                if (strcmp(currnode->ext.ext_dir.files[j].name,
-                           path + (currpathidx + 1)) == 0) {
-                        
-                    currpath[currpathidx] = '/';
-                    memcpy(&currpath[currpathidx++],currnode->ext.ext_dir.files[j].name,strlen(currnode->ext.ext_dir.files[j].name));
-                    currpathidx += strlen(currnode->ext.ext_dir.files[j].name);
-
-                    currnode = &currnode->ext.ext_dir.files[j];
-                    i++;
+            uint8_t nextslashin = 0;
+            for (size_t i = 0;true; i++)
+            {
+                if (path[currpathidx+i] == '/')
+                {
+                    nextslashin = i;
                     break;
+                }else if(nextslashin == 0 && path[currpathidx+i] == 0){
+                    nextslashin = i;
+                    break;    
                 }
+            }
+        
+            for (size_t i = 0; i <currnode->ext.ext_dir.num_dirs;
+                 i++) {
+                    for (size_t i = 0;i < currnode->ext.ext_dir.num_dirs; i++) {
+                        if (strncmp(currnode->ext.ext_dir.files[i].name, path + (currpathidx + 1), nextslashin) == 0) {
+                            currpath[currpathidx] = '/';
+                            memcpy(&currpath[currpathidx + 1],currnode->ext.ext_dir.files[i].name, strlen(currnode->ext.ext_dir.files[i].name) + 1);
+                            currpathidx += strlen(currnode->ext.ext_dir.files[i].name) + 1;
+
+                            currnode = &currnode->ext.ext_dir.files[i];
+                            found = true;
+                            break;
+                        }
+                    }
             }
             if (!found) {
                 return false;
@@ -121,8 +132,10 @@ struct node *vfs_inspect(char *path) {
     struct node *currnode = &first_node;
     char currpath[255];
     uint8_t currpathidx = 0;
-    uint32_t i = 0;
     while (true) {
+        if (!(currnode->flags & FLAGS_LOADED) && (currnode->flags & FLAGS_ISDIR)) {
+            vfs_load_contents(currnode, currpath);
+        }
         if (path[currpathidx] == '\0') {
             return currnode;
         }
@@ -132,19 +145,30 @@ struct node *vfs_inspect(char *path) {
         if (!(currnode->flags & FLAGS_ISDIR)) {
             return NULL;
         }
-        if (!(currnode->flags & FLAGS_LOADED)) {
-            vfs_load_contents(currnode, currpath);
-            continue;
-        }
         bool found = false;
-        for (size_t j = 0;j < currnode->ext.ext_dir.num_dirs; j++) {
-            if (strcmp(currnode->ext.ext_dir.files[j].name, path + (currpathidx + 1)) == 0) {
+        uint8_t nextslashin = 0;
+        for (size_t i = 0;true; i++)
+        {
+            if(currpathidx+i == 0){
+                continue;
+            }
+            if (path[currpathidx+i] == '/')
+            {
+                nextslashin = i;
+                break;
+            }else if(nextslashin == 0 && path[currpathidx+i] == 0){
+                nextslashin = i;
+                break;    
+            }
+        }
+        
+        for (size_t i = 0;i < currnode->ext.ext_dir.num_dirs; i++) {
+            if (strncmp(currnode->ext.ext_dir.files[i].name, &path[currpathidx + 1],nextslashin == 0?nextslashin:nextslashin - 1) == 0) {
                 currpath[currpathidx] = '/';
-                memcpy(&currpath[currpathidx + 1],currnode->ext.ext_dir.files[j].name, strlen(currnode->ext.ext_dir.files[j].name) + 1);
-                currpathidx += strlen(currnode->ext.ext_dir.files[j].name) + 1;
-                i += strlen(currnode->ext.ext_dir.files[j].name);
+                memcpy(&currpath[currpathidx + 1],currnode->ext.ext_dir.files[i].name, strlen(currnode->ext.ext_dir.files[i].name) + 1);
+                currpathidx += strlen(currnode->ext.ext_dir.files[i].name) + 1;
 
-                currnode = &currnode->ext.ext_dir.files[j];
+                currnode = &currnode->ext.ext_dir.files[i];
                 found = true;
                 break;
             }

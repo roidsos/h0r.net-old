@@ -62,8 +62,7 @@ void init_HW() {
     mem_init();
     PFA_init();
     InitHeap(0x20000);
-    // TODO: fix scuba
-    // scuba_init(data.memmap_resp, data.ka_resp);
+    //scuba_init(data.memmap_resp, data.ka_resp);
     log_info("Kernel Init Target reached: Memory\n");
 
     // Init x86 PC specific drivers
