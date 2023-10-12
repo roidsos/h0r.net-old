@@ -20,8 +20,8 @@
 [INFO=]Reserved system memory: 18446744073584467968 bytes
 [INFO=]Kernel Init Target reached: Memory
 
-[INFO=]Date: 16/17/35
-[INFO=]Time: 23:06:81
+[INFO=]Date: 16/18/35
+[INFO=]Time: 22:34:81
 [INFO=]Kernel Init Target reached: x86 PC drivers
 
 [INFO=]PCI Devices: 
@@ -71,6 +71,3 @@
 [INFO=]-Core #1 Lapic ID: 1
 [INFO=]-Core #1 Processor ID: 1
 
-[INFO=]Kernel Init Target reached: VFS
-
-[INFO=]Allocated 0000000080056460

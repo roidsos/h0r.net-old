@@ -37,7 +37,7 @@ typedef struct {
 	uint64_t np;
 } mem_map_t;
 
-void scuba_init(struct limine_memmap_response *mmap,struct limine_kernel_address_response *kernel_addr);
+uint64_t* create_pml4();
 
 void scuba_map(uint64_t *pml4, uint64_t virt_addr, uint64_t phys_addr,
 			  uint64_t np, uint64_t flags);

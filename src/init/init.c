@@ -62,7 +62,6 @@ void init_HW() {
     mem_init();
     PFA_init();
     InitHeap(0x20000);
-    //scuba_init(data.memmap_resp, data.ka_resp);
     log_info("Kernel Init Target reached: Memory\n");
 
     // Init x86 PC specific drivers
@@ -110,6 +109,6 @@ void load_initramfs(struct limine_file *tar_file) {
 
 void init_sched() {
     sched_init();
-    create_process(init_sys);
+    create_process(init_sys,0,0,true);
     sched_enable();
 }

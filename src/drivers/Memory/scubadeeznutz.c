@@ -8,66 +8,6 @@
 // "hippity hoppity,SCUBA DEEZ NUTZ"
 // https://github.com/luxeos/luxe-kernel-old/
 
-struct limine_memmap_response *g_mmap;
-struct limine_kernel_address_response *g_kernel_addr;
-
-uint64_t * pml4;
-
-void scuba_init(struct limine_memmap_response *mmap,
-                struct limine_kernel_address_response *kernel_addr) {
-
-    // General Initialization
-    g_mmap = mmap;
-    g_kernel_addr = kernel_addr;
-
-    // Initializing the Adress Space
-    pml4 = malloc(8 * BLOCK_SIZE);
-    memset(pml4, 0, 8 * BLOCK_SIZE);
-
-    // Map the whole mem space to MEM_VIRT_OFF
-    //scuba_map(pml4, MEM_VIRT_OFF, 0, NUM_BLOCKS(get_highest_block()),
-    //          VIRT_FLAGS_DEFAULT | VIRT_FLAGS_USERMODE);
-    //log_info("mapped %d bytes memory to 0x%llx", get_highest_block(),
-    //         MEM_VIRT_OFF);
-
-    // Map the whole mem space again but this time with correct flags(wtf?)
-    for (size_t i = 0; i < mmap->entry_count; i++) {
-        struct limine_memmap_entry *entry = mmap->entries[i];
-
-        switch (entry->type) {
-        case LIMINE_MEMMAP_KERNEL_AND_MODULES: {
-            uint64_t virt_addr = kernel_addr->virtual_base + entry->base -
-                                 kernel_addr->physical_base;
-            scuba_map(pml4, virt_addr, entry->base, NUM_BLOCKS(entry->length),
-                      VIRT_FLAGS_DEFAULT | VIRT_FLAGS_USERMODE);
-            log_info("mapped kernel 0x%llx -> 0x%llx", entry->base, virt_addr,
-                     entry->length);
-            break;
-        }
-        case LIMINE_MEMMAP_FRAMEBUFFER: {
-            scuba_map(pml4, PHYS_TO_VIRT(entry->base), entry->base,
-                      NUM_BLOCKS(entry->length),
-                      VIRT_FLAGS_DEFAULT | VIRT_FLAG_WCOMB |
-                          VIRT_FLAGS_USERMODE);
-            log_info("mapped framebuffer 0x%llx -> 0x%llx", entry->base,
-                     PHYS_TO_VIRT(entry->base));
-            break;
-        }
-        default: {
-            scuba_map(pml4, PHYS_TO_VIRT(entry->base), entry->base,
-                      NUM_BLOCKS(entry->length),
-                      VIRT_FLAGS_DEFAULT | VIRT_FLAGS_USERMODE);
-            log_info("mapped 0x%llx -> 0x%llx", entry->base,
-                     PHYS_TO_VIRT(entry->base));
-            break;
-        }
-        }
-    }
-    __asm__ volatile("mov %0, %%cr3" ::"r"(VIRT_TO_PHYS(pml4))
-                     : "memory");
-    log_info("done");
-}
-
 void scuba_map(uint64_t *_pml4, uint64_t virt_addr, uint64_t phys_addr,
                uint64_t np, uint64_t flags) {
 
@@ -175,7 +115,7 @@ void _scuba_unmap(uint64_t *_pml4, uint64_t virt_addr) {
         }
     }
 
-    pml4[pml4e] = 0;
+    _pml4[pml4e] = 0;
     free_pages((void *)VIRT_TO_PHYS(pdpt), 8);
 }
 
@@ -201,4 +141,12 @@ uint64_t scuba_get_phys_addr(uint64_t *_pml4, uint64_t virt_addr) {
         return (uint64_t)NULL;
 
     return (pt[pte] & ~(0xFFF));
+}
+uint64_t* create_pml4()
+{
+    uint64_t* pml4;
+    pml4 = malloc(8 * BLOCK_SIZE);
+    memset(pml4, 0, 8 * BLOCK_SIZE);
+
+    return pml4;
 }
