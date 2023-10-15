@@ -7,6 +7,7 @@
 #include <drivers/io/pci.h>
 #include <flanterm.h>
 #include <font/font_renderer.h>
+#include <drivers/Memory/PFA.h>
 #include <kernel.h>
 #include <types/string.h>
 #include <vendor/printf.h>
@@ -43,6 +44,10 @@ void parseCommand(char *command) {
         list_PCI_devices();
         printf("Current uptime %u secs %u ms\n", pit_get_uptime_secs(),
                pit_get_uptime_milis());
+        printf("Total system memory: %llu bytes\n", get_total_RAM());
+        printf("Free system memory: %llu bytes\n", get_free_RAM());
+        printf("Used system memory: %llu bytes\n", get_used_RAM());
+        printf("Reserved system memory: %llu bytes\n", get_reserved_RAM());
     } else if (strcmp(args[0], "") == 0) {
 
     } else if (strcmp(args[0], "ls") == 0) {
@@ -104,6 +109,36 @@ void parseCommand(char *command) {
     } else if(strcmp(args[0],"testsb") == 0){
         printf("Testing soundblaster16\n");
         testsb();
+    } else if(strcmp(args[0],"dbginfo") == 0){
+        printf("  UEFI mode: %d\n", data.is_uefi_mode);
+        if (data.is_uefi_mode)
+            printf("  EFI System Table Address: 0x%p",
+                     data.efi_system_table_address);
+
+        printf("  Memmap entry count: %lu\n", data.memmap_resp->entry_count);
+        for (size_t i = 0; i < data.memmap_resp->entry_count; i++) {
+            printf("   -Memmap entry #%lu: Base: 0x%lx, Length: 0x%lx, Type:%s\n", i,
+                     data.memmap_resp->entries[i]->base,
+                     data.memmap_resp->entries[i]->length,
+                     memmap_type_names[data.memmap_resp->entries[i]->type]);
+        }
+
+        printf("  CPU count: %u\n", data.smp_resp->cpu_count);
+        for (size_t i = 0; i < data.smp_resp->cpu_count; i++) {
+            struct limine_smp_info *cpu = data.smp_resp->cpus[i];
+            printf("   -Core #%u Extra Argument: %u\n", i, cpu->extra_argument);
+            printf("   -Core #%u Goto Address: %u\n", i, cpu->goto_address);
+            printf("   -Core #%u Lapic ID: %u\n", i, cpu->lapic_id);
+            printf("   -Core #%u Processor ID: %u\n\n", i, cpu->processor_id);
+        }
+        printf("  CPU Vendor ID: %s\n", data.cpu_info.vendor);
+        printf("  CPU Family: %d\n", data.cpu_info.family);
+        printf("  CPU Model: %d\n", data.cpu_info.model);
+        printf("  CPU Stepping: %d\n", data.cpu_info.stepping);
+        printf("  CPU X-family: %d\n", data.cpu_info.ext_family);
+        printf("  CPU X-model: %d\n", data.cpu_info.ext_model);
+        printf("  CPU Capabilities(EDX): 0x%.8X\n", data.cpu_info.features[0]);
+        printf("  CPU Capabilities(ECX): 0x%.8X\n", data.cpu_info.features[1]);
     } else {
         printf("No such command as \"%s\" sorry :P\n", args[0]);
     }

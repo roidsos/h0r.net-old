@@ -36,7 +36,7 @@ bool HasFunction(uint16_t bus, uint16_t device) {
 
 void init_PCI() {
     // https://wiki.osdev.org/PCI
-    log_info("PCI Devices: ");
+    //log_info("PCI Devices: ");
     for (int bus = 0; bus < 8; bus++) {
         for (int device = 0; device < 32; device++) {
             int numfuncs = HasFunction(bus, device) ? 8 : 1;
@@ -49,8 +49,7 @@ void init_PCI() {
                     continue;
                 }
 
-                log_info("VendorID: 0x%x ,DeviceID: 0x%x", dev.vendor_id,
-                         dev.device_id);
+                //log_info("VendorID: 0x%x ,DeviceID: 0x%x", dev.vendor_id, dev.device_id);
             }
         }
     }

@@ -39,19 +39,8 @@ void init_HW() {
     get_cpu_capabilities(&data.cpu_info);
     sys_init_fpu();
 
-    log_info("CPU Vendor ID: %s", data.cpu_info.vendor);
-    log_info("CPU Family: %d", data.cpu_info.family);
-    log_info("CPU Model: %d", data.cpu_info.model);
-    log_info("CPU Stepping: %d", data.cpu_info.stepping);
-    log_info("CPU Extended Family: %d", data.cpu_info.ext_family);
-    log_info("CPU Extended Model: %d", data.cpu_info.ext_model);
-    log_info("CPU Capabilities (EDX): 0x%.8X", data.cpu_info.features[0]);
-    log_info("CPU Capabilities (ECX): 0x%.8X", data.cpu_info.features[1]);
-    log_info("Kernel Init Target reached: CPU\n");
-
-    // Initialize GDT
     load_default_gdt();
-    log_info("Kernel Init Target reached: GDT\n");
+    log_info("Kernel Init Target reached: CPU\n");
 
     // initialize interrupts
     initialize_interrupts();
@@ -67,12 +56,6 @@ void init_HW() {
     // Init x86 PC specific drivers
     pit_init();
     time_get(&data.time);
-
-    log_info("Date: %02d/%02d/%d", data.time.month, data.time.day_of_month,
-             data.time.year);
-    log_info("Time: %02d:%02d:%02d", data.time.hours, data.time.minutes,
-             data.time.seconds);
-
     log_info("Kernel Init Target reached: x86 PC drivers\n");
 
     // Init the HW drivers
@@ -87,8 +70,10 @@ void init_HW() {
 void init_sys() {
     vfs_mount(0,"/");
     log_info("Kernel Init Target reached: VFS\n");
-
-    printf("\e[0;97mWE MADE IT LESSGOOOOO\n");
+    printf("Date: %02d/%02d/%d\n", data.time.month, data.time.day_of_month,
+             data.time.year);
+    printf("Time: %02d:%02d:%02d\n", data.time.hours, data.time.minutes,
+             data.time.seconds);
     DeshInit();
 
     while (true) {
@@ -106,9 +91,17 @@ void load_initramfs(struct limine_file *tar_file) {
     data.initramfs = parse_tar(tar_file->address, tar_file->size);
     tar_init();
 }
+void syscall_test(){
+    __asm__ volatile("int $0x32");
+    while(true){}
+}
+int syscall_test_end;
 
+void init_syscall();
 void init_sched() {
     sched_init();
+    init_syscall();
     create_process(init_sys,0,0,true);
+    //create_process(syscall_test,(size_t)&syscall_test_end - (size_t)&syscall_test,3,false);
     sched_enable();
 }

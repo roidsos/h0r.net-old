@@ -8,9 +8,10 @@
 typedef struct {
     Registers status;
     uint8_t pl_and_flags;
-    uint64_t* pml4;
+    void* pml4;
 } process_t;
 
+extern uint32_t kernel_end;//dont take its value, its just a label
 static bool is_active;
 static bool not_first_tick;
 queue(uint64_t, process_queue);
@@ -36,10 +37,10 @@ void schedule(Registers *regs) {
         process_t nextproc = vector_at(&processes, next);
         if (nextproc.status.rip != 0) {
             memcpy(regs, &nextproc.status, sizeof(Registers));
-            __asm__ volatile("mov %%cr3, %0\r\n" : "=r"(nextproc.pml4) :);
+            __asm__ volatile("mov %0, %%cr3\r\n" : : "a"(nextproc.pml4) );
             current_process = next;
             queue_add(process_queue, next);
-            break;
+            return;
         }
     }
 }
@@ -66,16 +67,16 @@ uint64_t create_process(void (*process_main)(),uint64_t prog_size,uint8_t pl_and
 
     }else{
         newproc.pml4 = create_pml4();
-        newproc.status.rsp = 0;
-        scuba_map(newproc.pml4,0,VIRT_TO_PHYS(request_pages(16)),16,VIRT_FLAGS_USERMODE);
+        newproc.status.rsp = (uint64_t)request_pages(16);
+        scuba_map(newproc.pml4,newproc.status.rsp,VIRT_TO_PHYS(newproc.status.rsp),16,VIRT_FLAGS_USERMODE);
         newproc.status.rip = (uint64_t)process_main;
         scuba_map(newproc.pml4,(uint64_t)process_main,
-            VIRT_TO_PHYS(request_pages(NUM_BLOCKS(prog_size))),
+            VIRT_TO_PHYS(process_main),
             NUM_BLOCKS(prog_size),
             VIRT_FLAGS_USERMODE);
-        scuba_map(newproc.pml4,(uint64_t)schedule,
-            VIRT_TO_PHYS(schedule),
-            4,
+        scuba_map(newproc.pml4,0xffffffff80000000,
+            VIRT_TO_PHYS(0xffffffff80000000),
+            NUM_BLOCKS((uint64_t)&kernel_end - 0xffffffff80000000),
             VIRT_FLAGS_USERMODE);
         newproc.status.rflags = 0x202;
         if ((pl_and_flags & 0x3) == 1)
