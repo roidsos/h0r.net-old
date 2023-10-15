@@ -1,16 +1,23 @@
-[INFO=]Kernel Init Target reached: IO
+[INFO=]HW_Init Target reached: IO
 
-[INFO=]Kernel Init Target reached: CPU
+[INFO=]HW_Init Target reached: CPU
 
-[INFO=]Kernel Init Target reached: Interrupts
+[INFO=]HW_Init Target reached: Interrupts
 
-[INFO=]Kernel Init Target reached: Memory
+[INFO=]HW_Init Target reached: Memory
 
-[INFO=]Kernel Init Target reached: x86 PC drivers
-
-[INFO=]Kernel Init Target reached: Misc Drivers
-
-[INFO=]Kernel Initialized Successfully
+[INFO=]HW_Init Target reached: Drivers
 
 [INFO=]Kernel Init Target reached: VFS
+
+[FATAL]Paging fault(faluting address: 0x0000000000000000)
+[INFO=]RIP=0xffffffff8000e33c ,RSP=0xffff80000ff6cff0 ,CS =0x0000000000000008 ,SS =0x0000000000000010
+
+[INFO=]RAX=0x0000000000000000 ,RBX=0x0000000000000000 ,RCX=0x0000000000000100 ,RDX=0x00000000000003f8
+
+[INFO=]RSI=0x000000000000000a ,RDI=0x00000000000003f8 ,RBP=0xffff80000ff6cff0 ,R9 =0x0000000000001400
+
+[INFO=]R10=0x0000000000000000 ,R11=0x0000000000000000 ,R12=0x0000000000000000 ,R13=0x0000000000000000
+
+[INFO=]R14=0x0000000000000000 ,R15=0x0000000000000000 ,ERROR_CODE=0x0000000000000002
 

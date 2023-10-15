@@ -72,8 +72,7 @@ void load_limine_modules() {
         } else if (strcmp(mod->path, "/boot/initramfs.tar") == 0) {
             load_initramfs(mod);
         } else {
-            log_info("%s found", mod->path);
-            log_info("%s contents:\n %s", mod->path, mod->address);
+            log_info("Unknown module \"%s\" found", mod->path);
         }
     }
     if (!config_found) {
@@ -82,6 +81,7 @@ void load_limine_modules() {
 }
 
 // ================= KERNEL MAIN ============================
+void do_mounts();
 
 void _start(void) {
     // no unhandled interrupts plzz
@@ -90,6 +90,9 @@ void _start(void) {
     handle_limine_requests();
     init_HW();
     load_limine_modules();
+    do_mounts();
+
+    ((int*)0)[0] = 0;
 
     init_sched();
 

@@ -6,7 +6,6 @@
 #include <drivers/hid/keyboard.h>
 #include <drivers/io/pci.h>
 #include <flanterm.h>
-#include <font/font_renderer.h>
 #include <drivers/Memory/PFA.h>
 #include <kernel.h>
 #include <types/string.h>

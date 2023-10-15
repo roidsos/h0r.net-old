@@ -1,5 +1,6 @@
 #include "logger.h"
 #include <drivers/io/serial.h>
+#include <utils/error-handling/error-screen.h>
 #include <vendor/printf.h>
 uint16_t current_output;
 

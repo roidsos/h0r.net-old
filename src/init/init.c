@@ -1,6 +1,7 @@
 #include <kernel.h>
 
 #include <drivers/DriverManager.h>
+#include <drivers/io/serial.h>
 #include <drivers/Memory/Heap.h>
 #include <drivers/Memory/Memory.h>
 #include <drivers/Memory/PFA.h>
@@ -12,9 +13,7 @@
 
 #include "flanterm.h"
 #include "utils/error-handling/falut-handler.h"
-#include <VFS/vfs.h>
 #include <arch/x86/PIT.h>
-#include <font/font_renderer.h>
 #include <interface/desh.h>
 #include <limine.h>
 #include <logging/logger.h>
@@ -27,49 +26,41 @@ void spisr_init();
 
 void init_HW() {
     // Initialize screen and logger
+    serial_init();
     logger_set_output(LOGGER_OUTPUT_COM1);
-    fr_init(data.framebuffer);
     data.ft_ctx = flanterm_fb_simple_init(
         data.framebuffer->address, data.framebuffer->width,
         data.framebuffer->height, data.framebuffer->pitch);
-
-    log_info("Kernel Init Target reached: IO\n");
+    log_info("HW_Init Target reached: IO\n");
 
     // Gather Data
     get_cpu_capabilities(&data.cpu_info);
     sys_init_fpu();
-
     load_default_gdt();
-    log_info("Kernel Init Target reached: CPU\n");
+    log_info("HW_Init Target reached: CPU\n");
 
     // initialize interrupts
     initialize_interrupts();
     init_falut_handler();
-    log_info("Kernel Init Target reached: Interrupts\n");
+    log_info("HW_Init Target reached: Interrupts\n");
 
     // Init Memory stuff
     mem_init();
     PFA_init();
     InitHeap(0x20000);
-    log_info("Kernel Init Target reached: Memory\n");
+    log_info("HW_Init Target reached: Memory\n");
 
     // Init x86 PC specific drivers
     pit_init();
     time_get(&data.time);
-    log_info("Kernel Init Target reached: x86 PC drivers\n");
-
-    // Init the HW drivers
     init_drivers();
     spisr_init();
-    log_info("Kernel Init Target reached: Misc Drivers\n");
+    log_info("HW_Init Target reached: Drivers\n");
 
     enable_interrupts();
-    log_info("Kernel Initialized Successfully\n");
 }
 
 void init_sys() {
-    vfs_mount(0,"/");
-    log_info("Kernel Init Target reached: VFS\n");
     printf("Date: %02d/%02d/%d\n", data.time.month, data.time.day_of_month,
              data.time.year);
     printf("Time: %02d:%02d:%02d\n", data.time.hours, data.time.minutes,
