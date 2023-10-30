@@ -32,8 +32,8 @@
 // Note: Edited
 ///////////////////////////////////////////////////////////////////////////////
 #include "printf.h"
-#include <flanterm.h>
 #include <arch/x86/io/portio.h>
+#include <flanterm.h>
 #include <kernel.h>
 #include <types/stdtypes.h>
 

@@ -1,13 +1,13 @@
 #include "desh.h"
 #include <VFS/vfs.h>
 #include <arch/x86/PIT.h>
-#include <klibc/memory.h>
 #include <arch/x86/power.h>
+#include <drivers/Memory/PFA.h>
 #include <drivers/hid/keyboard.h>
 #include <drivers/io/pci.h>
 #include <flanterm.h>
-#include <drivers/Memory/PFA.h>
 #include <kernel.h>
+#include <klibc/memory.h>
 #include <types/string.h>
 #include <vendor/printf.h>
 
@@ -54,12 +54,11 @@ void parseCommand(char *command) {
             printf("you are not in a directory???\n");
         } else {
             struct dir_report nodes = vfs_iterate_dir(currentpath);
-            if (nodes.num_entries == 0){
+            if (nodes.num_entries == 0) {
                 printf("empty");
             }
-            for (size_t i = 0; i < nodes.num_entries; i++)
-            {
-                printf("%s ",nodes.entries[i].name);
+            for (size_t i = 0; i < nodes.num_entries; i++) {
+                printf("%s ", nodes.entries[i].name);
             }
             printf("\n");
         }
@@ -69,21 +68,20 @@ void parseCommand(char *command) {
         if (args[1][0] == '/') {
             memcpy(path, args[1], 255);
         } else {
-            if (currentpath[strlen(currentpath) - 1] == '/')
-            {
+            if (currentpath[strlen(currentpath) - 1] == '/') {
                 snprintf(path, 255, "%s%s", currentpath, args[1]);
-            }else{
+            } else {
                 snprintf(path, 255, "%s/%s", currentpath, args[1]);
             }
         }
         if (args[1] == 0 || !vfs_is_dir(path)) {
             printf("you need to provide a DIRECTORY to change to :P\n");
-        }else{
+        } else {
             strcpy(currentpath, path);
-            //struct node* file = vfs_inspect(path);
-            //if(!(file->flags & FLAGS_LOADED)){
-            //    vfs_load_contents(file,path);
-            //}
+            // struct node* file = vfs_inspect(path);
+            // if(!(file->flags & FLAGS_LOADED)){
+            //     vfs_load_contents(file,path);
+            // }
         }
 
     } else if (strcmp(args[0], "cat") == 0) {
@@ -91,35 +89,35 @@ void parseCommand(char *command) {
         if (args[1][0] == '/') {
             memcpy(path, args[1], 255);
         } else {
-            if (currentpath[strlen(currentpath) - 1] == '/')
-            {
+            if (currentpath[strlen(currentpath) - 1] == '/') {
                 snprintf(path, 255, "%s%s", currentpath, args[1]);
-            }else{
+            } else {
                 snprintf(path, 255, "%s/%s", currentpath, args[1]);
             }
         }
-        if(vfs_inspect(path) == NULL){
-            printf("desh: no such file or directory \"%s\"\n",path);
-        }else if (vfs_is_dir(path)) {
-            printf("\"%s\" is a directory, moron :P\n",path);
+        if (vfs_inspect(path) == NULL) {
+            printf("desh: no such file or directory \"%s\"\n", path);
+        } else if (vfs_is_dir(path)) {
+            printf("\"%s\" is a directory, moron :P\n", path);
         } else {
-            printf("%s\n", (char*)vfs_read(path,0,2000).data);
+            printf("%s\n", (char *)vfs_read(path, 0, 2000).data);
         }
-    } else if(strcmp(args[0],"testsb") == 0){
+    } else if (strcmp(args[0], "testsb") == 0) {
         printf("Testing soundblaster16\n");
         testsb();
-    } else if(strcmp(args[0],"dbginfo") == 0){
+    } else if (strcmp(args[0], "dbginfo") == 0) {
         printf("  UEFI mode: %d\n", data.is_uefi_mode);
         if (data.is_uefi_mode)
             printf("  EFI System Table Address: 0x%p",
-                     data.efi_system_table_address);
+                   data.efi_system_table_address);
 
         printf("  Memmap entry count: %lu\n", data.memmap_resp->entry_count);
         for (size_t i = 0; i < data.memmap_resp->entry_count; i++) {
-            printf("   -Memmap entry #%lu: Base: 0x%lx, Length: 0x%lx, Type:%s\n", i,
-                     data.memmap_resp->entries[i]->base,
-                     data.memmap_resp->entries[i]->length,
-                     memmap_type_names[data.memmap_resp->entries[i]->type]);
+            printf(
+                "   -Memmap entry #%lu: Base: 0x%lx, Length: 0x%lx, Type:%s\n",
+                i, data.memmap_resp->entries[i]->base,
+                data.memmap_resp->entries[i]->length,
+                memmap_type_names[data.memmap_resp->entries[i]->type]);
         }
 
         printf("  CPU count: %u\n", data.smp_resp->cpu_count);

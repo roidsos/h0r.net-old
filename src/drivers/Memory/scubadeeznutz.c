@@ -1,8 +1,8 @@
 #include "scubadeeznutz.h"
-#include <klibc/memory.h>
 #include <arch/x86/interrupts/interrupts.h>
 #include <drivers/Memory/Heap.h>
 #include <drivers/Memory/PFA.h>
+#include <klibc/memory.h>
 #include <logging/logger.h>
 
 // "hippity hoppity,SCUBA DEEZ NUTZ"
@@ -45,7 +45,7 @@ void _scuba_map(uint64_t *_pml4, uint64_t virt_addr, uint64_t phys_addr,
     uint64_t *pt = (uint64_t *)PHYS_TO_VIRT(pd[pde] & ~(0xfff));
     if (!(pd[pde] & VIRT_FLAG_PRESENT)) {
         pt = (uint64_t *)PHYS_TO_VIRT(malloc(8));
-        memset(pt, 0,  8);
+        memset(pt, 0, 8);
         pd[pde] = ((VIRT_TO_PHYS(pt) & ~(0xfff)) | VIRT_FLAGS_USERMODE);
     }
 
@@ -142,9 +142,8 @@ uint64_t scuba_get_phys_addr(uint64_t *_pml4, uint64_t virt_addr) {
 
     return (pt[pte] & ~(0xFFF));
 }
-uint64_t* create_pml4()
-{
-    uint64_t* pml4;
+uint64_t *create_pml4() {
+    uint64_t *pml4;
     pml4 = malloc(8 * BLOCK_SIZE);
     memset(pml4, 0, 8 * BLOCK_SIZE);
 

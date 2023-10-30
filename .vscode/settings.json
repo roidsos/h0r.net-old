@@ -57,7 +57,8 @@
         "ini.h": "c",
         "desh.h": "c",
         "sched.h": "c",
-        "vfs.h": "c"
+        "vfs.h": "c",
+        "fb.h": "c"
     },
     "C_Cpp.dimInactiveRegions": false
 }

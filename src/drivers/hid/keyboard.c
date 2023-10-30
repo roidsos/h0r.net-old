@@ -1,9 +1,9 @@
 #include "keyboard.h"
 #include <arch/x86/PIT.h>
 #include <arch/x86/interrupts/interrupts.h>
+#include <arch/x86/io/portio.h>
 #include <drivers/Memory/Heap.h>
 #include <flanterm.h>
-#include <arch/x86/io/portio.h>
 #include <kernel.h>
 #include <logging/logger.h>
 #include <vendor/printf.h>

@@ -1,10 +1,11 @@
 #include "kernel.h"
 
-#include <klibc/memory.h>
 #include <drivers/Memory/PFA.h>
 #include <init/init.h>
+#include <klibc/memory.h>
 #include <logging/logger.h>
 #include <types/string.h>
+#include <utils/psf2.h>
 #include <vendor/printf.h>
 
 // ===============Limine Requests======================
@@ -71,6 +72,8 @@ void load_limine_modules() {
             load_config(mod);
         } else if (strcmp(mod->path, "/boot/initramfs.tar") == 0) {
             load_initramfs(mod);
+        } else if (strcmp(mod->path, "/boot/kfont.psf") == 0) {
+            data.ft_ctx = init_flanterm_with_psf2_font(mod, data.framebuffer);
         } else {
             log_info("Unknown module \"%s\" found", mod->path);
         }
@@ -91,8 +94,6 @@ void _start(void) {
     init_HW();
     load_limine_modules();
     do_mounts();
-
-    ((int*)0)[0] = 0;
 
     init_sched();
 
