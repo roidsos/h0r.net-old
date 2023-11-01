@@ -1,5 +1,5 @@
 #include "IDT.h"
-#include <logging/logger.h>
+#include <core/logging/logger.h>
 #include <utils/binary.h>
 struct IDT64 {
     uint16_t offset_low;

@@ -1,9 +1,9 @@
 #include "sched.h"
 #include <arch/x86/interrupts/interrupts.h>
+#include <core/kernel.h>
+#include <core/logging/logger.h>
 #include <drivers/Memory/PFA.h>
 #include <drivers/Memory/scubadeeznutz.h>
-#include <kernel.h>
-#include <logging/logger.h>
 #include <types/queue.h>
 #include <types/vector.h>
 

@@ -1,18 +1,18 @@
-#include "keyboard.h"
-#include <arch/x86/PIT.h>
+#include "ps2kb.h"
 #include <arch/x86/interrupts/interrupts.h>
 #include <arch/x86/io/portio.h>
+#include <core/abstraction/timer.h>
+#include <core/kernel.h>
+#include <core/logging/logger.h>
 #include <drivers/Memory/Heap.h>
 #include <flanterm.h>
-#include <kernel.h>
-#include <logging/logger.h>
 #include <vendor/printf.h>
 char *keybuffer;
 int bufindex = 0;
 int getindex = 0;
 bool bufstuck = false;
 
-#include "event-system/event.h"
+#include "core/event-system/event.h"
 #include "key-layout.h"
 
 char visible_ascii[102] = {
@@ -57,7 +57,7 @@ void kb_handler(__attribute__((unused)) Registers *regs) {
     EOI(1);
 }
 
-void initkeyboard() {
+void kb_init() {
     keybuffer = (char *)calloc(128);
     keyboard.shift = false;
     keyboard.capslock = false;
@@ -129,10 +129,10 @@ void getstr(char *buffer, int size) {
         }
         if (idx >= size)
             return;
-        pit_sleep(repeat ? repeat_delay / 10 : repeat_delay);
+        timer_sleep(repeat ? repeat_delay / 10 : repeat_delay);
     } while (!keyboard_key(KEY_ENTER));
     buffer[idx] = 0;
-    pit_sleep(100);
+    timer_sleep(100);
 }
 
 char getch() {

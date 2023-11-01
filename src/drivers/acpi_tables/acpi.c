@@ -1,8 +1,8 @@
 #include "acpi.h"
 #include "madt.h"
+#include <core/kernel.h>
+#include <core/logging/logger.h>
 #include <drivers/Memory/scubadeeznutz.h>
-#include <kernel.h>
-#include <logging/logger.h>
 #include <types/string.h>
 
 struct RSDP *rsdp = NULL;
@@ -11,11 +11,11 @@ struct XSDT *xsdt = NULL;
 
 bool use_xsdt = false;
 
-// NOTE to @lolguy91:
-// You might want to move this macro elsewhere
-#define PHYS_TO_VIRT_HHDM(addr) ((uint64_t)(addr) + (uint64_t)data.hhdm_addr)
+static volatile struct limine_rsdp_request rsdp_request = {
+    .id = LIMINE_RSDP_REQUEST, .revision = 0};
 
-void init_acpi(void *rsdp_addr) {
+void acpi_init() {
+    void *rsdp_addr = rsdp_request.response->address;
     // make sure we're not trying to access a nullptr
     if (rsdp_addr == NULL) {
         log_CRITICAL(NULL, HN_ERR_ACPI_FAULT, "RSDP Address is NULL!");

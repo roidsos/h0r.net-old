@@ -33,8 +33,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "printf.h"
 #include <arch/x86/io/portio.h>
+#include <core/kernel.h>
 #include <flanterm.h>
-#include <kernel.h>
 #include <types/stdtypes.h>
 
 // define this globally (e.g. gcc -DPRINTF_INCLUDE_CONFIG_H ...) to include the

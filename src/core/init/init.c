@@ -1,48 +1,26 @@
-#include <kernel.h>
+#include <core/kernel.h>
 
 #include <drivers/DriverManager.h>
 #include <drivers/Memory/Heap.h>
 #include <drivers/Memory/Memory.h>
 #include <drivers/Memory/PFA.h>
 #include <drivers/Memory/scubadeeznutz.h>
-#include <drivers/io/serial.h>
 
-#include "arch/x86/gdt.h"
-#include <arch/x86/interrupts/interrupts.h>
 #include <backends/fb.h>
 
 #include "flanterm.h"
-#include "utils/error-handling/falut-handler.h"
-#include <arch/x86/PIT.h>
-#include <interface/desh.h>
+#include <core/abstraction/timer.h>
+#include <core/interface/desh.h>
+#include <core/logging/logger.h>
+#include <core/sched/sched.h>
 #include <limine.h>
-#include <logging/logger.h>
 #include <parsing/ini.h>
-#include <sched/sched.h>
 #include <vendor/printf.h>
-
-uint64_t kernel_stack[8192];
 
 // Forward decls for drivers not worth making .h-s for
 void spisr_init();
 
 void init_HW() {
-    // Initialize screen and logger
-    serial_init();
-    logger_set_output(LOGGER_OUTPUT_COM1);
-    log_info("HW_Init Target reached: IO\n");
-
-    // Gather Data
-    get_cpu_capabilities(&data.cpu_info);
-    sys_init_fpu();
-    gdt_init((uint64_t *)kernel_stack);
-    log_info("HW_Init Target reached: CPU\n");
-
-    // initialize interrupts
-    initialize_interrupts();
-    init_falut_handler();
-    log_info("HW_Init Target reached: Interrupts\n");
-
     // Init Memory stuff
     mem_init();
     PFA_init();
@@ -50,7 +28,7 @@ void init_HW() {
     log_info("HW_Init Target reached: Memory\n");
 
     // Init x86 PC specific drivers
-    pit_init();
+    init_hw_timers();
     time_get(&data.time);
     init_drivers();
     spisr_init();
@@ -89,12 +67,9 @@ void syscall_test() {
 int syscall_test_end;
 
 void init_syscall();
-void init_sched() {
+void initsys_start() {
     sched_init();
     init_syscall();
     create_process(init_sys, 0, 0, true);
-    // create_process(syscall_test,
-    //                (size_t)&syscall_test_end - (size_t)&syscall_test, 3,
-    //                false);
     sched_enable();
 }

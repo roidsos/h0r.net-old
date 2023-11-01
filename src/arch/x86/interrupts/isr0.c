@@ -2,7 +2,7 @@
 #include <arch/x86/i8259.h>
 #include <arch/x86/interrupts/interrupts.h>
 #include <arch/x86/io/portio.h>
-#include <logging/logger.h>
+#include <core/logging/logger.h>
 
 void schedule(Registers *regs);
 void pit_int();

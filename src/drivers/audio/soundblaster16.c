@@ -1,7 +1,7 @@
 #include "soundblaster16.h"
+#include <core/logging/logger.h>
 #include <drivers/Memory/Heap.h>
 #include <drivers/Memory/scubadeeznutz.h>
-#include <logging/logger.h>
 #include <stdbool.h>
 #include <vendor/libkrnl-essentials/arch/x86/io/portio.h>
 #include <vendor/libkrnl-essentials/types/string.h>
@@ -43,8 +43,6 @@ void sb_play(int freq) {
         return;
     }
 
-    // Try to enable
-    // Lets pray it works idk
     outb8(0x0A, 5);
     outb8(0X0c, 1);
     outb8(0x0B, 0x49);

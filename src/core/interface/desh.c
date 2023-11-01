@@ -1,18 +1,16 @@
 #include "desh.h"
-#include <VFS/vfs.h>
-#include <arch/x86/PIT.h>
 #include <arch/x86/power.h>
+#include <core/VFS/vfs.h>
+#include <core/abstraction/hwrand.h>
+#include <core/abstraction/timer.h>
+#include <core/kernel.h>
 #include <drivers/Memory/PFA.h>
-#include <drivers/hid/keyboard.h>
+#include <drivers/audio/soundblaster16.h>
+#include <drivers/hid/ps2kb.h>
 #include <drivers/io/pci.h>
-#include <flanterm.h>
-#include <kernel.h>
 #include <klibc/memory.h>
 #include <types/string.h>
 #include <vendor/printf.h>
-
-/* Irresponsible import */
-#include <drivers/audio/soundblaster16.h>
 
 char typedstring[255];
 char currentpath[255];
@@ -41,8 +39,8 @@ void parseCommand(char *command) {
     } else if (strcmp(args[0], "k") == 0) {
         printf("H 0 R N E T\n");
         list_PCI_devices();
-        printf("Current uptime %u secs %u ms\n", pit_get_uptime_secs(),
-               pit_get_uptime_milis());
+        printf("Current uptime %u secs %u ms\n", timer_get_uptime_secs(),
+               timer_get_uptime_milis());
         printf("Total system memory: %llu bytes\n", get_total_RAM());
         printf("Free system memory: %llu bytes\n", get_free_RAM());
         printf("Used system memory: %llu bytes\n", get_used_RAM());
@@ -78,10 +76,6 @@ void parseCommand(char *command) {
             printf("you need to provide a DIRECTORY to change to :P\n");
         } else {
             strcpy(currentpath, path);
-            // struct node* file = vfs_inspect(path);
-            // if(!(file->flags & FLAGS_LOADED)){
-            //     vfs_load_contents(file,path);
-            // }
         }
 
     } else if (strcmp(args[0], "cat") == 0) {
@@ -136,6 +130,8 @@ void parseCommand(char *command) {
         printf("  CPU X-model: %d\n", data.cpu_info.ext_model);
         printf("  CPU Capabilities(EDX): 0x%.8X\n", data.cpu_info.features[0]);
         printf("  CPU Capabilities(ECX): 0x%.8X\n", data.cpu_info.features[1]);
+    } else if (strcmp(args[0], "rand") == 0) {
+        printf("Number: %u\n", rand(HWRAND_SRC_IDC));
     } else {
         printf("No such command as \"%s\" sorry :P\n", args[0]);
     }

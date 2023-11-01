@@ -37,7 +37,7 @@ void Write_(struct PCIDevice self,uint32_t offset,uint32_t value);
 
 bool HasFunction(uint16_t bus, uint16_t device);
 
-void init_PCI();
+void pci_init();
 void list_PCI_devices();
 struct PCIDevice GetDevice(uint16_t bus, uint16_t device, uint16_t function);
 

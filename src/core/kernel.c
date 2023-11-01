@@ -1,9 +1,10 @@
-#include "kernel.h"
+#include "core/kernel.h"
 
+#include <backends/fb.h>
+#include <core/init/init.h>
+#include <core/logging/logger.h>
 #include <drivers/Memory/PFA.h>
-#include <init/init.h>
 #include <klibc/memory.h>
-#include <logging/logger.h>
 #include <types/string.h>
 #include <utils/psf2.h>
 #include <vendor/printf.h>
@@ -16,8 +17,6 @@ static volatile struct limine_memmap_request memmap_request = {
 static volatile struct limine_efi_system_table_request
     efi_system_table_request = {.id = LIMINE_EFI_SYSTEM_TABLE_REQUEST,
                                 .revision = 0};
-static volatile struct limine_rsdp_request rsdp_request = {
-    .id = LIMINE_RSDP_REQUEST, .revision = 0};
 static volatile struct limine_smp_request smp_request = {
     .id = LIMINE_SMP_REQUEST, .revision = 0};
 static volatile struct limine_module_request mod_request = {
@@ -55,8 +54,6 @@ void handle_limine_requests() {
     // Fetch the memory map.
     data.memmap_resp = memmap_request.response;
 
-    data.rsdp = rsdp_request.response->address;
-
     data.hhdm_addr = (void *)hhdm_request.response->offset;
 
     data.smp_resp = smp_request.response;
@@ -69,9 +66,9 @@ void load_limine_modules() {
         struct limine_file *mod = mod_request.response->modules[i];
         if (strcmp(mod->path, "/boot/hornet.conf") == 0) {
             config_found = true;
-            load_config(mod);
+            data.conffile = mod;
         } else if (strcmp(mod->path, "/boot/initramfs.tar") == 0) {
-            load_initramfs(mod);
+            data.initrdfile = mod;
         } else if (strcmp(mod->path, "/boot/kfont.psf") == 0) {
             data.ft_ctx = init_flanterm_with_psf2_font(mod, data.framebuffer);
         } else {
@@ -81,21 +78,27 @@ void load_limine_modules() {
     if (!config_found) {
         log_CRITICAL(NULL, HN_ERR_INVALID_CONF, "No configuration file found");
     }
+
+    if (data.ft_ctx == NULL) {
+        data.ft_ctx = flanterm_fb_simple_init(
+            data.framebuffer->address, data.framebuffer->width,
+            data.framebuffer->height, data.framebuffer->pitch);
+    }
 }
 
 // ================= KERNEL MAIN ============================
 void do_mounts();
 
-void _start(void) {
-    // no unhandled interrupts plzz
-    disable_interrupts();
-
+void main() {
     handle_limine_requests();
-    init_HW();
     load_limine_modules();
+
+    init_HW();
+    load_config(data.conffile);
+    load_initramfs(data.initrdfile);
     do_mounts();
 
-    init_sched();
+    initsys_start();
 
     while (true) {
         __asm__ volatile("hlt");

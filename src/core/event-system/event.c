@@ -1,5 +1,5 @@
 #include "event.h"
-#include <logging/logger.h>
+#include <core/logging/logger.h>
 #include <utils/heapdef.h>
 
 struct event events[255];

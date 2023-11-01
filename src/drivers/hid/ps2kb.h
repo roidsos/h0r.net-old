@@ -38,7 +38,7 @@ extern struct Keyboard keyboard;
 #define keyboard_char(_c) (keyboard.chars[(uint_8) (_c)])
 
 // ============================================================================
-void initkeyboard();
+void kb_init();
 char turn_into_ASCII(uint16_t scancode);
 void getstr(char* buffer,int size);
 char getch();

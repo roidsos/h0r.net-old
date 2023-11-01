@@ -1,5 +1,5 @@
-#include <VFS/vfs.h>
-#include <logging/logger.h>
+#include <core/VFS/vfs.h>
+#include <core/logging/logger.h>
 
 void do_mounts() {
     vfs_mount(0, "/");

@@ -4,29 +4,29 @@
 #include "acpi.h"
 
 struct MADT {
-	struct SDTHeader Header;
-	uint32_t LAPICAddr;
-	uint32_t Flags;
+	struct SDTHeader header;
+	uint32_t lapic_addr;
+	uint32_t flags;
 } __attribute__((packed));
 
 struct APICHeader {
-	uint8_t Type;
-	uint8_t Length;
+	uint8_t type;
+	uint8_t length;
 } __attribute__((packed));
 
 struct LAPICEntry {
-	struct APICHeader Header;
-	uint8_t ACPIProcId;
-	uint8_t APICId;
-	uint32_t Flags;
+	struct APICHeader header;
+	uint8_t ACPI_proc_id;
+	uint8_t APIC_id;
+	uint32_t flags;
 } __attribute__((packed));
 
 struct IOAPICEntry {
-	struct APICHeader Header;
-	uint8_t IOAPICid;
-	uint8_t Reserved;
-	uint32_t IOAPICAddr;
-	uint32_t GSIBase;
+	struct APICHeader header;
+	uint8_t IOAPIC_id;
+	uint8_t reserved;
+	uint32_t IOAPIC_addr;
+	uint32_t GSI_base;
 } __attribute__((packed));
 
 struct APICISO {

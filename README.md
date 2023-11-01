@@ -17,7 +17,7 @@ In case any package is missing please open up an issue!</br>
 ### System
 - [x] GDT
 - [x] IDT
-- [ ] TSS
+- [X] TSS
 - [x] PCI
 - [ ] PCIe
 - [ ] MSI
@@ -26,7 +26,7 @@ In case any package is missing please open up an issue!</br>
 
 ### Memory
 - [x] PMM
-- [ ] VMM (5 and 4 level)
+- [X] VMM (4 level)
 - [x] Heap
 ### ACPI
 - [X] ACPI

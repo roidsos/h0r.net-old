@@ -1,8 +1,8 @@
 #include "error-screen.h"
 #include <arch/x86/interrupts/interrupts.h>
-#include <kernel.h>
+#include <core/kernel.h>
+#include <core/logging/logger.h>
 #include <klibc/memory.h>
-#include <logging/logger.h>
 #include <types/string.h>
 #include <vendor/printf.h>
 

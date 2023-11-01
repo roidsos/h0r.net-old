@@ -14,15 +14,18 @@
 #define LOGGER_OUTPUT_COM7 0x5E8
 #define LOGGER_OUTPUT_COM8 0x4E8 
 
-#define LOGGER_PREFIX_INFO         "[INFO=]"
-#define LOGGER_PREFIX_ERR          "[ERROR]"
-#define LOGGER_PREFIX_WRN          "[WARN=]"
-#define LOGGER_PREFIX_CRITICAL     "[FATAL]"
+#define LOGGER_PREFIX_INFO         "[ INFO ]"
+#define LOGGER_PREFIX_DEBUG        "[ DEBU ]"
+#define LOGGER_PREFIX_ERR          "[ FUCK ]"
+#define LOGGER_PREFIX_WRN          "[ WARN ]"
+#define LOGGER_PREFIX_CRITICAL     "[ CRIT ]"
+
 void logger_set_output(uint16_t ID);
 
 void log_error(char* format,...);
 void log_info(char* format,...);
 void log_warning(char* format,...);
+
 //Note: log_CRITICAL causes KERNEL PANIC
 void log_CRITICAL(Registers* regs,uint8_t error_code,char* format,...);
 #endif

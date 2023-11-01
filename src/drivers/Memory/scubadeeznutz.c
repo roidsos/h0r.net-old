@@ -1,9 +1,9 @@
 #include "scubadeeznutz.h"
 #include <arch/x86/interrupts/interrupts.h>
+#include <core/logging/logger.h>
 #include <drivers/Memory/Heap.h>
 #include <drivers/Memory/PFA.h>
 #include <klibc/memory.h>
-#include <logging/logger.h>
 
 // "hippity hoppity,SCUBA DEEZ NUTZ"
 // https://github.com/luxeos/luxe-kernel-old/

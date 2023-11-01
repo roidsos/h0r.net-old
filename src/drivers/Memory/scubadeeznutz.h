@@ -7,6 +7,10 @@
 #include <types/stdtypes.h>
 #include <types/vector.h>
 #include <limine.h>
+#include <core/kernel.h>
+
+#define BLOCK_SIZE 0x1000
+#define MEM_VIRT_OFF 0xffffffff80000000
 
 #define VIRT_FLAG_PRESENT (1 << 0)
 #define VIRT_FLAG_RW (1 << 1)
@@ -19,16 +23,12 @@
 #define VIRT_FLAGS_MMIO (VIRT_FLAGS_DEFAULT | VIRT_FLAG_CACHE_DISABLE)
 #define VIRT_FLAGS_USERMODE (VIRT_FLAGS_DEFAULT | VIRT_FLAG_USER)
 
-#define BLOCK_SIZE 0x1000
 #define NUM_BLOCKS(num) (((num) + BLOCK_SIZE - 1) / BLOCK_SIZE)
-
-extern struct limine_memmap_response *g_mmap;
-extern struct limine_kernel_address_response *g_kernel_addr;
-
-#define MEM_VIRT_OFF 0xffffffff80000000
 
 #define VIRT_TO_PHYS(a) ((uint64_t)(a)- (uint64_t)MEM_VIRT_OFF)
 #define PHYS_TO_VIRT(a) ((uint64_t)(a)+ (uint64_t)MEM_VIRT_OFF)
+#define PHYS_TO_VIRT_HHDM(addr) ((uint64_t)(addr) + (uint64_t)data.hhdm_addr)
+#define VIRT_TO_PHYS_HHDM(addr) ((uint64_t)(addr) + (uint64_t)data.hhdm_addr)
 
 typedef struct {
 	uint64_t virt_addr;

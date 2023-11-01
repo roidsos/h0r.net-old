@@ -18,6 +18,8 @@ struct KernelData {
     struct tar_contents initramfs;
     void* rsdp;
     void* hhdm_addr;
+    struct limine_file *conffile;
+    struct limine_file *initrdfile;
     struct flanterm_context* ft_ctx;  
 
     struct limine_framebuffer *framebuffer;

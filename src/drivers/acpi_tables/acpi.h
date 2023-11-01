@@ -36,7 +36,7 @@ struct XSDT {
   uint64_t SDTs[];
 };
 
-void init_acpi(void* rsdp);
+void acpi_init();
 void *find_sdt(char *signature);
 
 #endif // __ACPI_H__

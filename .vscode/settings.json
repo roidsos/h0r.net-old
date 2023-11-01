@@ -26,7 +26,7 @@
         "vector.h": "c",
         "logger.h": "c",
         "screen.h": "c",
-        "keyboard.h": "c",
+        "ps2kb.h": "c",
         "*.tcc": "c",
         "idt.h": "c",
         "*.inc": "c",
@@ -58,7 +58,12 @@
         "desh.h": "c",
         "sched.h": "c",
         "vfs.h": "c",
-        "fb.h": "c"
+        "fb.h": "c",
+        "drivermanager.h": "c",
+        "acpi.h": "c",
+        "core/kernel.h": "c",
+        "timer.h": "c",
+        "soundblaster16.h": "c"
     },
     "C_Cpp.dimInactiveRegions": false
 }

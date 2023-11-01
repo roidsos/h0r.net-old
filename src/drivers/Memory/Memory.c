@@ -1,5 +1,5 @@
 #include "Memory.h"
-#include <kernel.h>
+#include <core/kernel.h>
 
 struct limine_memmap_response *internal_memmap;
 

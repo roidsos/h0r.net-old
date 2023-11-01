@@ -1,6 +1,6 @@
 #include "pci.h"
 #include <arch/x86/io/portio.h>
-#include <logging/logger.h>
+#include <core/logging/logger.h>
 #include <vendor/printf.h>
 
 struct PCIDevice devices[2048];
@@ -34,9 +34,7 @@ bool HasFunction(uint16_t bus, uint16_t device) {
     return Read(bus, device, 0, 0x0E) & (1 << 7);
 }
 
-void init_PCI() {
-    // https://wiki.osdev.org/PCI
-    // log_info("PCI Devices: ");
+void pci_init() {
     for (int bus = 0; bus < 8; bus++) {
         for (int device = 0; device < 32; device++) {
             int numfuncs = HasFunction(bus, device) ? 8 : 1;
@@ -45,12 +43,8 @@ void init_PCI() {
                 devices[(bus * 8) + (device * 32) + function] = dev;
 
                 if (dev.vendor_id == 0x0000 || dev.vendor_id == 0xFFFF) {
-                    // printf("nothing\n");
                     continue;
                 }
-
-                // log_info("VendorID: 0x%x ,DeviceID: 0x%x", dev.vendor_id,
-                // dev.device_id);
             }
         }
     }
