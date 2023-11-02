@@ -14,7 +14,6 @@
 #include <core/logging/logger.h>
 #include <core/sched/sched.h>
 #include <limine.h>
-#include <parsing/ini.h>
 #include <vendor/printf.h>
 
 // Forward decls for drivers not worth making .h-s for
@@ -48,19 +47,8 @@ void init_sys() {
         DeshUpdate();
     }
 }
-void load_config(struct limine_file *cfg_file) {
-    // log_info("config file found");
-    __attribute__((unused)) struct parsed_ini config =
-        parse_ini(cfg_file->address);
-}
-
-void tar_init();
-void load_initramfs(struct limine_file *tar_file) {
-    data.initramfs = parse_tar(tar_file->address, tar_file->size);
-    tar_init();
-}
 void syscall_test() {
-    __asm__ volatile("int $0x80");
+    __asm__ volatile("syscall");
     while (true) {
     }
 }
@@ -71,5 +59,8 @@ void initsys_start() {
     sched_init();
     init_syscall();
     create_process(init_sys, 0, 0, true);
+    create_process(syscall_test,
+                   (uint64_t)&syscall_test_end - (uint64_t)syscall_test, 3,
+                   false);
     sched_enable();
 }

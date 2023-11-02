@@ -1,5 +1,5 @@
 #include "arch/x86/gdt.h"
-#include "utils/error-handling/falut-handler.h"
+#include "core/error-handling/falut-handler.h"
 #include <arch/x86/interrupts/interrupts.h>
 #include <core/kernel.h>
 #include <core/logging/logger.h>

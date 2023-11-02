@@ -48,10 +48,9 @@ void handle_limine_requests() {
         data.is_uefi_mode = false; // Not in UEFI mode
     }
 
-    // Fetch the first framebuffer.
+    // Misc shit
     data.framebuffer = framebuffer_request.response->framebuffers[0];
 
-    // Fetch the memory map.
     data.memmap_resp = memmap_request.response;
 
     data.hhdm_addr = (void *)hhdm_request.response->offset;
@@ -85,19 +84,27 @@ void load_limine_modules() {
             data.framebuffer->height, data.framebuffer->pitch);
     }
 }
-
 // ================= KERNEL MAIN ============================
-void do_mounts();
 
+void do_mounts();
+void tar_init();
 void main() {
+    // Limine
     handle_limine_requests();
     load_limine_modules();
 
+    // Hardware
     init_HW();
-    load_config(data.conffile);
-    load_initramfs(data.initrdfile);
+
+    // config and initramfs
+    data.config = parse_ini(data.conffile->address);
+    data.initramfs = parse_tar(data.initrdfile->address, data.initrdfile->size);
+
+    // init the VFS and filesystem drivers
+    tar_init();
     do_mounts();
 
+    // start the init system
     initsys_start();
 
     while (true) {
