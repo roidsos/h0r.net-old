@@ -2,7 +2,6 @@
 #include <arch/x86/i8259.h>
 #include <arch/x86/io/portio.h>
 #include <core/abstraction/timer.h>
-#include <core/logging/logger.h>
 
 void pit_set_divisor(uint16_t divisor) {
     if (divisor < 100)

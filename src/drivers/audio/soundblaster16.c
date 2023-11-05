@@ -1,7 +1,7 @@
 #include "soundblaster16.h"
+#include <core/Memory/Heap.h>
+#include <core/Memory/scubadeeznutz.h>
 #include <core/logging/logger.h>
-#include <drivers/Memory/Heap.h>
-#include <drivers/Memory/scubadeeznutz.h>
 #include <stdbool.h>
 #include <vendor/libkrnl-essentials/arch/x86/io/portio.h>
 #include <vendor/libkrnl-essentials/types/string.h>

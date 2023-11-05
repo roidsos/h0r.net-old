@@ -1,8 +1,8 @@
 #include "acpi.h"
 #include "madt.h"
+#include <core/Memory/scubadeeznutz.h>
 #include <core/kernel.h>
 #include <core/logging/logger.h>
-#include <drivers/Memory/scubadeeznutz.h>
 #include <types/string.h>
 
 struct RSDP *rsdp = NULL;

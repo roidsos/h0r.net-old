@@ -1,8 +1,6 @@
 #include "scubadeeznutz.h"
 #include <arch/x86/interrupts/interrupts.h>
-#include <core/logging/logger.h>
-#include <drivers/Memory/Heap.h>
-#include <drivers/Memory/PFA.h>
+#include <core/Memory/PFA.h>
 #include <klibc/memory.h>
 
 // "hippity hoppity,SCUBA DEEZ NUTZ"
@@ -28,35 +26,35 @@ void _scuba_map(uint64_t *_pml4, uint64_t virt_addr, uint64_t phys_addr,
     uint16_t pml4e = (virt_addr >> 39) & 0x1ff;
     uint64_t *pdpt = (uint64_t *)PHYS_TO_VIRT(_pml4[pml4e] & ~(0xfff));
     if (!(_pml4[pml4e] & VIRT_FLAG_PRESENT)) {
-        pdpt = (uint64_t *)PHYS_TO_VIRT(malloc(8));
-        memset(pdpt, 0, 8);
+        pdpt = (uint64_t *)PHYS_TO_VIRT(request_pages(8));
+        memset(pdpt, 0, 8 * BLOCK_SIZE);
         _pml4[pml4e] = ((VIRT_TO_PHYS(pdpt) & ~(0xfff)) | VIRT_FLAGS_USERMODE);
     }
 
     uint16_t pdpe = (virt_addr >> 30) & 0x1ff;
     uint64_t *pd = (uint64_t *)PHYS_TO_VIRT(pdpt[pdpe] & ~(0xfff));
     if (!(pdpt[pdpe] & VIRT_FLAG_PRESENT)) {
-        pd = (uint64_t *)PHYS_TO_VIRT(malloc(8));
-        memset(pd, 0, 8);
+        pd = (uint64_t *)PHYS_TO_VIRT(request_pages(8));
+        memset(pd, 0, 8 * BLOCK_SIZE);
         pdpt[pdpe] = ((VIRT_TO_PHYS(pd) & ~(0xfff)) | VIRT_FLAGS_USERMODE);
     }
 
     uint16_t pde = (virt_addr >> 21) & 0x1ff;
     uint64_t *pt = (uint64_t *)PHYS_TO_VIRT(pd[pde] & ~(0xfff));
     if (!(pd[pde] & VIRT_FLAG_PRESENT)) {
-        pt = (uint64_t *)PHYS_TO_VIRT(malloc(8));
-        memset(pt, 0, 8);
+        pt = (uint64_t *)PHYS_TO_VIRT(request_pages(8));
+        memset(pt, 0, 8 * BLOCK_SIZE);
         pd[pde] = ((VIRT_TO_PHYS(pt) & ~(0xfff)) | VIRT_FLAGS_USERMODE);
     }
 
     uint16_t pte = (virt_addr >> 12) & 0x1ff;
     pt[pte] = (phys_addr | flags);
 
-    uint64_t cr3;
-    __asm__ volatile("mov %%cr3, %0" : "=r"(cr3));
-    if (cr3 == (uint64_t)(VIRT_TO_PHYS(_pml4))) {
-        __asm__ volatile("invlpg (%0)" ::"b"((void *)virt_addr) : "memory");
-    }
+    // uint64_t cr3;
+    //__asm__ volatile("mov %%cr3, %0" : "=r"(cr3));
+    // if (cr3 == (uint64_t)(VIRT_TO_PHYS(_pml4))) {
+    //     __asm__ volatile("invlpg (%0)" ::"b"((void *)virt_addr) : "memory");
+    // }
 }
 
 void _scuba_unmap(uint64_t *_pml4, uint64_t virt_addr) {
@@ -144,7 +142,7 @@ uint64_t scuba_get_phys_addr(uint64_t *_pml4, uint64_t virt_addr) {
 }
 uint64_t *create_pml4() {
     uint64_t *pml4;
-    pml4 = malloc(8 * BLOCK_SIZE);
+    pml4 = request_pages(8);
     memset(pml4, 0, 8 * BLOCK_SIZE);
 
     return pml4;

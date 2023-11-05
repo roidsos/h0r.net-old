@@ -1,6 +1,5 @@
 #include "pci.h"
 #include <arch/x86/io/portio.h>
-#include <core/logging/logger.h>
 #include <vendor/printf.h>
 
 struct PCIDevice devices[2048];

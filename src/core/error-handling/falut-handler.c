@@ -3,7 +3,12 @@
 #include <core/sched/sched.h>
 extern bool is_sched_active;
 extern uint64_t current_PID;
+extern void *krnlcr3;
+
+volatile uint64_t xhndlr_start;
 void GDT_fault_handler(Registers *regs) {
+    if (is_sched_active)
+        __asm__ volatile("mov %0, %%cr3\r\n" : : "a"(krnlcr3));
     if (is_sched_active) {
         if (current_PID == 0) {
             log_CRITICAL(regs, HN_ERR_GDT_FAULT,
@@ -21,6 +26,8 @@ void GDT_fault_handler(Registers *regs) {
 }
 
 void fucking_halt_handler(Registers *regs) {
+    if (is_sched_active)
+        __asm__ volatile("mov %0, %%cr3\r\n" : : "a"(krnlcr3));
     uint64_t cr2 = 0;
     __asm__ volatile("movq %%cr2, %0\r\n" : "=r"(cr2) :);
     if (is_sched_active) {
@@ -42,6 +49,7 @@ void fucking_halt_handler(Registers *regs) {
     }
     EOI(0xE);
 }
+volatile uint64_t xhndlr_end;
 void init_falut_handler() {
     register_ISR(0xD, GDT_fault_handler);
     register_ISR(0xE, fucking_halt_handler);

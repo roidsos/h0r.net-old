@@ -1,10 +1,11 @@
 #include "desh.h"
 #include <arch/x86/power.h>
+#include <core/Memory/Heap.h>
+#include <core/Memory/PFA.h>
 #include <core/VFS/vfs.h>
 #include <core/abstraction/hwrand.h>
 #include <core/abstraction/timer.h>
 #include <core/kernel.h>
-#include <drivers/Memory/PFA.h>
 #include <drivers/audio/soundblaster16.h>
 #include <drivers/hid/ps2kb.h>
 #include <drivers/io/pci.h>
@@ -23,8 +24,16 @@ void DeshInit() {
 }
 
 void parseCommand(char *command) {
-    char **args = split(command, ' ');
     printf("\n");
+    char *token = strtok(command, " ");
+    char **args = malloc(sizeof(char) * 255);
+    int argCount = 0;
+
+    while (token != NULL) {
+        args[argCount] = token;
+        argCount++;
+        token = strtok(NULL, " ");
+    }
     if (strcmp(args[0], "version") == 0) {
         printf("DEfault SHell v0.00000000000000001 alpha\n");
     } else if (strcmp(args[0], "reboot") == 0) {
@@ -44,7 +53,6 @@ void parseCommand(char *command) {
         printf("Total system memory: %llu bytes\n", get_total_RAM());
         printf("Free system memory: %llu bytes\n", get_free_RAM());
         printf("Used system memory: %llu bytes\n", get_used_RAM());
-        printf("Reserved system memory: %llu bytes\n", get_reserved_RAM());
     } else if (strcmp(args[0], "") == 0) {
 
     } else if (strcmp(args[0], "ls") == 0) {
@@ -135,6 +143,7 @@ void parseCommand(char *command) {
     } else {
         printf("No such command as \"%s\" sorry :P\n", args[0]);
     }
+    free(args);
 }
 
 void DeshUpdate() {

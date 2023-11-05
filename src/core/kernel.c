@@ -1,9 +1,9 @@
 #include "core/kernel.h"
 
 #include <backends/fb.h>
+#include <core/Memory/PFA.h>
 #include <core/init/init.h>
 #include <core/logging/logger.h>
-#include <drivers/Memory/PFA.h>
 #include <klibc/memory.h>
 #include <types/string.h>
 #include <utils/psf2.h>

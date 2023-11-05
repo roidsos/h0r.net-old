@@ -63,7 +63,9 @@
         "acpi.h": "c",
         "core/kernel.h": "c",
         "timer.h": "c",
-        "soundblaster16.h": "c"
+        "soundblaster16.h": "c",
+        "cstdlib": "c",
+        "memory.h": "c"
     },
     "C_Cpp.dimInactiveRegions": false
 }

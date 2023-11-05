@@ -1,10 +1,10 @@
 #include "ps2kb.h"
 #include <arch/x86/interrupts/interrupts.h>
 #include <arch/x86/io/portio.h>
+#include <core/Memory/Heap.h>
 #include <core/abstraction/timer.h>
 #include <core/kernel.h>
 #include <core/logging/logger.h>
-#include <drivers/Memory/Heap.h>
 #include <flanterm.h>
 #include <vendor/printf.h>
 char *keybuffer;
@@ -53,7 +53,7 @@ void kb_handler(__attribute__((unused)) Registers *regs) {
     }
     keyboard.keys[(uint8_t)(scancode & 0x7F)] = KEY_IS_PRESS(scancode);
     keyboard.chars[KEY_CHAR(scancode)] = KEY_IS_PRESS(scancode);
-    call_event(1, &keybuffer[bufindex]);
+    // call_event(1, &keybuffer[bufindex]);
     EOI(1);
 }
 
@@ -72,7 +72,7 @@ void kb_init() {
 
     outb8(PS2_COMMAND, 0xAE);
     outb8(PS2_DATA, 0xf4);
-    create_event(1);
+    // create_event(1);
 }
 
 char turn_into_ASCII(uint16_t scancode) {

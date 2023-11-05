@@ -1,4 +1,5 @@
 #include "PFA.h"
+#include "scubadeeznutz.h"
 #include <core/logging/logger.h>
 
 size_t total_mem = 0;
@@ -8,6 +9,8 @@ size_t reserved_mem = 0;
 size_t highest_block = 0;
 size_t page_bmp_idx = 0;
 
+extern struct limine_memmap_response *internal_memmap;
+
 bool pfa_initialized = false;
 struct Bitmap page_bitmap;
 
@@ -16,6 +19,9 @@ extern size_t kernel_end;
 
 bool lock_page(void *addr) {
     size_t index = (size_t)addr / 4096;
+    if (bitmap_get(page_bitmap, index)) {
+        return true;
+    }
     if (bitmap_set(page_bitmap, index, true)) {
         free_mem -= 4096;
         used_mem += 4096;
@@ -24,9 +30,11 @@ bool lock_page(void *addr) {
         return false;
     }
 }
-
 bool free_page(void *addr) {
     size_t index = (size_t)addr / 4096;
+    if (!bitmap_get(page_bitmap, index)) {
+        return true;
+    }
     if (bitmap_set(page_bitmap, index, false)) {
         free_mem += 4096;
         used_mem -= 4096;
@@ -38,9 +46,11 @@ bool free_page(void *addr) {
         return false;
     }
 }
-
 bool reserve_page(void *addr) {
     size_t index = (size_t)addr / 4096;
+    if (bitmap_get(page_bitmap, index)) {
+        return true;
+    }
     if (bitmap_set(page_bitmap, index, true)) {
         free_mem -= 4096;
         reserved_mem += 4096;
@@ -49,9 +59,11 @@ bool reserve_page(void *addr) {
         return false;
     }
 }
-
 bool unreserve_page(void *addr) {
     size_t index = (size_t)addr / 4096;
+    if (!bitmap_get(page_bitmap, index)) {
+        return true;
+    }
     if (bitmap_set(page_bitmap, index, false)) {
         free_mem += 4096;
         reserved_mem -= 4096;
@@ -63,41 +75,41 @@ bool unreserve_page(void *addr) {
         return false;
     }
 }
-
-void lock_pages(void *addr, size_t num) {
+bool lock_pages(void *addr, size_t num) {
     for (size_t i = 0; i < num; i++) {
         if (!lock_page((void *)((size_t)addr + i * 4096)))
-            break;
+            return false;
     }
+    return true;
 }
-
-void free_pages(void *addr, size_t num) {
+bool free_pages(void *addr, size_t num) {
     for (size_t i = 0; i < num; i++) {
         if (!free_page((void *)((size_t)addr + i * 4096)))
-            break;
+            return false;
     }
+    return true;
 }
-
-void reserve_pages(void *addr, size_t num) {
+bool reserve_pages(void *addr, size_t num) {
     for (size_t i = 0; i < num; i++) {
         if (!reserve_page((void *)((size_t)addr + i * 4096)))
-            break;
+            return false;
     }
+    return true;
 }
-
-void unreserve_pages(void *addr, size_t num) {
+bool unreserve_pages(void *addr, size_t num) {
     for (size_t i = 0; i < num; i++) {
         if (!unreserve_page((void *)((size_t)addr + i * 4096)))
-            break;
+            return false;
     }
+    return true;
 }
+
 size_t get_free_RAM() { return free_mem; }
 size_t get_used_RAM() { return used_mem; }
-size_t get_reserved_RAM() { return reserved_mem; }
 size_t get_total_RAM() { return total_mem; }
-size_t get_highest_block() { return highest_block; }
 
 void *request_page() {
+    size_t last_page_bmp_idx = page_bmp_idx;
     for (; page_bmp_idx < page_bitmap.size * 8; page_bmp_idx++) {
         // Note for Idiots: you do not need == true since it is a stupid bool.
         if (bitmap_get(page_bitmap, page_bmp_idx))
@@ -105,7 +117,10 @@ void *request_page() {
 
         // Means Page Pointer, not dick.
         void *PP = (void *)(page_bmp_idx * 4096);
-        lock_page(PP);
+        if (!lock_page(PP)) {
+            page_bmp_idx = last_page_bmp_idx;
+            return NULL;
+        }
         return PP;
     }
 
@@ -113,36 +128,46 @@ void *request_page() {
     return NULL;
 }
 void *request_pages(int num) {
-    void *start = request_page();
-    lock_pages(start, num);
-    return start;
+    size_t last_page_bmp_idx = page_bmp_idx;
+    for (; page_bmp_idx < page_bitmap.size * 8; page_bmp_idx++) {
+        // Note for Idiots: you do not need == true since it is a stupid bool.
+        if (bitmap_get(page_bitmap, page_bmp_idx))
+            continue;
+
+        // Means Page Pointer, not dick.
+        void *PP = (void *)(page_bmp_idx * 4096);
+        if (!lock_pages(PP, num)) {
+            page_bmp_idx = last_page_bmp_idx;
+            return NULL;
+        }
+        return PP;
+    }
+
+    log_CRITICAL(NULL, HN_ERR_OUT_OF_MEM, "Out of Memory");
+    return NULL;
 }
 
 void PFA_init() {
-    struct limine_memmap_response *memmap = get_internal_memmmap();
     page_bmp_idx = 0;
     if (pfa_initialized)
         return;
 
+    internal_memmap = data.memmap_resp;
     // Get Largest Free Segment
     void *largest_free_memseg = NULL;
     size_t largest_free_memseg_size = 0;
-    for (size_t i = 0; i < memmap->entry_count; i++) {
-        struct limine_memmap_entry *desc = memmap->entries[i];
+    size_t bitmap_size = 0;
+    for (size_t i = 0; i < internal_memmap->entry_count; i++) {
+        struct limine_memmap_entry *desc = internal_memmap->entries[i];
         if (desc->type == LIMINE_MEMMAP_USABLE &&
             desc->length > largest_free_memseg_size) {
-            largest_free_memseg = (void *)desc->base;
+            largest_free_memseg = (void *)(desc->base);
             largest_free_memseg_size = desc->length;
+            total_mem += desc->length;
         }
-        uint64_t new_limit = desc->base + desc->length;
-
-        if (new_limit > highest_block) {
-            highest_block = new_limit;
-        }
+        bitmap_size += (desc->length / (4096 * 8)) + 1;
     }
-    total_mem = CalculateTotalMemorySize();
     free_mem = total_mem;
-    size_t bitmap_size = (total_mem / 4096 / 8) + 1;
 
     if (bitmap_size > largest_free_memseg_size)
         log_CRITICAL(NULL, HN_ERR_OUT_OF_MEM,
@@ -161,8 +186,8 @@ void PFA_init() {
 
     // Reserve Non-Usable Memory
     reserve_page((void *)0); // reserve first page
-    for (size_t i = 0; i < memmap->entry_count; i++) {
-        struct limine_memmap_entry *desc = memmap->entries[i];
+    for (size_t i = 0; i < internal_memmap->entry_count; i++) {
+        struct limine_memmap_entry *desc = internal_memmap->entries[i];
         if (desc->type != LIMINE_MEMMAP_USABLE) {
             // log_info("%i 0x%x 0x%x",i,desc->base,desc->length / 4096 + 1);
             reserve_pages((void *)desc->base, desc->length / 4096 + 1);
