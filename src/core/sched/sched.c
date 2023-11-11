@@ -6,13 +6,6 @@
 #include <types/queue.h>
 #include <types/vector.h>
 
-typedef struct {
-    Registers status;
-    uint8_t pl_and_flags;
-    uint8_t deadlysignal;
-    void *cr3;
-} process_t;
-
 #define DS_SIGKILL 1
 
 extern uint64_t xhndlr_start;
@@ -70,6 +63,13 @@ void kill_process(uint64_t ID) {
     processes.data[ID].deadlysignal = DS_SIGKILL;
 }
 
+uint64_t sched_add_process(process_t newproc){
+    vector_push_back(&processes, newproc);
+    queue_add(process_queue, processes.len - 1);
+
+    return processes.len - 1;
+};
+
 uint64_t create_process(void (*process_main)(),
                         __attribute__((unused)) uint64_t prog_size,
                         uint8_t pl_and_flags, bool krnl_mode) {
@@ -77,14 +77,13 @@ uint64_t create_process(void (*process_main)(),
     newproc.pl_and_flags = pl_and_flags;
     // instruction and stack pointers
     newproc.status.rip = (uint64_t)process_main;
-    newproc.status.rsp = (uint64_t)request_pages(16);
+    newproc.status.rsp = (uint64_t)request_pages(4);
 
     // page table
     if (krnl_mode) {
         __asm__ volatile("movq %%cr3, %0\r\n" : "=r"(newproc.cr3) :);
     } else {
-        void *newcr3;
-        newcr3 = (void *)VIRT_TO_PHYS(create_pml4());
+        void *newcr3 = create_pml4();
         scuba_map(newcr3, (uint64_t)&xhndlr_start, VIRT_TO_PHYS(&xhndlr_start),
                   NUM_BLOCKS((uint64_t)&xhndlr_end - (uint64_t)&xhndlr_start),
                   VIRT_FLAGS_DEFAULT);
@@ -97,7 +96,7 @@ uint64_t create_process(void (*process_main)(),
                              (uint64_t)&sched_next_process),
                   VIRT_FLAGS_DEFAULT);
         scuba_map(newcr3, newproc.status.rsp, VIRT_TO_PHYS(newproc.status.rsp),
-                  16, VIRT_FLAGS_USERMODE);
+                  4, VIRT_FLAGS_USERMODE);
         scuba_map(newcr3, (uint64_t)process_main, VIRT_TO_PHYS(process_main),
                   NUM_BLOCKS(prog_size), VIRT_FLAGS_USERMODE);
         newproc.cr3 = (void *)VIRT_TO_PHYS_HHDM(PHYS_TO_VIRT(newcr3));
@@ -119,8 +118,5 @@ uint64_t create_process(void (*process_main)(),
         newproc.status.ss = 0x40;
     }
 
-    vector_push_back(&processes, newproc);
-    queue_add(process_queue, processes.len - 1);
-
-    return processes.len - 1;
+    return sched_add_process(newproc);
 }

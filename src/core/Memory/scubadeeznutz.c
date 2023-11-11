@@ -50,11 +50,11 @@ void _scuba_map(uint64_t *_pml4, uint64_t virt_addr, uint64_t phys_addr,
     uint16_t pte = (virt_addr >> 12) & 0x1ff;
     pt[pte] = (phys_addr | flags);
 
-    // uint64_t cr3;
-    //__asm__ volatile("mov %%cr3, %0" : "=r"(cr3));
-    // if (cr3 == (uint64_t)(VIRT_TO_PHYS(_pml4))) {
-    //     __asm__ volatile("invlpg (%0)" ::"b"((void *)virt_addr) : "memory");
-    // }
+    uint64_t cr3;
+    __asm__ volatile("mov %%cr3, %0" : "=r"(cr3));
+    if (cr3 == (uint64_t)(VIRT_TO_PHYS(_pml4))) {
+        __asm__ volatile("invlpg (%0)" ::"b"((void *)virt_addr) : "memory");
+    }
 }
 
 void _scuba_unmap(uint64_t *_pml4, uint64_t virt_addr) {
@@ -116,33 +116,9 @@ void _scuba_unmap(uint64_t *_pml4, uint64_t virt_addr) {
     _pml4[pml4e] = 0;
     free_pages((void *)VIRT_TO_PHYS(pdpt), 8);
 }
-
-uint64_t scuba_get_phys_addr(uint64_t *_pml4, uint64_t virt_addr) {
-
-    uint16_t pml4e = (virt_addr >> 39) & 0x1ff;
-    if (!(_pml4[pml4e] & VIRT_FLAG_PRESENT))
-        return (uint64_t)NULL;
-
-    uint64_t *pdpt = (uint64_t *)PHYS_TO_VIRT(_pml4[pml4e] & ~(0x1ff));
-    uint16_t pdpe = (virt_addr >> 30) & 0x1ff;
-    if (!(pdpt[pdpe] & VIRT_FLAG_PRESENT))
-        return (uint64_t)NULL;
-
-    uint64_t *pd = (uint64_t *)PHYS_TO_VIRT(pdpt[pdpe] & ~(0x1ff));
-    uint16_t pde = (virt_addr >> 21) & 0x1ff;
-    if (!(pd[pde] & VIRT_FLAG_PRESENT))
-        return (uint64_t)NULL;
-
-    uint64_t *pt = (uint64_t *)PHYS_TO_VIRT(pd[pde] & ~(0x1ff));
-    uint16_t pte = (virt_addr >> 12) & 0x1ff;
-    if (!(pt[pte] & VIRT_FLAG_PRESENT))
-        return (uint64_t)NULL;
-
-    return (pt[pte] & ~(0xFFF));
-}
-uint64_t *create_pml4() {
-    uint64_t *pml4;
-    pml4 = request_pages(8);
+void *create_pml4() {
+    void *pml4;
+    pml4 = (void*)VIRT_TO_PHYS(request_pages(8));
     memset(pml4, 0, 8 * BLOCK_SIZE);
 
     return pml4;

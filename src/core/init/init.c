@@ -9,7 +9,10 @@
 #include <core/interface/desh.h>
 #include <core/logging/logger.h>
 #include <core/sched/sched.h>
+#include <core/VFS/vfs.h>
+#include <types/string.h>
 #include <vendor/printf.h>
+#include <elf.h>
 
 // Forward decls for drivers not worth making .h-s for
 void spisr_init();
@@ -28,32 +31,40 @@ void init_HW() {
 
     enable_interrupts();
 }
+void run_elf(char* path){
+    struct file_buffer torun = vfs_read(path,0,vfs_inspect(path)->ext.ext_file.size);
+
+    Elf64_Ehdr* hdr = (Elf64_Ehdr*)torun.data;
+
+    if(strncmp((char*)hdr->e_ident,ELFMAG,SELFMAG) != 0||
+        hdr->e_ident[EI_CLASS] != ELFCLASS64 ||
+        hdr->e_ident[EI_VERSION] != EV_CURRENT ||
+        hdr->e_ident[EI_OSABI] != ELFOSABI_NONE ||
+        hdr->e_machine != EM_X86_64 ||
+        hdr->e_entry == 0){
+        log_CRITICAL(NULL,HN_ERR_UNIMPLEMENTED,"bad elf");
+    }
+
+    Elf64_Phdr* phdr = (Elf64_Phdr*)(torun.data + hdr->e_phoff + sizeof(Elf64_Phdr));//TODO: this is a hack, make it proper
+    void (*prog)() = (void (*)())(torun.data + phdr->p_offset + (hdr->e_entry - phdr->p_vaddr));
+    prog();
+}
 
 void init_sys() {
     printf("Date: %02d/%02d/%d\n", data.time.month, data.time.day_of_month,
            data.time.year);
     printf("Time: %02d:%02d:%02d\n", data.time.hours, data.time.minutes,
            data.time.seconds);
-    DeshInit();
+    
+    run_elf("/bin/test");
 
-    while (true) {
-        DeshUpdate();
-    }
+    log_CRITICAL(NULL,HN_ERR_UNIMPLEMENTED,"Bruh");
 }
-void syscall_test() {
-    __asm__ volatile("int $0x80");
-    while (true) {
-    }
-}
-int syscall_test_end;
 
 void init_syscall();
 void initsys_start() {
     sched_init();
     init_syscall();
     create_process(init_sys, 0, 0, true);
-    // create_process(syscall_test,
-    //                (uint64_t)&syscall_test_end - (uint64_t)syscall_test, 0,
-    //                false);
     sched_enable();
 }
