@@ -1,11 +1,9 @@
 
 # h0r.net
-an open-source kernel(rewrite version)</br>
-discord: [https://discord.gg/h0r.net](https://discord.gg/hcg9F7hhEM)</br>
+an open-source kernel</br>
 
 ## What is h0r.net?
-h0r.net is a W.I.P. kernel witch is non-profit and open source.</br>
-the h0r.net project was started just for fun, but Im planning to use it.</br>
+why do you care? it is litterally insignificant
 ## How to get it running?
 ### On Arch Linux and similar:
   Install packages from aur: [x86_64-elf-gcc](https://aur.archlinux.org/packages/x86_64-elf-gcc) [x86_64-elf-binutils](https://aur.archlinux.org/packages/x86_64-elf-binutils)</br>
