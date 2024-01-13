@@ -7,9 +7,8 @@ extern void *krnlcr3;
 
 volatile uint64_t xhndlr_start;
 void GDT_fault_handler(Registers *regs) {
-    if (is_sched_active)
-        __asm__ volatile("mov %0, %%cr3\r\n" : : "a"(krnlcr3));
     if (is_sched_active) {
+        __asm__ volatile("mov %0, %%cr3\r\n" : : "a"(krnlcr3));
         if (current_PID == 0) {
             log_CRITICAL(regs, HN_ERR_GDT_FAULT,
                          "General Protection fault in Init System");

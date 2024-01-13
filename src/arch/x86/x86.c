@@ -30,5 +30,5 @@ void _start(void) {
 
     disable_interrupts();
     log_CRITICAL(NULL, HN_ERR_UNIMPLEMENTED,
-                 "Out of bounds execution(arch x86_start func)");
+                 "Out of bounds execution(arch x86 _start func)");
 }
