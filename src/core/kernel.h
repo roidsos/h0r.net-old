@@ -7,14 +7,20 @@
 #include <types/stdtypes.h>
 #include "flanterm.h"
 
+
 // Struct to hold globals
-struct KernelData {
+struct HN_data_block {
+    // kernel version
+    uint16_t kernel_ver_major;
+    uint16_t kernel_ver_minor;
+    uint16_t kernel_ver_patch;
+
     //System info
     void *efi_system_table_address;
     bool is_uefi_mode;
     CPUInfo cpu_info;
 
-    //UEFI shit
+    //ACPI shit
     void* rsdp;
     void* hhdm_addr;
     
@@ -28,5 +34,5 @@ struct KernelData {
     struct limine_kernel_address_response *ka_resp;
 };
 
-extern struct KernelData data;
+extern struct HN_data_block data;
 #endif

@@ -1,4 +1,5 @@
-#include "core/kernel.h"
+#include "kernel.h"
+#include "config.h"
 
 #include <backends/fb.h>
 #include <utils/psf2.h>
@@ -23,41 +24,10 @@ static volatile struct limine_hhdm_request hhdm_request = {
 static volatile struct limine_kernel_address_request ka_request = {
     .id = LIMINE_KERNEL_ADDRESS_REQUEST, .revision = 0};
 
-struct KernelData data;
+struct HN_data_block data;
 
+// ===============Initialization Functions======================
 
-void handle_limine_requests() {
-    //// Ensure we got a framebuffer.
-    if (framebuffer_request.response == NULL ||
-        framebuffer_request.response->framebuffer_count < 1) {
-        hcf();
-    }
-
-    //// Ensure we got a memmap.
-    if (framebuffer_request.response == NULL) {
-        hcf();
-    }
-
-    // Check if we got an EFI system table
-    if (efi_system_table_request.response != NULL) {
-        data.efi_system_table_address =
-            efi_system_table_request.response->address;
-        data.is_uefi_mode = true; // We are in UEFI mode
-    } else {
-        data.is_uefi_mode = false; // Not in UEFI mode
-    }
-
-    // Misc shit
-    data.framebuffer = framebuffer_request.response->framebuffers[0];
-
-    data.memmap_resp = memmap_request.response;
-
-    data.hhdm_addr = (void *)hhdm_request.response->offset;
-
-    data.smp_resp = smp_request.response;
-
-    data.ka_resp = ka_request.response;
-}
 void load_limine_modules() {
     bool config_found = false;
     for (size_t i = 0; i < mod_request.response->module_count; i++) {
@@ -78,16 +48,43 @@ void load_limine_modules() {
             data.framebuffer->height, data.framebuffer->pitch);
     }
 }
-// ================= KERNEL MAIN ============================
 
-void do_mounts();
-void tar_init();
+void initialize_globals() {
+    // Set kernel version
+    data.kernel_ver_major = KERNEL_VER_MAJOR;
+    data.kernel_ver_minor = KERNEL_VER_MINOR;
+    data.kernel_ver_patch = KERNEL_VER_PATCH;
+
+    // Limine stuff
+    if (framebuffer_request.response == NULL ||
+        framebuffer_request.response->framebuffer_count < 1) {
+        hcf();
+    }
+    if (framebuffer_request.response == NULL) {
+        hcf();
+    }
+    if (efi_system_table_request.response != NULL) {
+        data.efi_system_table_address =
+            efi_system_table_request.response->address;
+        data.is_uefi_mode = true; // We are in UEFI mode
+    } else {
+        data.is_uefi_mode = false; // Not in UEFI mode
+    }
+    data.framebuffer = framebuffer_request.response->framebuffers[0];
+    data.memmap_resp = memmap_request.response;
+    data.hhdm_addr = (void *)hhdm_request.response->offset;
+    data.smp_resp = smp_request.response;
+    data.ka_resp = ka_request.response;
+    load_limine_modules();
+}
+
+
 void main() {
     // Limine
-    handle_limine_requests();
-    load_limine_modules();
+    initialize_globals();
 
-    printf("Hello, World!\n");
+    printf("Hello, World! from h0r.net v%u.%u.%u\n",
+            data.kernel_ver_major, data.kernel_ver_minor, data.kernel_ver_patch);
 
     while (true) {
         __asm__ volatile("hlt");
