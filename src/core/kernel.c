@@ -1,13 +1,10 @@
 #include "core/kernel.h"
 
 #include <backends/fb.h>
-#include <core/Memory/PFA.h>
-#include <core/init/init.h>
-#include <core/logging/logger.h>
-#include <klibc/memory.h>
-#include <types/string.h>
 #include <utils/psf2.h>
 #include <vendor/printf.h>
+#include <types/string.h>
+#include <klibc/stdlib.h>
 
 // ===============Limine Requests======================
 static volatile struct limine_framebuffer_request framebuffer_request = {
@@ -27,6 +24,8 @@ static volatile struct limine_kernel_address_request ka_request = {
     .id = LIMINE_KERNEL_ADDRESS_REQUEST, .revision = 0};
 
 struct KernelData data;
+
+
 void handle_limine_requests() {
     //// Ensure we got a framebuffer.
     if (framebuffer_request.response == NULL ||
@@ -63,19 +62,14 @@ void load_limine_modules() {
     bool config_found = false;
     for (size_t i = 0; i < mod_request.response->module_count; i++) {
         struct limine_file *mod = mod_request.response->modules[i];
-        if (strcmp(mod->path, "/boot/hornet.conf") == 0) {
-            config_found = true;
-            data.conffile = mod;
-        } else if (strcmp(mod->path, "/boot/initramfs.tar") == 0) {
-            data.initrdfile = mod;
-        } else if (strcmp(mod->path, "/boot/kfont.psf") == 0) {
+        if (strcmp(mod->path, "/boot/kfont.psf") == 0) {
             data.ft_ctx = init_flanterm_with_psf2_font(mod, data.framebuffer);
         } else {
-            log_info("Unknown module \"%s\" found", mod->path);
+            dprintf("Unknown module \"%s\" found", mod->path);
         }
     }
     if (!config_found) {
-        log_CRITICAL(NULL, HN_ERR_INVALID_CONF, "No configuration file found");
+        dprintf("No config found\n");
     }
 
     if (data.ft_ctx == NULL) {
@@ -93,19 +87,7 @@ void main() {
     handle_limine_requests();
     load_limine_modules();
 
-    // Hardware
-    init_HW();
-
-    // config and initramfs
-    data.config = parse_ini(data.conffile->address);
-    data.initramfs = parse_tar(data.initrdfile->address, data.initrdfile->size);
-
-    // init the VFS and filesystem drivers
-    tar_init();
-    do_mounts();
-
-    // start the init system
-    initsys_start();
+    printf("Hello, World!\n");
 
     while (true) {
         __asm__ volatile("hlt");

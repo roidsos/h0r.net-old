@@ -1,9 +1,7 @@
 #include <arch/x86/i8259.h>
 #include <arch/x86/interrupts/IDT.h>
 #include <arch/x86/interrupts/ISR.h>
-#include <core/Memory/PFA.h>
-#include <core/logging/logger.h>
-
+#include <vendor/printf.h>
 void ISR0();
 void ISR1();
 void ISR2();
@@ -270,7 +268,7 @@ void ISR_Handler(Registers *regs) {
     if (ISRHandlers[regs->interrupt] != 0) {
         ISRHandlers[regs->interrupt](regs);
     } else {
-        log_warning("ISR Handler #%i used while not present", regs->interrupt);
+        dprintf("ISR Handler #%i used while not present", regs->interrupt);
     }
 
     i8259_SendEndOfInterrupt(regs->interrupt);
