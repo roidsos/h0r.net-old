@@ -24,5 +24,6 @@ void _start(void) {
     main();
 
     dprintf("KErnel main function returned!!!!\n");
-    while (true);
+    while (true)
+        ;
 }

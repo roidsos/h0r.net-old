@@ -2,10 +2,10 @@
 #include "config.h"
 
 #include <backends/fb.h>
+#include <klibc/stdlib.h>
+#include <types/string.h>
 #include <utils/psf2.h>
 #include <vendor/printf.h>
-#include <types/string.h>
-#include <klibc/stdlib.h>
 
 // ===============Limine Requests======================
 static volatile struct limine_framebuffer_request framebuffer_request = {
@@ -78,13 +78,12 @@ void initialize_globals() {
     load_limine_modules();
 }
 
-
 void main() {
     // Limine
     initialize_globals();
 
-    printf("Hello, World! from h0r.net v%u.%u.%u\n",
-            data.kernel_ver_major, data.kernel_ver_minor, data.kernel_ver_patch);
+    printf("Hello, World! from h0r.net v%u.%u.%u\n", data.kernel_ver_major,
+           data.kernel_ver_minor, data.kernel_ver_patch);
 
     while (true) {
         __asm__ volatile("hlt");
