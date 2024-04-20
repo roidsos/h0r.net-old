@@ -1,4 +1,4 @@
-#include <arch/x86/io/portio.h>
+#include <arch/x86_64/io/portio.h>
 
 // "good artists borrow, great artists steal"
 // https://github.com/nanobyte-dev/nanobyte_os/

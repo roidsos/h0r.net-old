@@ -1,5 +1,5 @@
-#include "arch/x86/gdt.h"
-#include <arch/x86/interrupts/interrupts.h>
+#include "arch/x86_64/gdt.h"
+#include <arch/x86_64/interrupts/interrupts.h>
 #include <core/kernel.h>
 #include <vendor/printf.h>
 uint64_t kernel_stack[8192];

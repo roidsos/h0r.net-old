@@ -32,7 +32,7 @@
 // Note: Edited
 ///////////////////////////////////////////////////////////////////////////////
 #include "printf.h"
-#include <arch/x86/io/portio.h>
+#include <arch/x86_64/io/portio.h>
 #include <core/kernel.h>
 #include <flanterm.h>
 #include <types/stdtypes.h>

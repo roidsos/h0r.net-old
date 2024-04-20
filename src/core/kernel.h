@@ -1,7 +1,7 @@
 #ifndef KERNEL_H
 #define KERNEL_H
 
-#include "arch/x86/cpu.h"
+#include "arch/x86_64/cpu.h"
 
 #include "limine.h"
 #include <types/stdtypes.h>

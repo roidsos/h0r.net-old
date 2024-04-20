@@ -1,7 +1,7 @@
 #include "interrupts.h"
-#include <arch/x86/i8259.h>
-#include <arch/x86/interrupts/IDT.h>
-#include <arch/x86/io/portio.h>
+#include <arch/x86_64/i8259.h>
+#include <arch/x86_64/interrupts/IDT.h>
+#include <arch/x86_64/io/portio.h>
 
 void initialize_interrupts() {
     init_ISR();

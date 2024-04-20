@@ -1,6 +1,6 @@
-#include <arch/x86/i8259.h>
-#include <arch/x86/interrupts/IDT.h>
-#include <arch/x86/interrupts/ISR.h>
+#include <arch/x86_64/i8259.h>
+#include <arch/x86_64/interrupts/IDT.h>
+#include <arch/x86_64/interrupts/ISR.h>
 #include <vendor/printf.h>
 void ISR0();
 void ISR1();
