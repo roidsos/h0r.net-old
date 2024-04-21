@@ -1,12 +1,14 @@
 #include "kernel.h"
 #include "config.h"
 
+#include <arch/x86_64/pager.h>
+
+#include <vendor/printf.h>
 #include <backends/fb.h>
+#include <utils/psf2.h>
+
 #include <klibc/stdlib.h>
 #include <types/string.h>
-#include <utils/psf2.h>
-#include <vendor/printf.h>
-#include <arch/x86_64/pager.h>
 
 // ===============Limine Requests======================
 static volatile struct limine_framebuffer_request framebuffer_request = {
@@ -80,25 +82,24 @@ void initialize_globals() {
 }
 
 void main() {
-    // Limine
     initialize_globals();
 
     printf("Hello, World! from h0r.net v%u.%u.%u\n", data.kernel_ver_major,
            data.kernel_ver_minor, data.kernel_ver_patch);
 
-    uint64_t pml4 = get_pagetable();
+    uint64_t pml4 = get_pagetable() + (uint64_t)data.hhdm_addr;
+    uint64_t first_page = *(uint64_t *)pml4;
     printf("Limine-given PML4: 0x%p\n", pml4);
-    uint64_t first_page = *(uint64_t *)(pml4 + data.hhdm_addr);
     printf("\nFirst page: \n");
-    printf("  -Full Value: 0x%p\n", first_page);
-    printf("  -Present bit: %d\n", (first_page & BITMASK_L4_PRESENT) != 0);
-    printf("  -Writable bit: %d\n", (first_page & BITMASK_L4_WRITABLE) != 0);
-    printf("  -User accesible bit: %d\n", (first_page & BITMASK_L4_USER) != 0);
-    printf("  -Write through bit: %d\n", (first_page & BITMASK_L4_WRITE_THROUGH) != 0);
-    printf("  -Cache disable bit: %d\n", (first_page & BITMASK_L4_CACHE_DISABLE) != 0);
-    printf("  -Page size bit: %d\n", (first_page & BITMASK_L4_PAGE_SIZE) != 0);
-    printf("  -Address: 0x%p\n", (void *)(first_page & BITMASK_L4_ADDR));
-
+    printf("    -Full Value: 0x%p\n", first_page);
+    printf("    -Present bit: %d\n", (first_page & BITMASK_L4_PRESENT) != 0);
+    printf("    -Writable bit: %d\n", (first_page & BITMASK_L4_WRITABLE) != 0);
+    printf("    -User accesible bit: %d\n", (first_page & BITMASK_L4_USER) != 0);
+    printf("    -Write through bit: %d\n", (first_page & BITMASK_L4_WRITE_THROUGH) != 0);
+    printf("    -Cache disable bit: %d\n", (first_page & BITMASK_L4_CACHE_DISABLE) != 0);
+    printf("    -Page size bit: %d\n", (first_page & BITMASK_L4_PAGE_SIZE) != 0);
+    printf("    -Address: 0x%p\n", (void *)(first_page & BITMASK_L4_ADDR));
+    printf("nullptr pysical addr:%x\n", virt_to_phys(0xfffffff800000000,pml4));
 
 
     while (true) {
