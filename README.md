@@ -1,6 +1,6 @@
 
 # h0r.net
-an open-source kernel</br>
+A kernel IDK
 
 ## What is h0r.net?
 why do you care? it is litterally insignificant

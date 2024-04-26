@@ -29,15 +29,15 @@ runuefi: all
 	qemu-system-x86_64-cdrom os.iso -m 256M -serial file:hornet.log -drive if=pflash,format=raw,unit=0,file="OVMFbin/OVMF_CODE-pure-efi.fd",readonly=on -drive if=pflash,format=raw,unit=1,file="OVMFbin/OVMF_VARS-pure-efi.fd"
 debug: all
 # standard qemu debug
-	qemu-system-x86_64 -no-reboot -serial file:hornet.log -d int -no-shutdown -cdrom os.iso -m 256M
+	qemu-system-x86_64 -no-reboot -debugcon stdio -d int -no-shutdown -cdrom os.iso -m 256M
 
 debugr: all
 #remote debug using GDB
-	qemu-system-x86_64 -s -S -no-reboot -serial file:hornet.log -monitor stdio -d int -no-shutdown -cdrom os.iso -m 256M 
+	qemu-system-x86_64 -s -S -no-reboot -serial stdio -monitor stdio -d int -no-shutdown -cdrom os.iso -m 256M 
 
 debugruefi: all
 #remote debug using GDB
-	qemu-system-x86_64 -s -S -no-reboot -serial file:hornet.log -monitor stdio -d int -no-shutdown -cdrom os.iso -m 256M -drive if=pflash,format=raw,unit=0,file="OVMFbin/OVMF_CODE-pure-efi.fd",readonly=on -drive if=pflash,format=raw,unit=1,file="OVMFbin/OVMF_VARS-pure-efi.fd"
+	qemu-system-x86_64 -s -S -no-reboot -serial stdio -monitor stdio -d int -no-shutdown -cdrom os.iso -m 256M -drive if=pflash,format=raw,unit=0,file="OVMFbin/OVMF_CODE-pure-efi.fd",readonly=on -drive if=pflash,format=raw,unit=1,file="OVMFbin/OVMF_VARS-pure-efi.fd"
 clean:
 # JUST DELETES JUNK LIKE OBJECT FILES - fuck capslock
 	make -C src clean

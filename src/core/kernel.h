@@ -22,12 +22,12 @@ struct HN_data_block {
 
     //ACPI shit
     void* rsdp;
-    void* hhdm_addr;
-    
+    void* hhdm_off;
+
     //kterm shit
     struct flanterm_context* ft_ctx;  
     struct limine_framebuffer *framebuffer;
-    
+
     //limine requests
     struct limine_memmap_response *memmap_resp;
     struct limine_smp_response *smp_resp;

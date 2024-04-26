@@ -33,7 +33,7 @@ uint64_t virt_to_phys(uint64_t vaddr,uint64_t pml4){
         return 0;
     }
 
-    return ((pml3[pml3index] & ~0xFFF) + ((uint64_t)vaddr & 0xFFF));
+    return ((pml3[pml3index] & ~0xFFF) | ((uint64_t)vaddr & 0xFFF));
 }
 uint64_t phys_to_virt(UNUSED uint64_t paddr,UNUSED uint64_t pml4){
     return 0;
