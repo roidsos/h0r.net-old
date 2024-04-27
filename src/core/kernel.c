@@ -98,11 +98,7 @@ void main() {
     if (!locate_rsdt()) {
         trigger_psod(HN_ERR_NO_ACPI, "you FUCKING dinosaur");
     }
-
-    sdt_header *ass = find_thingy("APIC");
-
-    printf("%c%c%c%c", ass->signature[0], ass->signature[1], ass->signature[2],
-           ass->signature[3]);
+    trigger_psod(HN_ERR_NO_ACPI, "fuck you");
 
     while (true) {
         __asm__ volatile("hlt");

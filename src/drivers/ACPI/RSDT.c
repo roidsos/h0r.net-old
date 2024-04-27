@@ -32,7 +32,6 @@ sdt_header *find_thingy(char *signature) {
         int entries = (xsdt->h.length - sizeof(xsdt->h)) / 8;
 
         for (int i = 0; i < entries; i++) {
-            dprintf("%u\n", i);
             sdt_header *h =
                 (sdt_header *)(uintptr_t)PHYS_TO_VIRT(xsdt->SDTs[i]);
             if (!strncmp(h->signature, signature, 4))
@@ -43,8 +42,6 @@ sdt_header *find_thingy(char *signature) {
         int entries = (rsdt->h.length - sizeof(rsdt->h)) / 4;
 
         for (int i = 0; i < entries; i++) {
-            dprintf("%u\n", i);
-            dprintf("%p", rsdt->SDTs);
             sdt_header *h =
                 (sdt_header *)(uintptr_t)PHYS_TO_VIRT(rsdt->SDTs[i]);
             if (!strncmp(h->signature, signature, 4))
