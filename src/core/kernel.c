@@ -1,12 +1,15 @@
 #include "kernel.h"
 #include "config.h"
 
-#include <vendor/printf.h>
 #include <backends/fb.h>
 #include <utils/psf2.h>
+#include <vendor/printf.h>
 
-#include <utils/error.h>
+#include <arch/x86_64/interrupts/interrupts.h>
+#include <drivers/ACPI/RSDT.h>
+
 #include <klibc/stdlib.h>
+#include <utils/error.h>
 
 #include <klibc/string.h>
 
@@ -65,9 +68,9 @@ void initialize_globals() {
     if (efi_system_table_request.response != NULL) {
         data.efi_system_table_address =
             efi_system_table_request.response->address;
-        data.is_uefi_mode = true; // We are in UEFI mode
+        data.is_uefi_mode = true;
     } else {
-        data.is_uefi_mode = false; // Not in UEFI mode
+        data.is_uefi_mode = false;
     }
     data.framebuffer = framebuffer_request.response->framebuffers[0];
     data.memmap_resp = memmap_request.response;
@@ -76,14 +79,30 @@ void initialize_globals() {
     data.ka_resp = ka_request.response;
     load_limine_modules();
 }
+void falut_handler(UNUSED Registers *regs) {
+    uint64_t cr2 = 0;
+    __asm__ volatile("movq %%cr2, %0\r\n" : "=r"(cr2) :);
+    dprintf("Paging fault in kernel(faluting address: 0x%016llx)", cr2);
+    hcf();
+}
 
 void main() {
     initialize_globals();
 
     dprintf("h0r.net identifies as v%u.%u.%u%s\n\n", data.kernel_ver_major,
-           data.kernel_ver_minor, data.kernel_ver_patch, data.is_uefi_mode ? " UEFI" : "");
+            data.kernel_ver_minor, data.kernel_ver_patch,
+            data.is_uefi_mode ? " UEFI" : "");
 
-    trigger_psod(HN_ERR_KERNEL_EXITED,"Testing my nuts");
+    register_ISR(13, falut_handler);
+
+    if (!locate_rsdt()) {
+        trigger_psod(HN_ERR_NO_ACPI, "you FUCKING dinosaur");
+    }
+
+    sdt_header *ass = find_thingy("APIC");
+
+    printf("%c%c%c%c", ass->signature[0], ass->signature[1], ass->signature[2],
+           ass->signature[3]);
 
     while (true) {
         __asm__ volatile("hlt");

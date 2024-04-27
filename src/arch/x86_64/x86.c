@@ -25,5 +25,6 @@ void _start(void) {
     main();
 
     trigger_psod(HN_ERR_KERNEL_EXITED, "The kernel Exited");
-    while (true);
+    while (true)
+        ;
 }

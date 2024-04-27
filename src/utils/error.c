@@ -2,18 +2,15 @@
 #include <klibc/stdlib.h>
 #include <vendor/printf.h>
 
-char* errors[] = {
-    "HN_ERR_KERNEL_EXITED"
-};
-
+char *errors[] = {"HN_ERR_KERNEL_EXITED", "HN_ERR_NO_ACPI"};
 
 #define BGCOL "\x1b[48;2;17;0;34m"
 #define FGCOL "\x1b[38;2;170;119;0m"
 
-void trigger_psod(int error_code,char* details){
-    dprintf("Error UwU : %s",errors[error_code]);
+void trigger_psod(int error_code, char *details) {
+    dprintf("Error UwU : %s", errors[error_code]);
 
-    //background
+    // background
     printf(BGCOL "\x1b[2J");
 
     // title,error type and details
