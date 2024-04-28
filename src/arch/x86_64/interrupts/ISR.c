@@ -1,7 +1,8 @@
-#include <arch/x86_64/i8259.h>
 #include <arch/x86_64/interrupts/IDT.h>
 #include <arch/x86_64/interrupts/ISR.h>
 #include <vendor/printf.h>
+#include <utils/error.h>
+
 void ISR0();
 void ISR1();
 void ISR2();
@@ -265,13 +266,15 @@ void ISR_RegisterHandler(int irq, ISRHandler handler) {
     ISRHandlers[irq] = handler;
 }
 void ISR_Handler(Registers *regs) {
+    if (regs->interrupt <= 32){
+        trigger_psod(2 + regs->interrupt,"interrupt error UwU",regs);
+        return;
+    }
     if (ISRHandlers[regs->interrupt] != 0) {
         ISRHandlers[regs->interrupt](regs);
     } else {
         dprintf("ISR Handler #%i used while not present", regs->interrupt);
     }
-
-    i8259_SendEndOfInterrupt(regs->interrupt);
 }
 
 void init_ISR() {

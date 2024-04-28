@@ -28,7 +28,6 @@ typedef struct
 	uint64_t rflags;
 	uint64_t rsp;
 	uint64_t ss;
-    
 } __attribute__((packed)) Registers;
 
 typedef void (*ISRHandler)(Registers* regs);

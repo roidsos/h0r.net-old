@@ -12,7 +12,7 @@ void _start(void) {
     // Initialize screen and logger
     dprintf("x86_64 Init Target reached: IO\n");
 
-    // Gather Data
+    // CPU deez nutz
     get_cpu_capabilities(&data.cpu_info);
     sys_init_fpu();
     gdt_init((uint64_t *)kernel_stack);
@@ -24,7 +24,7 @@ void _start(void) {
 
     main();
 
-    trigger_psod(HN_ERR_KERNEL_EXITED, "The kernel Exited");
+    trigger_psod(HN_ERR_KERNEL_EXITED, "The kernel Exited",NULL);
     while (true)
         ;
 }

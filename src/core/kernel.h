@@ -10,14 +10,7 @@
 
 // Struct to hold globals
 struct HN_data_block {
-    // kernel version
-    uint16_t kernel_ver_major;
-    uint16_t kernel_ver_minor;
-    uint16_t kernel_ver_patch;
-
     //System info
-    void *efi_system_table_address;
-    bool is_uefi_mode;
     CPUInfo cpu_info;
 
     //ACPI shit
@@ -29,9 +22,6 @@ struct HN_data_block {
 
     //limine requests
     struct limine_memmap_response *memmap_resp;
-    struct limine_smp_response *smp_resp;
-    struct limine_kernel_address_response *ka_resp;
 };
-
 extern struct HN_data_block data;
 #endif

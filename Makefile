@@ -9,6 +9,7 @@ all:
 		cfg/limine.cfg limine/limine.sys limine/limine-cd.bin limine/limine-cd-efi.bin iso/
 	mkdir -p iso/EFI/BOOT
 	cp limine/BOOT*.EFI iso/EFI/BOOT/
+	cp cfg/startup.nsh iso/startup.nsh
 	xorriso -as mkisofs -b limine-cd.bin \
 		-no-emul-boot -boot-load-size 4 -boot-info-table \
 		--efi-boot limine-cd-efi.bin \
@@ -22,22 +23,24 @@ format:
 
 run: all
 # runs using qemu
-	qemu-system-x86_64 -cdrom os.iso -m 256M -debugcon file:hornet.log
+	qemu-system-x86_64 -cdrom os.iso -m 256M -debugcon file:hornet.log -machine q35
 
 runuefi: all
 # runs using qemu
-	qemu-system-x86_64 -cdrom os.iso -m 256M -debugcon file:hornet.log -drive if=pflash,format=raw,unit=0,file="OVMFbin/OVMF_CODE-pure-efi.fd",readonly=on -drive if=pflash,format=raw,unit=1,file="OVMFbin/OVMF_VARS-pure-efi.fd"
+	qemu-system-x86_64 -cdrom os.iso -m 256M -debugcon file:hornet.log -machine q35 -drive if=pflash,format=raw,unit=0,file="OVMFbin/OVMF_CODE-pure-efi.fd",readonly=on -drive if=pflash,format=raw,unit=1,file="OVMFbin/OVMF_VARS-pure-efi.fd"
 debug: all
 # standard qemu debug
-	qemu-system-x86_64 -no-reboot -debugcon stdio -d int -no-shutdown -cdrom os.iso -m 256M
-
+	qemu-system-x86_64 -no-reboot -debugcon stdio -d int -no-shutdown -cdrom os.iso -m 256M -machine q35
+debuguefi: all
+#remote debug using GDB
+	qemu-system-x86_64 -no-reboot -debugcon stdio -d int -no-shutdown -cdrom os.iso -m 256M -machine q35 -drive if=pflash,format=raw,unit=0,file="OVMFbin/OVMF_CODE-pure-efi.fd",readonly=on -drive if=pflash,format=raw,unit=1,file="OVMFbin/OVMF_VARS-pure-efi.fd"
 debugr: all
 #remote debug using GDB
-	qemu-system-x86_64 -s -S -no-reboot -debugcon stdio -d int -no-shutdown -cdrom os.iso -m 256M 
+	qemu-system-x86_64 -s -S -no-reboot -debugcon stdio -d int -no-shutdown -cdrom os.iso -m 256M  -machine q35
 
 debugruefi: all
 #remote debug using GDB
-	qemu-system-x86_64 -s -S -no-reboot -debugcon stdio -d int -no-shutdown -cdrom os.iso -m 256M -drive if=pflash,format=raw,unit=0,file="OVMFbin/OVMF_CODE-pure-efi.fd",readonly=on -drive if=pflash,format=raw,unit=1,file="OVMFbin/OVMF_VARS-pure-efi.fd"
+	qemu-system-x86_64 -s -S -no-reboot -debugcon stdio -d int -no-shutdown -cdrom os.iso -m 256M -machine q35 -drive if=pflash,format=raw,unit=0,file="OVMFbin/OVMF_CODE-pure-efi.fd",readonly=on -drive if=pflash,format=raw,unit=1,file="OVMFbin/OVMF_VARS-pure-efi.fd"
 clean:
 # JUST DELETES JUNK LIKE OBJECT FILES - fuck capslock
 	make -C src clean

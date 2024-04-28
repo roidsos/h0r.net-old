@@ -26,6 +26,7 @@ bool locate_rsdt() {
         }
     }
     return true;
+
 }
 sdt_header *find_thingy(char *signature) {
     if (use_xsdt) {
