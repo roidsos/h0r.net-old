@@ -15,13 +15,11 @@ struct HN_data_block {
 
     //ACPI shit
     void* hhdm_off;
+    uint32_t lapic_base;
 
     //kterm shit
     struct flanterm_context* ft_ctx;
     struct limine_framebuffer *framebuffer;
-
-    //limine requests
-    struct limine_memmap_response *memmap_resp;
 };
 extern struct HN_data_block data;
 #endif

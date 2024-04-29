@@ -5,28 +5,19 @@
 #include <utils/psf2.h>
 #include <vendor/printf.h>
 
-#include <arch/x86_64/interrupts/interrupts.h>
 #include <drivers/ACPI/RSDT.h>
-#include <drivers/ACPI/MADT.h>
+#include <drivers/APIC.h>
 
 #include <klibc/stdlib.h>
-#include <utils/error.h>
-
 #include <klibc/string.h>
 
-// ===============Limine Requests======================
-static volatile struct limine_framebuffer_request framebuffer_request = {
-    .id = LIMINE_FRAMEBUFFER_REQUEST, .revision = 0};
-static volatile struct limine_memmap_request memmap_request = {
-    .id = LIMINE_MEMMAP_REQUEST, .revision = 0};
-static volatile struct limine_module_request mod_request = {
-    .id = LIMINE_MODULE_REQUEST, .revision = 0};
-static volatile struct limine_hhdm_request hhdm_request = {
-    .id = LIMINE_HHDM_REQUEST, .revision = 0};
+#include <utils/error.h>
 
 struct HN_data_block data;
 
 // ===============Initialization Functions======================
+static volatile struct limine_module_request mod_request = {
+    .id = LIMINE_MODULE_REQUEST, .revision = 0};
 
 void load_limine_modules() {
     for (size_t i = 0; i < mod_request.response->module_count; i++) {
@@ -45,14 +36,18 @@ void load_limine_modules() {
     }
 }
 
+static volatile struct limine_framebuffer_request framebuffer_request = {
+    .id = LIMINE_FRAMEBUFFER_REQUEST, .revision = 0};
+static volatile struct limine_hhdm_request hhdm_request = {
+    .id = LIMINE_HHDM_REQUEST, .revision = 0};
+
 void initialize_globals() {
     // Limine stuff
     if (framebuffer_request.response == NULL ||
         framebuffer_request.response->framebuffer_count < 1) {
-        hcf();
+        trigger_psod(HN_ERR_NO_FB,"No framebuffer found.",NULL);
     }
     data.framebuffer = framebuffer_request.response->framebuffers[0];
-    data.memmap_resp = memmap_request.response;
     data.hhdm_off = (void *)hhdm_request.response->offset;
     load_limine_modules();
 }
@@ -66,9 +61,6 @@ void main() {
     if (!locate_rsdt()) {
         trigger_psod(HN_ERR_NO_ACPI, "you FUCKING dinosaur",NULL);
     }
-    init_madt();
-
-    while (true) {
-        __asm__ volatile("hlt");
-    }
+    init_apic();
+    hlt();
 }

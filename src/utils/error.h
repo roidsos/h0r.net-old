@@ -2,9 +2,10 @@
 #define ERROR_H
 
 #include <arch/x86_64/interrupts/ISR.h>
-#define HN_ERR_KERNEL_EXITED    0
-#define HN_ERR_NO_ACPI          1
-// 2-34: Interrupt error thingies IDK
+// 0-31: Interrupt error thingies IDK
+#define HN_ERR_KERNEL_EXITED  32
+#define HN_ERR_NO_ACPI        33
+#define HN_ERR_NO_FB          34
 
 void trigger_psod(int error_code,char* details,Registers* regs);
 

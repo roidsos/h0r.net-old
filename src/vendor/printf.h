@@ -36,18 +36,9 @@
 #include <stdarg.h>
 #include <stddef.h>
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-
-/**
- * Output a character to a custom device like UART, used by the printf() function
- * This function is declared here only. You have to write your custom implementation somewhere
- * \param character Character to output
- */
-void _putchar(char character);
 
 
 /**
@@ -68,17 +59,6 @@ int printf_(const char* format, ...);
  */
 #define dprintf dprintf_
 int dprintf_(const char* format, ...);
-
-
-/**
- * Tiny sprintf implementation
- * Due to security reasons (buffer overflow) YOU SHOULD CONSIDER USING (V)SNPRINTF INSTEAD!
- * \param buffer A pointer to the buffer where to store the formatted string. MUST be big enough to store the output!
- * \param format A string that specifies the format of the output
- * \return The number of characters that are WRITTEN into the buffer, not counting the terminating null character
- */
-#define sprintf sprintf_
-int sprintf_(char* buffer, const char* format, ...);
 
 
 /**
@@ -105,25 +85,6 @@ int vsnprintf_(char* buffer, size_t count, const char* format, va_list va);
  */
 #define vprintf vprintf_
 int vprintf_(const char* format, va_list va);
-
-/**
- * Tiny vprintf implementation(debug)
- * \param format A string that specifies the format of the output
- * \param va A value identifying a variable arguments list
- * \return The number of characters that are WRITTEN into the buffer, not counting the terminating null character
- */
-#define vdprintf vdprintf_
-int vdprintf_(const char* format, va_list va);
-
-/**
- * printf with output function
- * You may use this as dynamic alternative to printf() with its fixed _putchar() output
- * \param out An output function which takes one character and an argument pointer
- * \param arg An argument pointer for user data passed to output function
- * \param format A string that specifies the format of the output
- * \return The number of characters that are sent to the output function, not counting the terminating null character
- */
-int fctprintf(void (*out)(char character, void* arg), void* arg, const char* format, ...);
 
 
 #ifdef __cplusplus

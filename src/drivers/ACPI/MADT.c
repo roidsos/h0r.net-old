@@ -1,5 +1,7 @@
 #include "MADT.h"
 #include <vendor/printf.h>
+#include <core/kernel.h>
+
 void* end_addr;
 
 #define MAX_ENTRIES 64
@@ -21,6 +23,7 @@ void recurse_table(void* ptr){
 bool init_madt(){
 
     madt_header* h =(madt_header*)find_thingy("APIC");
+    data.lapic_base = h->lapic_addr;
     end_addr = (void*)h + h->h.length;
 
     recurse_table((void*)h + sizeof(madt_header));

@@ -266,8 +266,8 @@ void ISR_RegisterHandler(int irq, ISRHandler handler) {
     ISRHandlers[irq] = handler;
 }
 void ISR_Handler(Registers *regs) {
-    if (regs->interrupt <= 32){
-        trigger_psod(2 + regs->interrupt,"interrupt error UwU",regs);
+    if (regs->interrupt < 32){
+        trigger_psod(regs->interrupt,"interrupt error UwU",regs);
         return;
     }
     if (ISRHandlers[regs->interrupt] != 0) {
