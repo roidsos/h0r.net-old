@@ -6,9 +6,9 @@ A kernel IDK
 why do you care? it is litterally insignificant
 ## How to get it running?
 ### On Arch Linux and similar:
-  Install packages from aur: [x86_64-elf-gcc](https://aur.archlinux.org/packages/x86_64-elf-gcc) [x86_64-elf-binutils](https://aur.archlinux.org/packages/x86_64-elf-binutils)</br>
-  Install packages from normal repositories: [libisoburn](https://archlinux.org/packages/extra/x86_64/libisoburn/) [grub](https://archlinux.org/packages/core/x86_64/grub/) [mtools](https://archlinux.org/packages/extra/x86_64/mtools/)</br>
-In case any package is missing please open up an issue!</br>
+  Install packages from normal repositories: [libisoburn](https://archlinux.org/packages/extra/x86_64/libisoburn/) [nasm](https://archlinux.org/packages/extra/x86_64/nasm/)
+ [build-essentials](https://archlinux.org/packages/extra/x86_64/build-essentials/)</br>
+In case any package is missing please open up an issue!
 
 ## Current features and TODO(stolen from  ilobilo )
 
@@ -16,50 +16,39 @@ In case any package is missing please open up an issue!</br>
 - [x] GDT
 - [x] IDT
 - [X] TSS
-- [x] PCI
+- [ ] PCI
 - [ ] PCIe
 - [ ] MSI
 - [ ] MSI-X
 - [x] Modules
-
 ### Memory
-- [x] PMM
-- [X] VMM (4 level)
-- [x] Heap
+- [ ] PMM
+- [ ] VMM (4 level)
+- [ ] Heap
 ### ACPI
 - [X] ACPI
-- [ ] LAPIC
-- [ ] IOAPIC
+- [x] LAPIC
 - [ ] LAI
-
 
 ### Device drivers
 #### Audio
-- [x] PC speaker
+- [ ] PC speaker
 - [ ] AC97
 - [ ] Intel High Definition Audio
-- [ ] SB16
 
 #### I/O
-- [X] PS/2 Keyboard
+- [ ] PS/2 Keyboard
 - [ ] PS/2 Mouse
-- [x] COM
+- [ ] COM
 <!--
-#### VMs
-- [ ] VMWare Tools
-- [ ] VBox Guest Additions
-- [ ] Virtio
 #### Storage
-- [ ] FDC
 - [ ] IDE
 - [ ] SATA
 - [ ] NVMe
-- [ ] Virtio block
 #### Network
 - [ ] RTL8139
 - [ ] RTL8169
 - [ ] E1000
-- [ ] Virtio network
 #### USB
 - [ ] UHCI
 - [ ] OHCI
@@ -67,22 +56,18 @@ In case any package is missing please open up an issue!</br>
 - [ ] XHCI 
 -->
 ### Timers
-- [ ] HPET
-- [x] PIT
+- [x] HPET
+- [ ] PIT
 - [x] RTC
-- [ ] LAPIC Timer
-
+- [x] LAPIC Timer
+<!--
 ### Tasking
 - [ ] SMP
-- [x] Scheduler
+- [ ] Scheduler
 - [ ] Signals
-
-<!--
-
 ### Partition tables
 - [ ] MBR
 - [ ] GPT 
-
 ### Filesystems
 - [ ] VFS
 - [ ] TMPFS
@@ -95,7 +80,6 @@ In case any package is missing please open up an issue!</br>
 - [ ] Fat32
 - [ ] ISO9660
 - [ ] NTFS
-
 ### Userspace
 - [ ] System calls
 - [ ] ELF
@@ -103,7 +87,6 @@ In case any package is missing please open up an issue!</br>
 - [ ] Libc
 - [ ] Bash
 - [ ] DOOM
-
 ### Network stack
 - [ ] Ethernet
 - [ ] ARP
