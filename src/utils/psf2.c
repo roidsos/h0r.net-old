@@ -30,7 +30,5 @@ init_uterus_with_psf2_font(struct limine_file *psf2,
         return (void *)0;
 
     return uterus_fb_init(fb->address, fb->width, fb->height,
-                            fb->pitch, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-
-                            psf2buf, hdr.width, hdr.height, 1, 1, 1);
+                            fb->pitch, psf2buf, hdr.width, hdr.height);
 }

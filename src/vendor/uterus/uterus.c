@@ -74,9 +74,7 @@ static const uint32_t col256[] = {
 
 void uterus_context_reinit(struct uterus_context *ctx) {
     ctx->tab_size = 8;
-    ctx->autoflush = true;
     ctx->cursor_enabled = true;
-    ctx->scroll_enabled = true;
     ctx->control_sequence = false;
     ctx->csi = false;
     ctx->escape = false;
@@ -84,11 +82,7 @@ void uterus_context_reinit(struct uterus_context *ctx) {
     ctx->osc_escape = false;
     ctx->rrr = false;
     ctx->discard_next = false;
-    ctx->bold = false;
-    ctx->bg_bold = false;
-    ctx->reverse_video = false;
     ctx->dec_private = false;
-    ctx->insert_mode = false;
     ctx->unicode_remaining = 0;
     ctx->g_select = 0;
     ctx->charsets[0] = CHARSET_DEFAULT;
@@ -96,13 +90,10 @@ void uterus_context_reinit(struct uterus_context *ctx) {
     ctx->current_charset = 0;
     ctx->escape_offset = 0;
     ctx->esc_values_i = 0;
-    ctx->saved_cursor_x = 0;
-    ctx->saved_cursor_y = 0;
     ctx->current_primary = (size_t)-1;
     ctx->current_bg = (size_t)-1;
     ctx->scroll_top_margin = 0;
     ctx->scroll_bottom_margin = ctx->rows;
-    ctx->oob_output = UTERUS_OOB_OUTPUT_ONLCR;
 }
 
 static void uterus_putchar(struct uterus_context *ctx, uint8_t c);
@@ -113,9 +104,7 @@ void uterus_write(struct uterus_context *ctx, const char *buf,
         uterus_putchar(ctx, buf[i]);
     }
 
-    if (ctx->autoflush) {
-        ctx->double_buffer_flush(ctx);
-    }
+    ctx->double_buffer_flush(ctx);
 }
 
 static void sgr(struct uterus_context *ctx) {
@@ -129,12 +118,6 @@ static void sgr(struct uterus_context *ctx) {
 
         if (ctx->esc_values[i] == 0) {
         def:
-            if (ctx->reverse_video) {
-                ctx->reverse_video = false;
-                ctx->swap_palette(ctx);
-            }
-            ctx->bold = false;
-            ctx->bg_bold = false;
             ctx->current_primary = (size_t)-1;
             ctx->current_bg = (size_t)-1;
             ctx->set_text_bg_default(ctx);
@@ -142,93 +125,30 @@ static void sgr(struct uterus_context *ctx) {
             continue;
         }
 
-        else if (ctx->esc_values[i] == 1) {
-            ctx->bold = true;
+        else if (ctx->esc_values[i] == 1 || ctx->esc_values[i] == 22) {
             if (ctx->current_primary != (size_t)-1) {
-                if (!ctx->reverse_video) {
-                    ctx->set_text_fg_bright(ctx, ctx->current_primary);
-                } else {
-                    ctx->set_text_bg_bright(ctx, ctx->current_primary);
-                }
+                ctx->set_text_fg(ctx, ctx->current_primary);
             } else {
-                if (!ctx->reverse_video) {
-                    ctx->set_text_fg_default_bright(ctx);
-                } else {
-                    ctx->set_text_bg_default_bright(ctx);
-                }
+                ctx->set_text_fg_default(ctx);
             }
             continue;
         }
 
-        else if (ctx->esc_values[i] == 5) {
-            ctx->bg_bold = true;
+        else if (ctx->esc_values[i] == 5 || ctx->esc_values[i] == 25) {
             if (ctx->current_bg != (size_t)-1) {
-                if (!ctx->reverse_video) {
-                    ctx->set_text_bg_bright(ctx, ctx->current_bg);
-                } else {
-                    ctx->set_text_fg_bright(ctx, ctx->current_bg);
-                }
+                ctx->set_text_bg(ctx, ctx->current_bg);
             } else {
-                if (!ctx->reverse_video) {
-                    ctx->set_text_bg_default_bright(ctx);
-                } else {
-                    ctx->set_text_fg_default_bright(ctx);
-                }
+                ctx->set_text_bg_default(ctx);
             }
             continue;
         }
 
-        else if (ctx->esc_values[i] == 22) {
-            ctx->bold = false;
-            if (ctx->current_primary != (size_t)-1) {
-                if (!ctx->reverse_video) {
-                    ctx->set_text_fg(ctx, ctx->current_primary);
-                } else {
-                    ctx->set_text_bg(ctx, ctx->current_primary);
-                }
-            } else {
-                if (!ctx->reverse_video) {
-                    ctx->set_text_fg_default(ctx);
-                } else {
-                    ctx->set_text_bg_default(ctx);
-                }
-            }
-            continue;
-        }
-
-        else if (ctx->esc_values[i] == 25) {
-            ctx->bg_bold = false;
-            if (ctx->current_bg != (size_t)-1) {
-                if (!ctx->reverse_video) {
-                    ctx->set_text_bg(ctx, ctx->current_bg);
-                } else {
-                    ctx->set_text_fg(ctx, ctx->current_bg);
-                }
-            } else {
-                if (!ctx->reverse_video) {
-                    ctx->set_text_bg_default(ctx);
-                } else {
-                    ctx->set_text_fg_default(ctx);
-                }
-            }
-            continue;
-        }
 
         else if (ctx->esc_values[i] >= 30 && ctx->esc_values[i] <= 37) {
             offset = 30;
             ctx->current_primary = ctx->esc_values[i] - offset;
 
-            if (ctx->reverse_video) {
-                goto set_bg;
-            }
-
-        set_fg:
-            if ((ctx->bold && !ctx->reverse_video) ||
-                (ctx->bg_bold && ctx->reverse_video)) {
-                ctx->set_text_fg_bright(ctx, ctx->esc_values[i] - offset);
-            } else {
-                ctx->set_text_fg(ctx, ctx->esc_values[i] - offset);
-            }
+            ctx->set_text_fg(ctx, ctx->esc_values[i] - offset);
             continue;
         }
 
@@ -236,17 +156,7 @@ static void sgr(struct uterus_context *ctx) {
             offset = 40;
             ctx->current_bg = ctx->esc_values[i] - offset;
 
-            if (ctx->reverse_video) {
-                goto set_fg;
-            }
-
-        set_bg:
-            if ((ctx->bold && ctx->reverse_video) ||
-                (ctx->bg_bold && !ctx->reverse_video)) {
-                ctx->set_text_bg_bright(ctx, ctx->esc_values[i] - offset);
-            } else {
-                ctx->set_text_bg(ctx, ctx->esc_values[i] - offset);
-            }
+            ctx->set_text_bg(ctx, ctx->esc_values[i] - offset);
             continue;
         }
 
@@ -254,12 +164,7 @@ static void sgr(struct uterus_context *ctx) {
             offset = 90;
             ctx->current_primary = ctx->esc_values[i] - offset;
 
-            if (ctx->reverse_video) {
-                goto set_bg_bright;
-            }
-
-        set_fg_bright:
-            ctx->set_text_fg_bright(ctx, ctx->esc_values[i] - offset);
+            ctx->set_text_fg(ctx, ctx->esc_values[i] - offset);
             continue;
         }
 
@@ -267,31 +172,14 @@ static void sgr(struct uterus_context *ctx) {
             offset = 100;
             ctx->current_bg = ctx->esc_values[i] - offset;
 
-            if (ctx->reverse_video) {
-                goto set_fg_bright;
-            }
-
-        set_bg_bright:
-            ctx->set_text_bg_bright(ctx, ctx->esc_values[i] - offset);
+            ctx->set_text_bg(ctx, ctx->esc_values[i] - offset);
             continue;
         }
 
         else if (ctx->esc_values[i] == 39) {
             ctx->current_primary = (size_t)-1;
 
-            if (ctx->reverse_video) {
-                ctx->swap_palette(ctx);
-            }
-
-            if (!ctx->bold) {
-                ctx->set_text_fg_default(ctx);
-            } else {
-                ctx->set_text_fg_default_bright(ctx);
-            }
-
-            if (ctx->reverse_video) {
-                ctx->swap_palette(ctx);
-            }
+            ctx->set_text_fg_default(ctx);
 
             continue;
         }
@@ -299,36 +187,7 @@ static void sgr(struct uterus_context *ctx) {
         else if (ctx->esc_values[i] == 49) {
             ctx->current_bg = (size_t)-1;
 
-            if (ctx->reverse_video) {
-                ctx->swap_palette(ctx);
-            }
-
-            if (!ctx->bg_bold) {
-                ctx->set_text_bg_default(ctx);
-            } else {
-                ctx->set_text_bg_default_bright(ctx);
-            }
-
-            if (ctx->reverse_video) {
-                ctx->swap_palette(ctx);
-            }
-
-            continue;
-        }
-
-        else if (ctx->esc_values[i] == 7) {
-            if (!ctx->reverse_video) {
-                ctx->reverse_video = true;
-                ctx->swap_palette(ctx);
-            }
-            continue;
-        }
-
-        else if (ctx->esc_values[i] == 27) {
-            if (ctx->reverse_video) {
-                ctx->reverse_video = false;
-                ctx->swap_palette(ctx);
-            }
+            ctx->set_text_bg_default(ctx);
             continue;
         }
 
@@ -372,8 +231,8 @@ static void sgr(struct uterus_context *ctx) {
                 if (col < 8) {
                     (fg ? ctx->set_text_fg : ctx->set_text_bg)(ctx, col);
                 } else if (col < 16) {
-                    (fg ? ctx->set_text_fg_bright
-                        : ctx->set_text_bg_bright)(ctx, col - 8);
+                    (fg ? ctx->set_text_fg
+                        : ctx->set_text_bg)(ctx, col - 8);
                 } else {
                     uint32_t rgb_value = col256[col - 16];
                     (fg ? ctx->set_text_fg_rgb
@@ -423,32 +282,6 @@ static void dec_private_parse(struct uterus_context *ctx, uint8_t c) {
     }
 }
 
-static void mode_toggle(struct uterus_context *ctx, uint8_t c) {
-    if (ctx->esc_values_i == 0) {
-        return;
-    }
-
-    bool set;
-
-    switch (c) {
-    case 'h':
-        set = true;
-        break;
-    case 'l':
-        set = false;
-        break;
-    default:
-        return;
-    }
-
-    switch (ctx->esc_values[0]) {
-    case 4:
-        ctx->insert_mode = set;
-        return;
-    }
-
-}
-
 static void osc_parse(struct uterus_context *ctx, uint8_t c) {
     if (ctx->osc_escape && c == '\\') {
         goto cleanup;
@@ -485,7 +318,7 @@ static void control_sequence_parse(struct uterus_context *ctx, uint8_t c) {
     }
 
     if (c >= '0' && c <= '9') {
-        if (ctx->esc_values_i == uterus_MAX_ESC_VALUES) {
+        if (ctx->esc_values_i == UTERUS_MAX_ESC_VALUES) {
             return;
         }
         ctx->rrr = true;
@@ -500,7 +333,7 @@ static void control_sequence_parse(struct uterus_context *ctx, uint8_t c) {
         if (c == ';')
             return;
     } else if (c == ';') {
-        if (ctx->esc_values_i == uterus_MAX_ESC_VALUES) {
+        if (ctx->esc_values_i == UTERUS_MAX_ESC_VALUES) {
             return;
         }
         ctx->esc_values[ctx->esc_values_i] = 0;
@@ -520,7 +353,7 @@ static void control_sequence_parse(struct uterus_context *ctx, uint8_t c) {
         break;
     }
 
-    for (size_t i = ctx->esc_values_i; i < uterus_MAX_ESC_VALUES; i++) {
+    for (size_t i = ctx->esc_values_i; i < UTERUS_MAX_ESC_VALUES; i++) {
         ctx->esc_values[i] = esc_default;
     }
 
@@ -623,15 +456,6 @@ static void control_sequence_parse(struct uterus_context *ctx, uint8_t c) {
             ctx->scroll(ctx);
         }
         break;
-    case 'L': {
-        size_t old_scroll_top_margin = ctx->scroll_top_margin;
-        ctx->scroll_top_margin = y;
-        for (size_t i = 0; i < ctx->esc_values[0]; i++) {
-            ctx->revscroll(ctx);
-        }
-        ctx->scroll_top_margin = old_scroll_top_margin;
-        break;
-    }
     case 'n':
         switch (ctx->esc_values[0]) {
         case 5:
@@ -680,22 +504,6 @@ static void control_sequence_parse(struct uterus_context *ctx, uint8_t c) {
             break;
         }
         break;
-    case '@':
-        for (size_t i = ctx->cols - 1;; i--) {
-            ctx->move_character(ctx, i + ctx->esc_values[0], y, i, y);
-            ctx->set_cursor_pos(ctx, i, y);
-            ctx->raw_putchar(ctx, ' ');
-            if (i == x) {
-                break;
-            }
-        }
-        ctx->set_cursor_pos(ctx, x, y);
-        break;
-    case 'P':
-        for (size_t i = x + ctx->esc_values[0]; i < ctx->cols; i++)
-            ctx->move_character(ctx, i - ctx->esc_values[0], y, i, y);
-        ctx->set_cursor_pos(ctx, ctx->cols - ctx->esc_values[0], y);
-        // FALLTHRU
     case 'X':
         for (size_t i = 0; i < ctx->esc_values[0]; i++)
             ctx->raw_putchar(ctx, ' ');
@@ -703,12 +511,6 @@ static void control_sequence_parse(struct uterus_context *ctx, uint8_t c) {
         break;
     case 'm':
         sgr(ctx);
-        break;
-    case 's':
-        ctx->get_cursor_pos(ctx, &ctx->saved_cursor_x, &ctx->saved_cursor_y);
-        break;
-    case 'u':
-        ctx->set_cursor_pos(ctx, ctx->saved_cursor_x, ctx->saved_cursor_y);
         break;
     case 'K':
         switch (ctx->esc_values[0]) {
@@ -756,10 +558,6 @@ static void control_sequence_parse(struct uterus_context *ctx, uint8_t c) {
         }
         ctx->set_cursor_pos(ctx, 0, 0);
         break;
-    case 'l':
-    case 'h':
-        mode_toggle(ctx, c);
-        break;
     }
 
     ctx->scroll_enabled = r;
@@ -767,28 +565,6 @@ static void control_sequence_parse(struct uterus_context *ctx, uint8_t c) {
 cleanup:
     ctx->control_sequence = false;
     ctx->escape = false;
-}
-
-static void restore_state(struct uterus_context *ctx) {
-    ctx->bold = ctx->saved_state_bold;
-    ctx->bg_bold = ctx->saved_state_bg_bold;
-    ctx->reverse_video = ctx->saved_state_reverse_video;
-    ctx->current_charset = ctx->saved_state_current_charset;
-    ctx->current_primary = ctx->saved_state_current_primary;
-    ctx->current_bg = ctx->saved_state_current_bg;
-
-    ctx->restore_state(ctx);
-}
-
-static void save_state(struct uterus_context *ctx) {
-    ctx->save_state(ctx);
-
-    ctx->saved_state_bold = ctx->bold;
-    ctx->saved_state_bg_bold = ctx->bg_bold;
-    ctx->saved_state_reverse_video = ctx->reverse_video;
-    ctx->saved_state_current_charset = ctx->current_charset;
-    ctx->saved_state_current_primary = ctx->current_primary;
-    ctx->saved_state_current_bg = ctx->current_bg;
 }
 
 static void escape_parse(struct uterus_context *ctx, uint8_t c) {
@@ -819,18 +595,12 @@ static void escape_parse(struct uterus_context *ctx, uint8_t c) {
         return;
     case '[':
     is_csi:
-        for (size_t i = 0; i < uterus_MAX_ESC_VALUES; i++)
+        for (size_t i = 0; i < UTERUS_MAX_ESC_VALUES; i++)
             ctx->esc_values[i] = 0;
         ctx->esc_values_i = 0;
         ctx->rrr = false;
         ctx->control_sequence = true;
         return;
-    case '7':
-        save_state(ctx);
-        break;
-    case '8':
-        restore_state(ctx);
-        break;
     case 'c':
         uterus_context_reinit(ctx);
         ctx->clear(ctx, true);
@@ -851,17 +621,6 @@ static void escape_parse(struct uterus_context *ctx, uint8_t c) {
             ctx->set_cursor_pos(ctx, 0, y + 1);
         }
         break;
-    case 'M':
-        // "Reverse linefeed"
-        if (y == ctx->scroll_top_margin) {
-            ctx->revscroll(ctx);
-            ctx->set_cursor_pos(ctx, 0, y);
-        } else {
-            ctx->set_cursor_pos(ctx, 0, y - 1);
-        }
-        break;
-    case 'Z':
-        break;
     case '(':
     case ')':
         ctx->g_select = c - '\'';
@@ -872,68 +631,68 @@ static void escape_parse(struct uterus_context *ctx, uint8_t c) {
 }
 
 static bool dec_special_print(struct uterus_context *ctx, uint8_t c) {
-#define uterus_DEC_SPCL_PRN(C)                                               \
+#define UTERUS_DEC_SPCL_PRN(C)                                               \
     ctx->raw_putchar(ctx, (C));                                                \
     return true;
     switch (c) {
     case '`':
-        uterus_DEC_SPCL_PRN(0x04)
+        UTERUS_DEC_SPCL_PRN(0x04)
     case '0':
-        uterus_DEC_SPCL_PRN(0xdb)
+        UTERUS_DEC_SPCL_PRN(0xdb)
     case '-':
-        uterus_DEC_SPCL_PRN(0x18)
+        UTERUS_DEC_SPCL_PRN(0x18)
     case ',':
-        uterus_DEC_SPCL_PRN(0x1b)
+        UTERUS_DEC_SPCL_PRN(0x1b)
     case '.':
-        uterus_DEC_SPCL_PRN(0x19)
+        UTERUS_DEC_SPCL_PRN(0x19)
     case 'a':
-        uterus_DEC_SPCL_PRN(0xb1)
+        UTERUS_DEC_SPCL_PRN(0xb1)
     case 'f':
-        uterus_DEC_SPCL_PRN(0xf8)
+        UTERUS_DEC_SPCL_PRN(0xf8)
     case 'g':
-        uterus_DEC_SPCL_PRN(0xf1)
+        UTERUS_DEC_SPCL_PRN(0xf1)
     case 'h':
-        uterus_DEC_SPCL_PRN(0xb0)
+        UTERUS_DEC_SPCL_PRN(0xb0)
     case 'j':
-        uterus_DEC_SPCL_PRN(0xd9)
+        UTERUS_DEC_SPCL_PRN(0xd9)
     case 'k':
-        uterus_DEC_SPCL_PRN(0xbf)
+        UTERUS_DEC_SPCL_PRN(0xbf)
     case 'l':
-        uterus_DEC_SPCL_PRN(0xda)
+        UTERUS_DEC_SPCL_PRN(0xda)
     case 'm':
-        uterus_DEC_SPCL_PRN(0xc0)
+        UTERUS_DEC_SPCL_PRN(0xc0)
     case 'n':
-        uterus_DEC_SPCL_PRN(0xc5)
+        UTERUS_DEC_SPCL_PRN(0xc5)
     case 'q':
-        uterus_DEC_SPCL_PRN(0xc4)
+        UTERUS_DEC_SPCL_PRN(0xc4)
     case 's':
-        uterus_DEC_SPCL_PRN(0x5f)
+        UTERUS_DEC_SPCL_PRN(0x5f)
     case 't':
-        uterus_DEC_SPCL_PRN(0xc3)
+        UTERUS_DEC_SPCL_PRN(0xc3)
     case 'u':
-        uterus_DEC_SPCL_PRN(0xb4)
+        UTERUS_DEC_SPCL_PRN(0xb4)
     case 'v':
-        uterus_DEC_SPCL_PRN(0xc1)
+        UTERUS_DEC_SPCL_PRN(0xc1)
     case 'w':
-        uterus_DEC_SPCL_PRN(0xc2)
+        UTERUS_DEC_SPCL_PRN(0xc2)
     case 'x':
-        uterus_DEC_SPCL_PRN(0xb3)
+        UTERUS_DEC_SPCL_PRN(0xb3)
     case 'y':
-        uterus_DEC_SPCL_PRN(0xf3)
+        UTERUS_DEC_SPCL_PRN(0xf3)
     case 'z':
-        uterus_DEC_SPCL_PRN(0xf2)
+        UTERUS_DEC_SPCL_PRN(0xf2)
     case '~':
-        uterus_DEC_SPCL_PRN(0xfa)
+        UTERUS_DEC_SPCL_PRN(0xfa)
     case '_':
-        uterus_DEC_SPCL_PRN(0xff)
+        UTERUS_DEC_SPCL_PRN(0xff)
     case '+':
-        uterus_DEC_SPCL_PRN(0x1a)
+        UTERUS_DEC_SPCL_PRN(0x1a)
     case '{':
-        uterus_DEC_SPCL_PRN(0xe3)
+        UTERUS_DEC_SPCL_PRN(0xe3)
     case '}':
-        uterus_DEC_SPCL_PRN(0x9c)
+        UTERUS_DEC_SPCL_PRN(0x9c)
     }
-#undef uterus_DEC_SPCL_PRN
+#undef UTERUS_DEC_SPCL_PRN
 
     return false;
 }
@@ -1479,10 +1238,10 @@ unicode_error:
         if (y == ctx->scroll_bottom_margin - 1) {
             ctx->scroll(ctx);
             ctx->set_cursor_pos(
-                ctx, (ctx->oob_output & UTERUS_OOB_OUTPUT_ONLCR) ? 0 : x, y);
+                ctx,0, y);
         } else {
             ctx->set_cursor_pos(
-                ctx, (ctx->oob_output & UTERUS_OOB_OUTPUT_ONLCR) ? 0 : x,
+                ctx,0,
                 y + 1);
         }
         return;
@@ -1506,15 +1265,6 @@ unicode_error:
         // Move to G0 set
         ctx->current_charset = 0;
         return;
-    }
-
-    if (ctx->insert_mode == true) {
-        for (size_t i = ctx->cols - 1;; i--) {
-            ctx->move_character(ctx, i + 1, y, i, y);
-            if (i == x) {
-                break;
-            }
-        }
     }
 
     // Translate character set
