@@ -52,7 +52,7 @@
         "tuple": "c",
         "type_traits": "c",
         "utility": "c",
-        "flanterm.h": "c",
+        "uterus.h": "c",
         "valarray": "c",
         "ini.h": "c",
         "desh.h": "c",

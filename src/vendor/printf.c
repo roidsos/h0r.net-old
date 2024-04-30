@@ -34,7 +34,7 @@
 #include "printf.h"
 #include <arch/x86_64/io/portio.h>
 #include <core/kernel.h>
-#include <flanterm.h>
+#include <uterus.h>
 #include <types/stdtypes.h>
 
 // 'ntoa' conversion buffer size, this must be big enough to hold one converted
@@ -105,7 +105,7 @@ static inline void _out_null(char character, void *buffer, size_t idx,
 // internal _putchar wrapper
 static inline void _out_char(char character, UNUSED void *buffer,
                              UNUSED size_t idx, UNUSED size_t maxlen) {
-    flanterm_write(data.ft_ctx, &character, 1);
+    uterus_write(data.ut_ctx, &character, 1);
 }
 
 // internal secure strlen

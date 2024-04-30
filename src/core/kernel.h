@@ -5,7 +5,7 @@
 
 #include "limine.h"
 #include <types/stdtypes.h>
-#include "flanterm.h"
+#include "uterus.h"
 
 
 // Struct to hold globals
@@ -18,7 +18,7 @@ struct HN_data_block {
     uint32_t lapic_base;
 
     //kterm shit
-    struct flanterm_context* ft_ctx;
+    struct uterus_context* ut_ctx;
     struct limine_framebuffer *framebuffer;
 };
 extern struct HN_data_block data;

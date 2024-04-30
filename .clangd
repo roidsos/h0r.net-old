@@ -1,0 +1,11 @@
+CompileFlags:
+    Add:
+       - -I/data/code/h0r.net/limine
+       - -I/data/code/h0r.net/src/vendor/libkrnl-essentials
+       - -I/data/code/h0r.net/src/vendor/uterus
+       - -I/data/code/h0r.net/src
+       - -Wall
+       - -Wextra
+       - -Werror
+       - -DPRINTF_DISABLE_SUPPORT_FLOAT
+    Compiler: gcc

@@ -1,5 +1,5 @@
 #include <backends/fb.h>
-#include <flanterm.h>
+#include <uterus.h>
 #include <limine.h>
 #include <stdint.h>
 
@@ -18,8 +18,8 @@ typedef struct {
     uint32_t height, width;
 } __attribute__((packed)) psf2Hdr;
 
-struct flanterm_context *
-init_flanterm_with_psf2_font(struct limine_file *psf2,
+struct uterus_context *
+init_uterus_with_psf2_font(struct limine_file *psf2,
                              struct limine_framebuffer *fb) {
     char *psf2buf = psf2->address;
     psf2Hdr hdr = *(psf2Hdr *)psf2->address;
@@ -29,8 +29,8 @@ init_flanterm_with_psf2_font(struct limine_file *psf2,
         hdr.magic[3] != 0x86)
         return (void *)0;
 
-    return flanterm_fb_init(NULL, NULL, fb->address, fb->width, fb->height,
+    return uterus_fb_init(fb->address, fb->width, fb->height,
                             fb->pitch, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
 
-                            psf2buf, hdr.width, hdr.height, 1, 1, 1, 0);
+                            psf2buf, hdr.width, hdr.height, 1, 1, 1);
 }

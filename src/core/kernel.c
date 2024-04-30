@@ -23,14 +23,14 @@ void load_limine_modules() {
     for (size_t i = 0; i < mod_request.response->module_count; i++) {
         struct limine_file *mod = mod_request.response->modules[i];
         if (strcmp(mod->path, "/boot/kfont.psf") == 0) {
-            data.ft_ctx = init_flanterm_with_psf2_font(mod, data.framebuffer);
+            data.ut_ctx = init_uterus_with_psf2_font(mod, data.framebuffer);
         } else {
             dprintf("Unknown module \"%s\" found", mod->path);
         }
     }
 
-    if (data.ft_ctx == NULL) {
-        data.ft_ctx = flanterm_fb_simple_init(
+    if (data.ut_ctx == NULL) {
+        data.ut_ctx = uterus_fb_simple_init(
             data.framebuffer->address, data.framebuffer->width,
             data.framebuffer->height, data.framebuffer->pitch);
     }
@@ -55,7 +55,7 @@ void initialize_globals() {
 void main() {
     initialize_globals();
 
-    dprintf("h0r.net identifies as v%u.%u.%u\n\n", KERNEL_VER_MAJOR,
+    printf("h0r.net identifies as v%u.%u.%u\n\n", KERNEL_VER_MAJOR,
             KERNEL_VER_MINOR, KERNEL_VER_PATCH);
 
     if (!locate_rsdt()) {

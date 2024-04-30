@@ -52,6 +52,7 @@ void init_apic(){
     outb8(0xA1, 0xFF);
     iowait();
 
+    //enable the APIC
     wreg(APIC_SPURIOUS,0x100);
     wreg(APIC_TASKPRIOR,0x00);
 

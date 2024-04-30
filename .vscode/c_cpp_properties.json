@@ -6,7 +6,7 @@
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/limine",
                 "${workspaceFolder}/src/vendor/libkrnl-essentials",
-                "${workspaceFolder}/src/vendor/flanterm"
+                "${workspaceFolder}/src/vendor/uterus"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",
