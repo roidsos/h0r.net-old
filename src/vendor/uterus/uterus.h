@@ -115,7 +115,6 @@ struct uterus_context {
     void (*restore_state)(struct uterus_context *);
     void (*double_buffer_flush)(struct uterus_context *);
     void (*full_refresh)(struct uterus_context *);
-    void (*deinit)(struct uterus_context *, void (*)(void *, size_t));
 
     /* to be set by client */
 
