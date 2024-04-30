@@ -56,4 +56,3 @@ iso/*
 src/kernel.bin
 hornet.log
 os.iso
-replay.bin
