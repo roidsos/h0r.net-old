@@ -5,8 +5,10 @@ all:
 	$(MAKE) -C limine
 #make an ISO
 	mkdir -p iso
-	cp src/kernel.bin \
-		cfg/limine.cfg limine/limine.sys limine/limine-cd.bin limine/limine-cd-efi.bin iso/
+	mkdir -p iso/boot
+	cp cfg/limine.cfg limine/limine.sys limine/limine-cd.bin limine/limine-cd-efi.bin iso/
+	cp src/kernel.elf iso/boot/h0rnet.elf
+	cp kfont.psf iso/boot/
 	mkdir -p iso/EFI/BOOT
 	cp limine/BOOT*.EFI iso/EFI/BOOT/
 	cp cfg/startup.nsh iso/startup.nsh
@@ -44,4 +46,4 @@ debugruefi: all
 clean:
 # JUST DELETES JUNK LIKE OBJECT FILES - fuck capslock
 	make -C src clean
-	rm -rf src/kernel.bin iso/boot/kernel.bin
+	rm -rf src/kernel.bin iso

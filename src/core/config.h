@@ -5,7 +5,4 @@
 #define KERNEL_VER_MINOR 0
 #define KERNEL_VER_PATCH 1
 
-
-
-
 #endif
