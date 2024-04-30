@@ -57,7 +57,6 @@ In case any package is missing please open up an issue!
 -->
 ### Timers
 - [x] HPET
-- [ ] PIT
 - [x] RTC
 - [x] LAPIC Timer
 <!--
