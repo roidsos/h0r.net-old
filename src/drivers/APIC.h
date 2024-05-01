@@ -37,4 +37,8 @@
 void init_apic();
 void EOI();
 
+void apic_timer_stop();
+void apic_timer_oneshot(uint64_t ms, uint8_t vec);
+
+
 #endif

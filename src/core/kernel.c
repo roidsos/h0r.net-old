@@ -1,5 +1,6 @@
 #include "kernel.h"
 #include "config.h"
+#include "scheduler.h"
 
 #include <backends/fb.h>
 #include <utils/psf2.h>
@@ -55,12 +56,14 @@ void initialize_globals() {
 void main() {
     initialize_globals();
 
-    printf("h0r.net identifies as v%u.%u.%u\n\n", KERNEL_VER_MAJOR,
+    dprintf("h0r.net identifies as v%u.%u.%u\n\n", KERNEL_VER_MAJOR,
             KERNEL_VER_MINOR, KERNEL_VER_PATCH);
 
     if (!locate_rsdt()) {
         trigger_psod(HN_ERR_NO_ACPI, "you FUCKING dinosaur",NULL);
     }
     init_apic();
+    init_sched();
+    __asm__("int $32");
     hlt();
 }

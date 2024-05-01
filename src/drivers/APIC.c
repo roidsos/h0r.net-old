@@ -1,11 +1,12 @@
 #include "APIC.h"
 #include "ACPI/HPET.h"
 #include <arch/x86_64/cpu.h>
-#include <arch/x86_64/interrupts/interrupts.h>
 #include <utils/error.h>
 #include <arch/x86_64/io/portio.h>
 #include <core/memory.h>
 #include <vendor/printf.h>
+
+uint32_t ticks = 0;
 
 void set_apic_base(uintptr_t apic) {
     uint32_t hi = 0;
@@ -37,9 +38,16 @@ void wreg(uint16_t offset,uint32_t val){
     *((uint32_t*)((uint64_t)data.lapic_base + offset)) = val;
 }
 
-void timer(UNUSED Registers* regs){
-    dprintf("a");
-    EOI();
+void apic_timer_stop(){
+    wreg(APIC_TMRINITCNT, 0);
+    wreg(APIC_LVT_TMR, LVT_MASKED);
+}
+
+void apic_timer_oneshot(uint64_t ms, uint8_t vec){
+    apic_timer_stop();
+    wreg(APIC_TMRDIV, 0);
+    wreg(APIC_LVT_TMR, vec);
+    wreg(APIC_TMRINITCNT, ms * ticks);
 }
 
 void init_apic(){
@@ -53,32 +61,26 @@ void init_apic(){
     iowait();
 
     //enable the APIC
-    wreg(APIC_SPURIOUS,0x100);
-    wreg(APIC_TASKPRIOR,0x00);
+    wreg(APIC_SPURIOUS,rreg(APIC_SPURIOUS) | 0x100);
+    wreg(APIC_TASKPRIOR,0);
 
 
     //check for timer
     if(!init_hpet()){
-        trigger_psod(HN_ERR_NO_ACPI, "no HPET found",NULL);
+        trigger_psod(HN_ERR_NO_ACPI, "no HPET found LMAO",NULL);
     }
 
-
     //Calibrate the timer
-    wreg(APIC_TMRDIV, 0x3);
+    apic_timer_stop();
+    wreg(APIC_TMRDIV, 0);
+    wreg(APIC_LVT_TMR, 0);
     wreg(APIC_TMRINITCNT, 0xFFFFFFFF);
 
     hpet_usleep(10000);
 
-    wreg(APIC_LVT_TMR, LVT_MASKED);
-
-    uint32_t ticksIn10ms = 0xFFFFFFFF - rreg(APIC_TMRCURRCNT);
-
-    register_ISR(32, timer);
-
-    wreg(APIC_TMRINITCNT, 0xFFFFFFFF);
-    wreg(APIC_LVT_TMR, 32 | TMR_PERIODIC);
-    wreg(APIC_TMRDIV, 0x3);
-    wreg(APIC_TMRINITCNT, ticksIn10ms);
+    ticks = 0xFFFFFFFF - rreg(APIC_TMRCURRCNT);
+    apic_timer_stop();
+    printf("0x%x\n",ticks);
 }
 
 void EOI(){
