@@ -28,6 +28,7 @@ In case any package is missing please open up an issue!
 ### ACPI
 - [X] ACPI
 - [x] LAPIC
+- [ ] IOAPIC
 - [ ] LAI
 
 ### Device drivers
