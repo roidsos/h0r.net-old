@@ -23,7 +23,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef _UTERUS_FB_H
+#ifndef _uterus_FR_H
 #define _UTERUS_FB_H 1
 
 #ifdef __cplusplus
@@ -37,8 +37,6 @@ extern "C" {
 #include "../uterus.h"
 
 #define UTERUS_FB_FONT_GLYPHS 256
-
-#define UTERUS_FB_BUMP_ALLOC_POOL_SIZE (32 * 1024 * 1024)
 
 struct uterus_fb_char {
     uint32_t c;
@@ -70,10 +68,18 @@ struct uterus_fb_context {
     size_t height;
     size_t bpp;
 
+    size_t font_bits_size;
     uint8_t *font_bits;
 
     uint32_t ansi_colours[8];
+    uint32_t ansi_bright_colours[8];
     uint32_t default_fg, default_bg;
+    uint32_t default_fg_bright, default_bg_bright;
+
+#ifndef UTERUS_FB_DISABLE_CANVAS
+    size_t canvas_size;
+    uint32_t *canvas;
+#endif
 
     size_t grid_size;
     size_t queue_size;
@@ -91,22 +97,44 @@ struct uterus_fb_context {
     size_t cursor_x;
     size_t cursor_y;
 
+    uint32_t saved_state_text_fg;
+    uint32_t saved_state_text_bg;
+    size_t saved_state_cursor_x;
+    size_t saved_state_cursor_y;
+
     size_t old_cursor_x;
     size_t old_cursor_y;
 };
 
 struct uterus_context *uterus_fb_init(
     uint32_t *framebuffer, size_t width, size_t height, size_t pitch,
-    void *font, size_t font_width, size_t font_height);
+#ifndef UTERUS_FB_DISABLE_CANVAS
+    uint32_t *canvas,
+#endif
+    uint32_t *ansi_colours, uint32_t *ansi_bright_colours,
+    uint32_t *default_bg, uint32_t *default_fg,
+    uint32_t *default_bg_bright, uint32_t *default_fg_bright,
+    void *font, size_t font_width, size_t font_height, size_t font_spacing,
+    size_t font_scale_x, size_t font_scale_y
+);
 
+#ifndef UTERUS_FB_DISABLE_BUMP_ALLOC
 static inline struct uterus_context *uterus_fb_simple_init(
     uint32_t *framebuffer, size_t width, size_t height, size_t pitch
 ) {
     return uterus_fb_init(
         framebuffer, width, height, pitch,
-        NULL,0, 0
+#ifndef UTERUS_FB_DISABLE_CANVAS
+        NULL,
+#endif
+        NULL, NULL,
+        NULL, NULL,
+        NULL, NULL,
+        NULL, 0, 0, 1,
+        1, 1
     );
 }
+#endif
 
 #ifdef __cplusplus
 }
