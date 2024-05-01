@@ -8,14 +8,6 @@
 
 uint32_t ticks = 0;
 
-void set_apic_base(uintptr_t apic) {
-    wrmsr(0x800, (apic & 0xfffff000ULL) | 0x800);
-}
-
-uintptr_t get_apic_base() {
-    return rdmsr(0x1bU) & 0xfffff000ULL;
-}
-
 uint32_t rreg(uint16_t offset){
     return *((uint32_t*)((uint64_t)data.lapic_base + offset));
 }
@@ -46,7 +38,6 @@ void init_apic(){
     iowait();
 
     //enable the APIC
-    set_apic_base(get_apic_base());
     wreg(APIC_SPURIOUS,0x1FF);
     wreg(APIC_TASKPRIOR,0);
 
@@ -65,7 +56,6 @@ void init_apic(){
 
     ticks = 0xFFFFFFFF - rreg(APIC_TMRCURRCNT);
     apic_timer_stop();
-    printf("%u\n",ticks);
 }
 
 void EOI(){

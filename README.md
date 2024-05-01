@@ -33,14 +33,14 @@ In case any package is missing please open up an issue!
 
 ### Device drivers
 #### Audio
-- [ ] PC speaker
+- [x] PC speaker
 - [ ] AC97
 - [ ] Intel High Definition Audio
 
 #### I/O
 - [ ] PS/2 Keyboard
 - [ ] PS/2 Mouse
-- [ ] COM
+- [x] COM
 <!--
 #### Storage
 - [ ] IDE

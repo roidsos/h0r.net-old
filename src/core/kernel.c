@@ -8,6 +8,8 @@
 
 #include <arch/x86_64/interrupts/interrupts.h>
 #include <drivers/ACPI/RSDT.h>
+#include <drivers/audio/pcspk.h>
+#include <drivers/output/cereal.h>
 #include <drivers/APIC.h>
 
 #include <klibc/stdlib.h>
@@ -54,8 +56,9 @@ void initialize_globals() {
     load_limine_modules();
 }
 
-void main() {
+void kmain() {
     initialize_globals();
+    cereal_init();
 
     dprintf("h0r.net identifies as v%u.%u.%u\n\n", KERNEL_VER_MAJOR,
             KERNEL_VER_MINOR, KERNEL_VER_PATCH);
@@ -66,6 +69,7 @@ void main() {
     init_apic();
     init_sched();
     enable_interrupts();
-    __asm__("int $32");
+    // kickstart the "scheduler"
+    //__asm__("int $32");
     hlt();
 }

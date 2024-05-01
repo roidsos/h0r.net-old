@@ -4,7 +4,7 @@
 #include <utils/error.h>
 #include <vendor/printf.h>
 uint64_t kernel_stack[8192];
-void main();
+void kmain();
 
 void _start(void) {
     // no unhandled interrupts plzz
@@ -22,7 +22,7 @@ void _start(void) {
     initialize_interrupts();
     dprintf("x86_64 Init Target reached: Interrupts\n");
 
-    main();
+    kmain();
 
     trigger_psod(HN_ERR_KERNEL_EXITED, "The kernel Exited",NULL);
     while (true)

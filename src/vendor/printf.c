@@ -32,7 +32,7 @@
 // Note: Edited
 ///////////////////////////////////////////////////////////////////////////////
 #include "printf.h"
-#include <arch/x86_64/io/portio.h>
+#include <drivers/output/cereal.h>
 #include <core/kernel.h>
 #include <uterus.h>
 #include <types/stdtypes.h>
@@ -88,8 +88,7 @@ static inline void _out_dbg(char character, UNUSED void *buffer,
                             UNUSED size_t idx, UNUSED size_t maxlen) {
     if (character == 0)
         return;
-    outb8(0xE9,
-          character); // port E9 trick, only works on bochs and qemu, doesnt
+    cereal_write(character, COM1); // port E9 trick, only works on bochs and qemu, doesnt
                       // break real hardware( unless the hardware is garbage)
 }
 
