@@ -7,7 +7,7 @@ void schedule(UNUSED Registers *regs){
 
     printf("a");
 
-    apic_timer_oneshot(10, 32);
+    apic_timer_oneshot(1, 32);
     EOI();
 }
 

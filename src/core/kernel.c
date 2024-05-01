@@ -6,6 +6,7 @@
 #include <utils/psf2.h>
 #include <vendor/printf.h>
 
+#include <arch/x86_64/interrupts/interrupts.h>
 #include <drivers/ACPI/RSDT.h>
 #include <drivers/APIC.h>
 
@@ -64,6 +65,7 @@ void main() {
     }
     init_apic();
     init_sched();
+    enable_interrupts();
     __asm__("int $32");
     hlt();
 }

@@ -9,25 +9,11 @@
 uint32_t ticks = 0;
 
 void set_apic_base(uintptr_t apic) {
-    uint32_t hi = 0;
-    uint32_t lo = (apic & 0xfffff0000) | APIC_BASE_MSR_ENABLE;
-
-    #ifdef __PHYSICAL_MEMORY_EXTENSION__
-        edx = (apic >> 32) & 0x0f;
-    #endif
-
-    wrmsr(APIC_BASE_MSR, lo, hi);
+    wrmsr(0x800, (apic & 0xfffff000ULL) | 0x800);
 }
 
 uintptr_t get_apic_base() {
-    uint32_t lo, hi;
-    rdmsr(APIC_BASE_MSR, &lo, &hi);
-
-    #ifdef __PHYSICAL_MEMORY_EXTENSION__
-    return (lo & 0xfffff000) | ((hi & 0x0f) << 32);
-    #else
-    return (lo & 0xfffff000);
-    #endif
+    return rdmsr(0x1bU) & 0xfffff000ULL;
 }
 
 uint32_t rreg(uint16_t offset){
@@ -52,7 +38,6 @@ void apic_timer_oneshot(uint64_t ms, uint8_t vec){
 
 void init_apic(){
     init_madt();
-    set_apic_base(get_apic_base());
 
     // make sure the leagacy PIC is disabled
     outb8(0x21, 0xFF);
@@ -61,9 +46,9 @@ void init_apic(){
     iowait();
 
     //enable the APIC
-    wreg(APIC_SPURIOUS,rreg(APIC_SPURIOUS) | 0x100);
+    set_apic_base(get_apic_base());
+    wreg(APIC_SPURIOUS,0x1FF);
     wreg(APIC_TASKPRIOR,0);
-
 
     //check for timer
     if(!init_hpet()){
@@ -76,11 +61,11 @@ void init_apic(){
     wreg(APIC_LVT_TMR, 0);
     wreg(APIC_TMRINITCNT, 0xFFFFFFFF);
 
-    hpet_usleep(10000);
+    hpet_usleep(100);
 
     ticks = 0xFFFFFFFF - rreg(APIC_TMRCURRCNT);
     apic_timer_stop();
-    printf("0x%x\n",ticks);
+    printf("%u\n",ticks);
 }
 
 void EOI(){

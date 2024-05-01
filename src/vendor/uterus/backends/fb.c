@@ -684,7 +684,7 @@ struct uterus_context *uterus_fb_init(
 
     ctx->default_bg = 0x00000000; // background (black)
     ctx->default_fg = 0x00ffffff; // foreground (white)
-    
+
     ctx->text_fg = ctx->default_fg;
     ctx->text_bg = 0xffffffff;
 

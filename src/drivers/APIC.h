@@ -1,10 +1,6 @@
 #ifndef APIC_H
 #define APIC_H
 
-#define APIC_BASE_MSR 0x1B
-#define APIC_BASE_MSR_BSP 0x100
-#define APIC_BASE_MSR_ENABLE 0x800
-
 #define APIC_APICID      0x20
 #define APIC_APICVER     0x30
 #define APIC_TASKPRIOR   0x80
