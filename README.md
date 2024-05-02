@@ -16,7 +16,7 @@ In case any package is missing please open up an issue!
 - [x] GDT
 - [x] IDT
 - [X] TSS
-- [ ] PCI
+- [x] PCI
 - [ ] PCIe
 - [ ] MSI
 - [ ] MSI-X
