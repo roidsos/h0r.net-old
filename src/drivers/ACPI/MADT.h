@@ -3,6 +3,14 @@
 
 #include "RSDT.h"
 
+#define MADT_ENTRY_TYPE_LAPIC                0
+#define MADT_ENTRY_TYPE_IOAPIC               1
+#define MADT_ENTRY_TYPE_IOAPIC_OVERRIDE      2
+#define MADT_ENTRY_TYPE_IOAPIC_NMI           3
+#define MADT_ENTRY_TYPE_LAPIC_NMI            4
+#define MADT_ENTRY_TYPE_LAPIC_ADDR_OVERRIDE  5
+#define MADT_ENTRY_TYPE_LX2APIC              9
+
 typedef struct {
     sdt_header h;
     uint32_t lapic_addr;
@@ -59,5 +67,9 @@ typedef struct {
 } __attribute__((__packed__)) madt_entry;
 
 bool init_madt();
+
+#define MAX_ENTRIES 64
+extern uint16_t num_madt_entries;
+extern madt_entry* entry_ptrs[MAX_ENTRIES];
 
 #endif

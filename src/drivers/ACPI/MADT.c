@@ -4,17 +4,16 @@
 
 void* end_addr;
 
-#define MAX_ENTRIES 64
-uint16_t num_entries = 0;
+uint16_t num_madt_entries = 0;
 madt_entry* entry_ptrs[MAX_ENTRIES];
 
 
 void recurse_table(void* ptr){
-    if(ptr >= end_addr || num_entries > MAX_ENTRIES)
+    if(ptr >= end_addr || num_madt_entries > MAX_ENTRIES)
         return;
     madt_entry* e = (madt_entry*)ptr;
-    entry_ptrs[num_entries] = e;
-    num_entries++;
+    entry_ptrs[num_madt_entries] = e;
+    num_madt_entries++;
 
     recurse_table(ptr + e->h.length);
 }

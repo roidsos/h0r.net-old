@@ -12,6 +12,7 @@
 #include <drivers/audio/pcspk.h>
 #include <drivers/output/cereal.h>
 #include <drivers/APIC.h>
+#include <drivers/IOAPIC.h>
 
 #include <klibc/stdlib.h>
 #include <klibc/string.h>
@@ -67,11 +68,12 @@ void kmain() {
     if (!locate_rsdt()) {
         trigger_psod(HN_ERR_NO_ACPI, "you FUCKING dinosaur",NULL);
     }
-    if (init_mcfg()) {
-        printf("PCI yayyy!\n");
-        iterate_pci();
-    }
+    //if (init_mcfg()) {
+    //    printf("PCI yayyy!\n");
+    //    iterate_pci();
+    //}
     init_apic();
+    init_ioapic();
     init_sched();
     enable_interrupts();
     // kickstart the "scheduler"
