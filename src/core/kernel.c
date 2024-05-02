@@ -11,6 +11,7 @@
 #include <drivers/ACPI/MCFG.h>
 #include <drivers/audio/pcspk.h>
 #include <drivers/output/cereal.h>
+#include <drivers/input/PS2.h>
 #include <drivers/APIC.h>
 #include <drivers/IOAPIC.h>
 
@@ -76,6 +77,7 @@ void kmain() {
     init_ioapic();
     init_sched();
     enable_interrupts();
+    init_ps2();
     // kickstart the "scheduler"
     //__asm__("int $32");
     hlt();

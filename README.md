@@ -38,7 +38,7 @@ In case any package is missing please open up an issue!
 - [ ] Intel High Definition Audio
 
 #### I/O
-- [ ] PS/2 Keyboard
+- [x] PS/2 Keyboard
 - [ ] PS/2 Mouse
 - [x] COM
 <!--
