@@ -13,7 +13,7 @@
 
 bool init_ioapic();
 
-void mask(uint32_t id);
-void unmask(uint32_t id);
+void mask(uint8_t id);
+void unmask(uint8_t id);
 
 #endif

@@ -35,8 +35,8 @@ bool init_ioapic(){
     printf("vector count: %u",vector_count);
     // mask all and set 
     for (uint32_t i = 0; i <= vector_count; ++i) {
-        write(IOAPIC_REDTBL+2*i, 1 << 16 | (32 + i));
-        write(IOAPIC_REDTBL+2*i+1, 0); // redir cpu
+        write(IOAPIC_REDTBL+2*i,1 << 16 | (32 + i));
+        write(IOAPIC_REDTBL+2*i+1,               0); // redir cpu
     }
 
     return false;
@@ -54,8 +54,8 @@ madt_entry* get_gsi(uint32_t gsi){
 }
 
 //TODO: dont aassume lapic ID of 0
-void mask(uint32_t id){
-    uint32_t vec = 32 + id;
+void mask(uint8_t id){
+    uint8_t vec = 32 + id;
     for(size_t i = 0; i < num_madt_entries;i++){
         if(entry_ptrs[i]->h.type == MADT_ENTRY_TYPE_IOAPIC_OVERRIDE
                 && entry_ptrs[i]->the_meat.ioapic_override.IRQ_source == vec){
@@ -71,7 +71,6 @@ void mask(uint32_t id){
             if ((entry_ptrs[i]->the_meat.ioapic_override.flags & (1 << 3)) != 0) {
                 redir |= (1 << 15);
             }
-
             write((entry_ptrs[i]->the_meat.ioapic_override.GS_interupt - gsi->the_meat.ioapic.GS_interrupt_base) * 2 + 16, 1 << 16 | (uint32_t)redir);
             write((entry_ptrs[i]->the_meat.ioapic_override.GS_interupt - gsi->the_meat.ioapic.GS_interrupt_base) * 2 + 17, (uint32_t)(redir >> 32));
             ioapicaddr = tmp;
@@ -79,11 +78,11 @@ void mask(uint32_t id){
         }
     }
     madt_entry* gsi = get_gsi(id);
-    write((vec - gsi->the_meat.ioapic.GS_interrupt_base) * 2 + 16,1 << 16 | (vec));
-    write((vec - gsi->the_meat.ioapic.GS_interrupt_base) * 2 + 17,0              ); // redir cpu
+    write((id - gsi->the_meat.ioapic.GS_interrupt_base) * 2 + 16,1 << 16 | (vec));
+    write((id - gsi->the_meat.ioapic.GS_interrupt_base) * 2 + 17,              0); // redir cpu
 }
-void unmask(uint32_t id){
-    uint32_t vec = 32 + id;
+void unmask(uint8_t id){
+    uint8_t vec = 32 + id;
     for(size_t i = 0; i < num_madt_entries;i++){
         if(entry_ptrs[i]->h.type == MADT_ENTRY_TYPE_IOAPIC_OVERRIDE
                 && entry_ptrs[i]->the_meat.ioapic_override.IRQ_source == vec){
@@ -107,6 +106,9 @@ void unmask(uint32_t id){
         }
     }
     madt_entry* gsi = get_gsi(id);
-    write((vec - gsi->the_meat.ioapic.GS_interrupt_base) * 2 + 16,(vec));
-    write((vec - gsi->the_meat.ioapic.GS_interrupt_base) * 2 + 17,0); // redir cpu
+    void* tmp = ioapicaddr;
+    ioapicaddr = (void*)(uint64_t)gsi->the_meat.ioapic.adress;
+    write((id - gsi->the_meat.ioapic.GS_interrupt_base) * 2 + 16,vec);
+    write((id - gsi->the_meat.ioapic.GS_interrupt_base) * 2 + 17,  0); // redir cpu
+    ioapicaddr = tmp;
 }

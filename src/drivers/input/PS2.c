@@ -7,15 +7,20 @@
 #include <drivers/IOAPIC.h>
 
 void handler(UNUSED Registers* regs){
-    uint8_t scancode = inb8(0x64);
+    uint8_t scancode = inb8(PS2_DATA);
     printf("0x%x\n",scancode);
     EOI();
 }
 
 void init_ps2(){
-    outb8(0x64,0xAE);
-    outb8(0x60,0xf4);
-
     register_ISR(33, handler);
     unmask(1);
+
+    if (inb8(PS2_COMMAND) & 0x1) // initialize the ps2 controller
+        inb8(PS2_DATA);
+    outb8(PS2_COMMAND, 0x60);
+    outb8(PS2_DATA, 0b01100101);
+
+    outb8(PS2_COMMAND, 0xAE);
+    outb8(PS2_DATA, 0xf4);
 }

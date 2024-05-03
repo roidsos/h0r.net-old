@@ -69,14 +69,13 @@ void kmain() {
     if (!locate_rsdt()) {
         trigger_psod(HN_ERR_NO_ACPI, "you FUCKING dinosaur",NULL);
     }
-    //if (init_mcfg()) {
-    //    printf("PCI yayyy!\n");
-    //    iterate_pci();
-    //}
+    if (init_mcfg()) {
+        iterate_pci();
+    }
     init_apic();
     init_ioapic();
-    init_sched();
     enable_interrupts();
+    init_sched();
     init_ps2();
     // kickstart the "scheduler"
     //__asm__("int $32");
