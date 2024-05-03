@@ -29,5 +29,6 @@ typedef struct{
 
 bool locate_rsdt();
 sdt_header *find_thingy(char* signature);
+sdt_header *find_nth_thingy(char *signature,size_t index);
 
 #endif

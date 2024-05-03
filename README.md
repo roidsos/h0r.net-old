@@ -24,7 +24,7 @@ In case any package is missing please open up an issue!
 ### Memory
 - [x] PMM
 - [ ] VMM (4 level)
-- [ ] Heap
+- [x] Heap
 ### ACPI
 - [X] ACPI
 - [x] LAPIC

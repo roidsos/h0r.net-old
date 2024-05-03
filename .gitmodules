@@ -9,3 +9,6 @@
 	path = src/vendor/libkrnl-essentials
 	url = https://github.com/lolguy91/libkrnl-essentials
 	branch = master
+[submodule "src/vendor/lai"]
+	path = src/vendor/lai
+	url = https://github.com/managarm/lai/

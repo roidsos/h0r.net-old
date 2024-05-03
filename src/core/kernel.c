@@ -3,7 +3,6 @@
 #include "scheduler.h"
 
 #include "mm/pmm.h"
-#include "mm/heap.h"
 
 #include <backends/fb.h>
 #include <utils/psf2.h>
@@ -18,6 +17,8 @@
 #include <drivers/input/PS2.h>
 #include <drivers/APIC.h>
 #include <drivers/IOAPIC.h>
+
+#include <lai/core.h>
 
 #include <klibc/stdlib.h>
 #include <klibc/string.h>
@@ -63,6 +64,8 @@ void initialize_globals() {
     load_limine_modules();
 }
 
+extern int ACPI_revision;
+
 void kmain() {
     initialize_globals();
     cereal_init();
@@ -83,6 +86,9 @@ void kmain() {
     enable_interrupts();
     init_sched();
     init_ps2();
+
+    lai_set_acpi_revision(ACPI_revision);
+    lai_create_namespace();
 
     // kickstart the "scheduler"
     //__asm__("int $32");

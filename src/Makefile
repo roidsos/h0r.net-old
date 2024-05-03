@@ -53,6 +53,7 @@ override CFLAGS += \
     -I../limine \
     -Ivendor/libkrnl-essentials \
     -Ivendor/uterus \
+    -Ivendor/lai/include \
     -Wall \
     -Wextra \
     -Werror \
