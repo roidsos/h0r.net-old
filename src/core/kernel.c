@@ -9,6 +9,7 @@
 #include <arch/x86_64/interrupts/interrupts.h>
 #include <drivers/ACPI/RSDT.h>
 #include <drivers/ACPI/MCFG.h>
+#include <drivers/ACPI/FADT.h>
 #include <drivers/audio/pcspk.h>
 #include <drivers/output/cereal.h>
 #include <drivers/input/PS2.h>
@@ -77,6 +78,7 @@ void kmain() {
     enable_interrupts();
     init_sched();
     init_ps2();
+    init_fadt();
     // kickstart the "scheduler"
     //__asm__("int $32");
     hlt();
