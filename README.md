@@ -22,7 +22,7 @@ In case any package is missing please open up an issue!
 - [ ] MSI-X
 - [x] Modules
 ### Memory
-- [ ] PMM
+- [x] PMM
 - [ ] VMM (4 level)
 - [ ] Heap
 ### ACPI
@@ -35,7 +35,6 @@ In case any package is missing please open up an issue!
 #### Audio
 - [x] PC speaker
 - [ ] AC97
-- [ ] Intel High Definition Audio
 
 #### I/O
 - [x] PS/2 Keyboard

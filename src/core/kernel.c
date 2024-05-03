@@ -3,6 +3,7 @@
 #include "scheduler.h"
 
 #include "mm/pmm.h"
+#include "mm/heap.h"
 
 #include <backends/fb.h>
 #include <utils/psf2.h>
