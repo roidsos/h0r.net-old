@@ -2,6 +2,8 @@
 #include "config.h"
 #include "scheduler.h"
 
+#include "mm/pmm.h"
+
 #include <backends/fb.h>
 #include <utils/psf2.h>
 #include <vendor/printf.h>
@@ -73,12 +75,14 @@ void kmain() {
     if (init_mcfg()) {
         iterate_pci();
     }
+    pmm_init();
+    init_fadt();
     init_apic();
     init_ioapic();
     enable_interrupts();
     init_sched();
     init_ps2();
-    init_fadt();
+
     // kickstart the "scheduler"
     //__asm__("int $32");
     hlt();

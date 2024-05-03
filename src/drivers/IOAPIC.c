@@ -2,7 +2,6 @@
 #include "core/memory.h"
 #include "vendor/printf.h"
 
-
 void *ioapicaddr = NULL;
 uint8_t vector_count;
 
@@ -32,7 +31,6 @@ bool init_ioapic(){
         return false;
     }
     vector_count = ((read(IOAPIC_VER) >> 16) & 0xFF);
-    printf("vector count: %u",vector_count);
     // mask all and set 
     for (uint32_t i = 0; i <= vector_count; ++i) {
         write(IOAPIC_REDTBL+2*i,1 << 16 | (32 + i));

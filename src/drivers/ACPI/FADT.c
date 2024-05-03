@@ -21,8 +21,6 @@ bool init_fadt(){
             && (fadt->ACPI_enable != 0 || fadt->ACPI_disable != 0))
         outb8(fadt->SMI_command_port, fadt->ACPI_enable);
 
-    // *drum roll* wait for it
-    while ((inb32(fadt->PM1a_control_block) & 1) == 0);
     return true;
 
 }

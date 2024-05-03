@@ -1,5 +1,6 @@
 #include "error.h"
 #include <klibc/stdlib.h>
+#include <core/memory.h>
 #include <vendor/printf.h>
 #include <arch/x86_64/cpu.h>
 
@@ -38,7 +39,8 @@ char *errors[] = {
     "HN_ERR_RESERVED",
     "HN_ERR_KERNEL_EXITED",
     "HN_ERR_NO_ACPI",
-    "HN_ERR_NO_FB"
+    "HN_ERR_NO_FB",
+    "HN_ERR_OUT_OF_MEM"
 };
 
 #define BGCOL "\x1b[48;2;17;0;34m"
@@ -110,12 +112,12 @@ void trigger_psod(int error_code, char *details,Registers* regs) {
 
     printf("Backtrace:\n");
     dprintf("Backtrace:\n");
-    struct stackframe64_t *frame = (struct stackframe64_t *)regs->rbp;
+    struct stackframe64_t *frame = (struct stackframe64_t *)PHYS_TO_VIRT(regs->rbp);
     while (frame->RIP >= (uint64_t)0xffffffff80000000)//TODO: support different memory models
     {
         printf ("    [%.16lx]  <No SymbolTable LMAO>", frame->RIP);
         dprintf("    [%.16lx]  <No SymbolTable LMAO>", frame->RIP);
-        frame = frame->RBP;
+        frame = (struct stackframe64_t *)PHYS_TO_VIRT(frame->RBP);
     }
     hcf();
 }
