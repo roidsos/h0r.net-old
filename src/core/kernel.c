@@ -87,8 +87,8 @@ void kmain() {
     init_sched();
     init_ps2();
 
-    lai_set_acpi_revision(ACPI_revision);
-    lai_create_namespace();
+    //lai_set_acpi_revision(ACPI_revision);
+    //lai_create_namespace();
 
     // kickstart the "scheduler"
     //__asm__("int $32");

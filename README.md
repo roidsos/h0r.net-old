@@ -22,14 +22,14 @@ In case any package is missing please open up an issue!
 - [ ] MSI-X
 - [x] Modules
 ### Memory
-- [x] PMM
+- [x] "PMM"(doesnt work right)
 - [ ] VMM (4 level)
-- [ ] Heap
+- [x] "Heap"(doesnt work due to PMM)
 ### ACPI
 - [X] ACPI
 - [x] LAPIC
 - [x] IOAPIC
-- [x] LAI
+- [x] "LAI"(doesnt work due to Heap)
 
 ### Device drivers
 #### Audio
