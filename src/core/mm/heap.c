@@ -4,7 +4,7 @@
 #include <klibc/string.h>
 
 void *malloc(size_t size) {
-    char *PP = (char *)request_pages((size / 4096) + 1);
+    char *PP = (char *)PHYS_TO_VIRT(request_pages((size / 4096) + 1));
     *((size_t *)PP) = size;
     PP += sizeof(size_t);
     return (void *)PP;
@@ -14,7 +14,7 @@ void free(void *tofree) {
     char *PP = (char *)tofree;
     PP -= sizeof(size_t);
     size_t size = *((size_t *)PP);
-    free_pages(PP, (size / 4096) + 1);
+    free_pages((void*)VIRT_TO_PHYS(PP), (size / 4096) + 1);
 }
 void *calloc(size_t size) {
     void *mallocVal = malloc(size);

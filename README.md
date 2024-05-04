@@ -29,7 +29,7 @@ In case any package is missing please open up an issue!
 - [X] ACPI
 - [x] LAPIC
 - [x] IOAPIC
-- [ ] LAI
+- [x] LAI
 
 ### Device drivers
 #### Audio

@@ -7,6 +7,7 @@
 #define HN_ERR_NO_ACPI        33
 #define HN_ERR_NO_FB          34
 #define HN_ERR_OUT_OF_MEM     35
+#define HN_ERR_LAI_PANIC      36
 
 void trigger_psod(int error_code,char* details,Registers* regs);
 

@@ -13,5 +13,5 @@ size_t get_free_RAM();
 size_t get_used_RAM();
 size_t get_total_RAM();
 
-void* request_pages(int num);
+void* request_pages(size_t num);
 #endif

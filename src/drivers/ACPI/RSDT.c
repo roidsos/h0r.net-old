@@ -31,32 +31,15 @@ bool locate_rsdt() {
     return true;
 
 }
-sdt_header *find_thingy(char *signature) {
-    if (use_xsdt) {
-        int entries = (xsdt->h.length - sizeof(xsdt->h)) / 8;
-
-        for (int i = 0; i < entries; i++) {
-            sdt_header *h =
-                (sdt_header *)(uintptr_t)PHYS_TO_VIRT(xsdt->SDTs[i]);
-            if (!strncmp(h->signature, signature, 4))
-                return h;
-        }
-
-    } else {
-        int entries = (rsdt->h.length - sizeof(rsdt->h)) / 4;
-
-        for (int i = 0; i < entries; i++) {
-            sdt_header *h =
-                (sdt_header *)(uintptr_t)PHYS_TO_VIRT(rsdt->SDTs[i]);
-            if (!strncmp(h->signature, signature, 4))
-                return h;
+sdt_header *find_nth_thingy(char *signature,size_t index) {
+    if (!strncmp("DSDT", signature, 4)){
+        fadt_header* fadt = (fadt_header*)find_nth_thingy("FACP",0);
+        if(use_xsdt){ // check for ACPI 2+
+            return (sdt_header*)(uintptr_t)PHYS_TO_VIRT(fadt->X_Dsdt);
+        }else{
+            return (sdt_header*)(uintptr_t)PHYS_TO_VIRT(fadt->dsdt);
         }
     }
-
-    return NULL;
-}
-
-sdt_header *find_nth_thingy(char *signature,size_t index) {
     size_t n = 0;
     if (use_xsdt) {
         int entries = (xsdt->h.length - sizeof(xsdt->h)) / 8;
@@ -87,3 +70,7 @@ sdt_header *find_nth_thingy(char *signature,size_t index) {
 
     return NULL;
 }
+sdt_header *find_thingy(char *signature) {
+    return find_nth_thingy(signature,0);
+}
+

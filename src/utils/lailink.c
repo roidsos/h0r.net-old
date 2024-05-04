@@ -15,11 +15,11 @@ void laihost_free(void *tofree,UNUSED size_t size){
 }
 
 void laihost_log(int lvl, const char *msg){
-    dprintf("[%i] %s",lvl,msg);
+    dprintf("[%i] %s\n",lvl,msg);
 }
 
 void laihost_panic(const char *msg){
-    trigger_psod(HN_ERR_NO_FB,(char*)msg,NULL);
+    trigger_psod(HN_ERR_LAI_PANIC,(char*)msg,NULL);
 }
 
 void *laihost_scan(char *sig, size_t index){

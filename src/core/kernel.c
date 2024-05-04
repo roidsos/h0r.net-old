@@ -11,8 +11,6 @@
 #include <arch/x86_64/interrupts/interrupts.h>
 #include <drivers/ACPI/RSDT.h>
 #include <drivers/ACPI/MCFG.h>
-#include <drivers/ACPI/FADT.h>
-#include <drivers/audio/pcspk.h>
 #include <drivers/output/cereal.h>
 #include <drivers/input/PS2.h>
 #include <drivers/APIC.h>
@@ -76,11 +74,10 @@ void kmain() {
     if (!locate_rsdt()) {
         trigger_psod(HN_ERR_NO_ACPI, "you FUCKING dinosaur",NULL);
     }
-    if (init_mcfg()) {
-        iterate_pci();
-    }
+    //if (init_mcfg()) {
+    //    iterate_pci();
+    //}
     pmm_init();
-    init_fadt();
     init_apic();
     init_ioapic();
     enable_interrupts();
