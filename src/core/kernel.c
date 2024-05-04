@@ -69,8 +69,8 @@ void kmain() {
     initialize_globals();
     cereal_init();
 
-    dprintf("h0r.net identifies as v%u.%u.%u\n\n", KERNEL_VER_MAJOR,
-            KERNEL_VER_MINOR, KERNEL_VER_PATCH);
+    dprintf("h0r.net identifies as v%u.%u.%u \"%s\"\n\n", KERNEL_VER_MAJOR,
+            KERNEL_VER_MINOR, KERNEL_VER_PATCH,KERNEL_VER_CODENAME);
 
     if (!locate_rsdt()) {
         trigger_psod(HN_ERR_NO_ACPI, "you FUCKING dinosaur",NULL);
@@ -79,7 +79,7 @@ void kmain() {
     //    iterate_pci();
     //}
     pmm_init();
-    heap_init();
+    //heap_init();
 
     init_apic();
     init_ioapic();

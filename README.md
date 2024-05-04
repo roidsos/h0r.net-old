@@ -21,21 +21,35 @@ In case any package is missing please open up an issue!
 - [ ] MSI
 - [ ] MSI-X
 - [x] Modules
-### Memory
+#### Memory
 - [x] "PMM"(doesnt work right)
 - [ ] VMM (4 level)
 - [x] "Heap"(doesnt work due to PMM)
+#### Tasking
+- [ ] SMP
+- [ ] Scheduler
+- [ ] Signals
+#### Userspace
+- [ ] System calls
+- [ ] ELF
+- [ ] Userspace
+- [ ] Libc
+- [ ] Bash
+- [ ] DOOM
 ### ACPI
 - [X] ACPI
 - [x] LAPIC
 - [x] IOAPIC
 - [x] "LAI"(doesnt work due to Heap)
 
-### Device drivers
+### drivers
+#### Timers
+- [x] HPET
+- [x] RTC
+- [x] LAPIC Timer
 #### Audio
 - [x] PC speaker
 - [ ] AC97
-
 #### I/O
 - [x] PS/2 Keyboard
 - [ ] PS/2 Mouse
@@ -54,39 +68,7 @@ In case any package is missing please open up an issue!
 - [ ] OHCI
 - [ ] EHCI
 - [ ] XHCI 
--->
-### Timers
-- [x] HPET
-- [x] RTC
-- [x] LAPIC Timer
-<!--
-### Tasking
-- [ ] SMP
-- [ ] Scheduler
-- [ ] Signals
-### Partition tables
-- [ ] MBR
-- [ ] GPT 
-### Filesystems
-- [ ] VFS
-- [ ] TMPFS
-- [ ] DEVTMPFS
-- [ ] PROCFS
-- [ ] SYSFS
-- [ ] USTAR
-- [ ] ILAR
-- [ ] Ext2
-- [ ] Fat32
-- [ ] ISO9660
-- [ ] NTFS
-### Userspace
-- [ ] System calls
-- [ ] ELF
-- [ ] Userspace
-- [ ] Libc
-- [ ] Bash
-- [ ] DOOM
-### Network stack
+#### Network
 - [ ] Ethernet
 - [ ] ARP
 - [ ] IPv4
@@ -98,4 +80,19 @@ In case any package is missing please open up an issue!
 - [ ] Telnet
 - [ ] SSL
 - [ ] Or just LWIP
+#### Partition tables
+- [ ] MBR
+- [ ] GPT 
+#### Filesystems
+- [ ] VFS
+- [ ] TMPFS
+- [ ] DEVTMPFS
+- [ ] PROCFS
+- [ ] SYSFS
+- [ ] USTAR
+- [ ] ILAR
+- [ ] Ext2
+- [ ] Fat32
+- [ ] ISO9660
+- [ ] NTFS
 -->
