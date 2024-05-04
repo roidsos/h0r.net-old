@@ -25,7 +25,7 @@ format:
 
 run: all
 # runs using qemu
-	qemu-system-x86_64 -cdrom os.iso -m 256M -serial file:hornet.log -machine q35 -audiodev sdl,id=snd0 -machine pcspk-audiodev=snd0
+	qemu-system-x86_64 -cdrom os.iso -m 156M -serial file:hornet.log -machine q35 -audiodev sdl,id=snd0 -machine pcspk-audiodev=snd0
 
 runuefi: all
 # runs using qemu
