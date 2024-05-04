@@ -1,7 +1,7 @@
 #include <backends/fb.h>
-#include <uterus.h>
 #include <limine.h>
 #include <stdint.h>
+#include <uterus.h>
 
 #define PSF2_MAGIC0 0x72
 #define PSF2_MAGIC1 0xb5
@@ -20,7 +20,7 @@ typedef struct {
 
 struct uterus_context *
 init_uterus_with_psf2_font(struct limine_file *psf2,
-                             struct limine_framebuffer *fb) {
+                           struct limine_framebuffer *fb) {
     char *psf2buf = psf2->address;
     psf2Hdr hdr = *(psf2Hdr *)psf2->address;
     psf2buf += hdr.headerSize;
@@ -29,8 +29,8 @@ init_uterus_with_psf2_font(struct limine_file *psf2,
         hdr.magic[3] != 0x86)
         return (void *)0;
 
-    return uterus_fb_init(fb->address, fb->width, fb->height,
-                            fb->pitch, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+    return uterus_fb_init(fb->address, fb->width, fb->height, fb->pitch, NULL,
+                          NULL, NULL, NULL, NULL, NULL, NULL,
 
-                            psf2buf, hdr.width, hdr.height, 1, 1, 1);
+                          psf2buf, hdr.width, hdr.height, 1, 1, 1);
 }

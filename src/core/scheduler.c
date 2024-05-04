@@ -1,9 +1,9 @@
 #include "scheduler.h"
 #include <arch/x86_64/interrupts/interrupts.h>
-#include <vendor/printf.h>
 #include <drivers/APIC.h>
+#include <vendor/printf.h>
 
-void schedule(UNUSED Registers *regs){
+void schedule(UNUSED Registers *regs) {
 
     printf("a");
 
@@ -11,6 +11,4 @@ void schedule(UNUSED Registers *regs){
     EOI();
 }
 
-void init_sched(){
-    register_ISR(32,schedule);
-}
+void init_sched() { register_ISR(32, schedule); }

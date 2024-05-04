@@ -32,10 +32,10 @@
 // Note: Edited
 ///////////////////////////////////////////////////////////////////////////////
 #include "printf.h"
-#include <drivers/output/cereal.h>
 #include <core/kernel.h>
-#include <uterus.h>
+#include <drivers/output/cereal.h>
 #include <types/stdtypes.h>
+#include <uterus.h>
 
 // 'ntoa' conversion buffer size, this must be big enough to hold one converted
 // numeric number including padded zeros (dynamically created on stack)
@@ -49,7 +49,6 @@
 #ifndef PRINTF_DISABLE_SUPPORT_LONG_LONG
 #define PRINTF_SUPPORT_LONG_LONG
 #endif
-
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -88,8 +87,9 @@ static inline void _out_dbg(char character, UNUSED void *buffer,
                             UNUSED size_t idx, UNUSED size_t maxlen) {
     if (character == 0)
         return;
-    cereal_write(character, COM1); // port E9 trick, only works on bochs and qemu, doesnt
-                      // break real hardware( unless the hardware is garbage)
+    cereal_write(character,
+                 COM1); // port E9 trick, only works on bochs and qemu, doesnt
+                        // break real hardware( unless the hardware is garbage)
 }
 
 // internal null output
@@ -272,7 +272,6 @@ static size_t _ntoa_long_long(out_fct_type out, char *buffer, size_t idx,
                         (unsigned int)base, prec, width, flags);
 }
 #endif // PRINTF_SUPPORT_LONG_LONG
-
 
 // internal vsnprintf
 static int _vsnprintf(out_fct_type out, char *buffer, const size_t maxlen,

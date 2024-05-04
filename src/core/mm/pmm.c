@@ -101,20 +101,19 @@ size_t get_free_RAM() { return free_mem; }
 size_t get_used_RAM() { return used_mem; }
 size_t get_total_RAM() { return total_mem; }
 
-static void *find_free_range(size_t npages)
-{
-	for (size_t addr = 0; addr < PAGE_TO_BIT(highest_block); addr++) {
-		for (size_t page = 0; page < npages; page++) {
-			if (bitmap_get(page_bitmap, addr + PAGE_TO_BIT(page)))
-				break;
+static void *find_free_range(size_t npages) {
+    for (size_t addr = 0; addr < PAGE_TO_BIT(highest_block); addr++) {
+        for (size_t page = 0; page < npages; page++) {
+            if (bitmap_get(page_bitmap, addr + PAGE_TO_BIT(page)))
+                break;
 
-			if (page == npages - 1)
-				return (void *)BIT_TO_PAGE(addr);
-		}
-	}
+            if (page == npages - 1)
+                return (void *)BIT_TO_PAGE(addr);
+        }
+    }
 
-    trigger_psod(HN_ERR_OUT_OF_MEM, "Out of Memory",NULL);
-	return NULL;
+    trigger_psod(HN_ERR_OUT_OF_MEM, "Out of Memory", NULL);
+    return NULL;
 }
 
 void *request_pages(size_t num) {
@@ -143,7 +142,7 @@ void pmm_init() {
 
     if (page_bmp_size > largest_free_memseg_size)
         trigger_psod(HN_ERR_OUT_OF_MEM,
-                     "Page bitmap does not fit in largest free segment",NULL);
+                     "Page bitmap does not fit in largest free segment", NULL);
 
     page_bitmap.size = page_bmp_size;
     page_bitmap.buffer = largest_free_memseg;

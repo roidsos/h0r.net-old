@@ -469,8 +469,8 @@ static inline bool compare_char(struct uterus_fb_char *a,
     return !(a->c != b->c || a->bg != b->bg || a->fg != b->fg);
 }
 
-static void push_to_queue(struct uterus_context *_ctx,
-                          struct uterus_fb_char *c, size_t x, size_t y) {
+static void push_to_queue(struct uterus_context *_ctx, struct uterus_fb_char *c,
+                          size_t x, size_t y) {
     struct uterus_fb_context *ctx = (void *)_ctx;
 
     if (x >= _ctx->cols || y >= _ctx->rows) {
@@ -567,7 +567,7 @@ static void uterus_fb_clear(struct uterus_context *_ctx, bool move) {
 }
 
 static void uterus_fb_set_cursor_pos(struct uterus_context *_ctx, size_t x,
-                                       size_t y) {
+                                     size_t y) {
     struct uterus_fb_context *ctx = (void *)_ctx;
 
     if (x >= _ctx->cols) {
@@ -589,16 +589,15 @@ static void uterus_fb_set_cursor_pos(struct uterus_context *_ctx, size_t x,
 }
 
 static void uterus_fb_get_cursor_pos(struct uterus_context *_ctx, size_t *x,
-                                       size_t *y) {
+                                     size_t *y) {
     struct uterus_fb_context *ctx = (void *)_ctx;
 
     *x = ctx->cursor_x >= _ctx->cols ? _ctx->cols - 1 : ctx->cursor_x;
     *y = ctx->cursor_y >= _ctx->rows ? _ctx->rows - 1 : ctx->cursor_y;
 }
 
-static void uterus_fb_move_character(struct uterus_context *_ctx,
-                                       size_t new_x, size_t new_y, size_t old_x,
-                                       size_t old_y) {
+static void uterus_fb_move_character(struct uterus_context *_ctx, size_t new_x,
+                                     size_t new_y, size_t old_x, size_t old_y) {
     struct uterus_fb_context *ctx = (void *)_ctx;
 
     if (old_x >= _ctx->cols || old_y >= _ctx->rows || new_x >= _ctx->cols ||
@@ -632,28 +631,28 @@ static void uterus_fb_set_text_bg(struct uterus_context *_ctx, size_t bg) {
 }
 
 static void uterus_fb_set_text_fg_bright(struct uterus_context *_ctx,
-                                           size_t fg) {
+                                         size_t fg) {
     struct uterus_fb_context *ctx = (void *)_ctx;
 
     ctx->text_fg = ctx->ansi_bright_colours[fg];
 }
 
 static void uterus_fb_set_text_bg_bright(struct uterus_context *_ctx,
-                                           size_t bg) {
+                                         size_t bg) {
     struct uterus_fb_context *ctx = (void *)_ctx;
 
     ctx->text_bg = ctx->ansi_bright_colours[bg];
 }
 
 static void uterus_fb_set_text_fg_rgb(struct uterus_context *_ctx,
-                                        uint32_t fg) {
+                                      uint32_t fg) {
     struct uterus_fb_context *ctx = (void *)_ctx;
 
     ctx->text_fg = fg;
 }
 
 static void uterus_fb_set_text_bg_rgb(struct uterus_context *_ctx,
-                                        uint32_t bg) {
+                                      uint32_t bg) {
     struct uterus_fb_context *ctx = (void *)_ctx;
 
     ctx->text_bg = bg;
@@ -671,15 +670,13 @@ static void uterus_fb_set_text_bg_default(struct uterus_context *_ctx) {
     ctx->text_bg = 0xffffffff;
 }
 
-static void
-uterus_fb_set_text_fg_default_bright(struct uterus_context *_ctx) {
+static void uterus_fb_set_text_fg_default_bright(struct uterus_context *_ctx) {
     struct uterus_fb_context *ctx = (void *)_ctx;
 
     ctx->text_fg = ctx->default_fg_bright;
 }
 
-static void
-uterus_fb_set_text_bg_default_bright(struct uterus_context *_ctx) {
+static void uterus_fb_set_text_bg_default_bright(struct uterus_context *_ctx) {
     struct uterus_fb_context *ctx = (void *)_ctx;
 
     ctx->text_bg = ctx->default_bg_bright;
@@ -801,16 +798,16 @@ static void uterus_fb_full_refresh(struct uterus_context *_ctx) {
     }
 }
 
-struct uterus_context *uterus_fb_init(
-    uint32_t *framebuffer, size_t width, size_t height, size_t pitch,
+struct uterus_context *
+uterus_fb_init(uint32_t *framebuffer, size_t width, size_t height, size_t pitch,
 #ifndef UTERUS_FB_DISABLE_CANVAS
-    uint32_t *canvas,
+               uint32_t *canvas,
 #endif
-    uint32_t *ansi_colours, uint32_t *ansi_bright_colours, uint32_t *default_bg,
-    uint32_t *default_fg, uint32_t *default_bg_bright,
-    uint32_t *default_fg_bright, void *font, size_t font_width,
-    size_t font_height, size_t font_spacing, size_t font_scale_x,
-    size_t font_scale_y) {
+               uint32_t *ansi_colours, uint32_t *ansi_bright_colours,
+               uint32_t *default_bg, uint32_t *default_fg,
+               uint32_t *default_bg_bright, uint32_t *default_fg_bright,
+               void *font, size_t font_width, size_t font_height,
+               size_t font_spacing, size_t font_scale_x, size_t font_scale_y) {
 
     struct uterus_fb_context *ctx = NULL;
     ctx = bump_alloc(sizeof(struct uterus_fb_context));

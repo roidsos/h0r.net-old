@@ -2,17 +2,17 @@
 
 #include <arch/x86_64/interrupts/interrupts.h>
 #include <arch/x86_64/io/portio.h>
-#include <vendor/printf.h>
 #include <drivers/APIC.h>
 #include <drivers/IOAPIC.h>
+#include <vendor/printf.h>
 
-void handler(UNUSED Registers* regs){
+void handler(UNUSED Registers *regs) {
     uint8_t scancode = inb8(PS2_DATA);
-    printf("0x%x\n",scancode);
+    printf("0x%x\n", scancode);
     EOI();
 }
 
-void init_ps2(){
+void init_ps2() {
     register_ISR(33, handler);
     unmask(1);
 

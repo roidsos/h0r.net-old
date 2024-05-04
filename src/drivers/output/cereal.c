@@ -29,14 +29,10 @@ bool init_cereal_port(int port) {
 }
 
 bool cereal_init() {
-    return init_cereal_port(COM1)
-          && init_cereal_port(COM2)
-          && init_cereal_port(COM3)
-          && init_cereal_port(COM4)
-          && init_cereal_port(COM5)
-          && init_cereal_port(COM6)
-          && init_cereal_port(COM7)
-          && init_cereal_port(COM8);
+    return init_cereal_port(COM1) && init_cereal_port(COM2) &&
+           init_cereal_port(COM3) && init_cereal_port(COM4) &&
+           init_cereal_port(COM5) && init_cereal_port(COM6) &&
+           init_cereal_port(COM7) && init_cereal_port(COM8);
 }
 
 char cereal_read(int port) {

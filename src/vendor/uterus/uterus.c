@@ -107,8 +107,7 @@ void uterus_context_reinit(struct uterus_context *ctx) {
 
 static void uterus_putchar(struct uterus_context *ctx, uint8_t c);
 
-void uterus_write(struct uterus_context *ctx, const char *buf,
-                    size_t count) {
+void uterus_write(struct uterus_context *ctx, const char *buf, size_t count) {
     for (size_t i = 0; i < count; i++) {
         uterus_putchar(ctx, buf[i]);
     }
@@ -446,7 +445,6 @@ static void mode_toggle(struct uterus_context *ctx, uint8_t c) {
         ctx->insert_mode = set;
         return;
     }
-
 }
 
 static void osc_parse(struct uterus_context *ctx, uint8_t c) {
@@ -872,65 +870,38 @@ static void escape_parse(struct uterus_context *ctx, uint8_t c) {
 }
 
 static bool dec_special_print(struct uterus_context *ctx, uint8_t c) {
-#define uterus_DEC_SPCL_PRN(C)                                               \
+#define uterus_DEC_SPCL_PRN(C)                                                 \
     ctx->raw_putchar(ctx, (C));                                                \
     return true;
     switch (c) {
     case '`':
-        uterus_DEC_SPCL_PRN(0x04)
-    case '0':
-        uterus_DEC_SPCL_PRN(0xdb)
-    case '-':
-        uterus_DEC_SPCL_PRN(0x18)
-    case ',':
-        uterus_DEC_SPCL_PRN(0x1b)
-    case '.':
-        uterus_DEC_SPCL_PRN(0x19)
-    case 'a':
-        uterus_DEC_SPCL_PRN(0xb1)
-    case 'f':
-        uterus_DEC_SPCL_PRN(0xf8)
-    case 'g':
-        uterus_DEC_SPCL_PRN(0xf1)
-    case 'h':
-        uterus_DEC_SPCL_PRN(0xb0)
-    case 'j':
-        uterus_DEC_SPCL_PRN(0xd9)
-    case 'k':
-        uterus_DEC_SPCL_PRN(0xbf)
-    case 'l':
-        uterus_DEC_SPCL_PRN(0xda)
-    case 'm':
-        uterus_DEC_SPCL_PRN(0xc0)
-    case 'n':
-        uterus_DEC_SPCL_PRN(0xc5)
-    case 'q':
-        uterus_DEC_SPCL_PRN(0xc4)
-    case 's':
-        uterus_DEC_SPCL_PRN(0x5f)
-    case 't':
-        uterus_DEC_SPCL_PRN(0xc3)
-    case 'u':
-        uterus_DEC_SPCL_PRN(0xb4)
-    case 'v':
-        uterus_DEC_SPCL_PRN(0xc1)
-    case 'w':
-        uterus_DEC_SPCL_PRN(0xc2)
-    case 'x':
-        uterus_DEC_SPCL_PRN(0xb3)
-    case 'y':
-        uterus_DEC_SPCL_PRN(0xf3)
-    case 'z':
-        uterus_DEC_SPCL_PRN(0xf2)
-    case '~':
-        uterus_DEC_SPCL_PRN(0xfa)
-    case '_':
-        uterus_DEC_SPCL_PRN(0xff)
-    case '+':
-        uterus_DEC_SPCL_PRN(0x1a)
-    case '{':
-        uterus_DEC_SPCL_PRN(0xe3)
-    case '}':
+    uterus_DEC_SPCL_PRN(0x04) case '0':
+    uterus_DEC_SPCL_PRN(0xdb) case '-':
+    uterus_DEC_SPCL_PRN(0x18) case ',':
+    uterus_DEC_SPCL_PRN(0x1b) case '.':
+    uterus_DEC_SPCL_PRN(0x19) case 'a':
+    uterus_DEC_SPCL_PRN(0xb1) case 'f':
+    uterus_DEC_SPCL_PRN(0xf8) case 'g':
+    uterus_DEC_SPCL_PRN(0xf1) case 'h':
+    uterus_DEC_SPCL_PRN(0xb0) case 'j':
+    uterus_DEC_SPCL_PRN(0xd9) case 'k':
+    uterus_DEC_SPCL_PRN(0xbf) case 'l':
+    uterus_DEC_SPCL_PRN(0xda) case 'm':
+    uterus_DEC_SPCL_PRN(0xc0) case 'n':
+    uterus_DEC_SPCL_PRN(0xc5) case 'q':
+    uterus_DEC_SPCL_PRN(0xc4) case 's':
+    uterus_DEC_SPCL_PRN(0x5f) case 't':
+    uterus_DEC_SPCL_PRN(0xc3) case 'u':
+    uterus_DEC_SPCL_PRN(0xb4) case 'v':
+    uterus_DEC_SPCL_PRN(0xc1) case 'w':
+    uterus_DEC_SPCL_PRN(0xc2) case 'x':
+    uterus_DEC_SPCL_PRN(0xb3) case 'y':
+    uterus_DEC_SPCL_PRN(0xf3) case 'z':
+    uterus_DEC_SPCL_PRN(0xf2) case '~':
+    uterus_DEC_SPCL_PRN(0xfa) case '_':
+    uterus_DEC_SPCL_PRN(0xff) case '+':
+    uterus_DEC_SPCL_PRN(0x1a) case '{':
+    uterus_DEC_SPCL_PRN(0xe3) case '}':
         uterus_DEC_SPCL_PRN(0x9c)
     }
 #undef uterus_DEC_SPCL_PRN

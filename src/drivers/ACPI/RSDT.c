@@ -29,15 +29,14 @@ bool locate_rsdt() {
         }
     }
     return true;
-
 }
-sdt_header *find_nth_thingy(char *signature,size_t index) {
-    if (!strncmp("DSDT", signature, 4)){
-        fadt_header* fadt = (fadt_header*)find_nth_thingy("FACP",0);
-        if(use_xsdt){ // check for ACPI 2+
-            return (sdt_header*)(uintptr_t)PHYS_TO_VIRT(fadt->X_Dsdt);
-        }else{
-            return (sdt_header*)(uintptr_t)PHYS_TO_VIRT(fadt->dsdt);
+sdt_header *find_nth_thingy(char *signature, size_t index) {
+    if (!strncmp("DSDT", signature, 4)) {
+        fadt_header *fadt = (fadt_header *)find_nth_thingy("FACP", 0);
+        if (use_xsdt) { // check for ACPI 2+
+            return (sdt_header *)(uintptr_t)PHYS_TO_VIRT(fadt->X_Dsdt);
+        } else {
+            return (sdt_header *)(uintptr_t)PHYS_TO_VIRT(fadt->dsdt);
         }
     }
     size_t n = 0;
@@ -47,7 +46,7 @@ sdt_header *find_nth_thingy(char *signature,size_t index) {
         for (int i = 0; i < entries; i++) {
             sdt_header *h =
                 (sdt_header *)(uintptr_t)PHYS_TO_VIRT(xsdt->SDTs[i]);
-            if (!strncmp(h->signature, signature, 4)){
+            if (!strncmp(h->signature, signature, 4)) {
                 if (n == index)
                     return h;
                 n++;
@@ -60,7 +59,7 @@ sdt_header *find_nth_thingy(char *signature,size_t index) {
         for (int i = 0; i < entries; i++) {
             sdt_header *h =
                 (sdt_header *)(uintptr_t)PHYS_TO_VIRT(rsdt->SDTs[i]);
-            if (!strncmp(h->signature, signature, 4)){
+            if (!strncmp(h->signature, signature, 4)) {
                 if (n == index)
                     return h;
                 n++;
@@ -71,6 +70,5 @@ sdt_header *find_nth_thingy(char *signature,size_t index) {
     return NULL;
 }
 sdt_header *find_thingy(char *signature) {
-    return find_nth_thingy(signature,0);
+    return find_nth_thingy(signature, 0);
 }
-
