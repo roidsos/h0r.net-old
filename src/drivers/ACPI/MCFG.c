@@ -7,7 +7,7 @@
 uint32_t num_mcfg_entries;
 device_config *entries;
 
-bool init_mcfg() {
+bool mcfg_init() {
     mcfg_header *h = (mcfg_header *)find_thingy("MCFG");
     if (h == NULL) {
         return false;

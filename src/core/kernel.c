@@ -30,7 +30,7 @@ void kmain() {
     if (!locate_rsdt()) {
         trigger_psod(HN_ERR_NO_ACPI, "NO ACPI FOUND lmao", NULL);
     }
-    if (init_mcfg()) {
+    if (mcfg_init()) {
         iterate_pci();
     }
     pmm_init();
@@ -38,11 +38,11 @@ void kmain() {
     char *kernel_heap = request_pages(HEAP_SIZE_IN_PAGES);
     heap_init((uint64_t)kernel_heap, HEAP_SIZE_IN_PAGES * PAGE_SIZE);
 
-    init_apic();
-    init_ioapic();
+    apic_init();
+    ioapic_init();
     enable_interrupts();
-    init_sched();
-    init_ps2();
+    sched_init();
+    ps2_init();
 
     log_nice("Hardware sucessfully initialized!\n");
 

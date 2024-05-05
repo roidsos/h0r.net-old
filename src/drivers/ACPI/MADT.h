@@ -66,7 +66,7 @@ typedef struct {
     } the_meat;
 } __attribute__((__packed__)) madt_entry;
 
-bool init_madt();
+bool madt_init();
 
 #define MAX_ENTRIES 64
 extern uint16_t num_madt_entries;

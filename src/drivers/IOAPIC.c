@@ -17,7 +17,7 @@ void write(uint32_t reg, uint32_t value) {
     ioapic[4] = value;
 }
 
-bool init_ioapic() {
+bool ioapic_init() {
     // TODO: do not assume HART 0
     for (size_t i = 0; i < num_madt_entries; i++) {
         if (entry_ptrs[i]->h.type == MADT_ENTRY_TYPE_IOAPIC) {
@@ -52,7 +52,7 @@ madt_entry *get_gsi(uint32_t gsi) {
 }
 
 // TODO: dont aassume lapic ID of 0
-void mask(uint8_t id) {
+void ioapic_mask(uint8_t id) {
     uint8_t vec = 32 + id;
     for (size_t i = 0; i < num_madt_entries; i++) {
         if (entry_ptrs[i]->h.type == MADT_ENTRY_TYPE_IOAPIC_OVERRIDE &&
@@ -92,7 +92,7 @@ void mask(uint8_t id) {
     write((id - gsi->the_meat.ioapic.GS_interrupt_base) * 2 + 17,
           0); // redir cpu
 }
-void unmask(uint8_t id) {
+void ioapic_unmask(uint8_t id) {
     uint8_t vec = 32 + id;
     for (size_t i = 0; i < num_madt_entries; i++) {
         if (entry_ptrs[i]->h.type == MADT_ENTRY_TYPE_IOAPIC_OVERRIDE &&

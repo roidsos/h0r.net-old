@@ -1,6 +1,6 @@
 #ifndef SCHEDULER_H
 #define SCHEDULER_H
 
-void init_sched();
+void sched_init();
 
 #endif

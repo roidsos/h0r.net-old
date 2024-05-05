@@ -2,7 +2,7 @@
 #include <core/memory.h>
 hpet_regs *regs;
 
-bool init_hpet() {
+bool hpet_init() {
     hpet_header *hpet = (hpet_header *)find_thingy("HPET");
     if (hpet == NULL) {
         return false;

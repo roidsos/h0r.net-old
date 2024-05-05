@@ -28,8 +28,8 @@ void apic_timer_oneshot(uint64_t ms, uint8_t vec) {
     wreg(APIC_TMRINITCNT, ms * ticks);
 }
 
-void init_apic() {
-    init_madt();
+void apic_init() {
+    madt_init();
 
     // make sure the leagacy PIC is disabled
     outb8(0x21, 0xFF);
@@ -42,7 +42,7 @@ void init_apic() {
     wreg(APIC_TASKPRIOR, 0);
 
     // check for timer
-    if (!init_hpet()) {
+    if (!hpet_init()) {
         trigger_psod(HN_ERR_NO_ACPI, "no HPET found LMAO", NULL);
     }
 
@@ -58,4 +58,4 @@ void init_apic() {
     apic_timer_stop();
 }
 
-void EOI() { wreg(APIC_EOI, 0); }
+void apic_eoi() { wreg(APIC_apic_eoi, 0); }

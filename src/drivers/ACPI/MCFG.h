@@ -16,7 +16,7 @@ typedef struct{
     uint32_t reserved;
 }__attribute__((packed)) device_config;
 
-bool init_mcfg();
+bool mcfg_init();
 void iterate_pci();
 
 uint32_t* pci_getaddr(uint8_t bus,uint8_t dev,uint8_t func,uint8_t off);

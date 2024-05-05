@@ -9,12 +9,12 @@
 void handler(UNUSED Registers *regs) {
     uint8_t scancode = inb8(PS2_DATA);
     printf("0x%x\n", scancode);
-    EOI();
+    apic_eoi();
 }
 
-void init_ps2() {
+void ps2_init() {
     register_ISR(33, handler);
-    unmask(1);
+    ioapic_unmask(1);
 
     if (inb8(PS2_COMMAND) & 0x1) // initialize the ps2 controller
         inb8(PS2_DATA);

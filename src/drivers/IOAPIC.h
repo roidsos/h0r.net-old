@@ -11,9 +11,9 @@
 #define IOAPIC_ARB    0x02
 #define IOAPIC_REDTBL 0x10
 
-bool init_ioapic();
+bool ioapic_init();
 
-void mask(uint8_t id);
-void unmask(uint8_t id);
+void ioapic_mask(uint8_t id);
+void ioapic_unmask(uint8_t id);
 
 #endif

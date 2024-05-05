@@ -30,7 +30,7 @@ typedef struct {
     uint64_t unused4;
 } __attribute__((packed)) hpet_regs;
 
-bool init_hpet();
+bool hpet_init();
 void hpet_usleep(uint64_t us);
 
 #endif
