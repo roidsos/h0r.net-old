@@ -2,8 +2,7 @@
 #include <core/memory.h>
 #include <klibc/string.h>
 #include <limine.h>
-#include <vendor/printf.h>
-
+#include <utils/log.h>
 RSDT *rsdt;
 XSDT *xsdt;
 bool use_xsdt = false;
@@ -17,6 +16,7 @@ bool locate_rsdt() {
     XSDP *rsdp = (XSDP *)rsdp_request.response->address;
     ACPI_revision = rsdp->revision;
     if (rsdp->revision >= 2) {
+        log_trace("Using the XSDT!\n");
         use_xsdt = true;
         xsdt = (XSDT *)PHYS_TO_VIRT(rsdp->XSDT_address);
         if (!do_checksum(&xsdt->h)) {
@@ -31,6 +31,7 @@ bool locate_rsdt() {
     return true;
 }
 sdt_header *find_nth_thingy(char *signature, size_t index) {
+    log_trace("searching for the %uth \"%.4s\"!\n",index,signature);
     if (!strncmp("DSDT", signature, 4)) {
         fadt_header *fadt = (fadt_header *)find_nth_thingy("FACP", 0);
         if (use_xsdt) { // check for ACPI 2+

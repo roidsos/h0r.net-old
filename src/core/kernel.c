@@ -37,7 +37,7 @@ void load_limine_modules() {
         if (strcmp(mod->path, "/boot/kfont.psf") == 0) {
             data.ut_ctx = init_uterus_with_psf2_font(mod, data.framebuffer);
         } else {
-            dprintf("Unknown module \"%s\" found", mod->path);
+            log_warn("Unknown module \"%s\" found", mod->path);
         }
     }
 
@@ -73,19 +73,12 @@ void kmain() {
     log_info("h0r.net identifies as v%u.%u.%u \"%s\"\n", KERNEL_VER_MAJOR,
             KERNEL_VER_MINOR, KERNEL_VER_PATCH, KERNEL_VER_CODENAME);
 
-    log_trace("this is a trace!\n");
-    log_debug("this is a debug!\n");
-    log_info( "this is an info!\n");
-    log_nice(  "this is a nice!\n");
-    log_warn("this is a warning!\n");
-    log_error("this is an error!\n");
-
     if (!locate_rsdt()) {
         trigger_psod(HN_ERR_NO_ACPI, "NO ACPI FOUND lmao", NULL);
     }
-    // if (init_mcfg()) {
-    //     iterate_pci();
-    // }
+    if (init_mcfg()) {
+        iterate_pci();
+    }
     pmm_init();
 
     char* kernel_heap = request_pages(HEAP_SIZE_IN_PAGES);
@@ -96,6 +89,8 @@ void kmain() {
     enable_interrupts();
     init_sched();
     init_ps2();
+
+    log_nice("Hardware sucessfully initialized!\n");
 
     //lai_set_acpi_revision(ACPI_revision);
     //lai_create_namespace();

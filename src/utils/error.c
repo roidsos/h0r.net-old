@@ -3,6 +3,7 @@
 #include <core/memory.h>
 #include <klibc/stdlib.h>
 #include <vendor/printf.h>
+#include <utils/log.h>
 
 char *errors[] = {"HN_ERR_DE",         "HN_ERR_DB",
                   "HN_ERR_NMI",        "HN_ERR_BP",
@@ -50,7 +51,7 @@ void trigger_psod(int error_code, char *details, Registers *regs) {
         regs = &newregs;
     }
 
-    dprintf("Error UwU : %s", errors[error_code]);
+    log_error("%s\n", errors[error_code]);
 
     // background
     printf(BGCOL "\x1b[2J");
@@ -92,14 +93,14 @@ void trigger_psod(int error_code, char *details, Registers *regs) {
     }
 
     printf("Backtrace: NO\n");
-    // dprintf("Backtrace:\n");
-    // struct stackframe64_t *frame = (struct stackframe64_t
-    // *)PHYS_TO_VIRT(regs->rbp); while (frame->RIP >=
-    // (uint64_t)0xffffffff80000000)//TODO: support different memory models
-    //{
-    //     printf ("    [%.16lx]  <No SymbolTable LMAO>", frame->RIP);
-    //     dprintf("    [%.16lx]  <No SymbolTable LMAO>", frame->RIP);
-    //     frame = (struct stackframe64_t *)PHYS_TO_VIRT(frame->RBP);
-    // }
+     dprintf("Backtrace:\n");
+     struct stackframe64_t *frame = (struct stackframe64_t
+     *)regs->rbp; while (frame->RIP >=
+     (uint64_t)0xffffffff80000000)//TODO: support different memory models
+    {
+         printf ("    [%.16lx]  <No SymbolTable LMAO>", frame->RIP);
+         dprintf("    [%.16lx]  <No SymbolTable LMAO>", frame->RIP);
+         frame = (struct stackframe64_t *)frame->RBP;
+     }
     hcf();
 }
