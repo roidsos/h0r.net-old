@@ -48,9 +48,9 @@ void kmain() {
 
     log_nice("Hardware sucessfully initialized!\n");
 
-    lai_set_acpi_revision(ACPI_revision);
-    lai_create_namespace();
-    printf("LAI works???");
+    // lai_set_acpi_revision(ACPI_revision);
+    // lai_create_namespace();
+    // printf("LAI works???");
 
     // kickstart the "scheduler"
     //__asm__("int $32");
