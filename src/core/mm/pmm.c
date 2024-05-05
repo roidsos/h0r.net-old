@@ -2,6 +2,7 @@
 #include <utils/error.h>
 #include <vendor/printf.h>
 #include <utils/log.h>
+#include <core/config.h>
 
 size_t total_mem = 0;
 size_t free_mem = 0;
@@ -11,59 +12,59 @@ size_t highest_block = 0;
 
 struct Bitmap page_bitmap;
 
-#define BIT_TO_PAGE(bit) ((size_t)bit * 4096)
-#define PAGE_TO_BIT(page) ((size_t)page / 4096)
+#define BIT_TO_PAGE(bit) ((size_t)bit * PAGE_SIZE)
+#define PAGE_TO_BIT(page) ((size_t)page / PAGE_SIZE)
 
 extern size_t kernel_start;
 extern size_t kernel_end;
 
 bool lock_page(void *addr) {
-    size_t index = (size_t)addr / 4096;
+    size_t index = (size_t)addr / PAGE_SIZE;
     if (bitmap_get(page_bitmap, index)) {
         return true;
     }
     if (bitmap_set(page_bitmap, index, true)) {
-        free_mem -= 4096;
-        used_mem += 4096;
+        free_mem -= PAGE_SIZE;
+        used_mem += PAGE_SIZE;
         return true;
     } else {
         return false;
     }
 }
 bool free_page(void *addr) {
-    size_t index = (size_t)addr / 4096;
+    size_t index = (size_t)addr / PAGE_SIZE;
     if (!bitmap_get(page_bitmap, index)) {
         return true;
     }
     if (bitmap_set(page_bitmap, index, false)) {
-        free_mem += 4096;
-        used_mem -= 4096;
+        free_mem += PAGE_SIZE;
+        used_mem -= PAGE_SIZE;
         return true;
     } else {
         return false;
     }
 }
 bool reserve_page(void *addr) {
-    size_t index = (size_t)addr / 4096;
+    size_t index = (size_t)addr / PAGE_SIZE;
     if (bitmap_get(page_bitmap, index)) {
         return true;
     }
     if (bitmap_set(page_bitmap, index, true)) {
-        free_mem -= 4096;
-        reserved_mem += 4096;
+        free_mem -= PAGE_SIZE;
+        reserved_mem += PAGE_SIZE;
         return true;
     } else {
         return false;
     }
 }
 bool unreserve_page(void *addr) {
-    size_t index = (size_t)addr / 4096;
+    size_t index = (size_t)addr / PAGE_SIZE;
     if (!bitmap_get(page_bitmap, index)) {
         return true;
     }
     if (bitmap_set(page_bitmap, index, false)) {
-        free_mem += 4096;
-        reserved_mem -= 4096;
+        free_mem += PAGE_SIZE;
+        reserved_mem -= PAGE_SIZE;
     } else {
         return false;
     }
@@ -71,28 +72,28 @@ bool unreserve_page(void *addr) {
 }
 bool lock_pages(void *addr, size_t num) {
     for (size_t i = 0; i < num; i++) {
-        if (!lock_page((void *)(addr + i * 4096)))
+        if (!lock_page((void *)(addr + i * PAGE_SIZE)))
             return false;
     }
     return true;
 }
 bool free_pages(void *addr, size_t num) {
     for (size_t i = 0; i < num; i++) {
-        if (!free_page((void *)(addr + i * 4096)))
+        if (!free_page((void *)(addr + i * PAGE_SIZE)))
             return false;
     }
     return true;
 }
 bool reserve_pages(void *addr, size_t num) {
     for (size_t i = 0; i < num; i++) {
-        if (!reserve_page((void *)(addr + i * 4096)))
+        if (!reserve_page((void *)(addr + i * PAGE_SIZE)))
             return false;
     }
     return true;
 }
 bool unreserve_pages(void *addr, size_t num) {
     for (size_t i = 0; i < num; i++) {
-        if (!unreserve_page((void *)(addr + i * 4096)))
+        if (!unreserve_page((void *)(addr + i * PAGE_SIZE)))
             return false;
     }
     return true;
@@ -165,7 +166,7 @@ void pmm_init() {
             largest_free_memseg_size = desc->length;
             total_mem += desc->length;
         }
-        page_bmp_size += (desc->length / (4096 * 8)) + 1;
+        page_bmp_size += (desc->length / (PAGE_SIZE * 8)) + 1;
     }
     free_mem = total_mem;
 
@@ -176,14 +177,14 @@ void pmm_init() {
     page_bitmap.size = page_bmp_size;
     page_bitmap.buffer = largest_free_memseg;
 
-    lock_pages(page_bitmap.buffer, (page_bitmap.size / 4096) + 1);
+    lock_pages(page_bitmap.buffer, (page_bitmap.size / PAGE_SIZE) + 1);
     reserve_page((void *)0);
     for (size_t i = 0; i < memmap_request.response->entry_count; i++) {
         struct limine_memmap_entry *desc = memmap_request.response->entries[i];
         if (desc->type != LIMINE_MEMMAP_USABLE) {
-            reserve_pages((void *)desc->base, desc->length / 4096 + 1);
+            reserve_pages((void *)desc->base, desc->length / PAGE_SIZE + 1);
         } else {
-            unreserve_pages((void *)desc->base, desc->length / 4096 + 1);
+            unreserve_pages((void *)desc->base, desc->length / PAGE_SIZE + 1);
         }
     }
 }
