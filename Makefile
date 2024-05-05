@@ -50,9 +50,10 @@ $(eval $(call DEFAULT_VAR,LDFLAGS,$(DEFAULT_LDFLAGS)))
 
 # Internal C flags that should not be changed by the user.
 override CFLAGS += \
-    -Ivendor/libkrnl-essentials \
-    -Ivendor/uterus \
-    -Ivendor/lai/include \
+    -Isrc/vendor/libkrnl-essentials \
+    -Isrc/vendor/uterus \
+    -Isrc/vendor/lai/include \
+    -Isrc \
     -Wall \
     -Wextra \
     -Werror \
@@ -101,9 +102,9 @@ override NASMFLAGS += \
 
 # Use "find" to glob all *.c, *.S, and *.asm files in the tree and obtain the
 # object and header dependency file names.
-override CFILES := $(shell find -L . -type f -name '*.c')
-override ASFILES := $(shell find -L . -type f -name '*.S')
-override NASMFILES := $(shell find -L . -type f -name '*.asm')
+override CFILES := $(shell find -L src -type f -name '*.c')
+override ASFILES := $(shell find -L src -type f -name '*.S')
+override NASMFILES := $(shell find -L src -type f -name '*.asm')
 override OBJ := $(CFILES:.c=.c.o) $(ASFILES:.S=.S.o) $(NASMFILES:.asm=.asm.o)
 override HEADER_DEPS := $(CFILES:.c=.c.d) $(ASFILES:.S=.S.d)
 
