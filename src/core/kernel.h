@@ -12,6 +12,7 @@
 struct HN_data_block {
     //System info
     CPUInfo cpu_info;
+    uint64_t pml4;
 
     //ACPI shit
     void* hhdm_off;

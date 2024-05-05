@@ -1,6 +1,8 @@
 #include "arch/x86_64/gdt.h"
 #include <arch/x86_64/interrupts/interrupts.h>
+#include <arch/x86_64/pager.h>
 #include <core/kernel.h>
+#include <core/memory.h>
 #include <drivers/output/cereal.h>
 #include <utils/error.h>
 #include <utils/log.h>
@@ -16,6 +18,7 @@ void _start(void) {
     log_nice("x86_64 Init Target reached: IO\n");
 
     // CPU deez nutz
+    data.pml4 = (uint64_t)PHYS_TO_VIRT(vmm_get_pagetable());
     get_cpu_capabilities(&data.cpu_info);
     sys_init_fpu();
     gdt_init((uint64_t *)kernel_stack);
