@@ -8,7 +8,7 @@ all:
 	mkdir -p iso/boot
 	cp cfg/limine.cfg limine/limine.sys limine/limine-cd.bin limine/limine-cd-efi.bin iso/
 	cp src/kernel.elf iso/boot/h0rnet.elf
-	cp kfont.psf iso/boot/
+	cp assets/kfont.psf iso/boot/
 	mkdir -p iso/EFI/BOOT
 	cp limine/BOOT*.EFI iso/EFI/BOOT/
 	cp cfg/startup.nsh iso/startup.nsh
