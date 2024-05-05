@@ -23,6 +23,7 @@
 #include <klibc/string.h>
 
 #include <utils/error.h>
+#include <utils/log.h>
 
 struct HN_data_block data;
 
@@ -69,8 +70,15 @@ void kmain() {
     initialize_globals();
     cereal_init();
 
-    dprintf("h0r.net identifies as v%u.%u.%u \"%s\"\n\n", KERNEL_VER_MAJOR,
+    log_info("h0r.net identifies as v%u.%u.%u \"%s\"\n", KERNEL_VER_MAJOR,
             KERNEL_VER_MINOR, KERNEL_VER_PATCH, KERNEL_VER_CODENAME);
+
+    log_trace("this is a trace!\n");
+    log_debug("this is a debug!\n");
+    log_info( "this is an info!\n");
+    log_nice(  "this is a nice!\n");
+    log_warn("this is a warning!\n");
+    log_error("this is an error!\n");
 
     if (!locate_rsdt()) {
         trigger_psod(HN_ERR_NO_ACPI, "NO ACPI FOUND lmao", NULL);
@@ -97,3 +105,4 @@ void kmain() {
     //__asm__("int $32");
     hlt();
 }
+

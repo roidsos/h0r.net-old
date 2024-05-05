@@ -44,7 +44,7 @@ uint64_t remainder = size % 8;
             if(current->previous != 0) current->previous->nextfree = current->nextfree;
             if(current->next != 0) current->next->previousfree = current->previousfree;
 
-            return (char*)current + sizeof(mem_segment);
+            return current + 1;
         }
         if(current->nextfree == 0)
         {
