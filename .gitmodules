@@ -1,7 +1,3 @@
-[submodule "limine"]
-	path = limine
-	url = https://github.com/limine-bootloader/limine
-	branch = v4.x-branch-binary
 [submodule "OVMFbin"]
 	path = OVMFbin
 	url = https://github.com/Absurdponcho/OVMFbin
