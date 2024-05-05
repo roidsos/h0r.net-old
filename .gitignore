@@ -54,5 +54,6 @@ dkms.conf
 iso/*
 
 src/kernel.bin
+src/limine.h
 hornet.log
 os.iso
