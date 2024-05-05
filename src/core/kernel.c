@@ -2,8 +2,8 @@
 #include "config.h"
 #include "scheduler.h"
 
-#include "mm/heap.h"
-#include "mm/pmm.h"
+#include <core/mm/heap.h>
+#include <core/mm/pmm.h>
 
 #include <backends/fb.h>
 #include <utils/psf2.h>
@@ -15,7 +15,6 @@
 #include <drivers/APIC.h>
 #include <drivers/IOAPIC.h>
 #include <drivers/input/PS2.h>
-#include <drivers/output/cereal.h>
 
 #include <lai/core.h>
 
@@ -68,7 +67,6 @@ extern int ACPI_revision;
 
 void kmain() {
     initialize_globals();
-    cereal_init();
 
     log_info("h0r.net identifies as v%u.%u.%u \"%s\"\n", KERNEL_VER_MAJOR,
             KERNEL_VER_MINOR, KERNEL_VER_PATCH, KERNEL_VER_CODENAME);

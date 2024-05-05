@@ -3,24 +3,27 @@
 #include <core/kernel.h>
 #include <utils/error.h>
 #include <vendor/printf.h>
+#include <utils/log.h>
+#include <drivers/output/cereal.h>
+
 uint64_t kernel_stack[8192];
 void kmain();
 
 void _start(void) {
-    // no unhandled interrupts plzz
+    // Initialize screen and interrupts
+    cereal_init();
     disable_interrupts();
-    // Initialize screen and logger
-    dprintf("x86_64 Init Target reached: IO\n");
+    log_nice("x86_64 Init Target reached: IO\n");
 
     // CPU deez nutz
     get_cpu_capabilities(&data.cpu_info);
     sys_init_fpu();
     gdt_init((uint64_t *)kernel_stack);
-    dprintf("x86_64 Init Target reached: CPU\n");
+    log_nice("x86_64 Init Target reached: CPU\n");
 
     // initialize interrupts
     initialize_interrupts();
-    dprintf("x86_64 Init Target reached: Interrupts\n");
+    log_nice("x86_64 Init Target reached: Interrupts\n");
 
     kmain();
 
