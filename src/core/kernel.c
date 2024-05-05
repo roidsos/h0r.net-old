@@ -23,6 +23,8 @@
 
 struct HN_data_block data;
 
+extern int ACPI_revision;
+
 void kmain() {
     log_info("h0r.net identifies as v%u.%u.%u \"%s\"\n", KERNEL_VER_MAJOR,
              KERNEL_VER_MINOR, KERNEL_VER_PATCH, KERNEL_VER_CODENAME);
@@ -46,9 +48,9 @@ void kmain() {
 
     log_nice("Hardware sucessfully initialized!\n");
 
-    // lai_set_acpi_revision(ACPI_revision);
-    // lai_create_namespace();
-    // printf("LAI works???");
+    lai_set_acpi_revision(ACPI_revision);
+    lai_create_namespace();
+    printf("LAI works???");
 
     // kickstart the "scheduler"
     //__asm__("int $32");

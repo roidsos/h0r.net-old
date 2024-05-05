@@ -48,10 +48,8 @@ void limine_initialize_globals() {
     load_limine_modules();
 }
 
-extern int ACPI_revision;
-
-
 void kmain();
+
 void _start(void) {
     limine_initialize_globals();
     // Initialize screen and interrupts
