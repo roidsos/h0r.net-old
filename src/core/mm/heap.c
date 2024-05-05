@@ -1,98 +1,140 @@
 #include "heap.h"
-#include "pmm.h"
-#include <core/config.h>
 #include <klibc/string.h>
 #include <vendor/printf.h>
 
-#define MAX_PAGES                                                              \
-    (4096 * SLAB_PAGES_TO_STORE_FUCKING_PAGES_WITH) / sizeof(page_t)
+mem_segment* head;
 
-typedef struct {
-    uint64_t paddr;
-    uint16_t fullness;
-} page_t;
-
-typedef struct {
-    page_t *page;
-    size_t page_id;
-    size_t size;
-} heap_metadata_t;
-
-page_t *pages;
-size_t num_used_pages;
-
-void heap_init() {
-    pages = (page_t *)PHYS_TO_VIRT(
-        request_pages(SLAB_PAGES_TO_STORE_FUCKING_PAGES_WITH));
-    num_used_pages = 0;
-    memset(pages, 0, SLAB_PAGES_TO_STORE_FUCKING_PAGES_WITH * 4096);
+void heap_init(uint64_t heap_start ,size_t heap_size){
+    head = (mem_segment*)heap_start;
+    head->length          = heap_size - sizeof(mem_segment);
+    head->next            = 0;
+    head->previous        = 0;
+    head->nextfree        = 0;
+    head->previousfree    = 0;
+    head->isfree          = true;
 }
+void* malloc(size_t size){
+uint64_t remainder = size % 8;
+    size -= remainder;
+    if (remainder != 0) size +=8;
+    mem_segment* current = head;
+    while(true){
+        if (current->length >= size){
+            if (current->length > size + sizeof(mem_segment)){
+                mem_segment* new_seg = (mem_segment*)((uint64_t)current + sizeof(mem_segment) + size);//making a new segment
+                new_seg->isfree       = true;
+                new_seg->length       = (((uint64_t)current->length) - sizeof(mem_segment) +size);
+                new_seg->next         = current->next;
+                new_seg->nextfree     = current->nextfree;
+                new_seg->previous     = current;
+                new_seg->previousfree = current->previousfree;
 
-void *malloc(size_t size) {
-    page_t *curpage = &pages[num_used_pages];
-    size_t size_remainder = size;
+                current->nextfree = new_seg;
+                current->next     = new_seg;
 
-    if (!curpage->paddr) // needing this redundant check, since we use
-                         // curpage->paddr to calcualte PP
-        curpage->paddr = (uint64_t)request_pages(1);
+                current->length  = size;
+            }
+            if(current == head){
+                head = current->nextfree;
+            }
+            current->isfree = false;
 
-    char *PP = PHYS_TO_VIRT(curpage->paddr) + curpage->fullness;
+            if(current->previousfree != 0) current->previousfree->nextfree = current->nextfree;
+            if(current->nextfree != 0) current->nextfree->previousfree = current->previousfree;
+            if(current->previous != 0) current->previous->nextfree = current->nextfree;
+            if(current->next != 0) current->next->previousfree = current->previousfree;
 
-recheck:
-    if (!curpage->paddr)
-        curpage->paddr = (uint64_t)request_pages(1);
-
-    if (curpage->fullness + size_remainder > 4096) {
-        curpage->fullness += size_remainder;
-        size_remainder -= 4096 - (curpage->fullness + size_remainder);
-        curpage = &pages[num_used_pages++];
-        goto recheck;
+            return (char*)current + sizeof(mem_segment);
+        }
+        if(current->nextfree == 0)
+        {
+            return 0;
+        }
+        current = current->nextfree;
     }
-    curpage->fullness += size_remainder;
-
-    *((heap_metadata_t *)PP) = (heap_metadata_t){curpage, num_used_pages, size};
-    PP += sizeof(heap_metadata_t);
-    return (void *)PP;
+ return 0;
 }
 
-void free(void *tofree) {
-    char *PP = (char *)tofree;
-    PP -= sizeof(heap_metadata_t);
-    heap_metadata_t hdata = *((heap_metadata_t *)PP);
-    size_t old_fullness = 0;
-    size_t size_remainder = hdata.size;
-
-recheck:
-    old_fullness = hdata.page->fullness;
-    hdata.page->fullness -= size_remainder;
-    if (hdata.page->fullness >
-        old_fullness) { // checking whether it went bellow 0 via overflow
-                        // check(since size_t is unsigned)
-        free_pages((void *)hdata.page->paddr, 1);
-        size_remainder -= SIZE_MAX - hdata.page->fullness;
-        hdata.page->paddr = 0;
-        hdata.page_id--;
-        hdata.page = &pages[hdata.page_id];
-        goto recheck;
+void combine_segs(mem_segment* a,mem_segment* b){
+    if(a == 0 || b == 0){
+        return;
+    }
+    if(a < b){
+        a->length += b->length + sizeof(mem_segment);
+        a->next = b->next;
+        a->nextfree = b->nextfree;
+        b->next->previous = a;
+        if(a->isfree){
+            b->next->previousfree = a;
+            b->nextfree->previousfree = a;
+        }
+    }
+    if(a > b){
+        b->length += a->length + sizeof(mem_segment);
+        b->next = a->next;
+        b->nextfree = a->nextfree;
+        a->next->previous = b;
+        if(a->isfree){
+            a->next->previousfree = b;
+            a->nextfree->previousfree = b;
+        }
     }
 }
-void *calloc(size_t size) {
-    void *mallocVal = malloc(size);
-    memset(mallocVal, 0, size);
-    return mallocVal;
-}
-void *realloc(void *old, size_t size) {
-    if (old == NULL) {
-        return malloc(size);
+
+void free(void* tofree){
+    mem_segment* current = ((mem_segment*)tofree) - 1;
+    current->isfree = true;
+
+    if(current < head) head = current;
+
+    if (current->nextfree != 0){
+        if(current->nextfree->previousfree < current){
+            current->nextfree->previousfree = current;
+        }
     }
+     if (current->previousfree != 0){
+        if(current->previousfree->nextfree < current){
+            current->previousfree->nextfree = current;
+        }
+    }
+     if (current->next != 0){
+        if(current->next->previous < current){
+            current->next->previous = current;
+            if(current->next->isfree) combine_segs(current,current->next);//removing fragmentation
+        }
+    }
+     if (current->previous != 0){
+        if(current->previous->next < current){
+            current->previous->next = current;
+            if(current->previous->isfree) combine_segs(current,current->previous);//removing fragmentation
+        }
+    }
+
+}
+void* calloc(size_t size){
+    void* malloced = malloc(size);
+    memset(malloced,0,size);
+    return malloced;
+}
+void* realloc(void* old,size_t size){
+    mem_segment* oldseg = ((mem_segment*)old) - 1;
+
+    size_t smaller_size = size;
+    dprintf("oldseg addr: %p",oldseg);
+    if (oldseg->length < size) smaller_size = oldseg->length;
+
     free(old);
-    void *newmem = malloc(size);
-
-    size_t smallersize = size;
-    if (((heap_metadata_t *)old - 1)->size < size)
-        smallersize = ((heap_metadata_t *)old - 1)->size;
-
-    memcpy(newmem, old, smallersize);
-
+    void* newmem = malloc(size);
+    memcpy(newmem,old,smaller_size);
     return newmem;
 }
+void* realloc_plus(void* old,size_t size,size_t oldsize){
+    size_t smaller_size = size;
+    if (oldsize < size) smaller_size = oldsize;
+
+    free(old);
+    void* newmem = malloc(size);
+    memcpy(newmem,old,smaller_size);
+    return newmem;
+}
+

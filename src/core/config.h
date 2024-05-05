@@ -7,7 +7,9 @@
 #define KERNEL_VER_PATCH 1
 #define KERNEL_VER_CODENAME "Deez Nutz"
 
-//memory management
-#define SLAB_PAGES_TO_STORE_FUCKING_PAGES_WITH 2
+//MM
+#define PAGE_SIZE 4096
+#define HEAP_MAGIC 0xB16B00B5B116D1CC // "Big Boobs, Big dick"(I think "Microsoftus Neckbearditis" got me...)
+#define HEAP_SIZE_IN_PAGES 65536
 
 #endif

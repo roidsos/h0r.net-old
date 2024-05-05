@@ -73,13 +73,15 @@ void kmain() {
             KERNEL_VER_MINOR, KERNEL_VER_PATCH, KERNEL_VER_CODENAME);
 
     if (!locate_rsdt()) {
-        trigger_psod(HN_ERR_NO_ACPI, "you FUCKING dinosaur", NULL);
+        trigger_psod(HN_ERR_NO_ACPI, "NO ACPI FOUND lmao", NULL);
     }
     // if (init_mcfg()) {
     //     iterate_pci();
     // }
     pmm_init();
-    // heap_init();
+
+    char* kernel_heap = request_pages(HEAP_SIZE_IN_PAGES);
+    heap_init((uint64_t)kernel_heap,HEAP_SIZE_IN_PAGES * PAGE_SIZE);
 
     init_apic();
     init_ioapic();
@@ -87,8 +89,9 @@ void kmain() {
     init_sched();
     init_ps2();
 
-    // lai_set_acpi_revision(ACPI_revision);
-    // lai_create_namespace();
+    //lai_set_acpi_revision(ACPI_revision);
+    //lai_create_namespace();
+    //printf("LAI works???");
 
     // kickstart the "scheduler"
     //__asm__("int $32");

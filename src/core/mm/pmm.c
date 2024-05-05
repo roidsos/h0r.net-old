@@ -102,7 +102,7 @@ size_t get_used_RAM() { return used_mem; }
 size_t get_total_RAM() { return total_mem; }
 
 static void *find_free_range(size_t npages) {
-    for (size_t addr = 0; addr < PAGE_TO_BIT(highest_block); addr++) {
+    for (size_t addr = 0; addr <= page_bitmap.size; addr++) {
         for (size_t page = 0; page < npages; page++) {
             if (bitmap_get(page_bitmap, addr + PAGE_TO_BIT(page)))
                 break;
