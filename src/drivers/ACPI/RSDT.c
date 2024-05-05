@@ -31,7 +31,7 @@ bool locate_rsdt() {
     return true;
 }
 sdt_header *find_nth_thingy(char *signature, size_t index) {
-    log_trace("searching for the %uth \"%.4s\"!\n",index,signature);
+    log_trace("searching for the %uth \"%.4s\"!\n", index, signature);
     if (!strncmp("DSDT", signature, 4)) {
         fadt_header *fadt = (fadt_header *)find_nth_thingy("FACP", 0);
         if (use_xsdt) { // check for ACPI 2+

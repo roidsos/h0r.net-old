@@ -1,6 +1,6 @@
 #include "MCFG.h"
-#include <vendor/printf.h>
 #include <utils/log.h>
+#include <vendor/printf.h>
 
 // Puffer get outta here, stop copying my code ffs
 
@@ -25,11 +25,12 @@ void iterate_pci() {
             for (int function = 0; function < numfuncs; function++) {
                 uint16_t vendor_id = pci_read(bus, device, function, 0x00);
                 uint16_t device_id = pci_read(bus, device, function, 0x02);
-                if (vendor_id == 0x0000 || vendor_id == 0xFFFF || device_id == 0x0000) {
+                if (vendor_id == 0x0000 || vendor_id == 0xFFFF ||
+                    device_id == 0x0000) {
                     continue;
                 }
                 log_trace("  -VendorID: 0x%x,DeviceID: 0x%x \n", vendor_id,
-                       device_id);
+                          device_id);
             }
         }
     }

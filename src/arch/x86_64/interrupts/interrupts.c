@@ -10,9 +10,9 @@ void initialize_interrupts() {
 void register_ISR(int irq, ISRHandler handler) {
     ISR_RegisterHandler(irq, handler);
 }
-void enable_interrupts() { 
+void enable_interrupts() {
     log_trace("Interrupts enabled!\n");
-    __asm__ volatile("sti"); 
+    __asm__ volatile("sti");
 }
 void disable_interrupts() {
     log_trace("Interrupts disabled!\n");

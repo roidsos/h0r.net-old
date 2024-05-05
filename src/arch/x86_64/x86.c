@@ -1,10 +1,10 @@
 #include "arch/x86_64/gdt.h"
 #include <arch/x86_64/interrupts/interrupts.h>
 #include <core/kernel.h>
-#include <utils/error.h>
-#include <vendor/printf.h>
-#include <utils/log.h>
 #include <drivers/output/cereal.h>
+#include <utils/error.h>
+#include <utils/log.h>
+#include <vendor/printf.h>
 
 uint64_t kernel_stack[8192];
 void kmain();

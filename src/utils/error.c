@@ -2,8 +2,8 @@
 #include <arch/x86_64/cpu.h>
 #include <core/memory.h>
 #include <klibc/stdlib.h>
-#include <vendor/printf.h>
 #include <utils/log.h>
+#include <vendor/printf.h>
 
 char *errors[] = {"HN_ERR_DE",         "HN_ERR_DB",
                   "HN_ERR_NMI",        "HN_ERR_BP",
@@ -93,14 +93,15 @@ void trigger_psod(int error_code, char *details, Registers *regs) {
     }
 
     printf("Backtrace: NO\n");
-     dprintf("Backtrace:\n");
-     struct stackframe64_t *frame = (struct stackframe64_t
-     *)regs->rbp; while (frame->RIP >=
-     (uint64_t)0xffffffff80000000)//TODO: support different memory models
+    dprintf("Backtrace:\n");
+    struct stackframe64_t *frame = (struct stackframe64_t *)regs->rbp;
+    while (
+        frame->RIP >=
+        (uint64_t)0xffffffff80000000) // TODO: support different memory models
     {
-         printf ("    [%.16lx]  <No SymbolTable LMAO>", frame->RIP);
-         dprintf("    [%.16lx]  <No SymbolTable LMAO>", frame->RIP);
-         frame = (struct stackframe64_t *)frame->RBP;
-     }
+        printf("    [%.16lx]  <No SymbolTable LMAO>", frame->RIP);
+        dprintf("    [%.16lx]  <No SymbolTable LMAO>", frame->RIP);
+        frame = (struct stackframe64_t *)frame->RBP;
+    }
     hcf();
 }

@@ -1,8 +1,8 @@
 #include "pmm.h"
-#include <utils/error.h>
-#include <vendor/printf.h>
-#include <utils/log.h>
 #include <core/config.h>
+#include <utils/error.h>
+#include <utils/log.h>
+#include <vendor/printf.h>
 
 size_t total_mem = 0;
 size_t free_mem = 0;
@@ -127,28 +127,27 @@ void *request_pages(size_t num) {
 }
 
 #if XTRA_DEBUG
-static char *get_entry_type(uint64_t type)
-{
-	switch (type) {
-	case LIMINE_MEMMAP_USABLE:
-		return "Usable";
-	case LIMINE_MEMMAP_RESERVED:
-		return "Reserved";
-	case LIMINE_MEMMAP_ACPI_RECLAIMABLE:
-		return "ACPI Reclaimable";
-	case LIMINE_MEMMAP_ACPI_NVS:
-		return "ACPI NVS";
-	case LIMINE_MEMMAP_BAD_MEMORY:
-		return "Bad Memory";
-	case LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE:
-		return "Bootloader Reclaimable";
-	case LIMINE_MEMMAP_KERNEL_AND_MODULES:
-		return "Kernel and Modules";
-	case LIMINE_MEMMAP_FRAMEBUFFER:
-		return "Framebuffer";
-	default:
-		return "???";
-	}
+static char *get_entry_type(uint64_t type) {
+    switch (type) {
+    case LIMINE_MEMMAP_USABLE:
+        return "Usable";
+    case LIMINE_MEMMAP_RESERVED:
+        return "Reserved";
+    case LIMINE_MEMMAP_ACPI_RECLAIMABLE:
+        return "ACPI Reclaimable";
+    case LIMINE_MEMMAP_ACPI_NVS:
+        return "ACPI NVS";
+    case LIMINE_MEMMAP_BAD_MEMORY:
+        return "Bad Memory";
+    case LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE:
+        return "Bootloader Reclaimable";
+    case LIMINE_MEMMAP_KERNEL_AND_MODULES:
+        return "Kernel and Modules";
+    case LIMINE_MEMMAP_FRAMEBUFFER:
+        return "Framebuffer";
+    default:
+        return "???";
+    }
 }
 #endif
 
@@ -159,7 +158,8 @@ void pmm_init() {
     log_trace("Memory map segments:\n");
     for (size_t i = 0; i < memmap_request.response->entry_count; i++) {
         struct limine_memmap_entry *desc = memmap_request.response->entries[i];
-        log_trace("  -type:\"%s\",base:0x%p,length:%u\n",get_entry_type(desc->type),desc->base,desc->length); 
+        log_trace("  -type:\"%s\",base:0x%p,length:%u\n",
+                  get_entry_type(desc->type), desc->base, desc->length);
         if (desc->type == LIMINE_MEMMAP_USABLE &&
             desc->length > largest_free_memseg_size) {
             largest_free_memseg = (void *)(desc->base);
