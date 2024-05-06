@@ -14,7 +14,7 @@
 
 //Loggers-poggers
 #define DEBUG true
-#define XTRA_DEBUG false
+#define XTRA_DEBUG true
 
 #define TRAC_PORT COM1
 #define DBUG_PORT COM1
