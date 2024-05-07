@@ -437,7 +437,6 @@ static void plot_char(struct uterus_context *_ctx, struct uterus_fb_char *c,
                      c->c * (((ctx->font_width / 8) + 1) * ctx->font_height);
     // naming: fx,fy for font coordinates, gx,gy for glyph coordinates
     for (size_t gy = 0; gy < ctx->glyph_height; gy++) {
-        uint8_t fy = gy / ctx->font_scale_y;
         volatile uint32_t *fb_line =
             ctx->framebuffer + x + (y + gy) * (ctx->pitch / 4);
 
@@ -446,20 +445,17 @@ static void plot_char(struct uterus_context *_ctx, struct uterus_fb_char *c,
 #endif
 
         for (size_t fx = 0; fx < ctx->font_width; fx++) {
-            bool draw = (glyph[fy * ((ctx->font_width / 8) + 1) + fx / 8] >>
+            bool draw = (glyph[gy * ((ctx->font_width / 8) + 1) + fx / 8] >>
                          (7 - fx % 8)) &
                         1;
-            for (size_t i = 0; i < ctx->font_scale_x; i++) {
-                size_t gx = ctx->font_scale_x * fx + i;
 #ifndef UTERUS_FB_DISABLE_CANVAS
-                uint32_t bg = c->bg == 0xffffffff ? canvas_line[gx] : c->bg;
-                uint32_t fg = c->fg == 0xffffffff ? canvas_line[gx] : c->fg;
+            uint32_t bg = c->bg == 0xffffffff ? canvas_line[fx] : c->bg;
+            uint32_t fg = c->fg == 0xffffffff ? canvas_line[fx] : c->fg;
 #else
-                uint32_t bg = c->bg == 0xffffffff ? default_bg : c->bg;
-                uint32_t fg = c->fg == 0xffffffff ? default_bg : c->fg;
+            uint32_t bg = c->bg == 0xffffffff ? default_bg : c->bg;
+            uint32_t fg = c->fg == 0xffffffff ? default_bg : c->fg;
 #endif
-                fb_line[gx] = draw ? fg : bg;
-            }
+            fb_line[fx] = draw ? fg : bg;
         }
     }
 }
@@ -806,8 +802,7 @@ uterus_fb_init(uint32_t *framebuffer, size_t width, size_t height, size_t pitch,
                uint32_t *ansi_colours, uint32_t *ansi_bright_colours,
                uint32_t *default_bg, uint32_t *default_fg,
                uint32_t *default_bg_bright, uint32_t *default_fg_bright,
-               void *font, size_t font_width, size_t font_height,
-               size_t font_spacing, size_t font_scale_x, size_t font_scale_y) {
+               void *font, size_t font_width, size_t font_height) {
 
     struct uterus_fb_context *ctx = NULL;
     ctx = bump_alloc(sizeof(struct uterus_fb_context));
@@ -897,7 +892,6 @@ uterus_fb_init(uint32_t *framebuffer, size_t width, size_t height, size_t pitch,
         ctx->font_width = font_width = 8;
         ctx->font_height = font_height = 16;
         ctx->font_bits_size = FONT_BYTES;
-        font_spacing = 1;
         ctx->font_bits = bump_alloc(ctx->font_bits_size);
         if (ctx->font_bits == NULL) {
             goto fail;
@@ -907,13 +901,11 @@ uterus_fb_init(uint32_t *framebuffer, size_t width, size_t height, size_t pitch,
 
 #undef FONT_BYTES
 
-    ctx->font_width += font_spacing;
+    //Uwu
+    ctx->font_width += 1;
 
-    ctx->font_scale_x = font_scale_x;
-    ctx->font_scale_y = font_scale_y;
-
-    ctx->glyph_width = ctx->font_width * font_scale_x;
-    ctx->glyph_height = font_height * font_scale_y;
+    ctx->glyph_width = ctx->font_width;
+    ctx->glyph_height = font_height;
 
     _ctx->cols = ctx->width / ctx->glyph_width;
     _ctx->rows = ctx->height / ctx->glyph_height;

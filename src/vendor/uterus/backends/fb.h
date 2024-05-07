@@ -114,8 +114,7 @@ struct uterus_context *uterus_fb_init(
     uint32_t *ansi_colours, uint32_t *ansi_bright_colours,
     uint32_t *default_bg, uint32_t *default_fg,
     uint32_t *default_bg_bright, uint32_t *default_fg_bright,
-    void *font, size_t font_width, size_t font_height, size_t font_spacing,
-    size_t font_scale_x, size_t font_scale_y
+    void *font, size_t font_width, size_t font_height
 );
 
 #ifndef UTERUS_FB_DISABLE_BUMP_ALLOC
@@ -130,8 +129,7 @@ static inline struct uterus_context *uterus_fb_simple_init(
         NULL, NULL,
         NULL, NULL,
         NULL, NULL,
-        NULL, 0, 0, 1,
-        1, 1
+        NULL, 0, 0
     );
 }
 #endif
