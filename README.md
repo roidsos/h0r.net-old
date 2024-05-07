@@ -4,13 +4,7 @@ A kernel IDK
 
 ## What is h0r.net?
 why do you care? it is litterally insignificant
-## How to get it running?
-### On Arch Linux and similar:
-  Install packages from normal repositories: [libisoburn](https://archlinux.org/packages/extra/x86_64/libisoburn/) [nasm](https://archlinux.org/packages/extra/x86_64/nasm/)
- [build-essentials](https://archlinux.org/packages/extra/x86_64/build-essentials/)</br>
-In case any package is missing please open up an issue!
-
-## Current features and TODO(stolen from  ilobilo )
+## TODO
 
 ### System
 - [x] GDT
