@@ -3,7 +3,8 @@
 A kernel IDK
 
 ## What is h0r.net?
-why do you care? it is litterally insignificant
+a constantly evolving learning project,
+its non-UNIX BTW 😎
 ## TODO
 
 ### System
