@@ -22,9 +22,9 @@ In case any package is missing please open up an issue!
 - [ ] MSI-X
 - [x] Modules
 #### Memory
-- [x] "PMM"(doesnt work right)
-- [ ] VMM (4 level)
-- [x] "Heap"(doesnt work due to PMM)
+- [x] PMM
+- [x] VMM (4 level)
+- [x] "Heap"(doesnt work right fsr)
 #### Tasking
 - [ ] SMP
 - [ ] Scheduler
