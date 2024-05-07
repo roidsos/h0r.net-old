@@ -3,7 +3,7 @@
 A kernel IDK
 
 ## What is h0r.net?
-a constantly evolving learning project,
+a constantly evolving learning project,</br>
 its non-UNIX BTW 😎
 ## TODO
 
