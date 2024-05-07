@@ -1,5 +1,5 @@
 #include "kernel.h"
-#include "wakeup.h"
+#include "wakeup/wakeup.h"
 
 struct HN_data_block data;
 void kmain() {

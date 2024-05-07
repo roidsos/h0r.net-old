@@ -1,5 +1,5 @@
 #include "pmm.h"
-#include <core/config.h>
+#include <config.h>
 #include <utils/error.h>
 #include <utils/log.h>
 #include <vendor/printf.h>
