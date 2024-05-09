@@ -1,15 +1,15 @@
-#ifndef IOAPIC_H
-#define IOAPIC_H
+#ifndef IOLAPIC_H
+#define IOLAPIC_H
 
 #include "ACPI/MADT.h"
 
-#define IOAPIC_REGSEL 0x0
-#define IOAPIC_IOWIN  0x10
+#define IOLAPIC_REGSEL 0x0
+#define IOLAPIC_IOWIN  0x10
 
-#define IOAPIC_ID     0x0
-#define IOAPIC_VER    0x01
-#define IOAPIC_ARB    0x02
-#define IOAPIC_REDTBL 0x10
+#define IOLAPIC_ID     0x0
+#define IOLAPIC_VER    0x01
+#define IOLAPIC_ARB    0x02
+#define IOLAPIC_REDTBL 0x10
 
 bool ioapic_init();
 

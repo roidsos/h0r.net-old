@@ -10,7 +10,7 @@
 #include <arch/x86_64/interrupts/interrupts.h>
 #include <drivers/ACPI/MCFG.h>
 #include <drivers/ACPI/RSDT.h>
-#include <drivers/APIC.h>
+#include <drivers/LAPIC.h>
 #include <drivers/IOAPIC.h>
 #include <drivers/input/PS2.h>
 
@@ -36,7 +36,7 @@ void wakeup_init_hw() {
     char *kernel_heap = request_pages(HEAP_SIZE_IN_PAGES);
     heap_init((uint64_t)kernel_heap, HEAP_SIZE_IN_PAGES * PAGE_SIZE);
 
-    apic_init();
+    lapic_init();
     ioapic_init();
     enable_interrupts();
     sched_init();

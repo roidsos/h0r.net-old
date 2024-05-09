@@ -29,11 +29,11 @@ bool ioapic_init() {
     if (ioapicaddr == NULL) {
         return false;
     }
-    vector_count = ((read(IOAPIC_VER) >> 16) & 0xFF);
+    vector_count = ((read(IOLAPIC_VER) >> 16) & 0xFF);
     // mask all and set
     for (uint32_t i = 0; i <= vector_count; ++i) {
-        write(IOAPIC_REDTBL + 2 * i, 1 << 16 | (32 + i));
-        write(IOAPIC_REDTBL + 2 * i + 1, 0); // redir cpu
+        write(IOLAPIC_REDTBL + 2 * i, 1 << 16 | (32 + i));
+        write(IOLAPIC_REDTBL + 2 * i + 1, 0); // redir cpu
     }
 
     return false;
@@ -55,7 +55,7 @@ madt_entry *get_gsi(uint32_t gsi) {
 void ioapic_mask(uint8_t id) {
     uint8_t vec = 32 + id;
     for (size_t i = 0; i < num_madt_entries; i++) {
-        if (entry_ptrs[i]->h.type == MADT_ENTRY_TYPE_IOAPIC_OVERRIDE &&
+        if (entry_ptrs[i]->h.type == MADT_ENTRY_TYPE_IOLAPIC_OVERRIDE &&
             entry_ptrs[i]->the_meat.ioapic_override.IRQ_source == vec) {
             madt_entry *gsi =
                 get_gsi(entry_ptrs[i]->the_meat.ioapic_override.GS_interupt);
@@ -95,7 +95,7 @@ void ioapic_mask(uint8_t id) {
 void ioapic_unmask(uint8_t id) {
     uint8_t vec = 32 + id;
     for (size_t i = 0; i < num_madt_entries; i++) {
-        if (entry_ptrs[i]->h.type == MADT_ENTRY_TYPE_IOAPIC_OVERRIDE &&
+        if (entry_ptrs[i]->h.type == MADT_ENTRY_TYPE_IOLAPIC_OVERRIDE &&
             entry_ptrs[i]->the_meat.ioapic_override.IRQ_source == vec) {
             madt_entry *gsi =
                 get_gsi(entry_ptrs[i]->the_meat.ioapic_override.GS_interupt);

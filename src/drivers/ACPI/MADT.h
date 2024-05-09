@@ -5,10 +5,10 @@
 
 #define MADT_ENTRY_TYPE_LAPIC                0
 #define MADT_ENTRY_TYPE_IOAPIC               1
-#define MADT_ENTRY_TYPE_IOAPIC_OVERRIDE      2
-#define MADT_ENTRY_TYPE_IOAPIC_NMI           3
-#define MADT_ENTRY_TYPE_LAPIC_NMI            4
-#define MADT_ENTRY_TYPE_LAPIC_ADDR_OVERRIDE  5
+#define MADT_ENTRY_TYPE_IOLAPIC_OVERRIDE      2
+#define MADT_ENTRY_TYPE_IOLAPIC_NMI           3
+#define MADT_ENTRY_TYPE_lapic_NMI            4
+#define MADT_ENTRY_TYPE_lapic_ADDR_OVERRIDE  5
 #define MADT_ENTRY_TYPE_LX2APIC              9
 
 typedef struct {
@@ -27,7 +27,7 @@ typedef struct {
     union {
         struct {
             uint8_t CPU_ID;
-            uint8_t APIC_ID;
+            uint8_t LAPIC_ID;
             uint32_t flags;
         } __attribute__((__packed__)) lapic;
         struct {
