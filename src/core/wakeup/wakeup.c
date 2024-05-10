@@ -42,9 +42,9 @@ void wakeup_init_hw() {
     sched_init();
     ps2_init();
 
-    // lai_set_acpi_revision(ACPI_revision);
-    // lai_create_namespace();
-    // printf("LAI works???");
+    lai_set_acpi_revision(ACPI_revision);
+    lai_create_namespace();
+    printf("LAI works???");
 
     log_nice("Hardware sucessfully initialized!\n");
 }
