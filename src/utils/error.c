@@ -89,22 +89,22 @@ void trigger_psod(int error_code, char *details, Registers *regs) {
     dprintf("R14=0x%016llx ,R15=0x%016llx ,ERROR_CODE=0x%016llx\n\n", regs->r14,
             regs->r15, regs->error);
 
-    //if (regs->rbp == 0) {
-    //    printf("Backtrace not available(no RBP)\n");
-    //    dprintf("Backtrace not available(no RBP)\n");
-    //    hcf();
-    //}
-//
-    //printf("Backtrace:\n");
-    //dprintf("Backtrace:\n");
-    //struct stackframe64_t *frame = (struct stackframe64_t *)PHYS_TO_VIRT(regs->rbp);
-    //while(true){
-    //    if(frame->RIP <= (uint64_t)data.hhdm_off){
-    //        break;
-    //    }
-    //    printf("    [%.16lx]  <No SymbolTable LMAO>", frame->RIP);
-    //    dprintf("    [%.16lx]  <No SymbolTable LMAO>", frame->RIP);
-    //    frame = (struct stackframe64_t *)PHYS_TO_VIRT(frame->RBP);
-    //}; // TODO: support different memory models
+    if (regs->rbp < (uint64_t)data.hhdm_off) {
+        printf("NO backtrace sowwy(bad RBP)\n");
+        dprintf("NO backtrace sowwy(bad RBP)\n");
+        hcf();
+    }
+
+    printf("Backtrace:\n");
+    dprintf("Backtrace:\n");
+    struct stackframe64_t *frame = (struct stackframe64_t *)regs->rbp;
+    while(true){
+        if(frame->RIP <= (uint64_t)data.hhdm_off){
+            break;
+        }
+        printf("    [%.16lx]  <No SymbolTable LMAO>", frame->RIP);
+        dprintf("    [%.16lx]  <No SymbolTable LMAO>", frame->RIP);
+        frame = (struct stackframe64_t *)frame->RBP;
+    }; // TODO: support different memory models
     hcf();
 }
