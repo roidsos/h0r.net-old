@@ -22,7 +22,7 @@ its non-UNIX BTW 😎
 - [x] "Heap"(doesnt work right fsr)
 #### Tasking
 - [ ] SMP
-- [ ] Scheduler
+- [x] Scheduler
 - [ ] Signals
 #### Userspace
 - [ ] System calls
