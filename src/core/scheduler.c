@@ -4,6 +4,7 @@
 #include <vendor/printf.h>
 #include <klibc/string.h>
 #include <core/mm/heap.h>
+#include <vendor/printf.h>
 
 process_t processes[MAX_PROCESSES];
 uint32_t num_processes = 0;
@@ -17,11 +18,12 @@ void schedule(Registers *regs) {
         memcpy(&processes[current_process].regs, regs, sizeof(Registers));
     }
     next_process:
-    while(!processes[current_process].present){
+    current_process++;
+    if (current_process > num_processes) current_process = 0;
+    while(!processes[current_process].present) {
         current_process++;
-        if (current_process >= num_processes) current_process = 0;
+        if (current_process > num_processes) current_process = 0;
     }
-
     if (processes[current_process].signal) {
         //TODO: proper signal handler
         memset(&processes[current_process], 0, sizeof(processes[current_process]));
@@ -50,6 +52,7 @@ uint32_t sched_add_process(char* name, void (*entry)(void)){
         processes[num_processes].regs.rsp = (uint64_t)malloc(0x1000);
         processes[num_processes].regs.cs = 0x8;
         processes[num_processes].regs.ss = 0x10;
+        processes[num_processes].regs.rflags = 0x202;
         num_processes++;
         return num_processes - 1;
     }
