@@ -4,7 +4,7 @@
 struct HN_data_block data;
 void kmain() {
     wakeup_init_hw();
-    //wakeup_startup();
+    wakeup_startup();
 
     while(true);
 }

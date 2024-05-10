@@ -48,9 +48,22 @@ void wakeup_init_hw() {
 
     log_nice("Hardware sucessfully initialized!\n");
 }
+void proc1() {
+    while(true){
+        printf("a");
+    }
+}
+void proc2() {
+    while(true){
+        printf("b");
+    }
+}
 void wakeup_startup() {
     //TODO: load Wakeup config and do startup tasks
  
+    sched_add_process("proc1", proc1);
+    sched_add_process("proc2", proc2);
+
     // kickstart the scheduler
     __asm__("int $32");
     while(true); // wait for the scheduler to take over

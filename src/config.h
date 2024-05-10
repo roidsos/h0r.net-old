@@ -26,4 +26,7 @@
 #define HEAP_MAGIC 0xB16B00B569420666 // "Big Boobs, 69 420 666", "(I think "Microsoftus Neckbearditis" got me...), UNUSED BTW
 #define KEY_MAGIC 0xB16B00B5 // "Big Boobs"
 
+//Scheduler 
+#define MAX_PROCESSES 64
+
 #endif
