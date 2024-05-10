@@ -92,16 +92,16 @@ void trigger_psod(int error_code, char *details, Registers *regs) {
         hcf();
     }
 
-    printf("Backtrace: NO\n");
+    printf("Backtrace:\n");
     dprintf("Backtrace:\n");
-    struct stackframe64_t *frame = (struct stackframe64_t *)regs->rbp;
-    while (
-        frame->RIP >=
-        (uint64_t)0xffffffff80000000) // TODO: support different memory models
-    {
+    struct stackframe64_t *frame = (struct stackframe64_t *)PHYS_TO_VIRT(regs->rbp);
+    while(true){
+        if(frame->RIP <= (uint64_t)data.hhdm_off){
+            break;
+        }
         printf("    [%.16lx]  <No SymbolTable LMAO>", frame->RIP);
         dprintf("    [%.16lx]  <No SymbolTable LMAO>", frame->RIP);
-        frame = (struct stackframe64_t *)frame->RBP;
-    }
+        frame = (struct stackframe64_t *)PHYS_TO_VIRT(frame->RBP);
+    }; // TODO: support different memory models
     hcf();
 }
