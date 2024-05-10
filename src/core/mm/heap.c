@@ -1,6 +1,8 @@
 #include "heap.h"
 #include <klibc/string.h>
 #include <vendor/printf.h>
+#include <utils/log.h>
+#include <utils/error.h>
 
 mem_segment *head;
 
@@ -14,6 +16,7 @@ void heap_init(uint64_t heap_start, size_t heap_size) {
     head->isfree = true;
 }
 void *malloc(size_t size) {
+    log_trace("Allocating %d bytes\n", size);
     uint64_t remainder = size % 8;
     size -= remainder;
     if (remainder != 0)
@@ -55,11 +58,11 @@ void *malloc(size_t size) {
             return current + 1;
         }
         if (current->nextfree == 0) {
-            return 0;
+            trigger_psod(HN_ERR_OUT_OF_MEM, "Current->NextFree is 0", NULL);
         }
         current = current->nextfree;
     }
-    return 0;
+    trigger_psod(HN_ERR_OUT_OF_MEM, "Out of Memory", NULL);
 }
 
 void combine_segs(mem_segment *a, mem_segment *b) {
@@ -89,6 +92,11 @@ void combine_segs(mem_segment *a, mem_segment *b) {
 }
 
 void free(void *tofree) {
+    if (tofree == 0) {
+        log_error("Tried to free 0x0\n");
+        return;
+    }
+    log_trace("Freeing 0x%p\n", tofree);
     mem_segment *current = ((mem_segment *)tofree) - 1;
     current->isfree = true;
 
