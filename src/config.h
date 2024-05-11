@@ -11,6 +11,11 @@
 #define MAX_TTYS 4
 #define MAX_LOCKED_PROCS 64
 
+//VFS
+#define MAX_OPEN_FILES 64
+#define MAX_DRIVES     64
+#define MAX_DRIVERS    8
+
 //MM
 #define PAGE_SIZE 4096
 #define HEAP_SIZE_IN_PAGES 65536
