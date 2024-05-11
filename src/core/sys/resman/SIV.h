@@ -19,10 +19,20 @@
 #define SIV_INTENTS_WRITE    1 << 1
 #define SIV_INTENTS_EXEC     1 << 2
 
-#define SIV_PERM_READ   1 << 0
-#define SIV_PERM_WRITE  1 << 1
-#define SIV_PERM_EXEC   1 << 2
-#define SIV_PERM_SEE    1 << 3
+#define SIV_PERM_OWNER_READ   1 << 0
+#define SIV_PERM_OWNER_WRITE  1 << 1
+#define SIV_PERM_OWNER_EXEC   1 << 2
+#define SIV_PERM_OWNER_SEE    1 << 3
+
+#define SIV_PERM_GROUP_READ   1 << 4
+#define SIV_PERM_GROUP_WRITE  1 << 5
+#define SIV_PERM_GROUP_EXEC   1 << 6
+#define SIV_PERM_GROUP_SEE    1 << 7
+
+#define SIV_PERM_OTHER_READ   1 << 8
+#define SIV_PERM_OTHER_WRITE  1 << 9
+#define SIV_PERM_OTHER_EXEC   1 << 10
+#define SIV_PERM_OTHER_SEE    1 << 11
 
 typedef struct{
     // Basic info
@@ -41,9 +51,7 @@ typedef struct{
     uint64_t owner_id;
     uint64_t group_id;
 
-    uint8_t owner_perms;
-    uint8_t group_perms;
-    uint8_t other_perms;
+    uint16_t perms;
 } file_t;
 
 typedef struct {
