@@ -53,6 +53,7 @@ uint32_t siv_open(uint32_t drive_id,char* path,uint8_t intents)
 
 void siv_close(uint32_t file_desc)
 {
+    //TODO: check user perms
     if (open_file_contents[file_desc] != NULL) {
         free(open_file_contents[file_desc]);
         open_file_contents[file_desc] = NULL;
@@ -63,6 +64,7 @@ void siv_close(uint32_t file_desc)
 
 void siv_read(uint32_t file_desc, uint32_t offset, char* buf, uint32_t size)
 {
+    //TODO: check user perms
     if(open_file_contents[file_desc] != NULL) {
         memcpy(buf, open_file_contents[file_desc] + offset, size);
     } else {
