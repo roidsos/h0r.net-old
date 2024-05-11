@@ -4,6 +4,7 @@
 #include <klibc/stdlib.h>
 #include <utils/log.h>
 #include <vendor/printf.h>
+#include <drivers/LAPIC.h>
 
 char *errors[] = {"HN_ERR_DE",         "HN_ERR_DB",
                   "HN_ERR_NMI",        "HN_ERR_BP",
@@ -29,6 +30,9 @@ char *errors[] = {"HN_ERR_DE",         "HN_ERR_DB",
 #define FGCOL "\x1b[38;2;170;119;0m"
 
 void trigger_psod(int error_code, char *details, Registers *regs) {
+    //stop the scheduler, TODO: make this architecture independent
+    lapic_timer_stop();
+
     Registers newregs;
     if (regs == NULL) {
         __asm__ volatile("movq %%rax, %0\r\n" : "=r"(newregs.rax) :);
