@@ -27,7 +27,6 @@ void schedule(Registers *regs) {
         sched_current_pid++;
         if (sched_current_pid > sched_num_procs) sched_current_pid = 0;
     }
-    log_trace("Scheduling %i\n", sched_current_pid);
 
     memcpy(regs, &processes[sched_current_pid].regs, sizeof(Registers));
 
