@@ -19,12 +19,18 @@
 #define SIV_INTENTS_WRITE    1 << 1
 #define SIV_INTENTS_EXEC     1 << 2
 
+#define SIV_PERM_READ   1 << 0
+#define SIV_PERM_WRITE  1 << 1
+#define SIV_PERM_EXEC   1 << 2
+#define SIV_PERM_SEE    1 << 3
+
 typedef struct{
     // Basic info
     uint16_t drive_id;
     char* name;
     char* full_path;
     uint64_t size;
+    bool isdir;
 
     // Time stuffs
     uint64_t created;

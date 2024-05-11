@@ -12,7 +12,7 @@ uint16_t siv_num_drivers = 0;
 
 file_t open_files[MAX_OPEN_FILES];
 char*  open_file_contents[MAX_OPEN_FILES];
-uint16_t siv_num_open_files = 0;
+uint32_t siv_num_open_files = 0;
 
 void siv_init() {
     memset(siv_drives, 0, sizeof(siv_drives));
@@ -43,12 +43,23 @@ uint32_t siv_open(uint32_t drive_id,char* path,uint8_t intents)
 
     open_files[file_desc] = driver.get_props(drive.driver_specific_data, path);
 
+    //TODO: check user perms
+
+    if(open_files[file_desc].isdir) {
+        // this is not how you open directories lmao
+        goto error;
+    }
+    
     if(!driver.is_virtual && intents & SIV_INTENTS_READ){
         open_file_contents[file_desc] = malloc(open_files[file_desc].size);
         driver.read(drive.driver_specific_data, path, 0, open_file_contents[file_desc], open_files[file_desc].size);
     }
 
     return file_desc;
+
+    error:
+    open_files[file_desc] = (file_t){0};
+    return UINT32_MAX;
 }
 
 void siv_close(uint32_t file_desc)
