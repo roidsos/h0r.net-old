@@ -50,11 +50,10 @@ void wakeup_init_hw() {
     log_nice("Hardware sucessfully initialized!\n");
 }
 void wakeup_startup() {
-    //TODO: load Wakeup config and do startup tasks
- 
+    
+    // start Gaia: the userspace portion of Wakeup
     sched_add_process("proc1", gaia_main);
 
     // kickstart the scheduler
     __asm__("int $32");
-    while(true); // wait for the scheduler to take over
 }
