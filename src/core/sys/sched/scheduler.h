@@ -15,12 +15,17 @@ typedef struct {
     uint8_t state_flags;
     char* name;
     Registers regs;
+    uint32_t tty_id;
 } process_t;
 
 void sched_init();
 
 uint32_t sched_add_process(char* name, void (*entry)(void));
 void sched_kill(uint32_t pid);
+process_t* sched_get_curr_process();
+
+void sched_block(uint32_t pid);
+void sched_unblock(uint32_t pid);
 
 extern bool sched_running;
 extern uint32_t sched_current_pid;
