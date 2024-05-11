@@ -1,6 +1,6 @@
 #include "wakeup.h"
 #include <config.h>
-#include <core/scheduler.h>
+#include <core/sys/sched/scheduler.h>
 
 #include <core/mm/heap.h>
 #include <core/mm/pmm.h>
