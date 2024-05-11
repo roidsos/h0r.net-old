@@ -5,13 +5,13 @@
 
 void task1(){
     while(true){
-        printf("a\n");
+        printf("a");
     }
 }
 
 void task2(){
     while(true){
-        printf("b\n");
+        printf("b");
     }
 }
 
