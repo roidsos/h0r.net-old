@@ -50,6 +50,7 @@ uint32_t sched_add_process(char* name, void (*entry)(void)){
         processes[num_processes].signal = 0;
         processes[num_processes].regs.rip = (uint64_t)entry;
         processes[num_processes].regs.rsp = (uint64_t)malloc(0x1000);
+        processes[num_processes].regs.rbp = processes[num_processes].regs.rsp;
         processes[num_processes].regs.cs = 0x8;
         processes[num_processes].regs.ss = 0x10;
         processes[num_processes].regs.rflags = 0x202;
