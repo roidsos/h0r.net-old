@@ -34,8 +34,12 @@
 #include "printf.h"
 #include <core/kernel.h>
 #include <drivers/output/cereal.h>
+#include <core/sys/sched/scheduler.h>
+#include <core/sys/resman/tty.h>
+#include <stdint.h>
 #include <types/stdtypes.h>
 #include <uterus.h>
+#include <config.h>
 
 // 'ntoa' conversion buffer size, this must be big enough to hold one converted
 // numeric number including padded zeros (dynamically created on stack)
@@ -101,10 +105,48 @@ static inline void _out_null(char character, void *buffer, size_t idx,
     (void)maxlen;
 }
 
+typedef struct {
+    uint16_t tty_id;
+    uint32_t victim_pid;
+} lock_victim_t;
+
+lock_victim_t locks[MAX_LOCKED_PROCS];
+
+void init_printf_locks(){
+    for(int i = 0; i < MAX_LOCKED_PROCS; i++){
+        locks[i].tty_id = 0;
+        locks[i].victim_pid = 0;
+    }
+}
+
 // internal _putchar wrapper
 static inline void _out_char(char character, UNUSED void *buffer,
                              UNUSED size_t idx, UNUSED size_t maxlen) {
-    uterus_write(data.ut_ctx, &character, 1);
+    if(sched_running && tty_initialized){
+        //TODO: move this into its own place
+        uint16_t curr_tty = sched_get_curr_process()->tty_id;
+        if(!tty_lock(curr_tty)){
+            for(int i = 0; i < MAX_LOCKED_PROCS; i++){
+                if(locks[i].tty_id == 0){
+                    locks[i].tty_id = curr_tty;
+                    locks[i].victim_pid = sched_current_pid;
+                    sched_block(sched_current_pid);
+                }
+            }
+            while(tty_get_lock(curr_tty));
+        }
+        tty_write(curr_tty, &character, 1);
+        tty_unlock(curr_tty);
+        for (int i = 0; i < MAX_LOCKED_PROCS; i++) {
+            if (locks[i].tty_id == curr_tty) {
+                sched_unblock(locks[i].victim_pid);
+                locks[i].tty_id = 0;
+                locks[i].victim_pid = 0;
+            }
+        }
+    }else{
+        uterus_write(data.ut_ctx, &character, 1);
+    }
 }
 
 // internal secure strlen

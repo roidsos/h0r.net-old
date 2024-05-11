@@ -1,4 +1,5 @@
 #include "wakeup.h"
+#include "core/sys/resman/tty.h"
 #include <config.h>
 #include <core/sys/sched/scheduler.h>
 
@@ -42,6 +43,8 @@ void wakeup_init_hw() {
     enable_interrupts();
     sched_init();
     ps2_init();
+    init_printf_locks();
+    tty_register((tty_t){2, 0, 0, 0, 0});
 
     //lai_set_acpi_revision(ACPI_revision);
     //lai_create_namespace();

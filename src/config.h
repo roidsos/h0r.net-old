@@ -7,6 +7,10 @@
 #define KERNEL_VER_PATCH 1
 #define KERNEL_VER_CODENAME "Deez Nutz"
 
+//TTY
+#define MAX_TTYS 4
+#define MAX_LOCKED_PROCS 64
+
 //MM
 #define PAGE_SIZE 4096
 #define HEAP_SIZE_IN_PAGES 65536

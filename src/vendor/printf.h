@@ -40,6 +40,8 @@
 extern "C" {
 #endif
 
+//TODO: move locks to their own place
+void init_printf_locks();
 
 /**
  * Tiny printf implementation
