@@ -9,25 +9,24 @@
 process_t processes[MAX_PROCESSES];
 uint32_t num_processes = 0;
 uint32_t current_process = 0;
-bool sig_first;
+bool sched_running = false;
 
 void schedule(Registers *regs) {
-    if (sig_first) {
-        sig_first = false;
+    if (!sched_running) {
+        sched_running = true;
     }else{
         memcpy(&processes[current_process].regs, regs, sizeof(Registers));
     }
     next_process:
     current_process++;
     if (current_process > num_processes) current_process = 0;
-    while(!processes[current_process].state_flags) {
+    while(!(processes[current_process].state_flags == SCHED_STATE_READY)) {
+        if (processes[current_process].state_flags == SCHED_STATE_DEAD) {
+            memset(&processes[current_process], 0, sizeof(processes[current_process]));
+            goto next_process;
+        }
         current_process++;
         if (current_process > num_processes) current_process = 0;
-    }
-    if (processes[current_process].state_flags == SCHED_STATE_DEAD) {
-        //TODO: proper signal handler
-        memset(&processes[current_process], 0, sizeof(processes[current_process]));
-        goto next_process;
     }
 
     memcpy(regs, &processes[current_process].regs, sizeof(Registers));
@@ -37,9 +36,6 @@ void schedule(Registers *regs) {
 }
 void sched_init() {
     memset(processes, 0, sizeof(processes));
-    sig_first = true;
-    num_processes = 0;
-    current_process = 0;
     register_ISR(32, schedule);
 }
 

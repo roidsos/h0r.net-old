@@ -21,4 +21,7 @@ void sched_init();
 
 uint32_t sched_add_process(char* name, void (*entry)(void));
 void sched_kill(uint32_t pid);
+
+extern bool sched_running;
+extern uint32_t sched_current_pid;
 #endif
