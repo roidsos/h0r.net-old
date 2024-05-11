@@ -3,6 +3,7 @@
 #include <klibc/string.h>
 #include <core/mm/heap.h>
 #include <stdint.h>
+#include <utils/log.h>
 
 siv_drive_t siv_drives[MAX_DRIVES];
 uint16_t siv_num_drives = 0;
@@ -35,6 +36,7 @@ uint16_t siv_register_driver(block_driver_t driver)
 
 uint32_t siv_open(uint32_t drive_id,char* path,uint8_t intents)
 {
+    log_trace("siv_open(%d, %s, %d)\n", drive_id, path, intents);
     siv_drive_t drive = siv_drives[drive_id];
     block_driver_t driver = siv_drivers[drive.driver_id];
 
@@ -50,7 +52,8 @@ uint32_t siv_open(uint32_t drive_id,char* path,uint8_t intents)
         goto error;
     }
     
-    if(!driver.is_virtual && intents & SIV_INTENTS_READ){
+    if(!driver.is_virtual && (intents & SIV_INTENTS_READ)){
+        log_trace("Preloading file %s\n", path);
         open_file_contents[file_desc] = malloc(open_files[file_desc].size);
         driver.read(drive.driver_specific_data, path, 0, open_file_contents[file_desc], open_files[file_desc].size);
     }
@@ -64,6 +67,7 @@ uint32_t siv_open(uint32_t drive_id,char* path,uint8_t intents)
 
 void siv_close(uint32_t file_desc)
 {
+    log_trace("siv_close(%d)\n", file_desc);
     //TODO: check user perms
     if (open_file_contents[file_desc] != NULL) {
         free(open_file_contents[file_desc]);
@@ -75,6 +79,7 @@ void siv_close(uint32_t file_desc)
 
 void siv_read(uint32_t file_desc, uint32_t offset, char* buf, uint32_t size)
 {
+    log_trace("siv_read(%d, %d, %d)\n", file_desc, offset, size);
     //TODO: check user perms
     if(open_file_contents[file_desc] != NULL) {
         memcpy(buf, open_file_contents[file_desc] + offset, size);
@@ -87,6 +92,7 @@ void siv_read(uint32_t file_desc, uint32_t offset, char* buf, uint32_t size)
 
 void siv_write(uint32_t file_desc, uint32_t offset, char* data, uint32_t size)
 {
+    log_trace("siv_write(%d, %d, %d)\n", file_desc, offset, size);
     uint16_t drive_id = open_files[file_desc].drive_id;
     siv_drivers[siv_drives[drive_id].driver_id].write(siv_drives[drive_id].driver_specific_data, open_files[file_desc].full_path, offset, data, size);
 }

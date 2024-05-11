@@ -10,6 +10,7 @@ struct tar_contents contents;
 
 // Driver functions
 file_t tar_get_props(UNUSED void* driver_specific_data,char* path){
+    log_trace("tar_get_props(%s)\n", path);
     struct tar_header* header = find_file(&contents, path);
     return (file_t){
         .drive_id = drive_id,
@@ -26,14 +27,16 @@ file_t tar_get_props(UNUSED void* driver_specific_data,char* path){
     };
 }
 void tar_read(UNUSED void* driver_specific_data,char* path,uint32_t offset,char* buffer,uint32_t size){
+    log_trace("tar_read(%s, %d, %d)\n", path, offset, size);
     struct tar_header *thdr = find_file(&contents, path);
     size_t fsize = parse_size(thdr->size);
-    memcpy(buffer, data.initramfs->address + offset, size > fsize ? fsize : size);
+    memcpy(buffer, ((char *)thdr) + 512 + offset, size > fsize ? fsize : size);
 }
 void tar_write(UNUSED void* driver_specific_data,char* path,uint32_t offset,char* buffer,uint32_t size){
+    log_trace("tar_write(%s, %d, %d)\n", path, offset, size);
     struct tar_header *thdr = find_file(&contents, path);
     size_t fsize = parse_size(thdr->size);
-    memcpy(data.initramfs->address + offset, buffer, size > fsize ? fsize : size);
+    memcpy(((char *)thdr) + 512 + offset, buffer, size > fsize ? fsize : size);
 }
 
 // Stubs
@@ -84,11 +87,10 @@ void tar_init() {
     uint16_t driver_id = siv_register_driver(driver);
 
     siv_drive_t drive = {
+        .sig = SIV_SIG_INITRD,
         .driver_id = driver_id,
         .driver_specific_data = NULL
     };
 
     drive_id = siv_register_drive(drive);
-
-    log_nice("Tar driver initialized!\n");
 }

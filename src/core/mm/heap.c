@@ -54,7 +54,8 @@ void *malloc(size_t size) {
                 current->previous->nextfree = current->nextfree;
             if (current->next != 0)
                 current->next->previousfree = current->previousfree;
-
+            
+            log_trace("header: 0x%p\n", current);
             return current + 1;
         }
         if (current->nextfree == 0) {
@@ -138,7 +139,6 @@ void *realloc(void *old, size_t size) {
     mem_segment *oldseg = ((mem_segment *)old) - 1;
 
     size_t smaller_size = size;
-    dprintf("oldseg addr: %p", oldseg);
     if (oldseg->length < size)
         smaller_size = oldseg->length;
 
