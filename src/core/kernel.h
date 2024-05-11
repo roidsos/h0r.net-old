@@ -21,6 +21,7 @@ struct HN_data_block {
     //kterm shit
     struct uterus_context* ut_ctx;
     struct limine_framebuffer *framebuffer;
+    struct limine_file *initramfs;
 };
 extern struct HN_data_block data;
 #endif

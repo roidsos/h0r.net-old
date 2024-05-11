@@ -2,6 +2,7 @@
 #include <arch/x86_64/cpu.h>
 #include <core/memory.h>
 #include <klibc/stdlib.h>
+#include <stdint.h>
 #include <utils/log.h>
 #include <vendor/printf.h>
 #include <drivers/LAPIC.h>
@@ -24,7 +25,9 @@ char *errors[] = {"HN_ERR_DE",         "HN_ERR_DB",
                   "HN_ERR_VC",         "HN_ERR_SX",
                   "HN_ERR_RESERVED",   "HN_ERR_KERNEL_EXITED",
                   "HN_ERR_NO_ACPI",    "HN_ERR_NO_FB",
-                  "HN_ERR_OUT_OF_MEM", "HN_ERR_LAI_PANIC"};
+                  "HN_ERR_OUT_OF_MEM", "HN_ERR_LAI_PANIC",
+                  "HN_ERR_NO_FS",
+                  };
 
 #define BGCOL "\x1b[48;2;17;0;34m"
 #define FGCOL "\x1b[38;2;170;119;0m"
@@ -58,7 +61,7 @@ void trigger_psod(int error_code, char *details, Registers *regs) {
     log_error("%s\n", errors[error_code]);
 
     if (details)
-        log_error("%s\n", details);
+        
 
     // background
     printf(BGCOL "\x1b[2J");
@@ -66,8 +69,17 @@ void trigger_psod(int error_code, char *details, Registers *regs) {
 
     // title,error type and details
     printf("%s\n\n", errors[error_code]);
-    if (details)
+    if (details){
+        log_error("%s\n", details);
         printf("%s\n\n\n", details);
+    }
+    if(error_code == 14) //PF
+    {
+        uint64_t faultig_addr;
+        __asm__ volatile("movq %%cr2, %0\r\n" : "=r"(faultig_addr) :);
+        printf("Faultig address: 0x%016llx\n\n", faultig_addr);
+        log_error("Faultig address: 0x%016llx\n\n", faultig_addr);
+    }
 
     // Reg Dump
     printf("RIP=0x%016llx ,RSP=0x%016llx ,CS =0x%016llx ,SS =0x%016llx\n",

@@ -86,4 +86,8 @@ void siv_close(uint32_t file_desc);
 void siv_read(uint32_t file_desc, uint32_t offset, char* buf, uint32_t size);
 void siv_write(uint32_t file_desc, uint32_t offset, char* data, uint32_t size);
 
+extern uint16_t siv_num_drives;
+extern uint16_t siv_num_drivers;
+extern uint32_t siv_num_open_files;
+
 #endif

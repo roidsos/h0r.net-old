@@ -21,6 +21,8 @@ void load_limine_modules() {
         struct limine_file *mod = mod_request.response->modules[i];
         if (strcmp(mod->path, "/boot/kfont.psf") == 0) {
             data.ut_ctx = init_uterus_with_psf2_font(mod, data.framebuffer);
+        } else if (strcmp(mod->path, "/boot/initramfs.tar") == 0) {
+            data.initramfs = mod;
         } else {
             log_warn("Unknown module \"%s\" found", mod->path);
         }
