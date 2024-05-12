@@ -2,6 +2,9 @@
 #include "core/memory.h"
 #include "vendor/printf.h"
 
+//Sorry, I forgot to attribute this
+// this is based on: https://github.com/asterd-og/ZanOS/blob/main/kernel/src/dev/ioapic.c
+
 void *ioapicaddr = NULL;
 uint8_t vector_count;
 

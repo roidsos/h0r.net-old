@@ -1,6 +1,9 @@
 #ifndef IOLAPIC_H
 #define IOLAPIC_H
 
+//Sorry, I forgot to attribute this
+// this is based on: https://github.com/asterd-og/ZanOS/blob/main/kernel/src/dev/ioapic.c
+
 #include "ACPI/MADT.h"
 
 #define IOLAPIC_REGSEL 0x0

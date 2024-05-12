@@ -2,6 +2,8 @@
 #include <core/memory.h>
 hpet_regs *regs;
 
+// copied from: https://github.com/aurixos/os/blob/main/kernel/acpi/hpet.c
+
 bool hpet_init() {
     hpet_header *hpet = (hpet_header *)find_thingy("HPET");
     if (hpet == NULL) {
