@@ -10,7 +10,7 @@ typedef struct memseg{
     struct memseg* nextfree;
     struct memseg* previousfree;
     bool isfree;
-} mem_segment;
+} mem_seg;
 
 void heap_init(uint64_t heap_start ,size_t heap_size);
 void* malloc(size_t size);

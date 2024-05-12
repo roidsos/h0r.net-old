@@ -4,11 +4,11 @@
 #include <utils/log.h>
 #include <utils/error.h>
 
-mem_segment *head;
+mem_seg *head;
 
 void heap_init(uint64_t heap_start, size_t heap_size) {
-    head = (mem_segment *)heap_start;
-    head->length = heap_size - sizeof(mem_segment);
+    head = (mem_seg *)heap_start;
+    head->length = heap_size - sizeof(mem_seg);
     head->next = 0;
     head->previous = 0;
     head->nextfree = 0;
@@ -21,16 +21,14 @@ void *malloc(size_t size) {
     size -= remainder;
     if (remainder != 0)
         size += 8;
-    mem_segment *current = head;
+    mem_seg *current = head;
     while (true) {
         if (current->length >= size) {
-            if (current->length > size + sizeof(mem_segment)) {
-                mem_segment *new_seg =
-                    (mem_segment *)((uint64_t)current + sizeof(mem_segment) +
-                                    size); // making a new segment
+            if (current->length > size + sizeof(mem_seg)) {
+                mem_seg *new_seg =
+                    (mem_seg *)((uint64_t)current + sizeof(mem_seg) + size); 
                 new_seg->isfree = true;
-                new_seg->length =
-                    (((uint64_t)current->length) - sizeof(mem_segment) + size);
+                new_seg->length = (current->length - sizeof(mem_seg) + size);
                 new_seg->next = current->next;
                 new_seg->nextfree = current->nextfree;
                 new_seg->previous = current;
@@ -66,12 +64,12 @@ void *malloc(size_t size) {
     trigger_psod(HN_ERR_OUT_OF_MEM, "Out of Memory", NULL);
 }
 
-void combine_segs(mem_segment *a, mem_segment *b) {
+void combine_segs(mem_seg *a, mem_seg *b) {
     if (a == 0 || b == 0) {
         return;
     }
     if (a < b) {
-        a->length += b->length + sizeof(mem_segment);
+        a->length += b->length + sizeof(mem_seg);
         a->next = b->next;
         a->nextfree = b->nextfree;
         b->next->previous = a;
@@ -81,7 +79,7 @@ void combine_segs(mem_segment *a, mem_segment *b) {
         }
     }
     if (a > b) {
-        b->length += a->length + sizeof(mem_segment);
+        b->length += a->length + sizeof(mem_seg);
         b->next = a->next;
         b->nextfree = a->nextfree;
         a->next->previous = b;
@@ -98,7 +96,7 @@ void free(void *tofree) {
         return;
     }
     log_trace("Freeing 0x%p\n", tofree);
-    mem_segment *current = ((mem_segment *)tofree) - 1;
+    mem_seg *current = ((mem_seg *)tofree) - 1;
     current->isfree = true;
 
     if (current < head)
@@ -136,7 +134,7 @@ void *calloc(size_t size) {
     return malloced;
 }
 void *realloc(void *old, size_t size) {
-    mem_segment *oldseg = ((mem_segment *)old) - 1;
+    mem_seg *oldseg = ((mem_seg *)old) - 1;
 
     size_t smaller_size = size;
     if (oldseg->length < size)
