@@ -7,7 +7,7 @@
 void gaia_main(void){
     printf("TODO: startup tasks\n");
 
-    uint32_t fd = siv_open(0,"initramfs/hello.txt",SIV_INTENTS_READ);
+    uint32_t fd = siv_open(0,"hello.txt",SIV_INTENTS_READ);
     if(fd == UINT32_MAX){
         printf("Failed to open hello.txt\n");
         while(true);

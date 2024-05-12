@@ -12,6 +12,9 @@ struct tar_contents contents;
 file_t tar_get_props(UNUSED void* driver_specific_data,char* path){
     log_trace("tar_get_props(%s)\n", path);
     struct tar_header* header = find_file(&contents, path);
+    if (header == NULL) {
+        return (file_t){0};
+    }
     return (file_t){
         .drive_id = drive_id,
         .name = "",

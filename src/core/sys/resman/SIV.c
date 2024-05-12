@@ -46,6 +46,9 @@ uint32_t siv_open(uint32_t drive_id,char* path,uint8_t intents)
     open_files[file_desc] = driver.get_props(drive.driver_specific_data, path);
 
     //TODO: check user perms
+    if (open_files[file_desc].size == 0 && open_files[file_desc].full_path == NULL) {
+        goto error;
+    }
 
     if(open_files[file_desc].isdir) {
         // this is not how you open directories lmao
