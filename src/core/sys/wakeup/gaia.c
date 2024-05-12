@@ -3,6 +3,7 @@
 #include <types/stdtypes.h>
 
 #include <core/sys/resman/SIV.h>
+#include <core/sys/resman/registery.h>
 
 void gaia_main(void){
     printf("TODO: startup tasks\n");
@@ -16,6 +17,14 @@ void gaia_main(void){
     siv_read(fd,0,buf,20);
     printf("hello.txt: %s\n",buf);
     siv_close(fd);
+
+    hive_header* hive = read_hive("hive.reg");
+    if(hive == NULL){
+        printf("Failed to read hive.reg\n");
+        while(true);
+    }
+    printf("hive.reg's name: %s\n",hive->name);
+    free_hive(hive);
  
     while(true);
 }

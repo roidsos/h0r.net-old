@@ -79,6 +79,10 @@ void siv_close(uint32_t file_desc)
 
     open_files[file_desc] = (file_t){0};
 }
+file_t siv_get_file(uint32_t file_desc)
+{
+    return open_files[file_desc];
+}
 
 void siv_read(uint32_t file_desc, uint32_t offset, char* buf, uint32_t size)
 {

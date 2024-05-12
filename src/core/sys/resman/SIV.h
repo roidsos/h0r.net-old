@@ -80,8 +80,11 @@ typedef struct {
 void siv_init();
 uint16_t siv_register_drive(siv_drive_t drive);
 uint16_t siv_register_driver(block_driver_t driver);
+
 uint32_t siv_open(uint32_t drive_id,char* path,uint8_t intents);
 void siv_close(uint32_t file_desc);
+
+file_t siv_get_file(uint32_t file_desc);
 
 void siv_read(uint32_t file_desc, uint32_t offset, char* buf, uint32_t size);
 void siv_write(uint32_t file_desc, uint32_t offset, char* data, uint32_t size);
