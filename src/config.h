@@ -18,7 +18,6 @@
 
 //MM
 #define PAGE_SIZE 4096
-#define HEAP_SIZE_IN_PAGES 65536
 
 //Loggers-poggers
 #define DEBUG true
