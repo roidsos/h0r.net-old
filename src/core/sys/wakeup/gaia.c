@@ -13,7 +13,7 @@ void gaia_main(void){
         printf("Failed to read hive.reg\n");
         while(true);
     }
-    printf("hive.reg's name: %s\n",hive->name);
+    printf("system hive's name: %s\n",hive->name);
     free_hive(hive);
  
     while(true);
