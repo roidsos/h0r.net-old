@@ -8,7 +8,7 @@
 void gaia_main(void){
     printf("TODO: startup tasks\n");
 
-    hive_header* hive = read_hive("hive.reg");
+    hive_header* hive = read_hive("sys/reg/system.reg");
     if(hive == NULL){
         printf("Failed to read hive.reg\n");
         while(true);
