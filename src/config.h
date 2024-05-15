@@ -33,7 +33,6 @@
 //Registery
 #define HIVE_MAGIC 0xB16B00B5 // "Big Boobs", "(I think "Microsoftus Neckbearditis" got me...)
 #define KEY_MAGIC 0x69420666 // "69 420 666"
-
 //Scheduler 
 #define MAX_PROCESSES 64
 
