@@ -29,14 +29,12 @@ its non-UNIX BTW 😎
 - [ ] ELF
 - [ ] Userspace
 - [ ] Libc
-- [ ] Bash
-- [ ] DOOM
+- [ ] LibZig
 ### ACPI
 - [X] ACPI
 - [x] LAPIC
 - [x] IOAPIC
 - [x] "LAI"(doesnt work due to Heap)
-
 ### drivers
 #### Timers
 - [x] HPET
