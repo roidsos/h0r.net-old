@@ -1,4 +1,4 @@
-#include "scheduler.h"
+#include "sched.h"
 #include "utils/log.h"
 #include <config.h>
 #include <drivers/LAPIC.h>
@@ -7,10 +7,12 @@
 #include <core/mm/heap.h>
 #include <vendor/printf.h>
 
-process_t processes[MAX_PROCESSES];
+process_t processes[MAX_PROCESSES] = {0};
 uint32_t sched_num_procs = 0;
 uint32_t sched_current_pid = 0;
 bool sched_running = false;
+
+extern void next_process();
 
 void schedule(Registers *regs) {
     if (!sched_running) {
@@ -18,15 +20,9 @@ void schedule(Registers *regs) {
     }else{
         memcpy(&processes[sched_current_pid].regs, regs, sizeof(Registers));
     }
-    sched_current_pid++;
-    if (sched_current_pid > sched_num_procs) sched_current_pid = 0;
-    while(!(processes[sched_current_pid].state_flags == SCHED_STATE_READY)) {
-        if (processes[sched_current_pid].state_flags == SCHED_STATE_DEAD) {
-            memset(&processes[sched_current_pid], 0, sizeof(processes[sched_current_pid]));
-        }
-        sched_current_pid++;
-        if (sched_current_pid > sched_num_procs) sched_current_pid = 0;
-    }
+
+    //the scheduling algorithm is separated from the scheduler
+    next_process();
 
     memcpy(regs, &processes[sched_current_pid].regs, sizeof(Registers));
 
@@ -34,10 +30,10 @@ void schedule(Registers *regs) {
     lapic_eoi();
 }
 void sched_init() {
-    memset(processes, 0, sizeof(processes));
     register_ISR(32, schedule);
 }
 
+//TODO: kernel and user processes
 uint32_t sched_add_process(char* name, void (*entry)(void)){
     if (sched_num_procs < MAX_PROCESSES) {
         processes[sched_num_procs].name = name;

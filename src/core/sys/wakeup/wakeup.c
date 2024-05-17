@@ -2,7 +2,7 @@
 #include <config.h>
 
 #include <core/sys/resman/tty.h>
-#include <core/sys/sched/scheduler.h>
+#include <core/sys/sched/sched.h>
 #include <core/sys/resman/SIV.h>
 
 #include <core/mm/heap.h>
@@ -68,6 +68,6 @@ void wakeup_startup() {
     // start Gaia: the userspace portion of Wakeup
     sched_add_process("proc1", gaia_main);
 
-    // kickstart the scheduler
+    // kickstart the sched
     __asm__("int $32");
 }

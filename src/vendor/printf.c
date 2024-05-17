@@ -34,7 +34,7 @@
 #include "printf.h"
 #include <core/kernel.h>
 #include <drivers/output/cereal.h>
-#include <core/sys/sched/scheduler.h>
+#include <core/sys/sched/sched.h>
 #include <core/sys/resman/tty.h>
 #include <stdint.h>
 #include <types/stdtypes.h>
