@@ -1,65 +1,70 @@
 #include "registery.h"
 #include <config.h>
-#include <endian.h>
-#include <utils/log.h>
 #include <klibc/string.h>
+#include <utils/log.h>
 
-#include <core/sys/resman/SIV.h>
 #include <core/mm/heap.h>
+#include <core/sys/resman/SIV.h>
 
-hive_header* read_hive(char* path)
-{
-    uint32_t fd = siv_open(0,path,SIV_INTENTS_READ);
-    if(fd == UINT32_MAX){
-        log_error("Failed to open hive at %s\n",path);
-        return NULL;
-    }
-    size_t size = siv_get_file(fd).size;
-    hive_header* hive = (hive_header*)malloc(sizeof(hive_header));
-    siv_read(fd,0,(char*)hive,size);
-    siv_close(fd);
-
-    if(be32toh(hive->magic) != HIVE_MAGIC){
-        log_error("Invalid hive at %s: Wrong magic value(0x%x)\n",path,hive->magic);
-        free(hive);
-        return NULL;
-    }
-
-    //TODO: check checksum
-
-    return hive;
+// TODO: add this to its own libc
+uint32_t be32toh(uint32_t big_endian_32) {
+  return ((big_endian_32 & 0xFF000000) >> 24) |
+         ((big_endian_32 & 0x00FF0000) >> 8) |
+         ((big_endian_32 & 0x0000FF00) << 8) |
+         ((big_endian_32 & 0x000000FF) << 24);
 }
 
-void free_hive(hive_header* hive)
-{
+hive_header *read_hive(char *path) {
+  uint32_t fd = siv_open(0, path, SIV_INTENTS_READ);
+  if (fd == UINT32_MAX) {
+    log_error("Failed to open hive at %s\n", path);
+    return NULL;
+  }
+  size_t size = siv_get_file(fd).size;
+  hive_header *hive = (hive_header *)malloc(sizeof(hive_header));
+  siv_read(fd, 0, (char *)hive, size);
+  siv_close(fd);
+
+  if (be32toh(hive->magic) != HIVE_MAGIC) {
+    log_error("Invalid hive at %s: Wrong magic value(0x%x)\n", path,
+              hive->magic);
     free(hive);
+    return NULL;
+  }
+
+  // TODO: check checksum
+
+  return hive;
 }
 
-key_header* read_key(hive_header* hive, char* path)
-{
-    if(hive == NULL || path == NULL) return NULL;  
-    char* pointer = (char*)hive + sizeof(hive_header);
+void free_hive(hive_header *hive) { free(hive); }
 
-    //TODO: subkey support
-    for(uint32_t i = 0; i < be32toh(hive->num_keys); i++){
-        key_header* key = (key_header*)pointer;
-        log_debug("key magic: %s\n",key->magic);
-        if(strcmp(key->name,path) == 0){
-            return key;
-        }
-    }
+key_header *read_key(hive_header *hive, char *path) {
+  if (hive == NULL || path == NULL)
     return NULL;
+  char *pointer = (char *)hive + sizeof(hive_header);
+
+  // TODO: subkey support
+  for (uint32_t i = 0; i < be32toh(hive->num_keys); i++) {
+    key_header *key = (key_header *)pointer;
+    log_debug("key magic: %s\n", key->magic);
+    if (strcmp(key->name, path) == 0) {
+      return key;
+    }
+  }
+  return NULL;
 }
 
-entry_header* read_entry(key_header* key, char* name)
-{
-    if (key == NULL || name == NULL) return NULL;
-    entry_header* entry = (entry_header*)((char*)key + sizeof(key_header));
-    for (uint32_t i = 0; i < be32toh(key->num_entries); i++) {
-        if (strcmp((char*)entry->name, name) == 0) {
-            return entry;
-        }
-        entry = (entry_header*)((char*)entry + sizeof(entry_header) + be32toh(entry->length));
-    }
+entry_header *read_entry(key_header *key, char *name) {
+  if (key == NULL || name == NULL)
     return NULL;
+  entry_header *entry = (entry_header *)((char *)key + sizeof(key_header));
+  for (uint32_t i = 0; i < be32toh(key->num_entries); i++) {
+    if (strcmp((char *)entry->name, name) == 0) {
+      return entry;
+    }
+    entry = (entry_header *)((char *)entry + sizeof(entry_header) +
+                             be32toh(entry->length));
+  }
+  return NULL;
 }
