@@ -37,7 +37,6 @@ void wakeup_init_hw() {
 
     lai_set_acpi_revision(ACPI_revision);
     lai_create_namespace();
-    printf("LAI WORKS!!!\n");
 
     log_nice("Hardware sucessfully initialized!\n");
 }
