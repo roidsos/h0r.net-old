@@ -1,5 +1,6 @@
 #include "pmm.h"
 #include <config.h>
+#include <string.h>
 #include <utils/error.h>
 #include <utils/log.h>
 #include <vendor/printf.h>
@@ -177,9 +178,8 @@ void pmm_init() {
 
     page_bmp.size = page_bmp_size;
     page_bmp.buffer = largest_free_memseg;
-
-    lock_pages(page_bmp.buffer, (page_bmp.size / PAGE_SIZE) + 1);
-    reserve_page((void *)0);
+    
+    memset(page_bmp.buffer, 0xff, page_bmp.size);
     for (usize i = 0; i < memmap_request.response->entry_count; i++) {
         struct limine_memmap_entry *desc = memmap_request.response->entries[i];
         if (desc->type != LIMINE_MEMMAP_USABLE) {
@@ -188,6 +188,7 @@ void pmm_init() {
             unreserve_pages((void *)desc->base, desc->length / PAGE_SIZE + 1);
         }
     }
+    lock_pages(page_bmp.buffer, (page_bmp.size / PAGE_SIZE) + 1);
 
     log_trace("PMM initialized\n");
     log_trace("Total RAM: %u KB\n", total_mem / 1024);
