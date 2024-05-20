@@ -8,7 +8,7 @@
 
 void gaia_main(void) {
     printf("TODO: startup tasks\n");
-    lai_enter_sleep(5);
+    //lai_enter_sleep(5);
     while (true)
         ;
 }
