@@ -17,6 +17,7 @@ void *malloc(usize size) {
 
 void free(void *tofree) {
     log_trace("free(0x%p)\n", tofree);
+    if(tofree == NULL) return;
     char *PP = (char *)tofree;
     PP -= sizeof(usize);
     usize size = *((usize *)PP);
