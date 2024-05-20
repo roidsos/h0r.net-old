@@ -1,8 +1,8 @@
 #include <core/mm/heap.h>
 #include <drivers/ACPI/RSDT.h>
+#include <libk/macros.h>
 #include <utils/error.h>
 #include <vendor/printf.h>
-#include <libk/macros.h>
 
 // OS-specific functions.
 void *laihost_malloc(usize size) { return malloc(size); }

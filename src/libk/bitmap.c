@@ -11,8 +11,7 @@ _bool bitmap_set(struct Bitmap bm, usize index, _bool setto) {
 
     register u8 bitMask = (1 << (bitIndex));
 
-    register u8 temp =
-        bm.buffer[byteIndex] ^ (bm.buffer[byteIndex] & bitMask);
+    register u8 temp = bm.buffer[byteIndex] ^ (bm.buffer[byteIndex] & bitMask);
 
     bm.buffer[byteIndex] = temp | (setto << (bitIndex));
     return true;

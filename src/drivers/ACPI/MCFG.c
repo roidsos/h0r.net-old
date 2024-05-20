@@ -2,7 +2,6 @@
 #include <utils/log.h>
 #include <vendor/printf.h>
 
-
 // Puffer get outta here, stop copying my code ffs
 
 u32 num_mcfg_entries;
@@ -40,8 +39,8 @@ void iterate_pci() {
 u32 *pci_getaddr(u8 bus, u8 dev, u8 func, u8 off) {
     for (usize i = 0; i < num_mcfg_entries; i++) {
         if (bus >= entries[i].start_bus && bus <= entries[i].end_bus) {
-            u64 addr = (entries[i].base_address + (bus << 20) +
-                             (dev << 15) + (func << 12) + off);
+            u64 addr = (entries[i].base_address + (bus << 20) + (dev << 15) +
+                        (func << 12) + off);
             return (u32 *)addr;
         }
     }
@@ -52,7 +51,6 @@ u32 pci_read(u8 bus, u8 dev, u8 func, u8 off) {
 
     return pci_getaddr(bus, dev, func, off)[0];
 }
-void pci_write(u8 bus, u8 dev, u8 func, u8 off,
-               u32 val) {
+void pci_write(u8 bus, u8 dev, u8 func, u8 off, u32 val) {
     pci_getaddr(bus, dev, func, off)[0] = val;
 }

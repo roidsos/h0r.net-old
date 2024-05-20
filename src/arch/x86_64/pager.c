@@ -15,8 +15,7 @@ u64 vmm_get_pagetable() {
     return pml4;
 }
 
-uptr *get_next_lvl(uptr *lvl, usize index, u64 flags,
-                        _bool alloc) {
+uptr *get_next_lvl(uptr *lvl, usize index, u64 flags, _bool alloc) {
 
     if (lvl[index] & VMM_BITMASK_L4_PRESENT) {
         return PHYS_TO_VIRT(PML4_GET_ADDR(lvl[index]));

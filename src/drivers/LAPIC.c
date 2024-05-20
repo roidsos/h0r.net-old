@@ -8,9 +8,7 @@
 
 u32 ticks = 0;
 
-u32 rreg(u16 offset) {
-    return *((u32 *)((u64)data.lapic_base + offset));
-}
+u32 rreg(u16 offset) { return *((u32 *)((u64)data.lapic_base + offset)); }
 
 void wreg(u16 offset, u32 val) {
     *((u32 *)((u64)data.lapic_base + offset)) = val;

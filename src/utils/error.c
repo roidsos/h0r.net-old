@@ -1,39 +1,40 @@
 #include "error.h"
 #include <arch/x86_64/cpu.h>
 #include <core/memory.h>
+#include <drivers/LAPIC.h>
 #include <libk/stdlib.h>
 #include <stdint.h>
 #include <utils/log.h>
 #include <vendor/printf.h>
-#include <drivers/LAPIC.h>
 
-char *errors[] = {"HN_ERR_DE",         "HN_ERR_DB",
-                  "HN_ERR_NMI",        "HN_ERR_BP",
-                  "HN_ERR_OF",         "HN_ERR_BR",
-                  "HN_ERR_UD",         "HN_ERR_NM",
-                  "HN_ERR_DF",         "HN_ERR_DEPRICATED",
-                  "HN_ERR_TS",         "HN_ERR_NP",
-                  "HN_ERR_SS", // the SS is coming for you LMAO
-                  "HN_ERR_GP",         "HN_ERR_PF",
-                  "HN_ERR_RESERVED",   "HN_ERR_MF",
-                  "HN_ERR_AC",         "HN_ERR_MC",
-                  "HN_ERR_XM",         "HN_ERR_VE",
-                  "HN_ERR_CP",         "HN_ERR_RESERVED",
-                  "HN_ERR_RESERVED",   "HN_ERR_RESERVED",
-                  "HN_ERR_RESERVED",   "HN_ERR_RESERVED",
-                  "HN_ERR_RESERVED",   "HN_ERR_HV",
-                  "HN_ERR_VC",         "HN_ERR_SX",
-                  "HN_ERR_RESERVED",   "HN_ERR_KERNEL_EXITED",
-                  "HN_ERR_NO_ACPI",    "HN_ERR_NO_FB",
-                  "HN_ERR_OUT_OF_MEM", "HN_ERR_LAI_PANIC",
-                  "HN_ERR_NO_FS",
-                  };
+char *errors[] = {
+    "HN_ERR_DE",         "HN_ERR_DB",
+    "HN_ERR_NMI",        "HN_ERR_BP",
+    "HN_ERR_OF",         "HN_ERR_BR",
+    "HN_ERR_UD",         "HN_ERR_NM",
+    "HN_ERR_DF",         "HN_ERR_DEPRICATED",
+    "HN_ERR_TS",         "HN_ERR_NP",
+    "HN_ERR_SS", // the SS is coming for you LMAO
+    "HN_ERR_GP",         "HN_ERR_PF",
+    "HN_ERR_RESERVED",   "HN_ERR_MF",
+    "HN_ERR_AC",         "HN_ERR_MC",
+    "HN_ERR_XM",         "HN_ERR_VE",
+    "HN_ERR_CP",         "HN_ERR_RESERVED",
+    "HN_ERR_RESERVED",   "HN_ERR_RESERVED",
+    "HN_ERR_RESERVED",   "HN_ERR_RESERVED",
+    "HN_ERR_RESERVED",   "HN_ERR_HV",
+    "HN_ERR_VC",         "HN_ERR_SX",
+    "HN_ERR_RESERVED",   "HN_ERR_KERNEL_EXITED",
+    "HN_ERR_NO_ACPI",    "HN_ERR_NO_FB",
+    "HN_ERR_OUT_OF_MEM", "HN_ERR_LAI_PANIC",
+    "HN_ERR_NO_FS",
+};
 
 #define BGCOL "\x1b[48;2;17;0;34m"
 #define FGCOL "\x1b[38;2;170;119;0m"
 
 void trigger_psod(int error_code, char *details, Registers *regs) {
-    //stop the scheduler, TODO: make this architecture independent
+    // stop the scheduler, TODO: make this architecture independent
     lapic_timer_stop();
 
     Registers newregs;
@@ -61,19 +62,18 @@ void trigger_psod(int error_code, char *details, Registers *regs) {
     log_error("%s\n", errors[error_code]);
 
     if (details)
-        
 
-    // background
-    printf(BGCOL "\x1b[2J");
+        // background
+        printf(BGCOL "\x1b[2J");
     printf(FGCOL "FUCKING HALT!\n");
 
     // title,error type and details
     printf("%s\n\n", errors[error_code]);
-    if (details){
+    if (details) {
         log_error("%s\n", details);
         printf("%s\n\n\n", details);
     }
-    if(error_code == 14) //PF
+    if (error_code == 14) // PF
     {
         u64 faultig_addr;
         __asm__ volatile("movq %%cr2, %0\r\n" : "=r"(faultig_addr) :);
@@ -114,8 +114,8 @@ void trigger_psod(int error_code, char *details, Registers *regs) {
     printf("Backtrace:\n");
     dprintf("Backtrace:\n");
     struct stackframe64_t *frame = (struct stackframe64_t *)regs->rbp;
-    while(true){
-        if(frame->RIP <= (u64)data.hhdm_off){
+    while (true) {
+        if (frame->RIP <= (u64)data.hhdm_off) {
             break;
         }
         printf("    [%.16lx]  <No SymbolTable LMAO>", frame->RIP);

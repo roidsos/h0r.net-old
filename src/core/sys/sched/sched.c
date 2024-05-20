@@ -1,10 +1,9 @@
 #include "sched.h"
 #include "utils/log.h"
 #include <config.h>
-#include <drivers/LAPIC.h>
-#include <vendor/printf.h>
-#include <libk/string.h>
 #include <core/mm/heap.h>
+#include <drivers/LAPIC.h>
+#include <libk/string.h>
 #include <vendor/printf.h>
 
 process_t processes[MAX_PROCESSES] = {0};
@@ -17,11 +16,11 @@ extern void next_process();
 void schedule(Registers *regs) {
     if (!sched_running) {
         sched_running = true;
-    }else{
+    } else {
         memcpy(&processes[sched_current_pid].regs, regs, sizeof(Registers));
     }
 
-    //the scheduling algorithm is separated from the scheduler
+    // the scheduling algorithm is separated from the scheduler
     next_process();
 
     memcpy(regs, &processes[sched_current_pid].regs, sizeof(Registers));
@@ -29,12 +28,10 @@ void schedule(Registers *regs) {
     lapic_timer_oneshot(1, 32);
     lapic_eoi();
 }
-void sched_init() {
-    register_ISR(32, schedule);
-}
+void sched_init() { register_ISR(32, schedule); }
 
-//TODO: kernel and user processes
-u32 sched_add_process(char* name, void (*entry)(void)){
+// TODO: kernel and user processes
+u32 sched_add_process(char *name, void (*entry)(void)) {
     if (sched_num_procs < MAX_PROCESSES) {
         processes[sched_num_procs].name = name;
         processes[sched_num_procs].regs.rip = (u64)entry;
@@ -48,23 +45,14 @@ u32 sched_add_process(char* name, void (*entry)(void)){
     }
     return -1;
 }
-void sched_kill(u32 pid){
+void sched_kill(u32 pid) {
     if (pid < MAX_PROCESSES) {
         processes[pid].state_flags = SCHED_STATE_DEAD;
     }
 }
 
-process_t* sched_get_curr_process()
-{
-    return &processes[sched_current_pid];
-}
+process_t *sched_get_curr_process() { return &processes[sched_current_pid]; }
 
-void sched_block(u32 pid)
-{
-    processes[pid].state_flags = SCHED_STATE_BLOCKED;
-}
+void sched_block(u32 pid) { processes[pid].state_flags = SCHED_STATE_BLOCKED; }
 
-void sched_unblock(u32 pid)
-{
-    processes[pid].state_flags = SCHED_STATE_READY;
-}
+void sched_unblock(u32 pid) { processes[pid].state_flags = SCHED_STATE_READY; }

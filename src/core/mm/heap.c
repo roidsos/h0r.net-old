@@ -1,12 +1,11 @@
 #include "heap.h"
-#include <libk/string.h>
-#include <vendor/printf.h>
-#include <utils/log.h>
-#include <utils/error.h>
 #include <core/mm/pmm.h>
+#include <libk/string.h>
+#include <utils/error.h>
+#include <utils/log.h>
+#include <vendor/printf.h>
 
-void heap_init() {
-}
+void heap_init() {}
 void *malloc(usize size) {
     log_trace("malloc(%d)\n", size);
     char *PP = (char *)request_pages((size / 4096) + 1);

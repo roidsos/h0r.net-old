@@ -10,8 +10,7 @@ tss_entry_t tss_entry;
 extern void load_gdt(gdt_pointer *);
 extern void load_tss();
 
-void set_gdt_entry(int i, u16 limit, u16 base, u8 access,
-                   u8 flags) {
+void set_gdt_entry(int i, u16 limit, u16 base, u8 access, u8 flags) {
     gdt[i].base0 = base & 0xFFFF;
     gdt[i].base1 = (base >> 16) & 0xFF;
     gdt[i].base2 = (base >> 24) & 0xFF;

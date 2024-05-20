@@ -2,10 +2,10 @@
 
 #include <arch/x86_64/interrupts/interrupts.h>
 #include <arch/x86_64/io/portio.h>
-#include <drivers/LAPIC.h>
 #include <drivers/IOAPIC.h>
-#include <vendor/printf.h>
+#include <drivers/LAPIC.h>
 #include <libk/macros.h>
+#include <vendor/printf.h>
 
 void handler(UNUSED Registers *regs) {
     u8 scancode = inb8(PS2_DATA);

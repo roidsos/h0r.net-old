@@ -32,14 +32,14 @@
 // Note: Edited
 ///////////////////////////////////////////////////////////////////////////////
 #include "printf.h"
-#include <core/kernel.h>
-#include <drivers/output/cereal.h>
-#include <core/sys/sched/sched.h>
-#include <core/sys/resman/tty.h>
-#include <libk/stdint.h>
-#include <libk/macros.h>
-#include <uterus.h>
 #include <config.h>
+#include <core/kernel.h>
+#include <core/sys/resman/tty.h>
+#include <core/sys/sched/sched.h>
+#include <drivers/output/cereal.h>
+#include <libk/macros.h>
+#include <libk/stdint.h>
+#include <uterus.h>
 
 // 'ntoa' conversion buffer size, this must be big enough to hold one converted
 // numeric number including padded zeros (dynamically created on stack)
@@ -112,8 +112,8 @@ typedef struct {
 
 lock_victim_t locks[MAX_LOCKED_PROCS];
 
-void init_printf_locks(){
-    for(int i = 0; i < MAX_LOCKED_PROCS; i++){
+void init_printf_locks() {
+    for (int i = 0; i < MAX_LOCKED_PROCS; i++) {
         locks[i].tty_id = 0;
         locks[i].victim_pid = 0;
     }
@@ -122,18 +122,19 @@ void init_printf_locks(){
 // internal _putchar wrapper
 static inline void _out_char(char character, UNUSED void *buffer,
                              UNUSED usize idx, UNUSED usize maxlen) {
-    if(sched_running && tty_initialized){
-        //TODO: move this into its own place
+    if (sched_running && tty_initialized) {
+        // TODO: move this into its own place
         u16 curr_tty = sched_get_curr_process()->tty_id;
-        if(!tty_lock(curr_tty)){
-            for(int i = 0; i < MAX_LOCKED_PROCS; i++){
-                if(locks[i].tty_id == 0){
+        if (!tty_lock(curr_tty)) {
+            for (int i = 0; i < MAX_LOCKED_PROCS; i++) {
+                if (locks[i].tty_id == 0) {
                     locks[i].tty_id = curr_tty;
                     locks[i].victim_pid = sched_current_pid;
                     sched_block(sched_current_pid);
                 }
             }
-            while(tty_get_lock(curr_tty));
+            while (tty_get_lock(curr_tty))
+                ;
         }
         tty_write(curr_tty, &character, 1);
         tty_unlock(curr_tty);
@@ -144,7 +145,7 @@ static inline void _out_char(char character, UNUSED void *buffer,
                 locks[i].victim_pid = 0;
             }
         }
-    }else{
+    } else {
         uterus_write(data.ut_ctx, &character, 1);
     }
 }
@@ -173,9 +174,9 @@ static unsigned int _atoi(const char **str) {
 }
 
 // output the specified string in reverse, taking care of any zero-padding
-static usize _out_rev(out_fct_type out, char *buffer, usize idx,
-                       usize maxlen, const char *buf, usize len,
-                       unsigned int width, unsigned int flags) {
+static usize _out_rev(out_fct_type out, char *buffer, usize idx, usize maxlen,
+                      const char *buf, usize len, unsigned int width,
+                      unsigned int flags) {
     const usize start_idx = idx;
 
     // pad spaces up to given width
@@ -202,9 +203,9 @@ static usize _out_rev(out_fct_type out, char *buffer, usize idx,
 
 // internal itoa format
 static usize _ntoa_format(out_fct_type out, char *buffer, usize idx,
-                           usize maxlen, char *buf, usize len, _bool negative,
-                           unsigned int base, unsigned int prec,
-                           unsigned int width, unsigned int flags) {
+                          usize maxlen, char *buf, usize len, _bool negative,
+                          unsigned int base, unsigned int prec,
+                          unsigned int width, unsigned int flags) {
     // pad leading zeros
     if (!(flags & FLAGS_LEFT)) {
         if (width && (flags & FLAGS_ZEROPAD) &&
@@ -257,10 +258,10 @@ static usize _ntoa_format(out_fct_type out, char *buffer, usize idx,
 }
 
 // internal itoa for 'long' type
-static usize _ntoa_long(out_fct_type out, char *buffer, usize idx,
-                         usize maxlen, unsigned long value, _bool negative,
-                         unsigned long base, unsigned int prec,
-                         unsigned int width, unsigned int flags) {
+static usize _ntoa_long(out_fct_type out, char *buffer, usize idx, usize maxlen,
+                        unsigned long value, _bool negative, unsigned long base,
+                        unsigned int prec, unsigned int width,
+                        unsigned int flags) {
     char buf[PRINTF_NTOA_BUFFER_SIZE];
     usize len = 0U;
 
@@ -287,10 +288,10 @@ static usize _ntoa_long(out_fct_type out, char *buffer, usize idx,
 // internal itoa for 'long long' type
 #if defined(PRINTF_SUPPORT_LONG_LONG)
 static usize _ntoa_long_long(out_fct_type out, char *buffer, usize idx,
-                              usize maxlen, unsigned long long value,
-                              _bool negative, unsigned long long base,
-                              unsigned int prec, unsigned int width,
-                              unsigned int flags) {
+                             usize maxlen, unsigned long long value,
+                             _bool negative, unsigned long long base,
+                             unsigned int prec, unsigned int width,
+                             unsigned int flags) {
     char buf[PRINTF_NTOA_BUFFER_SIZE];
     usize len = 0U;
 

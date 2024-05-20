@@ -45,8 +45,7 @@ sdt_header *find_nth_thingy(char *signature, usize index) {
         int entries = (xsdt->h.length - sizeof(xsdt->h)) / 8;
 
         for (int i = 0; i < entries; i++) {
-            sdt_header *h =
-                (sdt_header *)(uptr)PHYS_TO_VIRT(xsdt->SDTs[i]);
+            sdt_header *h = (sdt_header *)(uptr)PHYS_TO_VIRT(xsdt->SDTs[i]);
             if (!strncmp(h->signature, signature, 4)) {
                 if (n == index)
                     return h;
@@ -58,8 +57,7 @@ sdt_header *find_nth_thingy(char *signature, usize index) {
         int entries = (rsdt->h.length - sizeof(rsdt->h)) / 4;
 
         for (int i = 0; i < entries; i++) {
-            sdt_header *h =
-                (sdt_header *)(uptr)PHYS_TO_VIRT(rsdt->SDTs[i]);
+            sdt_header *h = (sdt_header *)(uptr)PHYS_TO_VIRT(rsdt->SDTs[i]);
             if (!strncmp(h->signature, signature, 4)) {
                 if (n == index)
                     return h;

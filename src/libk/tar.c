@@ -48,7 +48,7 @@ struct tar_contents parse_tar(struct tar_header *header,
 struct tar_header *find_file(struct tar_contents *findin, char *name) {
     for (usize i = 0; i < findin->hdr_num; i++) {
         struct tar_header *hdr = findin->headers[i];
-        if (strcmp((char*)hdr->filename, name) == 0) {
+        if (strcmp((char *)hdr->filename, name) == 0) {
             return hdr;
         }
     }

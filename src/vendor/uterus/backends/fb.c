@@ -433,7 +433,7 @@ static void plot_char(struct uterus_context *_ctx, struct uterus_fb_char *c,
     y = ctx->offset_y + y * ctx->glyph_height;
 
     u8 *glyph = ctx->font_bits +
-                     c->c * (((ctx->font_width / 8) + 1) * ctx->font_height);
+                c->c * (((ctx->font_width / 8) + 1) * ctx->font_height);
     // naming: fx,fy for font coordinates, gx,gy for glyph coordinates
     for (usize gy = 0; gy < ctx->glyph_height; gy++) {
         volatile u32 *fb_line =
@@ -445,8 +445,8 @@ static void plot_char(struct uterus_context *_ctx, struct uterus_fb_char *c,
 
         for (usize fx = 0; fx < ctx->font_width; fx++) {
             _bool draw = (glyph[gy * ((ctx->font_width / 8) + 1) + fx / 8] >>
-                         (7 - fx % 8)) &
-                        1;
+                          (7 - fx % 8)) &
+                         1;
 #ifndef UTERUS_FB_DISABLE_CANVAS
             u32 bg = c->bg == 0xffffffff ? canvas_line[fx] : c->bg;
             u32 fg = c->fg == 0xffffffff ? canvas_line[fx] : c->fg;
@@ -460,7 +460,7 @@ static void plot_char(struct uterus_context *_ctx, struct uterus_fb_char *c,
 }
 
 static inline _bool compare_char(struct uterus_fb_char *a,
-                                struct uterus_fb_char *b) {
+                                 struct uterus_fb_char *b) {
     return !(a->c != b->c || a->bg != b->bg || a->fg != b->fg);
 }
 
@@ -639,15 +639,13 @@ static void uterus_fb_set_text_bg_bright(struct uterus_context *_ctx,
     ctx->text_bg = ctx->ansi_bright_colours[bg];
 }
 
-static void uterus_fb_set_text_fg_rgb(struct uterus_context *_ctx,
-                                      u32 fg) {
+static void uterus_fb_set_text_fg_rgb(struct uterus_context *_ctx, u32 fg) {
     struct uterus_fb_context *ctx = (void *)_ctx;
 
     ctx->text_fg = fg;
 }
 
-static void uterus_fb_set_text_bg_rgb(struct uterus_context *_ctx,
-                                      u32 bg) {
+static void uterus_fb_set_text_bg_rgb(struct uterus_context *_ctx, u32 bg) {
     struct uterus_fb_context *ctx = (void *)_ctx;
 
     ctx->text_bg = bg;
@@ -775,8 +773,7 @@ static void uterus_fb_full_refresh(struct uterus_context *_ctx) {
             ctx->framebuffer[y * (ctx->pitch / sizeof(u32)) + x] =
                 ctx->canvas[y * ctx->width + x];
 #else
-            ctx->framebuffer[y * (ctx->pitch / sizeof(u32)) + x] =
-                default_bg;
+            ctx->framebuffer[y * (ctx->pitch / sizeof(u32)) + x] = default_bg;
 #endif
         }
     }
@@ -798,9 +795,8 @@ uterus_fb_init(u32 *framebuffer, usize width, usize height, usize pitch,
 #ifndef UTERUS_FB_DISABLE_CANVAS
                u32 *canvas,
 #endif
-               u32 *ansi_colours, u32 *ansi_bright_colours,
-               u32 *default_bg, u32 *default_fg,
-               u32 *default_bg_bright, u32 *default_fg_bright,
+               u32 *ansi_colours, u32 *ansi_bright_colours, u32 *default_bg,
+               u32 *default_fg, u32 *default_bg_bright, u32 *default_fg_bright,
                void *font, usize font_width, usize font_height) {
 
     struct uterus_fb_context *ctx = NULL;
@@ -900,7 +896,7 @@ uterus_fb_init(u32 *framebuffer, usize width, usize height, usize pitch,
 
 #undef FONT_BYTES
 
-    //Uwu
+    // Uwu
     ctx->font_width += 1;
 
     ctx->glyph_width = ctx->font_width;

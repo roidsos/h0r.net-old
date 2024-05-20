@@ -7,7 +7,7 @@ void cpuid(u32 eax, u32 *a, u32 *b, u32 *c, u32 *d) {
 void get_cpu_capabilities(CPUInfo *cpuInfo) {
     u32 eax, ebx, ecx, edx;
 
-    //Vendor String
+    // Vendor String
     cpuid(CPUID_GET_VENDORSTRING, &eax, &ebx, &ecx, &edx);
     memcpy(&cpuInfo->vendor[0], &ebx, 4);
     memcpy(&cpuInfo->vendor[4], &edx, 4);
@@ -15,16 +15,16 @@ void get_cpu_capabilities(CPUInfo *cpuInfo) {
     cpuInfo->vendor[12] = 0;
 
     cpuid(CPUID_GET_INTEL_BRANDSTRING1, &eax, &ebx, &ecx, &edx);
-    memcpy(&cpuInfo->brand_string[0],  &eax, 4);
-    memcpy(&cpuInfo->brand_string[4],  &ebx, 4);
-    memcpy(&cpuInfo->brand_string[8],  &ecx, 4);
+    memcpy(&cpuInfo->brand_string[0], &eax, 4);
+    memcpy(&cpuInfo->brand_string[4], &ebx, 4);
+    memcpy(&cpuInfo->brand_string[8], &ecx, 4);
     memcpy(&cpuInfo->brand_string[12], &edx, 4);
-    cpuid(CPUID_GET_INTEL_BRANDSTRING2,&eax, &ebx, &ecx, &edx);
+    cpuid(CPUID_GET_INTEL_BRANDSTRING2, &eax, &ebx, &ecx, &edx);
     memcpy(&cpuInfo->brand_string[16], &eax, 4);
     memcpy(&cpuInfo->brand_string[20], &ebx, 4);
     memcpy(&cpuInfo->brand_string[24], &ecx, 4);
     memcpy(&cpuInfo->brand_string[28], &edx, 4);
-    cpuid(CPUID_GET_INTEL_BRANDSTRING3,&eax, &ebx, &ecx, &edx);
+    cpuid(CPUID_GET_INTEL_BRANDSTRING3, &eax, &ebx, &ecx, &edx);
     memcpy(&cpuInfo->brand_string[32], &eax, 4);
     memcpy(&cpuInfo->brand_string[36], &ebx, 4);
     memcpy(&cpuInfo->brand_string[40], &ecx, 4);
@@ -59,18 +59,15 @@ int sys_init_fpu() {
     return 0;
 }
 
-void rdmsr(u32 msr, u32 *lo, u32 *hi)
-{
+void rdmsr(u32 msr, u32 *lo, u32 *hi) {
     asm volatile("rdmsr" : "=a"(*lo), "=d"(*hi) : "c"(msr));
 }
 
-void wrmsr(u32 msr, u32 lo, u32 hi)
-{
+void wrmsr(u32 msr, u32 lo, u32 hi) {
     asm volatile("wrmsr" : : "a"(lo), "d"(hi), "c"(msr));
 }
 
-u64 read_tsc()
-{
+u64 read_tsc() {
     u64 result;
     __asm__ volatile("rdtsc" : "=A"(result));
     return result;

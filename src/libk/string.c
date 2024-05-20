@@ -1,6 +1,6 @@
 #include "string.h"
-#include <libk/stdint.h>
 #include <libk/stddef.h>
+#include <libk/stdint.h>
 
 void *memchr(const void *s, int c, usize n) {
     const unsigned char uc = c;
@@ -195,8 +195,8 @@ char *strtok(char *s1, const char *s2) {
     return sbegin;
 }
 char *strchr(const char *s, int c) {
-    while(*s != '\0') {
-        if(*s == (char)c) {
+    while (*s != '\0') {
+        if (*s == (char)c) {
             return (char *)s;
         }
         s++;

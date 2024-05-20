@@ -1,9 +1,9 @@
 #include "wakeup.h"
 #include <config.h>
 
+#include <core/sys/resman/SIV.h>
 #include <core/sys/resman/tty.h>
 #include <core/sys/sched/sched.h>
-#include <core/sys/resman/SIV.h>
 
 #include <core/mm/heap.h>
 #include <core/mm/pmm.h>
@@ -11,12 +11,12 @@
 #include <vendor/printf.h>
 
 #include <arch/x86_64/interrupts/interrupts.h>
+#include <core/sys/wakeup/gaia.h>
 #include <drivers/ACPI/MCFG.h>
 #include <drivers/ACPI/RSDT.h>
-#include <drivers/LAPIC.h>
 #include <drivers/IOAPIC.h>
+#include <drivers/LAPIC.h>
 #include <drivers/input/PS2.h>
-#include <core/sys/wakeup/gaia.h>
 
 #include <utils/error.h>
 #include <utils/log.h>
@@ -24,7 +24,7 @@
 #include <drivers/filesys/tar.h>
 
 #include <lai/core.h>
- 
+
 extern int ACPI_revision;
 
 void wakeup_init_hw() {
@@ -51,16 +51,15 @@ void wakeup_init_hw() {
     siv_init();
     tar_init();
 
-    //lai_set_acpi_revision(ACPI_revision);
-    //lai_create_namespace();
-    //printf("LAI works???");
+    // lai_set_acpi_revision(ACPI_revision);
+    // lai_create_namespace();
+    // printf("LAI works???");
 
     log_nice("Hardware sucessfully initialized!\n");
 }
 
-void wakeup_do_mounts()
-{
-    if(siv_num_drives == 0){
+void wakeup_do_mounts() {
+    if (siv_num_drives == 0) {
         trigger_psod(HN_ERR_NO_FS, "No filesystem found", NULL);
     }
 }

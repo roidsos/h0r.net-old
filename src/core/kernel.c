@@ -6,5 +6,6 @@ void kmain() {
     wakeup_init_hw();
     wakeup_startup();
 
-    while(true);
+    while (true)
+        ;
 }
