@@ -138,7 +138,7 @@ void pmm_init() {
             largest_free_memseg_size = desc->length;
         }
 
-        if (desc->type == LIMINE_MEMMAP_USABLE || desc->type == LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE) {
+        if (desc->type == LIMINE_MEMMAP_USABLE || desc->type == LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE || desc->type == LIMINE_MEMMAP_ACPI_RECLAIMABLE) {
             free_mem += desc->length;
         }
         page_bmp_size += (desc->length / (PAGE_SIZE * 8)) + 1;
@@ -154,7 +154,7 @@ void pmm_init() {
     memset(page_bmp.buffer, 0xff, page_bmp.size);
     for (usize i = 0; i < memmap_request.response->entry_count; i++) {
         struct limine_memmap_entry *desc = memmap_request.response->entries[i];
-        if (desc->type == LIMINE_MEMMAP_USABLE || desc->type == LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE) {
+        if (desc->type == LIMINE_MEMMAP_USABLE || desc->type == LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE || desc->type == LIMINE_MEMMAP_ACPI_RECLAIMABLE) {
             unreserve_pages((void *)desc->base, desc->length / PAGE_SIZE + 1);
         } else {
             reserve_pages((void *)desc->base, desc->length / PAGE_SIZE + 1);
