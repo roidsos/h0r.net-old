@@ -2,33 +2,12 @@
 #include "utils/log.h"
 #include <config.h>
 #include <core/mm/heap.h>
-#include <drivers/LAPIC.h>
-#include <libk/string.h>
 #include <vendor/printf.h>
 
 process_t processes[MAX_PROCESSES] = {0};
 u32 sched_num_procs = 0;
 u32 sched_current_pid = 0;
 _bool sched_running = false;
-
-extern void next_process();
-
-void schedule(Registers *regs) {
-    if (!sched_running) {
-        sched_running = true;
-    } else {
-        memcpy(&processes[sched_current_pid].regs, regs, sizeof(Registers));
-    }
-
-    // the scheduling algorithm is separated from the scheduler
-    next_process();
-
-    memcpy(regs, &processes[sched_current_pid].regs, sizeof(Registers));
-
-    lapic_timer_oneshot(1, 32);
-    lapic_eoi();
-}
-void sched_init() { register_ISR(32, schedule); }
 
 // TODO: kernel and user processes
 u32 sched_add_process(char *name, void (*entry)(void)) {

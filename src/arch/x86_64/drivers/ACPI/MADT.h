@@ -1,7 +1,7 @@
 #ifndef MADT_H
 #define MADT_H
 
-#include "RSDT.h"
+#include <drivers/ACPI/RSDT.h>
 
 #define MADT_ENTRY_TYPE_LAPIC                0
 #define MADT_ENTRY_TYPE_IOAPIC               1

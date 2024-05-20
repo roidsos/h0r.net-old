@@ -18,5 +18,5 @@ void laihost_panic(const char *msg) {
 }
 
 void *laihost_scan(char *sig, usize index) {
-    return find_nth_thingy(sig, index);
+    return find_nth_SDT(sig, index);
 }

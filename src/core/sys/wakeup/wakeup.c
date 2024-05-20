@@ -13,10 +13,6 @@
 #include <arch/x86_64/interrupts/interrupts.h>
 #include <core/sys/wakeup/gaia.h>
 #include <drivers/ACPI/MCFG.h>
-#include <drivers/ACPI/RSDT.h>
-#include <drivers/IOAPIC.h>
-#include <drivers/LAPIC.h>
-#include <drivers/input/PS2.h>
 
 #include <utils/error.h>
 #include <utils/log.h>
@@ -31,20 +27,8 @@ void wakeup_init_hw() {
     log_info("h0r.net identifies as v%u.%u.%u \"%s\"\n", KERNEL_VER_MAJOR,
              KERNEL_VER_MINOR, KERNEL_VER_PATCH, KERNEL_VER_CODENAME);
 
-    if (!locate_rsdt()) {
-        trigger_psod(HN_ERR_NO_ACPI, "NO ACPI FOUND lmao", NULL);
-    }
-    if (mcfg_init()) {
-        iterate_pci();
-    }
 
     pmm_init();
-
-    lapic_init();
-    ioapic_init();
-    enable_interrupts();
-    sched_init();
-    ps2_init();
     init_printf_locks();
     tty_register((tty_t){2, 0, 0, 0, 0});
 
@@ -68,5 +52,6 @@ void wakeup_startup() {
     sched_add_process("proc1", gaia_main);
 
     // kickstart the sched
+    // TODO: make this arch independent
     __asm__("int $32");
 }

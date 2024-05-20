@@ -3,8 +3,6 @@
 
 #include "process.h"
 
-void sched_init();
-
 u32 sched_add_process(char* name, void (*entry)(void));
 void sched_kill(u32 pid);
 

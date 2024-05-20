@@ -8,7 +8,7 @@ u32 num_mcfg_entries;
 device_config *entries;
 
 _bool mcfg_init() {
-    mcfg_header *h = (mcfg_header *)find_thingy("MCFG");
+    mcfg_header *h = (mcfg_header *)find_SDT("MCFG");
     if (h == NULL) {
         return false;
     }

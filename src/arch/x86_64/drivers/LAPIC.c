@@ -1,5 +1,5 @@
 #include "LAPIC.h"
-#include "ACPI/HPET.h"
+#include <drivers/ACPI/HPET.h>
 #include <arch/x86_64/cpu.h>
 #include <arch/x86_64/io/portio.h>
 #include <core/mm/mem.h>

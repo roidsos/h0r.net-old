@@ -3,7 +3,7 @@
 #include <config.h>
 
 #include <core/kernel.h>
-#include <drivers/output/cereal.h>
+#include <arch/x86_64/drivers/output/cereal.h>
 #include <vendor/uterus/uterus.h>
 
 tty_t ttys[MAX_TTYS];

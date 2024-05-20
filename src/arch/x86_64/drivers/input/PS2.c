@@ -2,8 +2,8 @@
 
 #include <arch/x86_64/interrupts/interrupts.h>
 #include <arch/x86_64/io/portio.h>
-#include <drivers/IOAPIC.h>
-#include <drivers/LAPIC.h>
+#include <arch/x86_64/drivers/IOAPIC.h>
+#include <arch/x86_64/drivers/LAPIC.h>
 #include <libk/macros.h>
 #include <vendor/printf.h>
 

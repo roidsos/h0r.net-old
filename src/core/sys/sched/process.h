@@ -1,6 +1,7 @@
 #ifndef __PROCESS_H__
 #define __PROCESS_H__
 
+//TODO: make this arch independent
 #include <arch/x86_64/interrupts/interrupts.h>
 #include <libk/stdint.h>
 #include <libk/stdbool.h>

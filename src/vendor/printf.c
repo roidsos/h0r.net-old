@@ -36,7 +36,7 @@
 #include <core/kernel.h>
 #include <core/sys/resman/tty.h>
 #include <core/sys/sched/sched.h>
-#include <drivers/output/cereal.h>
+#include <arch/x86_64/drivers/output/cereal.h>
 #include <libk/macros.h>
 #include <libk/stdint.h>
 #include <uterus.h>

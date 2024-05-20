@@ -17,6 +17,7 @@ struct HN_data_block {
 
     //ACPI shit
     void* hhdm_off;
+    u32 ACPI_ver;
     u32 lapic_base;
 
     //kterm shit

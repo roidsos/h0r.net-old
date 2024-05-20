@@ -1,10 +1,15 @@
 #include "arch/x86_64/gdt.h"
+#include "drivers/ACPI/SDT.h"
 #include <arch/x86_64/interrupts/interrupts.h>
 #include <arch/x86_64/pager.h>
 #include <backends/fb.h>
 #include <core/kernel.h>
 #include <core/mm/mem.h>
-#include <drivers/output/cereal.h>
+#include <arch/x86_64/drivers/output/cereal.h>
+#include <arch/x86_64/drivers/input/PS2.h>
+#include <arch/x86_64/drivers/IOAPIC.h>
+#include <arch/x86_64/drivers/LAPIC.h>
+#include <arch/x86_64/constant_isrs.h>
 #include <libk/string.h>
 #include <utils/error.h>
 #include <utils/log.h>
@@ -52,23 +57,38 @@ void limine_initialize_globals() {
 
 void kmain();
 
+static volatile struct limine_rsdp_request rsdp_request = {
+    .id = LIMINE_RSDP_REQUEST, .revision = 0};
 void _start(void) {
     limine_initialize_globals();
-    // Initialize screen and interrupts
+
+
     cereal_init();
     disable_interrupts();
     log_nice("x86_64 Init Target reached: IO\n");
 
-    // CPU deez nutz
+
     data.pml4 = (u64)PHYS_TO_VIRT(vmm_get_pagetable());
     get_cpu_capabilities(&data.cpu_info);
     sys_init_fpu();
     gdt_init((u64 *)kernel_stack);
     log_nice("x86_64 Init Target reached: CPU\n");
 
-    // initialize interrupts
+    if (!find_rsdt(rsdp_request.response->address)) {
+        trigger_psod(HN_ERR_NO_ACPI, "NO ACPI FOUND lmao", NULL);
+    }
+    log_nice("x86_64 Init Target reached: ACPI\n");
+
+
     initialize_interrupts();
+    lapic_init();
+    ioapic_init();
+    enable_interrupts();
     log_nice("x86_64 Init Target reached: Interrupts\n");
+
+    ps2_init();
+    cisrs_register();
+    log_nice("x86_64 Init Target reached: Misc\n");
 
     kmain();
 

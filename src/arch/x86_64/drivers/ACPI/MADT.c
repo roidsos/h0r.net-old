@@ -19,7 +19,7 @@ void recurse_table(void *ptr) {
 
 _bool madt_init() {
 
-    madt_header *h = (madt_header *)find_thingy("APIC");
+    madt_header *h = (madt_header *)find_SDT("APIC");
     data.lapic_base = h->lapic_addr;
     end_addr = (void *)h + h->h.length;
 

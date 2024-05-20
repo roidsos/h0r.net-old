@@ -5,7 +5,7 @@ hpet_regs *regs;
 // copied from: https://github.com/aurixos/os/blob/main/kernel/acpi/hpet.c
 
 _bool hpet_init() {
-    hpet_header *hpet = (hpet_header *)find_thingy("HPET");
+    hpet_header *hpet = (hpet_header *)find_SDT("HPET");
     if (hpet == NULL) {
         return false;
     }

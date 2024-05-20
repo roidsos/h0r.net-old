@@ -1,5 +1,5 @@
 #include "log.h"
-#include <drivers/output/cereal.h>
+#include <arch/x86_64/drivers/output/cereal.h>
 #include <vendor/printf.h>
 char *levels[] = {"\x1b[36mTRAC\033[0m", "\033[32mDBUG\033[0m",
                   "\x1b[94mINFO\033[0m", "\033[32mNICE\033[0m",
