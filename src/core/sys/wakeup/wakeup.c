@@ -35,8 +35,8 @@ void wakeup_init_hw() {
     siv_init();
     tar_init();
 
-    lai_set_acpi_revision(ACPI_revision);
-    lai_create_namespace();
+    //lai_set_acpi_revision(ACPI_revision);
+    //lai_create_namespace();
 
     log_nice("Hardware sucessfully initialized!\n");
 }
