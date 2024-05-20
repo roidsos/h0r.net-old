@@ -6,13 +6,7 @@
 #include <core/mm/heap.h>
 #include <core/sys/resman/SIV.h>
 
-// TODO: add this to its own libc
-uint32_t be32toh(uint32_t big_endian_32) {
-  return ((big_endian_32 & 0xFF000000) >> 24) |
-         ((big_endian_32 & 0x00FF0000) >> 8) |
-         ((big_endian_32 & 0x0000FF00) << 8) |
-         ((big_endian_32 & 0x000000FF) << 24);
-}
+#include <libk/endian.h>
 
 hive_header *read_hive(char *path) {
   uint32_t fd = siv_open(0, path, SIV_INTENTS_READ);
