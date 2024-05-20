@@ -1,5 +1,4 @@
 #include "pmm.h"
-#include "core/mm/mem.h"
 #include <config.h>
 #include <string.h>
 #include <utils/error.h>
@@ -9,7 +8,6 @@
 usize total_mem = 0;
 usize free_mem = 0;
 usize used_mem = 0;
-usize reserved_mem = 0;
 usize highest_block = 0;
 
 struct Bitmap page_bmp;
@@ -52,8 +50,6 @@ _bool reserve_page(void *addr) {
         return true;
     }
     if (bitmap_set(page_bmp, index, true)) {
-        free_mem -= PAGE_SIZE;
-        reserved_mem += PAGE_SIZE;
         return true;
     } else {
         return false;
@@ -65,8 +61,6 @@ _bool unreserve_page(void *addr) {
         return true;
     }
     if (bitmap_set(page_bmp, index, false)) {
-        free_mem += PAGE_SIZE;
-        reserved_mem -= PAGE_SIZE;
     } else {
         return false;
     }
@@ -142,12 +136,14 @@ void pmm_init() {
             desc->length > largest_free_memseg_size) {
             largest_free_memseg = (void *)(desc->base);
             largest_free_memseg_size = desc->length;
-            total_mem += desc->length;
+        }
+
+        if (desc->type == LIMINE_MEMMAP_USABLE || desc->type == LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE) {
+            free_mem += desc->length;
         }
         page_bmp_size += (desc->length / (PAGE_SIZE * 8)) + 1;
     }
-    free_mem = total_mem;
-
+    total_mem = free_mem;
     if (page_bmp_size > largest_free_memseg_size)
         trigger_psod(HN_ERR_OUT_OF_MEM,
                      "Page bitmap does not fit in largest free segment", NULL);
@@ -158,10 +154,10 @@ void pmm_init() {
     memset(page_bmp.buffer, 0xff, page_bmp.size);
     for (usize i = 0; i < memmap_request.response->entry_count; i++) {
         struct limine_memmap_entry *desc = memmap_request.response->entries[i];
-        if (desc->type != LIMINE_MEMMAP_USABLE) {
-            reserve_pages((void *)desc->base, desc->length / PAGE_SIZE + 1);
-        } else {
+        if (desc->type == LIMINE_MEMMAP_USABLE || desc->type == LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE) {
             unreserve_pages((void *)desc->base, desc->length / PAGE_SIZE + 1);
+        } else {
+            reserve_pages((void *)desc->base, desc->length / PAGE_SIZE + 1);
         }
     }
     lock_pages(page_bmp.buffer, (page_bmp.size / PAGE_SIZE) + 1);
@@ -170,5 +166,4 @@ void pmm_init() {
     log_trace("Total RAM: %u KB\n", total_mem / 1024);
     log_trace("Free RAM: %u KB\n", free_mem / 1024);
     log_trace("Used RAM: %u KB\n", used_mem / 1024);
-    log_trace("Reserved RAM: %u KB\n", reserved_mem / 1024);
 }
