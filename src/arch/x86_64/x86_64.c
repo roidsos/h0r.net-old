@@ -1,15 +1,15 @@
 #include "arch/x86_64/gdt.h"
 #include "drivers/ACPI/SDT.h"
+#include <arch/x86_64/constant_isrs.h>
+#include <arch/x86_64/drivers/IOAPIC.h>
+#include <arch/x86_64/drivers/LAPIC.h>
+#include <arch/x86_64/drivers/input/PS2.h>
+#include <arch/x86_64/drivers/output/cereal.h>
 #include <arch/x86_64/interrupts/interrupts.h>
 #include <arch/x86_64/pager.h>
 #include <backends/fb.h>
 #include <core/kernel.h>
 #include <core/mm/mem.h>
-#include <arch/x86_64/drivers/output/cereal.h>
-#include <arch/x86_64/drivers/input/PS2.h>
-#include <arch/x86_64/drivers/IOAPIC.h>
-#include <arch/x86_64/drivers/LAPIC.h>
-#include <arch/x86_64/constant_isrs.h>
 #include <libk/string.h>
 #include <utils/error.h>
 #include <utils/log.h>
@@ -62,11 +62,9 @@ static volatile struct limine_rsdp_request rsdp_request = {
 void _start(void) {
     limine_initialize_globals();
 
-
     cereal_init();
     disable_interrupts();
     log_nice("x86_64 Init Target reached: IO\n");
-
 
     data.pml4 = (u64)PHYS_TO_VIRT(vmm_get_pagetable());
     get_cpu_capabilities(&data.cpu_info);
@@ -78,7 +76,6 @@ void _start(void) {
         trigger_psod(HN_ERR_NO_ACPI, "NO ACPI FOUND lmao", NULL);
     }
     log_nice("x86_64 Init Target reached: ACPI\n");
-
 
     initialize_interrupts();
     lapic_init();

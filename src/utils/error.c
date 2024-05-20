@@ -1,7 +1,7 @@
 #include "error.h"
 #include <arch/x86_64/cpu.h>
-#include <core/mm/mem.h>
 #include <arch/x86_64/drivers/LAPIC.h>
+#include <core/mm/mem.h>
 #include <libk/stdlib.h>
 #include <stdint.h>
 #include <utils/log.h>

@@ -27,7 +27,6 @@ void wakeup_init_hw() {
     log_info("h0r.net identifies as v%u.%u.%u \"%s\"\n", KERNEL_VER_MAJOR,
              KERNEL_VER_MINOR, KERNEL_VER_PATCH, KERNEL_VER_CODENAME);
 
-
     pmm_init();
     init_printf_locks();
     tty_register((tty_t){2, 0, 0, 0, 0});
@@ -35,8 +34,8 @@ void wakeup_init_hw() {
     siv_init();
     tar_init();
 
-    //lai_set_acpi_revision(ACPI_revision);
-    //lai_create_namespace();
+    // lai_set_acpi_revision(ACPI_revision);
+    // lai_create_namespace();
 
     log_nice("Hardware sucessfully initialized!\n");
 }

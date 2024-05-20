@@ -1,9 +1,9 @@
 #include "constant_isrs.h"
-#include <arch/x86_64/interrupts/interrupts.h>
 #include <arch/x86_64/drivers/LAPIC.h>
+#include <arch/x86_64/interrupts/interrupts.h>
+#include <config.h>
 #include <core/sys/sched/sched.h>
 #include <libk/string.h>
-#include <config.h>
 
 extern void next_process();
 extern process_t processes[MAX_PROCESSES];
@@ -24,8 +24,4 @@ void schedule(Registers *regs) {
     lapic_eoi();
 }
 
-
-void cisrs_register()
-{
-    register_ISR(32, schedule);    
-}
+void cisrs_register() { register_ISR(32, schedule); }

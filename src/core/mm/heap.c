@@ -1,6 +1,6 @@
 #include "heap.h"
-#include <core/mm/pmm.h>
 #include <core/mm/mem.h>
+#include <core/mm/pmm.h>
 #include <libk/string.h>
 #include <utils/error.h>
 #include <utils/log.h>
@@ -18,7 +18,8 @@ void *malloc(usize size) {
 
 void free(void *tofree) {
     log_trace("free(0x%p)\n", tofree);
-    if(tofree == NULL) return;
+    if (tofree == NULL)
+        return;
     char *PP = (char *)tofree;
     PP -= sizeof(usize);
     usize size = *((usize *)PP);

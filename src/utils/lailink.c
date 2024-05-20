@@ -17,6 +17,4 @@ void laihost_panic(const char *msg) {
     trigger_psod(HN_ERR_LAI_PANIC, (char *)msg, NULL);
 }
 
-void *laihost_scan(char *sig, usize index) {
-    return find_nth_SDT(sig, index);
-}
+void *laihost_scan(char *sig, usize index) { return find_nth_SDT(sig, index); }

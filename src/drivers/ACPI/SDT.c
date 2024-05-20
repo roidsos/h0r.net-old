@@ -1,7 +1,7 @@
 #include "SDT.h"
 #include <core/kernel.h>
-#include <libk/string.h>
 #include <core/mm/mem.h>
+#include <libk/string.h>
 #include <utils/log.h>
 
 RSDT *rsdt;
@@ -15,13 +15,14 @@ _bool do_checksum(sdt_header *table_header) {
         sum += ((char *)table_header)[i];
     }
     if (sum != 0) {
-        log_trace("Checksum failed on table \"%.4s\"!\n", table_header->signature);
+        log_trace("Checksum failed on table \"%.4s\"!\n",
+                  table_header->signature);
         return false;
     }
     return true;
 }
 
-_bool find_rsdt(void* rsdp_addr) {
+_bool find_rsdt(void *rsdp_addr) {
     XSDP *rsdp = (XSDP *)rsdp_addr;
     data.ACPI_ver = rsdp->revision;
     if (rsdp->revision >= 2) {
@@ -78,6 +79,4 @@ sdt_header *find_nth_SDT(char *signature, usize index) {
 
     return NULL;
 }
-sdt_header *find_SDT(char *signature) {
-    return find_nth_SDT(signature, 0);
-}
+sdt_header *find_SDT(char *signature) { return find_nth_SDT(signature, 0); }
