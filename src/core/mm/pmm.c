@@ -105,7 +105,6 @@ usize get_total_RAM() { return total_mem; }
 
 static void *find_free_range(usize npages) {
     for (usize addr = 0; addr <= page_bmp.size; addr++) {
-        log_trace("Trying 0x%p\n", addr);
         for (usize page = 0; page <= npages; page++) {
             if (bitmap_get(page_bmp, addr + PAGE_TO_BIT(page)))
                 break;
