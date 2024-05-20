@@ -1,6 +1,6 @@
 #include "error.h"
 #include <arch/x86_64/cpu.h>
-#include <core/memory.h>
+#include <core/mm/mem.h>
 #include <drivers/LAPIC.h>
 #include <libk/stdlib.h>
 #include <stdint.h>

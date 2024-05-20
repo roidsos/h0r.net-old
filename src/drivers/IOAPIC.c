@@ -1,5 +1,5 @@
 #include "IOAPIC.h"
-#include "core/memory.h"
+#include "core/mm/mem.h"
 #include "vendor/printf.h"
 
 // Sorry, I forgot to attribute this

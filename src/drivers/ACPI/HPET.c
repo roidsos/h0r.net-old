@@ -1,5 +1,5 @@
 #include "HPET.h"
-#include <core/memory.h>
+#include <core/mm/mem.h>
 hpet_regs *regs;
 
 // copied from: https://github.com/aurixos/os/blob/main/kernel/acpi/hpet.c

@@ -1,7 +1,7 @@
 #ifndef PMM_H__
 #define PMM_H__
 
-#include <core/memory.h>
+#include <core/mm/mem.h>
 #include "libk/bitmap.h"
 #include <limine.h>
 

@@ -3,7 +3,7 @@
 #include <arch/x86_64/pager.h>
 #include <backends/fb.h>
 #include <core/kernel.h>
-#include <core/memory.h>
+#include <core/mm/mem.h>
 #include <drivers/output/cereal.h>
 #include <libk/string.h>
 #include <utils/error.h>

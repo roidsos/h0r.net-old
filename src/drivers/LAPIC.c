@@ -2,7 +2,7 @@
 #include "ACPI/HPET.h"
 #include <arch/x86_64/cpu.h>
 #include <arch/x86_64/io/portio.h>
-#include <core/memory.h>
+#include <core/mm/mem.h>
 #include <utils/error.h>
 #include <vendor/printf.h>
 

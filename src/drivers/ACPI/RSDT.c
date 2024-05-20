@@ -1,5 +1,5 @@
 #include "RSDT.h"
-#include <core/memory.h>
+#include <core/mm/mem.h>
 #include <libk/string.h>
 #include <limine.h>
 #include <utils/log.h>

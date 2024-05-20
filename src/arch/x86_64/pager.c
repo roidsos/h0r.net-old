@@ -1,5 +1,5 @@
 #include "pager.h"
-#include <core/memory.h>
+#include <core/mm/mem.h>
 #include <core/mm/pmm.h>
 #include <libk/string.h>
 #include <stdint.h>
