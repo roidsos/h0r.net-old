@@ -68,24 +68,20 @@ void tar_init() {
 
     contents = parse_tar(data.initramfs->address, data.initramfs->size);
 
-    block_driver_t driver = {.is_virtual = true,
-
-                             .get_props = tar_get_props,
-                             .chmod = tar_chmod,
-                             .chown = tar_chown,
-                             .read = tar_read,
-                             .write = tar_write,
-                             .mkfile = tar_mkfile,
-                             .mklink = tar_mklink,
-                             .remove = tar_remove,
-                             .copy = tar_copy,
-                             .move = tar_move};
-
-    u16 driver_id = siv_register_driver(driver);
-
-    siv_drive_t drive = {.sig = SIV_SIG_INITRD,
-                         .driver_id = driver_id,
-                         .driver_specific_data = NULL};
-
-    drive_id = siv_register_drive(drive);
+    u16 driver_id = siv_register_driver((block_driver_t){    .is_virtual = true,
+                                                                    .get_props = tar_get_props,
+                                                                    .chmod = tar_chmod,
+                                                                    .chown = tar_chown,
+                                                                    .read = tar_read,
+                                                                    .write = tar_write,
+                                                                    .mkfile = tar_mkfile,
+                                                                    .mklink = tar_mklink,
+                                                                    .remove = tar_remove,
+                                                                    .copy = tar_copy,
+                                                                    .move = tar_move
+                                                                });
+    drive_id = siv_register_drive((siv_drive_t){  .sig = SIV_SIG_INITRD,
+                                                        .driver_id = driver_id,
+                                                        .driver_specific_data = NULL
+                                                      });
 }
