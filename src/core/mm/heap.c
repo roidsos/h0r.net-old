@@ -1,5 +1,6 @@
 #include "heap.h"
 #include <core/mm/pmm.h>
+#include <core/mm/mem.h>
 #include <libk/string.h>
 #include <utils/error.h>
 #include <utils/log.h>
@@ -8,7 +9,7 @@
 void heap_init() {}
 void *malloc(usize size) {
     log_trace("malloc(%d)\n", size);
-    char *PP = (char *)request_pages((size / 4096) + 1);
+    char *PP = (char *)PHYS_TO_VIRT(request_pages((size / 4096) + 1));
     *((usize *)PP) = size;
     PP += sizeof(usize);
     log_trace("malloc returned 0x%p\n", PP);
@@ -21,7 +22,7 @@ void free(void *tofree) {
     char *PP = (char *)tofree;
     PP -= sizeof(usize);
     usize size = *((usize *)PP);
-    free_pages(PP, (size / 4096) + 1);
+    free_pages(VIRT_TO_PHYS(PP), (size / 4096) + 1);
 }
 void *calloc(usize count, usize size) {
     void *malloced = malloc(count * size);
