@@ -19,7 +19,7 @@ its non-UNIX BTW 😎
 #### Memory
 - [x] PMM
 - [x] VMM (4 level)
-- [x] "Heap"
+- [x] Heap
 #### Tasking
 - [ ] SMP
 - [x] Scheduler
@@ -34,7 +34,7 @@ its non-UNIX BTW 😎
 - [X] ACPI
 - [x] LAPIC
 - [x] IOAPIC
-- [x] "LAI"(doesnt work due to Heap)
+- [x] LAI
 ### drivers
 #### Timers
 - [x] HPET
