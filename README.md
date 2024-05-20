@@ -21,9 +21,9 @@ its non-UNIX BTW 😎
 - [x] VMM (4 level)
 - [x] Heap
 #### Tasking
-- [ ] SMP
 - [x] Scheduler
-- [ ] Signals
+- [ ] Events
+- [ ] SMP
 #### Userspace
 - [ ] System calls
 - [ ] ELF
