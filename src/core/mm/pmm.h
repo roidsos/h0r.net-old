@@ -5,6 +5,10 @@
 #include "libk/bitmap.h"
 #include <limine.h>
 
+#define DIV_ROUND_UP(x, y) (x + (y - 1)) / y
+#define ALIGN_UP(x, y) DIV_ROUND_UP(x, y) * y
+#define ALIGN_DOWN(x, y) (x / y) * y
+
 void pmm_init();
 _bool free_pages(void* addr,usize num);
 _bool lock_pages(void* addr,usize num);

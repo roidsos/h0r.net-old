@@ -129,42 +129,38 @@ void pmm_init() {
     usize largest_free_memseg_size = 0;
     log_trace("Memory map segments:\n");
     for (usize i = 0; i < memmap_request.response->entry_count; i++) {
-        struct limine_memmap_entry *desc = memmap_request.response->entries[i];
+        struct limine_memmap_entry *entry = memmap_request.response->entries[i];
+        page_bmp_size += (entry->length / (PAGE_SIZE * 8)) + 1;
         log_trace("  -type:\"%s\",base:0x%p,length:%u\n",
-                  memmap_type_names[desc->type], desc->base, desc->length);
-        if (desc->type == LIMINE_MEMMAP_USABLE &&
-            desc->length > largest_free_memseg_size) {
-            largest_free_memseg = (void *)(desc->base);
-            largest_free_memseg_size = desc->length;
+                  memmap_type_names[entry->type], entry->base, entry->length);
+        if (entry->type == LIMINE_MEMMAP_USABLE ||
+            entry->type == LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE ||
+            entry->type == LIMINE_MEMMAP_ACPI_RECLAIMABLE) {
+            free_mem += entry->length;
+            if (entry->length > largest_free_memseg_size) {
+                largest_free_memseg = (void *)(entry->base);
+                largest_free_memseg_size = entry->length;
+            }
         }
-
-        if (desc->type == LIMINE_MEMMAP_USABLE ||
-            desc->type == LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE ||
-            desc->type == LIMINE_MEMMAP_ACPI_RECLAIMABLE) {
-            free_mem += desc->length;
-        }
-        page_bmp_size += (desc->length / (PAGE_SIZE * 8)) + 1;
     }
+
     total_mem = free_mem;
     if (page_bmp_size > largest_free_memseg_size)
         trigger_psod(HN_ERR_OUT_OF_MEM,
                      "Page bitmap does not fit in largest free segment", NULL);
-
-    page_bmp.size = page_bmp_size;
+    page_bmp.size = ALIGN_UP(page_bmp_size, PAGE_SIZE);
     page_bmp.buffer = largest_free_memseg;
 
     memset(page_bmp.buffer, 0xff, page_bmp.size);
     for (usize i = 0; i < memmap_request.response->entry_count; i++) {
-        struct limine_memmap_entry *desc = memmap_request.response->entries[i];
-        if (desc->type == LIMINE_MEMMAP_USABLE ||
-            desc->type == LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE ||
-            desc->type == LIMINE_MEMMAP_ACPI_RECLAIMABLE) {
-            unreserve_pages((void *)desc->base, desc->length / PAGE_SIZE + 1);
-        } else {
-            reserve_pages((void *)desc->base, desc->length / PAGE_SIZE + 1);
+        struct limine_memmap_entry *entry = memmap_request.response->entries[i];
+        if (entry->type == LIMINE_MEMMAP_USABLE ||
+            entry->type == LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE ||
+            entry->type == LIMINE_MEMMAP_ACPI_RECLAIMABLE) {
+            unreserve_pages((void *)entry->base, entry->length / PAGE_SIZE);
         }
     }
-    lock_pages(page_bmp.buffer, (page_bmp.size / PAGE_SIZE) + 1);
+    lock_pages(page_bmp.buffer, page_bmp.size / PAGE_SIZE);
 
     log_trace("PMM initialized\n");
     log_trace("Total RAM: %u KB\n", total_mem / 1024);
