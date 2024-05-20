@@ -19,7 +19,7 @@ its non-UNIX BTW 😎
 #### Memory
 - [x] PMM
 - [x] VMM (4 level)
-- [x] "Heap"(doesnt work right fsr)
+- [x] "Heap"
 #### Tasking
 - [ ] SMP
 - [x] Scheduler
