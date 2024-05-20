@@ -34,7 +34,7 @@ void lapic_init();
 void lapic_eoi();
 
 void lapic_timer_stop();
-void lapic_timer_oneshot(uint64_t ms, uint8_t vec);
+void lapic_timer_oneshot(u64 ms, u8 vec);
 
 
 #endif

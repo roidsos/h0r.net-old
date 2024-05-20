@@ -3,8 +3,8 @@
 #include <libk/string.h>
 
 extern process_t processes[MAX_PROCESSES];
-extern uint32_t sched_num_procs;
-extern uint32_t sched_current_pid;
+extern u32 sched_num_procs;
+extern u32 sched_current_pid;
 
 void next_process(){
     sched_current_pid++;

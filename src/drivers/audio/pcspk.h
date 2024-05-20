@@ -1,11 +1,11 @@
 #ifndef PCSPK_H
 #define PCSPK_H
-#include <libk/stdtypes.h>
+#include <libk/stdint.h>
 #include <arch/x86_64/io/portio.h>
 
 //TODO: audio subsystem
 
-void play_sound(uint32_t frequency);
+void play_sound(u32 frequency);
 
 void nosound();
 

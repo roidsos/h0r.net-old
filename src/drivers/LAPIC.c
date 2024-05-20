@@ -6,14 +6,14 @@
 #include <utils/error.h>
 #include <vendor/printf.h>
 
-uint32_t ticks = 0;
+u32 ticks = 0;
 
-uint32_t rreg(uint16_t offset) {
-    return *((uint32_t *)((uint64_t)data.lapic_base + offset));
+u32 rreg(u16 offset) {
+    return *((u32 *)((u64)data.lapic_base + offset));
 }
 
-void wreg(uint16_t offset, uint32_t val) {
-    *((uint32_t *)((uint64_t)data.lapic_base + offset)) = val;
+void wreg(u16 offset, u32 val) {
+    *((u32 *)((u64)data.lapic_base + offset)) = val;
 }
 
 void lapic_timer_stop() {
@@ -21,7 +21,7 @@ void lapic_timer_stop() {
     wreg(LAPIC_LVT_TMR, LVT_MASKED);
 }
 
-void lapic_timer_oneshot(uint64_t ms, uint8_t vec) {
+void lapic_timer_oneshot(u64 ms, u8 vec) {
     lapic_timer_stop();
     wreg(LAPIC_TMRDIV, 0);
     wreg(LAPIC_LVT_TMR, vec);

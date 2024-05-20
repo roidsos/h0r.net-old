@@ -7,14 +7,17 @@
 #include <core/sys/resman/SIV.h>
 
 #include <libk/endian.h>
+#include <libk/stdint.h>
+#include <libk/stddef.h>
+#include <libk/limits.h>
 
 hive_header *read_hive(char *path) {
-  uint32_t fd = siv_open(0, path, SIV_INTENTS_READ);
+  u32 fd = siv_open(0, path, SIV_INTENTS_READ);
   if (fd == UINT32_MAX) {
     log_error("Failed to open hive at %s\n", path);
     return NULL;
   }
-  size_t size = siv_get_file(fd).size;
+  usize size = siv_get_file(fd).size;
   hive_header *hive = (hive_header *)malloc(sizeof(hive_header));
   siv_read(fd, 0, (char *)hive, size);
   siv_close(fd);
@@ -39,7 +42,7 @@ key_header *read_key(hive_header *hive, char *path) {
   char *pointer = (char *)hive + sizeof(hive_header);
 
   // TODO: subkey support
-  for (uint32_t i = 0; i < be32toh(hive->num_keys); i++) {
+  for (u32 i = 0; i < be32toh(hive->num_keys); i++) {
     key_header *key = (key_header *)pointer;
     log_debug("key magic: %s\n", key->magic);
     if (strcmp(key->name, path) == 0) {
@@ -53,7 +56,7 @@ entry_header *read_entry(key_header *key, char *name) {
   if (key == NULL || name == NULL)
     return NULL;
   entry_header *entry = (entry_header *)((char *)key + sizeof(key_header));
-  for (uint32_t i = 0; i < be32toh(key->num_entries); i++) {
+  for (u32 i = 0; i < be32toh(key->num_entries); i++) {
     if (strcmp((char *)entry->name, name) == 0) {
       return entry;
     }

@@ -5,9 +5,10 @@
 #include <drivers/LAPIC.h>
 #include <drivers/IOAPIC.h>
 #include <vendor/printf.h>
+#include <libk/macros.h>
 
 void handler(UNUSED Registers *regs) {
-    uint8_t scancode = inb8(PS2_DATA);
+    u8 scancode = inb8(PS2_DATA);
     printf("0x%x\n", scancode);
     lapic_eoi();
 }

@@ -8,10 +8,10 @@
 
 
 tty_t ttys[MAX_TTYS];
-uint16_t next_tty_id = 0;
-bool tty_initialized;
+u16 next_tty_id = 0;
+_bool tty_initialized;
 
-uint16_t tty_register(tty_t tty) {
+u16 tty_register(tty_t tty) {
     if(next_tty_id == MAX_TTYS) return 0;
     if(next_tty_id == 0) tty_initialized = true; // registering tty0 initializes the tty system 
     ttys[next_tty_id] = tty;
@@ -19,11 +19,11 @@ uint16_t tty_register(tty_t tty) {
     return next_tty_id - 1;
 }
 
-void tty_unregister(uint16_t tty_id) {
+void tty_unregister(u16 tty_id) {
     ttys[tty_id] = (tty_t){0, 0, 0, 0, 0};
 }
 
-bool tty_lock(uint16_t tty_id)
+_bool tty_lock(u16 tty_id)
 {
     tty_t tty = ttys[tty_id];
     if(tty.lock == 0){
@@ -33,20 +33,20 @@ bool tty_lock(uint16_t tty_id)
     return false;
 }
 
-void tty_unlock(uint16_t tty_id)
+void tty_unlock(u16 tty_id)
 {
     ttys[tty_id].lock = 0;
 }
 
-uint8_t tty_get_lock(uint16_t tty_id)
+u8 tty_get_lock(u16 tty_id)
 {
     return ttys[tty_id].lock;
 }
 
-void tty_write(uint16_t tty_id, char *buf, uint32_t size){
+void tty_write(u16 tty_id, char *buf, u32 size){
     tty_t tty = ttys[tty_id];
     if(tty.out_type == TTY_TYPE_SERIAL){
-        for (uint32_t i = 0; i < size; i++) {
+        for (u32 i = 0; i < size; i++) {
             cereal_write(buf[i], tty.out_port);
         }
     }else if (tty.out_type == TTY_TYPE_UTERUS){

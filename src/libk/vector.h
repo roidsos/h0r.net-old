@@ -1,15 +1,14 @@
 #ifndef __VECTOR_H__
 #define __VECTOR_H__
 
-#ifdef HEAP_ACCESSABLE
-#include "libk/stdtypes.h"
+#include "libk/stdint.h"
 #include "libk/string.h"
 #include "utils/heapdef.h"
 
 #define vector_struct(type) \
 	struct {                \
-		size_t len;         \
-		size_t cap;         \
+		usize len;         \
+		usize cap;         \
 		type *data;         \
 	}
 
@@ -54,12 +53,11 @@
 
 #define vector_erase_val(vec, val)                      \
 	{                                                   \
-		for (size_t __i = 0; __i < (vec)->len; __i++) { \
+		for (usize __i = 0; __i < (vec)->len; __i++) { \
 			if (vector_at(vec, __i) == (val)) {         \
 				vector_erase(vec, __i);                 \
 				break;                                  \
 			}                                           \
 		}                                               \
 	}
-#endif
 #endif // __VECTOR_H__

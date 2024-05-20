@@ -1,7 +1,8 @@
 #ifndef __SIV_H__
 #define __SIV_H__
 
-#include <libk/stdtypes.h>
+#include <libk/stdint.h>
+#include <libk/stdbool.h>
 
 //Signatures of physical drive types
 #define SIV_SIG_HARDDRIVE    "HARD"
@@ -36,35 +37,35 @@
 
 typedef struct{
     // Basic info
-    uint16_t drive_id;
+    u16 drive_id;
     char* name;
     char* full_path;
-    uint64_t size;
-    bool isdir;
+    u64 size;
+    _bool isdir;
 
     // Time stuffs
-    uint64_t created;
-    uint64_t last_modified;
-    uint64_t last_accessed;
+    u64 created;
+    u64 last_modified;
+    u64 last_accessed;
 
     // security stuffs
-    uint64_t owner_id;
-    uint64_t group_id;
+    u64 owner_id;
+    u64 group_id;
 
-    uint16_t perms;
+    u16 perms;
 } file_t;
 
 typedef struct {
-    bool is_virtual;
+    _bool is_virtual;
     // File functions
     file_t (*get_props)(void* driver_specific_data,char* path);
-    void   (*chmod    )(void* driver_specific_data,char* path,uint8_t perms,uint8_t who);
-    void   (*chown    )(void* driver_specific_data,char* path,uint64_t uid,uint64_t gid);
-    void   (*read     )(void* driver_specific_data,char* path,uint32_t offset,char* buffer,uint32_t size);
-    void   (*write    )(void* driver_specific_data,char* path,uint32_t offset,char* buffer,uint32_t size);
+    void   (*chmod    )(void* driver_specific_data,char* path,u8 perms,u8 who);
+    void   (*chown    )(void* driver_specific_data,char* path,u64 uid,u64 gid);
+    void   (*read     )(void* driver_specific_data,char* path,u32 offset,char* buffer,u32 size);
+    void   (*write    )(void* driver_specific_data,char* path,u32 offset,char* buffer,u32 size);
 
     // FS functions
-    void   (*mkfile   )(void* driver_specific_data,char* path,bool isdir,bool recursive);
+    void   (*mkfile   )(void* driver_specific_data,char* path,_bool isdir,_bool recursive);
     void   (*mklink   )(void* driver_specific_data,char* from,char* to);
     void   (*remove   )(void* driver_specific_data,char* path);
     void   (*copy     )(void* driver_specific_data,char* from,char* to);
@@ -73,24 +74,24 @@ typedef struct {
 
 typedef struct {
     char sig[4];
-    uint16_t driver_id;
+    u16 driver_id;
     void* driver_specific_data;
 } siv_drive_t;
 
 void siv_init();
-uint16_t siv_register_drive(siv_drive_t drive);
-uint16_t siv_register_driver(block_driver_t driver);
+u16 siv_register_drive(siv_drive_t drive);
+u16 siv_register_driver(block_driver_t driver);
 
-uint32_t siv_open(uint32_t drive_id,char* path,uint8_t intents);
-void siv_close(uint32_t file_desc);
+u32 siv_open(u32 drive_id,char* path,u8 intents);
+void siv_close(u32 file_desc);
 
-file_t siv_get_file(uint32_t file_desc);
+file_t siv_get_file(u32 file_desc);
 
-void siv_read(uint32_t file_desc, uint32_t offset, char* buf, uint32_t size);
-void siv_write(uint32_t file_desc, uint32_t offset, char* data, uint32_t size);
+void siv_read(u32 file_desc, u32 offset, char* buf, u32 size);
+void siv_write(u32 file_desc, u32 offset, char* data, u32 size);
 
-extern uint16_t siv_num_drives;
-extern uint16_t siv_num_drivers;
-extern uint32_t siv_num_open_files;
+extern u16 siv_num_drives;
+extern u16 siv_num_drivers;
+extern u32 siv_num_open_files;
 
 #endif

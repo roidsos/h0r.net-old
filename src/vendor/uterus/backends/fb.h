@@ -30,96 +30,96 @@
 extern "C" {
 #endif
 
-#include <stdint.h>
-#include <stddef.h>
-#include <stdbool.h>
+#include <libk/stdint.h>
+#include <libk/stddef.h>
+#include <libk/stdbool.h>
 
 #include "../uterus.h"
 
 #define UTERUS_FB_FONT_GLYPHS 256
 
 struct uterus_fb_char {
-    uint32_t c;
-    uint32_t fg;
-    uint32_t bg;
+    u32 c;
+    u32 fg;
+    u32 bg;
 };
 
 struct uterus_fb_queue_item {
-    size_t x, y;
+    usize x, y;
     struct uterus_fb_char c;
 };
 
 struct uterus_fb_context {
     struct uterus_context term;
 
-    size_t font_width;
-    size_t font_height;
-    size_t glyph_width;
-    size_t glyph_height;
+    usize font_width;
+    usize font_height;
+    usize glyph_width;
+    usize glyph_height;
 
-    size_t font_scale_x;
-    size_t font_scale_y;
+    usize font_scale_x;
+    usize font_scale_y;
 
-    size_t offset_x, offset_y;
+    usize offset_x, offset_y;
 
-    volatile uint32_t *framebuffer;
-    size_t pitch;
-    size_t width;
-    size_t height;
-    size_t bpp;
+    volatile u32 *framebuffer;
+    usize pitch;
+    usize width;
+    usize height;
+    usize bpp;
 
-    size_t font_bits_size;
-    uint8_t *font_bits;
+    usize font_bits_size;
+    u8 *font_bits;
 
-    uint32_t ansi_colours[8];
-    uint32_t ansi_bright_colours[8];
-    uint32_t default_fg, default_bg;
-    uint32_t default_fg_bright, default_bg_bright;
+    u32 ansi_colours[8];
+    u32 ansi_bright_colours[8];
+    u32 default_fg, default_bg;
+    u32 default_fg_bright, default_bg_bright;
 
 #ifndef UTERUS_FB_DISABLE_CANVAS
-    size_t canvas_size;
-    uint32_t *canvas;
+    usize canvas_size;
+    u32 *canvas;
 #endif
 
-    size_t grid_size;
-    size_t queue_size;
-    size_t map_size;
+    usize grid_size;
+    usize queue_size;
+    usize map_size;
 
     struct uterus_fb_char *grid;
 
     struct uterus_fb_queue_item *queue;
-    size_t queue_i;
+    usize queue_i;
 
     struct uterus_fb_queue_item **map;
 
-    uint32_t text_fg;
-    uint32_t text_bg;
-    size_t cursor_x;
-    size_t cursor_y;
+    u32 text_fg;
+    u32 text_bg;
+    usize cursor_x;
+    usize cursor_y;
 
-    uint32_t saved_state_text_fg;
-    uint32_t saved_state_text_bg;
-    size_t saved_state_cursor_x;
-    size_t saved_state_cursor_y;
+    u32 saved_state_text_fg;
+    u32 saved_state_text_bg;
+    usize saved_state_cursor_x;
+    usize saved_state_cursor_y;
 
-    size_t old_cursor_x;
-    size_t old_cursor_y;
+    usize old_cursor_x;
+    usize old_cursor_y;
 };
 
 struct uterus_context *uterus_fb_init(
-    uint32_t *framebuffer, size_t width, size_t height, size_t pitch,
+    u32 *framebuffer, usize width, usize height, usize pitch,
 #ifndef UTERUS_FB_DISABLE_CANVAS
-    uint32_t *canvas,
+    u32 *canvas,
 #endif
-    uint32_t *ansi_colours, uint32_t *ansi_bright_colours,
-    uint32_t *default_bg, uint32_t *default_fg,
-    uint32_t *default_bg_bright, uint32_t *default_fg_bright,
-    void *font, size_t font_width, size_t font_height
+    u32 *ansi_colours, u32 *ansi_bright_colours,
+    u32 *default_bg, u32 *default_fg,
+    u32 *default_bg_bright, u32 *default_fg_bright,
+    void *font, usize font_width, usize font_height
 );
 
 #ifndef UTERUS_FB_DISABLE_BUMP_ALLOC
 static inline struct uterus_context *uterus_fb_simple_init(
-    uint32_t *framebuffer, size_t width, size_t height, size_t pitch
+    u32 *framebuffer, usize width, usize height, usize pitch
 ) {
     return uterus_fb_init(
         framebuffer, width, height, pitch,

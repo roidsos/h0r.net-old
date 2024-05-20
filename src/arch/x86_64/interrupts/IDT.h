@@ -1,6 +1,6 @@
 #ifndef __IDT_H__
 #define __IDT_H__
-#include <libk/stdtypes.h>
+#include <libk/stdint.h>
 typedef enum
 {
     IDT_FLAG_GATE_TASK              = 0x5,
@@ -19,5 +19,5 @@ typedef enum
 } IDT_FLAGS;
 
 void enable_IDT();
-void SetGate(int interrupt, void* base, uint16_t segmentDescriptor, uint8_t flags);
+void SetGate(int interrupt, void* base, u16 segmentDescriptor, u8 flags);
 #endif // __IDT_H__

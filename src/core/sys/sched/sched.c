@@ -8,9 +8,9 @@
 #include <vendor/printf.h>
 
 process_t processes[MAX_PROCESSES] = {0};
-uint32_t sched_num_procs = 0;
-uint32_t sched_current_pid = 0;
-bool sched_running = false;
+u32 sched_num_procs = 0;
+u32 sched_current_pid = 0;
+_bool sched_running = false;
 
 extern void next_process();
 
@@ -34,11 +34,11 @@ void sched_init() {
 }
 
 //TODO: kernel and user processes
-uint32_t sched_add_process(char* name, void (*entry)(void)){
+u32 sched_add_process(char* name, void (*entry)(void)){
     if (sched_num_procs < MAX_PROCESSES) {
         processes[sched_num_procs].name = name;
-        processes[sched_num_procs].regs.rip = (uint64_t)entry;
-        processes[sched_num_procs].regs.rsp = (uint64_t)malloc(0x1000);
+        processes[sched_num_procs].regs.rip = (u64)entry;
+        processes[sched_num_procs].regs.rsp = (u64)malloc(0x1000);
         processes[sched_num_procs].regs.cs = 0x8;
         processes[sched_num_procs].regs.ss = 0x10;
         processes[sched_num_procs].regs.rflags = 0x202;
@@ -48,7 +48,7 @@ uint32_t sched_add_process(char* name, void (*entry)(void)){
     }
     return -1;
 }
-void sched_kill(uint32_t pid){
+void sched_kill(u32 pid){
     if (pid < MAX_PROCESSES) {
         processes[pid].state_flags = SCHED_STATE_DEAD;
     }
@@ -59,12 +59,12 @@ process_t* sched_get_curr_process()
     return &processes[sched_current_pid];
 }
 
-void sched_block(uint32_t pid)
+void sched_block(u32 pid)
 {
     processes[pid].state_flags = SCHED_STATE_BLOCKED;
 }
 
-void sched_unblock(uint32_t pid)
+void sched_unblock(u32 pid)
 {
     processes[pid].state_flags = SCHED_STATE_READY;
 }

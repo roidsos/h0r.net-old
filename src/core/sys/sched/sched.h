@@ -5,14 +5,14 @@
 
 void sched_init();
 
-uint32_t sched_add_process(char* name, void (*entry)(void));
-void sched_kill(uint32_t pid);
+u32 sched_add_process(char* name, void (*entry)(void));
+void sched_kill(u32 pid);
 
 process_t* sched_get_curr_process();
 
-void sched_block(uint32_t pid);
-void sched_unblock(uint32_t pid);
+void sched_block(u32 pid);
+void sched_unblock(u32 pid);
 
-extern bool sched_running;
-extern uint32_t sched_current_pid;
+extern _bool sched_running;
+extern u32 sched_current_pid;
 #endif

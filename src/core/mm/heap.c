@@ -7,11 +7,11 @@
 
 void heap_init() {
 }
-void *malloc(size_t size) {
+void *malloc(usize size) {
     log_trace("malloc(%d)\n", size);
     char *PP = (char *)request_pages((size / 4096) + 1);
-    *((size_t *)PP) = size;
-    PP += sizeof(size_t);
+    *((usize *)PP) = size;
+    PP += sizeof(usize);
     log_trace("malloc returned 0x%p\n", PP);
     return (void *)PP;
 }
@@ -19,20 +19,20 @@ void *malloc(size_t size) {
 void free(void *tofree) {
     log_trace("free(0x%p)\n", tofree);
     char *PP = (char *)tofree;
-    PP -= sizeof(size_t);
-    size_t size = *((size_t *)PP);
+    PP -= sizeof(usize);
+    usize size = *((usize *)PP);
     free_pages(PP, (size / 4096) + 1);
 }
-void *calloc(size_t count, size_t size) {
+void *calloc(usize count, usize size) {
     void *malloced = malloc(count * size);
     memset(malloced, 0, count * size);
     return malloced;
 }
-void *realloc(void *old, size_t size) {
+void *realloc(void *old, usize size) {
     // recording the smaller size
-    size_t smallersize = size;
-    if (*((size_t *)old - 1) < size)
-        smallersize = *((size_t *)old - 1);
+    usize smallersize = size;
+    if (*((usize *)old - 1) < size)
+        smallersize = *((usize *)old - 1);
 
     free(old); // freeing it before so there will be less airgaps
     void *newmem = malloc(size);      // mallocing the new aegment
@@ -40,8 +40,8 @@ void *realloc(void *old, size_t size) {
 
     return newmem;
 }
-void *realloc_plus(void *old, size_t size, size_t oldsize) {
-    size_t smaller_size = size;
+void *realloc_plus(void *old, usize size, usize oldsize) {
+    usize smaller_size = size;
     if (oldsize < size)
         smaller_size = oldsize;
 

@@ -1,4 +1,4 @@
-#include <libk/stdtypes.h>
+#include <libk/stdint.h>
 
 int atoi(char *s) {
     int i = 0;
@@ -17,7 +17,7 @@ void hcf(void) {
     }
 }
 void hlt(void) {
-    while (true) {
+    while (1) {
         __asm__ volatile("hlt");
     }
 }

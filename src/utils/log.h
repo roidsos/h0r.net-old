@@ -1,6 +1,6 @@
 #ifndef LOGGER_H
 #define LOGGER_H
-#include <libk/stdtypes.h>
+#include <libk/stdint.h>
 #include <config.h>
 
 #define LOG_TRAC 0
@@ -28,6 +28,6 @@
 #define log_warn(...)  log(LOG_WARN, __FILE__, __LINE__,__func__, __VA_ARGS__)
 #define log_error(...) log(LOG_EROR, __FILE__, __LINE__,__func__, __VA_ARGS__)
 
-void log(uint8_t level,const char* file,uint32_t line,const char* func,char* msg,...);
+void log(u8 level,const char* file,u32 line,const char* func,char* msg,...);
 
 #endif

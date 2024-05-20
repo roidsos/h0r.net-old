@@ -5,14 +5,14 @@
 #include <utils/log.h>
 RSDT *rsdt;
 XSDT *xsdt;
-bool use_xsdt = false;
+_bool use_xsdt = false;
 
 int ACPI_revision = 0;
 
 static volatile struct limine_rsdp_request rsdp_request = {
     .id = LIMINE_RSDP_REQUEST, .revision = 0};
 
-bool locate_rsdt() {
+_bool locate_rsdt() {
     XSDP *rsdp = (XSDP *)rsdp_request.response->address;
     ACPI_revision = rsdp->revision;
     if (rsdp->revision >= 2) {
@@ -30,23 +30,23 @@ bool locate_rsdt() {
     }
     return true;
 }
-sdt_header *find_nth_thingy(char *signature, size_t index) {
+sdt_header *find_nth_thingy(char *signature, usize index) {
     log_trace("searching for the %uth \"%.4s\"!\n", index, signature);
     if (!strncmp("DSDT", signature, 4)) {
         fadt_header *fadt = (fadt_header *)find_nth_thingy("FACP", 0);
         if (use_xsdt) { // check for ACPI 2+
-            return (sdt_header *)(uintptr_t)PHYS_TO_VIRT(fadt->X_Dsdt);
+            return (sdt_header *)(uptr)PHYS_TO_VIRT(fadt->X_Dsdt);
         } else {
-            return (sdt_header *)(uintptr_t)PHYS_TO_VIRT(fadt->dsdt);
+            return (sdt_header *)(uptr)PHYS_TO_VIRT(fadt->dsdt);
         }
     }
-    size_t n = 0;
+    usize n = 0;
     if (use_xsdt) {
         int entries = (xsdt->h.length - sizeof(xsdt->h)) / 8;
 
         for (int i = 0; i < entries; i++) {
             sdt_header *h =
-                (sdt_header *)(uintptr_t)PHYS_TO_VIRT(xsdt->SDTs[i]);
+                (sdt_header *)(uptr)PHYS_TO_VIRT(xsdt->SDTs[i]);
             if (!strncmp(h->signature, signature, 4)) {
                 if (n == index)
                     return h;
@@ -59,7 +59,7 @@ sdt_header *find_nth_thingy(char *signature, size_t index) {
 
         for (int i = 0; i < entries; i++) {
             sdt_header *h =
-                (sdt_header *)(uintptr_t)PHYS_TO_VIRT(rsdt->SDTs[i]);
+                (sdt_header *)(uptr)PHYS_TO_VIRT(rsdt->SDTs[i]);
             if (!strncmp(h->signature, signature, 4)) {
                 if (n == index)
                     return h;

@@ -5,104 +5,104 @@
 
 typedef struct {
     sdt_header h;
-    uint32_t SDTs[];
+    u32 SDTs[];
 } RSDT;
 
 typedef struct {
     sdt_header h;
-    uint64_t SDTs[];
+    u64 SDTs[];
 } XSDT;
 
 
 typedef struct{
     char signature[8];
-    uint8_t checksum;
+    u8 checksum;
     char OEM_ID[6];
-    uint8_t revision;
-    uint32_t RSDT_address;
+    u8 revision;
+    u32 RSDT_address;
 
-    uint32_t length;
-    uint64_t XSDT_address;
-    uint8_t extended_checksum;
-    uint8_t reserved[3];
+    u32 length;
+    u64 XSDT_address;
+    u8 extended_checksum;
+    u8 reserved[3];
 } __attribute__ ((packed)) XSDP;
 
 typedef struct {
-    uint8_t address_space;
-    uint8_t bit_width;
-    uint8_t bit_offset;
-    uint8_t access_size;
-    uint64_t address;
+    u8 address_space;
+    u8 bit_width;
+    u8 bit_offset;
+    u8 access_size;
+    u64 address;
 } __attribute((packed)) generic_address_t;
 
 
 typedef struct {
     sdt_header h;
-    uint32_t firmware_ctrl;
-    uint32_t dsdt;
+    u32 firmware_ctrl;
+    u32 dsdt;
 
     //ACPI 1.0 remainant
-    uint8_t reserved;
+    u8 reserved;
 
-    uint8_t preferred_power_management_profile;
+    u8 preferred_power_management_profile;
 
-    uint16_t SCI_interrupt;
-    uint32_t SMI_command_port;
+    u16 SCI_interrupt;
+    u32 SMI_command_port;
 
-    uint8_t ACPI_enable;
-    uint8_t ACPI_disable;
+    u8 ACPI_enable;
+    u8 ACPI_disable;
 
-    uint8_t S4_BIOS_REQ;
-    uint8_t PSTATE_control;
+    u8 S4_BIOS_REQ;
+    u8 PSTATE_control;
 
-    uint32_t PM1a_event_block;
-    uint32_t PM1b_event_block;
-    uint32_t PM1a_control_block;
-    uint32_t PM1b_control_block;
-    uint32_t PM2_control_block;
-    uint32_t PM_timer_block;
+    u32 PM1a_event_block;
+    u32 PM1b_event_block;
+    u32 PM1a_control_block;
+    u32 PM1b_control_block;
+    u32 PM2_control_block;
+    u32 PM_timer_block;
 
-    uint32_t GPE0_block;
-    uint32_t GPE1_block;
+    u32 GPE0_block;
+    u32 GPE1_block;
 
-    uint8_t PM1_event_length;
-    uint8_t PM1_control_length;
-    uint8_t PM2_control_length;
-    uint8_t PM_timer_length;
+    u8 PM1_event_length;
+    u8 PM1_control_length;
+    u8 PM2_control_length;
+    u8 PM_timer_length;
 
-    uint8_t GPE0_length;
-    uint8_t GPE1_length;
-    uint8_t GPE1_base;
+    u8 GPE0_length;
+    u8 GPE1_length;
+    u8 GPE1_base;
 
-    uint8_t C_state_control;
+    u8 C_state_control;
 
-    uint16_t worst_C2_latency;
-    uint16_t worst_C3_latency;
+    u16 worst_C2_latency;
+    u16 worst_C3_latency;
 
-    uint16_t flush_size;
-    uint16_t flush_stride;
+    u16 flush_size;
+    u16 flush_stride;
 
-    uint8_t duty_offset;
-    uint8_t duty_width;
+    u8 duty_offset;
+    u8 duty_width;
 
-    uint8_t day_alarm;
-    uint8_t month_alarm;
-    uint8_t century;
+    u8 day_alarm;
+    u8 month_alarm;
+    u8 century;
 
     //ACPI 2.0+
-    uint16_t boot_architecture_flags;
+    u16 boot_architecture_flags;
 
-    uint8_t reserved2;
-    uint32_t flags;
+    u8 reserved2;
+    u32 flags;
 
     generic_address_t reset_reg;
-    uint8_t reset_value;
+    u8 reset_value;
 
-    uint8_t Filler[3];
+    u8 Filler[3];
 
     //64 bit pointers only work on 64 bit systems, but h0r.net wont boot on 32 bit systems anyways
-    uint64_t X_Firmware_Control;
-    uint64_t X_Dsdt;
+    u64 X_Firmware_Control;
+    u64 X_Dsdt;
 
     generic_address_t X_PM1a_event_block;
     generic_address_t X_PM1b_event_block;
@@ -114,8 +114,8 @@ typedef struct {
     generic_address_t X_GPE1_block;
 } __attribute((packed)) fadt_header;
 
-bool locate_rsdt();
+_bool locate_rsdt();
 sdt_header *find_thingy(char* signature);
-sdt_header *find_nth_thingy(char *signature,size_t index);
+sdt_header *find_nth_thingy(char *signature,usize index);
 
 #endif

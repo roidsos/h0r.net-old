@@ -4,7 +4,7 @@
 
 void *end_addr;
 
-uint16_t num_madt_entries = 0;
+u16 num_madt_entries = 0;
 madt_entry *entry_ptrs[MAX_ENTRIES];
 
 void recurse_table(void *ptr) {
@@ -17,7 +17,7 @@ void recurse_table(void *ptr) {
     recurse_table(ptr + e->h.length);
 }
 
-bool madt_init() {
+_bool madt_init() {
 
     madt_header *h = (madt_header *)find_thingy("APIC");
     data.lapic_base = h->lapic_addr;

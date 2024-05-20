@@ -1,20 +1,22 @@
 #ifndef SDT_H
 #define SDT_H
 
-#include <libk/stdtypes.h>
+#include <libk/stdint.h>
+#include <libk/stdbool.h>
+#include <libk/stddef.h>
 
 typedef struct {
   char signature[4];
-  uint32_t length;
-  uint8_t revision;
-  uint8_t checksum;
+  u32 length;
+  u8 revision;
+  u8 checksum;
   char OEM_ID[6];
   char OEM_table_ID[8];
-  uint32_t OEM_revision;
-  uint32_t creator_ID;
-  uint32_t creator_revision;
+  u32 OEM_revision;
+  u32 creator_ID;
+  u32 creator_revision;
 } __attribute__ ((packed)) sdt_header;
 
-bool do_checksum(sdt_header *table_header);
+_bool do_checksum(sdt_header *table_header);
 
 #endif

@@ -2,19 +2,20 @@
 #include <utils/log.h>
 #include <vendor/printf.h>
 
+
 // Puffer get outta here, stop copying my code ffs
 
-uint32_t num_mcfg_entries;
+u32 num_mcfg_entries;
 device_config *entries;
 
-bool mcfg_init() {
+_bool mcfg_init() {
     mcfg_header *h = (mcfg_header *)find_thingy("MCFG");
     if (h == NULL) {
         return false;
     }
     num_mcfg_entries =
         (h->h.length - sizeof(mcfg_header)) / sizeof(device_config);
-    entries = (device_config *)((uint8_t *)h + sizeof(mcfg_header));
+    entries = (device_config *)((u8 *)h + sizeof(mcfg_header));
     return true;
 }
 void iterate_pci() {
@@ -23,8 +24,8 @@ void iterate_pci() {
         for (int device = 0; device < 32; device++) {
             int numfuncs = pci_read(bus, device, 0, 0x0E) & (1 << 7) ? 8 : 1;
             for (int function = 0; function < numfuncs; function++) {
-                uint16_t vendor_id = pci_read(bus, device, function, 0x00);
-                uint16_t device_id = pci_read(bus, device, function, 0x02);
+                u16 vendor_id = pci_read(bus, device, function, 0x00);
+                u16 device_id = pci_read(bus, device, function, 0x02);
                 if (vendor_id == 0x0000 || vendor_id == 0xFFFF ||
                     device_id == 0x0000) {
                     continue;
@@ -36,22 +37,22 @@ void iterate_pci() {
     }
 }
 
-uint32_t *pci_getaddr(uint8_t bus, uint8_t dev, uint8_t func, uint8_t off) {
-    for (size_t i = 0; i < num_mcfg_entries; i++) {
+u32 *pci_getaddr(u8 bus, u8 dev, u8 func, u8 off) {
+    for (usize i = 0; i < num_mcfg_entries; i++) {
         if (bus >= entries[i].start_bus && bus <= entries[i].end_bus) {
-            uint64_t addr = (entries[i].base_address + (bus << 20) +
+            u64 addr = (entries[i].base_address + (bus << 20) +
                              (dev << 15) + (func << 12) + off);
-            return (uint32_t *)addr;
+            return (u32 *)addr;
         }
     }
     return 0;
 }
 
-uint32_t pci_read(uint8_t bus, uint8_t dev, uint8_t func, uint8_t off) {
+u32 pci_read(u8 bus, u8 dev, u8 func, u8 off) {
 
     return pci_getaddr(bus, dev, func, off)[0];
 }
-void pci_write(uint8_t bus, uint8_t dev, uint8_t func, uint8_t off,
-               uint32_t val) {
+void pci_write(u8 bus, u8 dev, u8 func, u8 off,
+               u32 val) {
     pci_getaddr(bus, dev, func, off)[0] = val;
 }

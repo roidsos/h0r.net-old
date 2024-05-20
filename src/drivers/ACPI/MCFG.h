@@ -5,23 +5,23 @@
 
 typedef struct{
     sdt_header h;
-    uint64_t reserved;
+    u64 reserved;
 }__attribute__((packed)) mcfg_header;
 
 typedef struct{
-    uint64_t base_address;
-    uint16_t PCI_seg_group;
-    uint8_t start_bus;
-    uint8_t end_bus;
-    uint32_t reserved;
+    u64 base_address;
+    u16 PCI_seg_group;
+    u8 start_bus;
+    u8 end_bus;
+    u32 reserved;
 }__attribute__((packed)) device_config;
 
-bool mcfg_init();
+_bool mcfg_init();
 void iterate_pci();
 
-uint32_t* pci_getaddr(uint8_t bus,uint8_t dev,uint8_t func,uint8_t off);
+u32* pci_getaddr(u8 bus,u8 dev,u8 func,u8 off);
 
-uint32_t pci_read(uint8_t bus,uint8_t dev,uint8_t func,uint8_t off);
-void pci_write(uint8_t bus,uint8_t dev,uint8_t func,uint8_t off,uint32_t val);
+u32 pci_read(u8 bus,u8 dev,u8 func,u8 off);
+void pci_write(u8 bus,u8 dev,u8 func,u8 off,u32 val);
 
 #endif

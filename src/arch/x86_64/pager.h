@@ -1,7 +1,8 @@
 #ifndef PAGER_H
 #define PAGER_H
 
-#include <libk/stdtypes.h>
+#include <libk/stdint.h>
+#include <libk/stdbool.h>
 
 #define VMM_BITMASK_L4_PRESENT 1 << 0
 #define VMM_BITMASK_L4_WRITABLE 1 << 1
@@ -20,14 +21,14 @@
 #define PML4_GET_FLAGS(VALUE) ((VALUE) & ~VMM_BITMASK_L4_ADDR)
 
 
-uint64_t vmm_create_pagetable();
-void     vmm_bind_pagetable(uint64_t pml4);
-uint64_t vmm_get_pagetable();
+u64 vmm_create_pagetable();
+void     vmm_bind_pagetable(u64 pml4);
+u64 vmm_get_pagetable();
 
-bool vmm_map_page(uint64_t vaddr, uint64_t paddr, uint64_t flags);
-bool vmm_unmap_page(uint64_t vaddr);
-bool vmm_edit_flags(uint64_t vaddr, uint64_t flags);
+_bool vmm_map_page(u64 vaddr, u64 paddr, u64 flags);
+_bool vmm_unmap_page(u64 vaddr);
+_bool vmm_edit_flags(u64 vaddr, u64 flags);
 
-uint64_t vmm_virt_to_phys(uint64_t vaddr,uint64_t pml4);
+u64 vmm_virt_to_phys(u64 vaddr,u64 pml4);
 
 #endif

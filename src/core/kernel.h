@@ -4,7 +4,8 @@
 #include "arch/x86_64/cpu.h"
 
 #include "limine.h"
-#include <libk/stdtypes.h>
+#include <libk/stdint.h>
+#include <libk/stdbool.h>
 #include "uterus.h"
 
 
@@ -12,11 +13,11 @@
 struct HN_data_block {
     //System info
     CPUInfo cpu_info;
-    uint64_t pml4;
+    u64 pml4;
 
     //ACPI shit
     void* hhdm_off;
-    uint32_t lapic_base;
+    u32 lapic_base;
 
     //kterm shit
     struct uterus_context* ut_ctx;

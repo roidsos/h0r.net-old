@@ -1,7 +1,8 @@
 #ifndef __CEREAL_H__
 #define __CEREAL_H__
 
-#include <libk/stdtypes.h>
+#include <libk/stdint.h>
+#include <libk/stdbool.h>
 
 #define COM1 0x3F8
 #define COM2 0x2F8
@@ -14,5 +15,5 @@
 
 char cereal_read(int port);
 void cereal_write(char a,int port);
-bool cereal_init();
+_bool cereal_init();
 #endif // __SERIAL_H__

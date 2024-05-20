@@ -1,7 +1,8 @@
 #include "string.h"
-#include <libk/stdtypes.h>
+#include <libk/stdint.h>
+#include <libk/stddef.h>
 
-void *memchr(const void *s, int c, size_t n) {
+void *memchr(const void *s, int c, usize n) {
     const unsigned char uc = c;
     const unsigned char *su;
 
@@ -14,7 +15,7 @@ void *memchr(const void *s, int c, size_t n) {
     return NULL;
 }
 
-int memcmp(const void *s1, const void *s2, size_t n) {
+int memcmp(const void *s1, const void *s2, usize n) {
     const unsigned char *su1;
     const unsigned char *su2;
 
@@ -27,7 +28,7 @@ int memcmp(const void *s1, const void *s2, size_t n) {
     return 0;
 }
 
-void *memcpy(void *s1, const void *s2, size_t n) {
+void *memcpy(void *s1, const void *s2, usize n) {
     // this function assumes the areas do not overlap
     char *su1;
     const char *su2;
@@ -39,7 +40,7 @@ void *memcpy(void *s1, const void *s2, size_t n) {
     return s1;
 }
 
-void *memmove(void *s1, const void *s2, size_t n) {
+void *memmove(void *s1, const void *s2, usize n) {
     char *sc1;
     const char *sc2;
 
@@ -58,7 +59,7 @@ void *memmove(void *s1, const void *s2, size_t n) {
     return s1;
 }
 
-void *memset(void *s, int c, size_t n) {
+void *memset(void *s, int c, usize n) {
     const unsigned char uc = c;
     unsigned char *su;
 
@@ -97,7 +98,7 @@ char *strcpy(char *s1, const char *s2) {
     return s1;
 }
 
-size_t strcspn(const char *s1, const char *s2) {
+usize strcspn(const char *s1, const char *s2) {
     const char *sc1, *sc2;
 
     for (sc1 = s1; *sc1 != '\0'; ++sc1) {
@@ -111,7 +112,7 @@ size_t strcspn(const char *s1, const char *s2) {
     return sc1 - s1;
 }
 
-size_t strlen(const char *s) {
+usize strlen(const char *s) {
     const char *sc;
 
     for (sc = s; *sc != '\0'; ++sc)
@@ -119,7 +120,7 @@ size_t strlen(const char *s) {
     return sc - s;
 }
 
-char *strncat(char *s1, const char *s2, size_t n) {
+char *strncat(char *s1, const char *s2, usize n) {
     char *s;
 
     for (s = s1; *s != '\0'; ++s)
@@ -132,7 +133,7 @@ char *strncat(char *s1, const char *s2, size_t n) {
     return s1;
 }
 
-int strncmp(const char *s1, const char *s2, size_t n) {
+int strncmp(const char *s1, const char *s2, usize n) {
     for (; n > 0; ++s1, ++s2, --n) {
         if (*s1 != *s2) {
             return (*(unsigned char *)s1 < *(unsigned char *)s2) ? -1 : 1;
@@ -144,7 +145,7 @@ int strncmp(const char *s1, const char *s2, size_t n) {
     return 0;
 }
 
-char *strncpy(char *s1, const char *s2, size_t n) {
+char *strncpy(char *s1, const char *s2, usize n) {
     char *s;
 
     for (s = s1; n > 0 && *s2 != '\0'; --n) {
@@ -158,7 +159,7 @@ char *strncpy(char *s1, const char *s2, size_t n) {
     return s1;
 }
 
-size_t strspn(const char *s1, const char *s2) {
+usize strspn(const char *s1, const char *s2) {
     const char *sc1, *sc2;
 
     for (sc1 = s1; *sc1 != '\0'; ++sc1) {

@@ -13,63 +13,63 @@
 
 typedef struct {
     sdt_header h;
-    uint32_t lapic_addr;
-    uint32_t flags;
+    u32 lapic_addr;
+    u32 flags;
 } __attribute__((__packed__)) madt_header;
 
 typedef struct {
-    uint8_t type;
-    uint8_t length;
+    u8 type;
+    u8 length;
 } __attribute__((__packed__)) entry_header;
 
 typedef struct {
     entry_header h;
     union {
         struct {
-            uint8_t CPU_ID;
-            uint8_t LAPIC_ID;
-            uint32_t flags;
+            u8 CPU_ID;
+            u8 LAPIC_ID;
+            u32 flags;
         } __attribute__((__packed__)) lapic;
         struct {
-            uint8_t id;
-            uint8_t reserved;
-            uint32_t adress;
-            uint32_t GS_interrupt_base;
+            u8 id;
+            u8 reserved;
+            u32 adress;
+            u32 GS_interrupt_base;
         } __attribute__((__packed__)) ioapic;
         struct {
-            uint8_t bus_source;
-            uint8_t IRQ_source;
-            uint8_t GS_interupt;
-            uint16_t flags;
+            u8 bus_source;
+            u8 IRQ_source;
+            u8 GS_interupt;
+            u16 flags;
         } __attribute__((__packed__)) ioapic_override;
         struct {
-            uint8_t source;
-            uint8_t reserved;
-            uint16_t flags;
-            uint32_t GS_interrupt;
+            u8 source;
+            u8 reserved;
+            u16 flags;
+            u32 GS_interrupt;
         } __attribute__((__packed__)) ioapic_nmi;
         struct {
-            uint8_t CPU_ID;
-            uint16_t flags;
-            uint8_t lint_num;//?????
+            u8 CPU_ID;
+            u16 flags;
+            u8 lint_num;//?????
         } __attribute__((__packed__)) lapic_nmi;
         struct {
-            uint16_t reserved;
-            uint64_t addr64;
+            u16 reserved;
+            u64 addr64;
         } __attribute__((__packed__)) lapic_addr_overrride;
         struct {
-            uint16_t reserved;
-            uint32_t ID;
-            uint32_t flags;
-            uint32_t ACPI_ID;
+            u16 reserved;
+            u32 ID;
+            u32 flags;
+            u32 ACPI_ID;
         } __attribute__((__packed__)) lx2apic;
     } the_meat;
 } __attribute__((__packed__)) madt_entry;
 
-bool madt_init();
+_bool madt_init();
 
 #define MAX_ENTRIES 64
-extern uint16_t num_madt_entries;
+extern u16 num_madt_entries;
 extern madt_entry* entry_ptrs[MAX_ENTRIES];
 
 #endif

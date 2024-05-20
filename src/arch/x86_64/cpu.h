@@ -74,31 +74,31 @@
 #define CPUID_FEAT_EDX_PBE         1 << 31
 
 
-#include <libk/stdtypes.h>
+#include <libk/stdint.h>
 typedef struct {
     char vendor[13];       // Vendor ID (12 characters + null terminator)
     char brand_string[49]; // Brand String (48 characters + null terminator)
-    uint8_t family;       // Family
-    uint8_t model;        // Model
-    uint8_t stepping;     // Stepping
-    uint8_t ext_family;   // Extended Family
-    uint8_t ext_model;    // Extended Model
-    uint32_t features[4];  // CPU Capabilities (EDX, ECX)
+    u8 family;       // Family
+    u8 model;        // Model
+    u8 stepping;     // Stepping
+    u8 ext_family;   // Extended Family
+    u8 ext_model;    // Extended Model
+    u32 features[4];  // CPU Capabilities (EDX, ECX)
 } CPUInfo;
 struct stackframe32_t {
     struct stackframe32_t* EBP;
-    uint32_t EIP;
+    u32 EIP;
 };
 struct stackframe64_t {
     struct stackframe64_t* RBP;
-    uint64_t RIP;
+    u64 RIP;
 };
-void cpuid(uint32_t eax, uint32_t *a, uint32_t *b, uint32_t *c, uint32_t *d);
+void cpuid(u32 eax, u32 *a, u32 *b, u32 *c, u32 *d);
 void get_cpu_capabilities(CPUInfo *cpuInfo);
 int sys_init_fpu();
 
-void rdmsr(uint32_t msr, uint32_t *lo, uint32_t *hi);
-void wrmsr(uint32_t msr, uint32_t lo, uint32_t hi);
-uint64_t read_tsc();
+void rdmsr(u32 msr, u32 *lo, u32 *hi);
+void wrmsr(u32 msr, u32 lo, u32 hi);
+u64 read_tsc();
 
 #endif // __CPU_H__

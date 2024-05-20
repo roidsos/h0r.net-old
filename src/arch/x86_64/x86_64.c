@@ -11,13 +11,13 @@
 #include <utils/psf2.h>
 #include <vendor/printf.h>
 
-uint64_t kernel_stack[8192];
+u64 kernel_stack[8192];
 
 static volatile struct limine_module_request mod_request = {
     .id = LIMINE_MODULE_REQUEST, .revision = 0};
 
 void load_limine_modules() {
-    for (size_t i = 0; i < mod_request.response->module_count; i++) {
+    for (usize i = 0; i < mod_request.response->module_count; i++) {
         struct limine_file *mod = mod_request.response->modules[i];
         if (strcmp(mod->path, "/boot/kfont.psf") == 0) {
             data.ut_ctx = init_uterus_with_psf2_font(mod, data.framebuffer);
@@ -60,10 +60,10 @@ void _start(void) {
     log_nice("x86_64 Init Target reached: IO\n");
 
     // CPU deez nutz
-    data.pml4 = (uint64_t)PHYS_TO_VIRT(vmm_get_pagetable());
+    data.pml4 = (u64)PHYS_TO_VIRT(vmm_get_pagetable());
     get_cpu_capabilities(&data.cpu_info);
     sys_init_fpu();
-    gdt_init((uint64_t *)kernel_stack);
+    gdt_init((u64 *)kernel_stack);
     log_nice("x86_64 Init Target reached: CPU\n");
 
     // initialize interrupts

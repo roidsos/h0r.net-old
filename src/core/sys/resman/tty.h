@@ -1,8 +1,8 @@
 #ifndef __TTY_H__
 #define __TTY_H__
 
-#include <stdint.h>
-#include <libk/stdtypes.h>
+#include <libk/stdint.h>
+#include <libk/stdbool.h>
 
 enum tty_type {
     TTY_TYPE_SERIAL = 1,
@@ -15,22 +15,22 @@ enum tty_serial_port {
 };
 
 typedef struct {
-    uint8_t out_type;
-    uint8_t out_port;
-    uint8_t in_type;
-    uint8_t in_port;
-    uint8_t lock;
+    u8 out_type;
+    u8 out_port;
+    u8 in_type;
+    u8 in_port;
+    u8 lock;
 } tty_t;
 
-uint16_t tty_register(tty_t tty);
-void tty_unregister(uint16_t tty_id);
+u16 tty_register(tty_t tty);
+void tty_unregister(u16 tty_id);
 
-bool tty_lock(uint16_t tty_id);
-void tty_unlock(uint16_t tty_id);
-uint8_t tty_get_lock(uint16_t tty_id);
+_bool tty_lock(u16 tty_id);
+void tty_unlock(u16 tty_id);
+u8 tty_get_lock(u16 tty_id);
 
-void tty_write(uint16_t tty_id, char* data, uint32_t size);
+void tty_write(u16 tty_id, char* data, u32 size);
 
-extern bool tty_initialized;
+extern _bool tty_initialized;
 
 #endif

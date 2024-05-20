@@ -13,8 +13,8 @@ const char *memmap_type_names[] = {
     "LIMINE_MEMMAP_KERNEL_AND_MODULES",
     "LIMINE_MEMMAP_FRAMEBUFFER",
 };
-struct limine_memmap_entry *get_memmap_entry_of_type(uint32_t type) {
-    for (size_t i = 0; i < memmap_request.response->entry_count; i++) {
+struct limine_memmap_entry *get_memmap_entry_of_type(u32 type) {
+    for (usize i = 0; i < memmap_request.response->entry_count; i++) {
         if (memmap_request.response->entries[i]->type == type) {
             return memmap_request.response->entries[i];
         }

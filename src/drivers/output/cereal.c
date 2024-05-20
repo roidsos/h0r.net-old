@@ -5,7 +5,7 @@
 int is_transmit_empty(int port) { return inb8(port + 5) & 0x20; }
 int serial_received(int port) { return inb8(port + 5) & 1; }
 
-bool init_cereal_port(int port) {
+_bool init_cereal_port(int port) {
     outb8(port + 1, 0x00); // Disable all interrupts
     outb8(port + 3, 0x80); // Enable DLAB (set baud rate divisor)
     outb8(port + 0, 0x03); // Set divisor to 3 (lo byte) 38400 baud
@@ -28,7 +28,7 @@ bool init_cereal_port(int port) {
     return true;
 }
 
-bool cereal_init() {
+_bool cereal_init() {
     return init_cereal_port(COM1) && init_cereal_port(COM2) &&
            init_cereal_port(COM3) && init_cereal_port(COM4) &&
            init_cereal_port(COM5) && init_cereal_port(COM6) &&

@@ -1,8 +1,9 @@
 #ifndef __PROCESS_H__
 #define __PROCESS_H__
 
-#include <libk/stdtypes.h>
 #include <arch/x86_64/interrupts/interrupts.h>
+#include <libk/stdint.h>
+#include <libk/stdbool.h>
 
 enum process_state {
     SCHED_STATE_NONEXISTENT = 0,
@@ -12,10 +13,10 @@ enum process_state {
 };
 
 typedef struct {
-    uint8_t state_flags;
+    u8 state_flags;
     char* name;
     Registers regs;
-    uint32_t tty_id;
+    u32 tty_id;
 } process_t;
 
 #endif // __PROCESS_H__

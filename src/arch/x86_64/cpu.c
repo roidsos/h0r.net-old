@@ -1,11 +1,11 @@
 #include "cpu.h"
 #include "libk/string.h"
-void cpuid(uint32_t eax, uint32_t *a, uint32_t *b, uint32_t *c, uint32_t *d) {
+void cpuid(u32 eax, u32 *a, u32 *b, u32 *c, u32 *d) {
     asm volatile("cpuid" : "=a"(*a), "=b"(*b), "=c"(*c), "=d"(*d) : "a"(eax));
 }
 
 void get_cpu_capabilities(CPUInfo *cpuInfo) {
-    uint32_t eax, ebx, ecx, edx;
+    u32 eax, ebx, ecx, edx;
 
     //Vendor String
     cpuid(CPUID_GET_VENDORSTRING, &eax, &ebx, &ecx, &edx);
@@ -42,7 +42,7 @@ void get_cpu_capabilities(CPUInfo *cpuInfo) {
 }
 int sys_init_fpu() {
     // get if fpu is present
-    uint32_t eax, ebx, ecx, edx;
+    u32 eax, ebx, ecx, edx;
     cpuid(1, &eax, &ebx, &ecx, &edx);
     if (!(edx & (1 << 24)))
         return 1;
@@ -59,19 +59,19 @@ int sys_init_fpu() {
     return 0;
 }
 
-void rdmsr(uint32_t msr, uint32_t *lo, uint32_t *hi)
+void rdmsr(u32 msr, u32 *lo, u32 *hi)
 {
     asm volatile("rdmsr" : "=a"(*lo), "=d"(*hi) : "c"(msr));
 }
 
-void wrmsr(uint32_t msr, uint32_t lo, uint32_t hi)
+void wrmsr(u32 msr, u32 lo, u32 hi)
 {
     asm volatile("wrmsr" : : "a"(lo), "d"(hi), "c"(msr));
 }
 
-uint64_t read_tsc()
+u64 read_tsc()
 {
-    uint64_t result;
+    u64 result;
     __asm__ volatile("rdtsc" : "=A"(result));
     return result;
 }

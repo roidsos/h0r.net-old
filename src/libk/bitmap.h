@@ -1,14 +1,16 @@
 #ifndef __BITMAP_H__
 #define __BITMAP_H__
 
-#include <libk/stdtypes.h>
+#include <libk/stdint.h>
+#include <libk/stddef.h>
+#include <libk/stdbool.h>
 
 struct Bitmap{
-    size_t size;
-    uint8_t* buffer;
+    usize size;
+    u8* buffer;
 };
 
-bool bitmap_set(struct Bitmap bm,size_t index,bool setto);
-bool bitmap_get(struct Bitmap bm,size_t index);
+_bool bitmap_set(struct Bitmap bm,usize index,_bool setto);
+_bool bitmap_get(struct Bitmap bm,usize index);
 
 #endif // __BITMAP_H__

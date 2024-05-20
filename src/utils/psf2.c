@@ -9,13 +9,13 @@
 #define PSF2_MAGIC3 0x86
 
 typedef struct {
-    uint8_t magic[4];
-    uint32_t version;
-    uint32_t headerSize;
-    uint32_t flags;
-    uint32_t length;
-    uint32_t charSize;
-    uint32_t height, width;
+    u8 magic[4];
+    u32 version;
+    u32 headerSize;
+    u32 flags;
+    u32 length;
+    u32 charSize;
+    u32 height, width;
 } __attribute__((packed)) psf2Hdr;
 
 struct uterus_context *
