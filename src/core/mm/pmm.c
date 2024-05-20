@@ -1,4 +1,5 @@
 #include "pmm.h"
+#include "core/mm/mem.h"
 #include <config.h>
 #include <string.h>
 #include <utils/error.h>
@@ -128,31 +129,6 @@ void *request_pages(usize num) {
     return PP;
 }
 
-#if XTRA_DEBUG
-static char *get_entry_type(u64 type) {
-    switch (type) {
-    case LIMINE_MEMMAP_USABLE:
-        return "Usable";
-    case LIMINE_MEMMAP_RESERVED:
-        return "Reserved";
-    case LIMINE_MEMMAP_ACPI_RECLAIMABLE:
-        return "ACPI Reclaimable";
-    case LIMINE_MEMMAP_ACPI_NVS:
-        return "ACPI NVS";
-    case LIMINE_MEMMAP_BAD_MEMORY:
-        return "Bad Memory";
-    case LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE:
-        return "Bootloader Reclaimable";
-    case LIMINE_MEMMAP_KERNEL_AND_MODULES:
-        return "Kernel and Modules";
-    case LIMINE_MEMMAP_FRAMEBUFFER:
-        return "Framebuffer";
-    default:
-        return "???";
-    }
-}
-#endif
-
 void pmm_init() {
     usize page_bmp_size = 0;
     void *largest_free_memseg = NULL;
@@ -161,7 +137,7 @@ void pmm_init() {
     for (usize i = 0; i < memmap_request.response->entry_count; i++) {
         struct limine_memmap_entry *desc = memmap_request.response->entries[i];
         log_trace("  -type:\"%s\",base:0x%p,length:%u\n",
-                  get_entry_type(desc->type), desc->base, desc->length);
+                  memmap_type_names[desc->type], desc->base, desc->length);
         if (desc->type == LIMINE_MEMMAP_USABLE &&
             desc->length > largest_free_memseg_size) {
             largest_free_memseg = (void *)(desc->base);
