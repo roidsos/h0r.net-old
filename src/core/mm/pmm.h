@@ -2,7 +2,7 @@
 #define PMM_H__
 
 #include <core/memory.h>
-#include "types/bitmap.h"
+#include "libk/bitmap.h"
 #include <limine.h>
 
 void pmm_init();

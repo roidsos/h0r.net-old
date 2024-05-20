@@ -50,7 +50,6 @@ $(eval $(call DEFAULT_VAR,LDFLAGS,$(DEFAULT_LDFLAGS)))
 
 # Internal C flags that should not be changed by the user.
 override CFLAGS += \
-    -Isrc/vendor/libkrnl-essentials \
     -Isrc/vendor/uterus \
     -Isrc/vendor/lai/include \
     -Isrc \

@@ -37,7 +37,7 @@
 #include <core/sys/sched/sched.h>
 #include <core/sys/resman/tty.h>
 #include <stdint.h>
-#include <types/stdtypes.h>
+#include <libk/stdtypes.h>
 #include <uterus.h>
 #include <config.h>
 

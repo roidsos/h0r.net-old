@@ -1,7 +1,7 @@
 #include "error.h"
 #include <arch/x86_64/cpu.h>
 #include <core/memory.h>
-#include <klibc/stdlib.h>
+#include <libk/stdlib.h>
 #include <stdint.h>
 #include <utils/log.h>
 #include <vendor/printf.h>

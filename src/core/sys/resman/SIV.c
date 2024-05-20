@@ -1,6 +1,6 @@
 #include "SIV.h"
 #include <config.h>
-#include <klibc/string.h>
+#include <libk/string.h>
 #include <core/mm/heap.h>
 #include <stdint.h>
 #include <utils/log.h>

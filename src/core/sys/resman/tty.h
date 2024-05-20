@@ -2,7 +2,7 @@
 #define __TTY_H__
 
 #include <stdint.h>
-#include <types/stdtypes.h>
+#include <libk/stdtypes.h>
 
 enum tty_type {
     TTY_TYPE_SERIAL = 1,

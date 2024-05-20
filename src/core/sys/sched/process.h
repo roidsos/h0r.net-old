@@ -1,7 +1,7 @@
 #ifndef __PROCESS_H__
 #define __PROCESS_H__
 
-#include <types/stdtypes.h>
+#include <libk/stdtypes.h>
 #include <arch/x86_64/interrupts/interrupts.h>
 
 enum process_state {

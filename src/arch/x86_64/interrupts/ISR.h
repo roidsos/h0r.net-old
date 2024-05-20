@@ -1,6 +1,6 @@
 #ifndef __ISR_H__
 #define __ISR_H__
-#include <types/stdtypes.h>
+#include <libk/stdtypes.h>
 
 typedef struct 
 {

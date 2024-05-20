@@ -4,7 +4,7 @@
 #include "arch/x86_64/cpu.h"
 
 #include "limine.h"
-#include <types/stdtypes.h>
+#include <libk/stdtypes.h>
 #include "uterus.h"
 
 

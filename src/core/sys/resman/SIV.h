@@ -1,7 +1,7 @@
 #ifndef __SIV_H__
 #define __SIV_H__
 
-#include <types/stdtypes.h>
+#include <libk/stdtypes.h>
 
 //Signatures of physical drive types
 #define SIV_SIG_HARDDRIVE    "HARD"

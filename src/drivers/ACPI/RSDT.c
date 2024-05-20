@@ -1,6 +1,6 @@
 #include "RSDT.h"
 #include <core/memory.h>
-#include <klibc/string.h>
+#include <libk/string.h>
 #include <limine.h>
 #include <utils/log.h>
 RSDT *rsdt;

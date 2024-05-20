@@ -1,7 +1,7 @@
 #ifndef __HEAP_H__
 #define __HEAP_H__
 
-#include <types/stdtypes.h>
+#include <libk/stdtypes.h>
 
 void heap_init();
 void* malloc(size_t size);

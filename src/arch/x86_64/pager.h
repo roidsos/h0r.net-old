@@ -1,7 +1,7 @@
 #ifndef PAGER_H
 #define PAGER_H
 
-#include <types/stdtypes.h>
+#include <libk/stdtypes.h>
 
 #define VMM_BITMASK_L4_PRESENT 1 << 0
 #define VMM_BITMASK_L4_WRITABLE 1 << 1

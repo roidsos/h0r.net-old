@@ -1,7 +1,7 @@
 #include "pager.h"
 #include <core/memory.h>
 #include <core/mm/pmm.h>
-#include <klibc/string.h>
+#include <libk/string.h>
 
 uint64_t vmm_create_pagetable() { return 0; }
 

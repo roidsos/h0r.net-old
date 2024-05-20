@@ -1,7 +1,7 @@
 #ifndef __REGISTERY_H__
 #define __REGISTERY_H__
 
-#include <types/stdtypes.h>
+#include <libk/stdtypes.h>
 
 typedef struct {
     uint32_t magic;   // a magic value meant to verify whether this file is actually a hive file

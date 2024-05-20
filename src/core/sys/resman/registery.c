@@ -1,6 +1,6 @@
 #include "registery.h"
 #include <config.h>
-#include <klibc/string.h>
+#include <libk/string.h>
 #include <utils/log.h>
 
 #include <core/mm/heap.h>

@@ -1,7 +1,7 @@
 #ifndef __CEREAL_H__
 #define __CEREAL_H__
 
-#include <types/stdtypes.h>
+#include <libk/stdtypes.h>
 
 #define COM1 0x3F8
 #define COM2 0x2F8

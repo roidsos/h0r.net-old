@@ -5,7 +5,7 @@
 #include <core/kernel.h>
 #include <core/memory.h>
 #include <drivers/output/cereal.h>
-#include <klibc/string.h>
+#include <libk/string.h>
 #include <utils/error.h>
 #include <utils/log.h>
 #include <utils/psf2.h>

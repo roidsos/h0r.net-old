@@ -1,7 +1,7 @@
-#include <parsing/tar.h>
+#include <libk/tar.h>
 #include <core/sys/resman/SIV.h>
 #include <stdint.h>
-#include <klibc/string.h>
+#include <libk/string.h>
 #include <utils/log.h>
 #include <core/kernel.h>
 

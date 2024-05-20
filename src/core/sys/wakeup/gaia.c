@@ -1,6 +1,6 @@
 #include <core/mm/heap.h>
 #include <vendor/printf.h>
-#include <types/stdtypes.h>
+#include <libk/stdtypes.h>
 
 #include <utils/log.h>
 

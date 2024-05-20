@@ -1,7 +1,7 @@
 #ifndef GDT_H
 #define GDT_H
 
-#include <types/stdtypes.h>
+#include <libk/stdtypes.h>
 
 typedef struct
 {

@@ -3,7 +3,7 @@
 #include <config.h>
 #include <drivers/LAPIC.h>
 #include <vendor/printf.h>
-#include <klibc/string.h>
+#include <libk/string.h>
 #include <core/mm/heap.h>
 #include <vendor/printf.h>
 

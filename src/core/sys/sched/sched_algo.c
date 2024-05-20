@@ -1,6 +1,6 @@
 #include "process.h"
 #include "config.h"
-#include <klibc/string.h>
+#include <libk/string.h>
 
 extern process_t processes[MAX_PROCESSES];
 extern uint32_t sched_num_procs;

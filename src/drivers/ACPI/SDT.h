@@ -1,7 +1,7 @@
 #ifndef SDT_H
 #define SDT_H
 
-#include <types/stdtypes.h>
+#include <libk/stdtypes.h>
 
 typedef struct {
   char signature[4];

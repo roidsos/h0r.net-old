@@ -2,7 +2,7 @@
 #define MEMORY_H
 
 #include <core/kernel.h>
-#include <types/stdtypes.h>
+#include <libk/stdtypes.h>
 
 extern volatile struct limine_memmap_request memmap_request;
 

@@ -1,5 +1,5 @@
 #include "heap.h"
-#include <klibc/string.h>
+#include <libk/string.h>
 #include <vendor/printf.h>
 #include <utils/log.h>
 #include <utils/error.h>
