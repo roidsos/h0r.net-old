@@ -3,7 +3,6 @@
 
 #include <libk/stddef.h>
 
-void heap_init();
 void* malloc(usize size);
 void* calloc(usize count, usize size);
 void* realloc(void* old,usize size);

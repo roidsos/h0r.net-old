@@ -6,7 +6,6 @@
 #include <utils/log.h>
 #include <vendor/printf.h>
 
-void heap_init() {}
 void *malloc(usize size) {
     log_trace("malloc(%d)\n", size);
     char *PP = (char *)PHYS_TO_VIRT(request_pages((size / 4096) + 1));
