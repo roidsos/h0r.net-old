@@ -54,26 +54,57 @@ u64 vmm_get_pagetable() {
     return pml4;
 }
 
-_bool vmm_map_page(u64 vaddr, u64 paddr, u64 flags) {
+_bool vmm_map_page(u64 pml4,u64 vaddr, u64 paddr, u64 flags) {
     usize pml4_index = (vaddr & ((uptr)0x1ff << 39)) >> 39;
     usize pml3_index = (vaddr & ((uptr)0x1ff << 30)) >> 30;
     usize pml2_index = (vaddr & ((uptr)0x1ff << 21)) >> 21;
     usize pml1_index = (vaddr & ((uptr)0x1ff << 12)) >> 12;
 
     uptr *pml3 =
-        get_next_lvl((uptr *)vmm_get_pagetable(), pml4_index, transform_flags(flags), true);
+        get_next_lvl((uptr *)pml4, pml4_index, transform_flags(flags), true);
     uptr *pml2 = get_next_lvl(pml3, pml3_index, transform_flags(flags), true);
     uptr *pml1 = get_next_lvl(pml2, pml2_index, transform_flags(flags), true);
     pml1[pml1_index] = paddr | transform_flags(flags);
     return true;
 }
-_bool vmm_unmap_page(u64 vaddr) {
+
+_bool vmm_edit_flags(u64 pml4,u64 vaddr, u64 flags) {
     usize pml4_index = (vaddr & ((uptr)0x1ff << 39)) >> 39;
     usize pml3_index = (vaddr & ((uptr)0x1ff << 30)) >> 30;
     usize pml2_index = (vaddr & ((uptr)0x1ff << 21)) >> 21;
     usize pml1_index = (vaddr & ((uptr)0x1ff << 12)) >> 12;
 
-    uptr *pml4 = (uptr *)vmm_get_pagetable();
+    uptr *pml3 =
+        get_next_lvl((uptr *)pml4, pml4_index, transform_flags(flags), true);
+    uptr *pml2 = get_next_lvl(pml3, pml3_index, transform_flags(flags), true);
+    uptr *pml1 = get_next_lvl(pml2, pml2_index, transform_flags(flags), true);
+    pml1[pml1_index] = PML4_GET_ADDR(pml1[pml1_index]) | transform_flags(flags);
+    return true;
+}
+
+
+_bool vmm_map_range(u64 pml4,u64 vaddr, u64 paddr, u64 size, u64 flags){
+    _bool success = true;
+    for (u64 i = 0; i < size; i += 0x1000) {
+        success &= vmm_map_page(pml4, vaddr + i, paddr + i, flags);
+    }
+    return success;
+}
+_bool vmm_unmap_range(u64 pml4,u64 vaddr, u64 size){
+    _bool success = true;
+    for (u64 i = 0; i < size; i += 0x1000) {
+       success &= vmm_unmap_page(pml4, vaddr + i);
+    }
+    return success;
+}
+
+_bool vmm_unmap_page(u64 pml4_,u64 vaddr) {
+    usize pml4_index = (vaddr & ((uptr)0x1ff << 39)) >> 39;
+    usize pml3_index = (vaddr & ((uptr)0x1ff << 30)) >> 30;
+    usize pml2_index = (vaddr & ((uptr)0x1ff << 21)) >> 21;
+    usize pml1_index = (vaddr & ((uptr)0x1ff << 12)) >> 12;
+
+    uptr *pml4 = (uptr *)pml4_;
     if (!(pml4[pml4_index] & X86_PAGER_BITMASK_PRESENT)) {
         return false;
     }
@@ -90,7 +121,7 @@ _bool vmm_unmap_page(u64 vaddr) {
     return true;
 }
 
-u64 vmm_virt_to_phys(u64 vaddr, u64 pml4) {
+u64 vmm_virt_to_phys(u64 pml4,u64 vaddr) {
     usize pml4_index = (vaddr & ((uptr)0x1ff << 39)) >> 39;
     usize pml3_index = (vaddr & ((uptr)0x1ff << 30)) >> 30;
     usize pml2_index = (vaddr & ((uptr)0x1ff << 21)) >> 21;
