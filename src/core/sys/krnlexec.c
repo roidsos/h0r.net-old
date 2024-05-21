@@ -6,6 +6,7 @@
 #include <core/sys/sched/sched.h>
 #include <arch/general/paging.h>
 #include <core/mm/pmm.h>
+#include <utils/log.h>
 
 //markers
 extern int kernel_start;
@@ -15,6 +16,8 @@ void execute(const char* name, void (*func)(),u64 fsize, _bool user){
     u64 pagemap = vmm_create_pagetable();
     Registers regs = {0};
     u64 stack = (u64)request_pages(2);
+
+    log_trace("func: %p, stack: %p\n", func, stack);
 
     regs.rip = (u64)func;
     regs.rsp = stack;
