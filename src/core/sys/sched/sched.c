@@ -29,7 +29,7 @@ void sched_kill(u32 pid) {
     }
     if (sched_current_pid == pid) {
         //TODO: make this arch independent and smh stop the timer to avoid double advance
-        __asm__ volatile("int 0x20");
+        __asm__ volatile("int $0x20");
     }
 }
 

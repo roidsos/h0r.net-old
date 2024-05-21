@@ -1,14 +1,15 @@
 #include <core/mm/heap.h>
 #include <libk/stdbool.h>
-#include <libk/stddef.h>
-#include <libk/stdint.h>
 #include <vendor/printf.h>
-#include <vendor/lai/include/lai/helpers/pm.h>
-#include <utils/log.h>
+#include <core/sys/sched/sched.h>
+void syscall_test() {
+    __asm__ volatile ("mov $0, %rax");
+    __asm__ volatile ("int $0x80");
+    printf("If this prints, sys_exit has failed\n"); // wont get here
+}
 
 void gaia_main(void) {
     printf("TODO: startup tasks\n");
-    //lai_enter_sleep(5);
-    while (true)
-        ;
+    sched_add_process("syscall_test", syscall_test);
+    while (true);
 }
