@@ -1,6 +1,8 @@
 #ifndef __STDINT_H__
 #define __STDINT_H__
 
+//WARN: Arch specific code in libk/ + TODO: smh move to arch/ or make architecture neutral
+
 //unsigned
 typedef unsigned char u8;
 typedef unsigned short u16;

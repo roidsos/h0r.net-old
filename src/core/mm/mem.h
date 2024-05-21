@@ -4,7 +4,7 @@
 #include <core/kernel.h>
 #include <libk/stdint.h>
 
-//WARN: Arch specific code in core/ + TODO: smh move to arch/
+//WARN: Arch specific code in core/ + TODO: smh move to arch/ or make architecture neutral
 extern volatile struct limine_memmap_request memmap_request;
 
 struct limine_memmap_entry* get_memmap_entry_of_type(u32 type);

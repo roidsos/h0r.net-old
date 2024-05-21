@@ -28,7 +28,7 @@ void sched_kill(u32 pid) {
         processes[pid].state_flags = SCHED_STATE_DEAD;
     }
     if (sched_current_pid == pid) {
-        //WARN: Arch specific code in core/ + TODO: smh move to arch/
+        //WARN: Arch specific code in core/ + TODO: smh move to arch/ or make architecture neutral
         //TODO: smh stop the timer to avoid double advance
         __asm__ volatile("int $0x20");
     }

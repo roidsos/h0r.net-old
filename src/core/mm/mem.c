@@ -1,6 +1,6 @@
 #include "mem.h"
 
-//WARN: Arch specific code in core/ + TODO: smh move to arch/
+//WARN: Arch specific code in core/ + TODO: smh move to arch/ or make architecture neutral
 volatile struct limine_memmap_request memmap_request = {
     .id = LIMINE_MEMMAP_REQUEST, .revision = 0};
 

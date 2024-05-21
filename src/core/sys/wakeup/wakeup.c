@@ -50,6 +50,6 @@ void wakeup_startup() {
     sched_add_process("proc1", gaia_main);
 
     // kickstart the sched
-    //WARN: Arch specific code in core/ + TODO: smh move to arch/
+    //WARN: Arch specific code in core/ + TODO: smh move to arch/ or make architecture neutral
     __asm__("int $32");
 }

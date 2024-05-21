@@ -1,7 +1,6 @@
 #include "tar.h"
 #include "libk/vector.h"
-// turns out, the idiots who designed tar, encoded the size into a base 8 string
-// :facepalm:
+
 u32 parse_size(u8 *in) {
 
     u32 size = 0;

@@ -15,7 +15,7 @@ enum process_state {
 typedef struct {
     u8 state_flags;
     char* name;
-    //WARN: Arch specific code in core/ + TODO: smh move to arch/
+    //WARN: Arch specific code in core/ + TODO: smh move to arch/ or make architecture neutral
     Registers regs;
     u32 tty_id;
 } process_t;
