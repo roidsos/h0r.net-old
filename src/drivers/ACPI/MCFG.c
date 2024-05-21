@@ -21,10 +21,10 @@ void iterate_pci() {
     log_trace("PCI Devices: \n");
     for (int bus = 0; bus < 8; bus++) {
         for (int device = 0; device < 32; device++) {
-            int numfuncs = pci_read(bus, device, 0, 0x0E) & (1 << 7) ? 8 : 1;
+            int numfuncs = pcie_read(bus, device, 0, 0x0E) & (1 << 7) ? 8 : 1;
             for (int function = 0; function < numfuncs; function++) {
-                u16 vendor_id = pci_read(bus, device, function, 0x00);
-                u16 device_id = pci_read(bus, device, function, 0x02);
+                u16 vendor_id = pcie_read(bus, device, function, 0x00);
+                u16 device_id = pcie_read(bus, device, function, 0x02);
                 if (vendor_id == 0x0000 || vendor_id == 0xFFFF ||
                     device_id == 0x0000) {
                     continue;
@@ -36,7 +36,7 @@ void iterate_pci() {
     }
 }
 
-u32 *pci_getaddr(u8 bus, u8 dev, u8 func, u8 off) {
+u32 *pcie_getaddr(u8 bus, u8 dev, u8 func, u8 off) {
     for (usize i = 0; i < num_mcfg_entries; i++) {
         if (bus >= entries[i].start_bus && bus <= entries[i].end_bus) {
             u64 addr = (entries[i].base_address + (bus << 20) + (dev << 15) +
@@ -47,10 +47,10 @@ u32 *pci_getaddr(u8 bus, u8 dev, u8 func, u8 off) {
     return 0;
 }
 
-u32 pci_read(u8 bus, u8 dev, u8 func, u8 off) {
+u32 pcie_read(u8 bus, u8 dev, u8 func, u8 off) {
 
-    return pci_getaddr(bus, dev, func, off)[0];
+    return pcie_getaddr(bus, dev, func, off)[0];
 }
-void pci_write(u8 bus, u8 dev, u8 func, u8 off, u32 val) {
-    pci_getaddr(bus, dev, func, off)[0] = val;
+void pcie_write(u8 bus, u8 dev, u8 func, u8 off, u32 val) {
+    pcie_getaddr(bus, dev, func, off)[0] = val;
 }
