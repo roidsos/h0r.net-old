@@ -1,6 +1,7 @@
 #ifndef ERROR_H
 #define ERROR_H
 
+//WARN: Arch specific code in utils/ + TODO: smh move to arch/ or make architecture neutral
 #include <arch/x86_64/interrupts/ISR.h>
 // 0-31: Interrupt error thingies IDK
 #define HN_ERR_KERNEL_EXITED  32

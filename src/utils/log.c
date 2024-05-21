@@ -1,4 +1,5 @@
 #include "log.h"
+//WARN: Arch specific code in utils/ + TODO: smh move to arch/ or make architecture neutral
 #include <arch/x86_64/drivers/output/cereal.h>
 #include <vendor/printf.h>
 char *levels[] = {"\x1b[36mTRAC\033[0m", "\033[32mDBUG\033[0m",

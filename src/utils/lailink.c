@@ -5,7 +5,7 @@
 #include <utils/error.h>
 #include <vendor/printf.h>
 
-// OS-specific functions.
+//WARN: Arch specific code in utils/ + TODO: smh move to arch/ or make architecture neutral
 void *laihost_malloc(usize size) { return malloc(size); }
 void *laihost_realloc(void *old, usize newsize, usize oldsize) {
     return realloc_plus(old, newsize, oldsize);
