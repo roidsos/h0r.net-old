@@ -3,7 +3,7 @@
 
 #include "libk/stdint.h"
 #include "libk/string.h"
-#include "utils/heapdef.h"
+#include <core/mm/heap.h>
 
 #define vector_struct(type) \
 	struct {                \
