@@ -1,7 +1,7 @@
 #ifndef MCFG_H
 #define MCFG_H
 
-#include "RSDT.h"
+#include "SDT.h"
 
 typedef struct{
     sdt_header h;

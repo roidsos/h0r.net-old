@@ -1,6 +1,6 @@
 #include <core/mm/heap.h>
 #include <arch/x86_64/io/portio.h>
-#include <drivers/ACPI/RSDT.h>
+#include <drivers/ACPI/SDT.h>
 #include <libk/macros.h>
 #include <utils/error.h>
 #include <vendor/printf.h>

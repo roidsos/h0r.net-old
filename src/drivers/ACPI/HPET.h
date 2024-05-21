@@ -1,7 +1,7 @@
 #ifndef HPET_H
 #define HPET_H
 
-#include  "RSDT.h"
+#include  "SDT.h"
 
 typedef struct {
     sdt_header header;
