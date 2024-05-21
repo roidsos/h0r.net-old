@@ -1,23 +1,33 @@
 #include "pager.h"
+#include <libk/stdint.h>
+#include <libk/stdbool.h>
 #include <core/mm/mem.h>
 #include <core/mm/pmm.h>
+#include <arch/general/paging.h>
 #include <libk/string.h>
 #include <stdint.h>
 
-u64 vmm_create_pagetable() { return 0; }
-
-void vmm_bind_pagetable(u64 pml4) {
-    __asm__ volatile("mov %0, %%cr3" : : "r"(pml4));
-}
-u64 vmm_get_pagetable() {
-    u64 pml4;
-    __asm__ volatile("mov %%cr3, %0" : "=r"(pml4));
-    return pml4;
+u64 transform_flags(u64 flags) {
+    u64 new_flags = X86_PAGER_BITMASK_PRESENT;
+    if (flags & FLAGS_R) {
+        // there is no "readable" flag on x86
+        //new_flags |= X86_PAGER_BITMASK_R;
+    }
+    if (flags & FLAGS_W) {
+        new_flags |= X86_PAGER_BITMASK_WRITABLE;
+    }
+    if (!(flags & FLAGS_X)) {
+        new_flags |= (u64)X86_PAGER_BITMASK_XD;
+    }
+    if (flags & FLAGS_U) {
+        new_flags |= X86_PAGER_BITMASK_USER;
+    }
+    return new_flags;
 }
 
 uptr *get_next_lvl(uptr *lvl, usize index, u64 flags, _bool alloc) {
 
-    if (lvl[index] & VMM_BITMASK_L4_PRESENT) {
+    if (lvl[index] & X86_PAGER_BITMASK_PRESENT) {
         return PHYS_TO_VIRT(PML4_GET_ADDR(lvl[index]));
     }
     if (alloc) {
@@ -29,6 +39,21 @@ uptr *get_next_lvl(uptr *lvl, usize index, u64 flags, _bool alloc) {
     return 0;
 }
 
+u64 vmm_create_pagetable() { 
+    uptr *pml4 = (uptr *)request_pages(1);
+    memset(pml4, 0, 0x1000);
+    return (u64)PHYS_TO_VIRT(pml4);
+}
+
+void vmm_bind_pagetable(u64 pml4) {
+    __asm__ volatile("mov %0, %%cr3" : : "r"(pml4));
+}
+u64 vmm_get_pagetable() {
+    u64 pml4;
+    __asm__ volatile("mov %%cr3, %0" : "=r"(pml4));
+    return pml4;
+}
+
 _bool vmm_map_page(u64 vaddr, u64 paddr, u64 flags) {
     usize pml4_index = (vaddr & ((uptr)0x1ff << 39)) >> 39;
     usize pml3_index = (vaddr & ((uptr)0x1ff << 30)) >> 30;
@@ -36,10 +61,10 @@ _bool vmm_map_page(u64 vaddr, u64 paddr, u64 flags) {
     usize pml1_index = (vaddr & ((uptr)0x1ff << 12)) >> 12;
 
     uptr *pml3 =
-        get_next_lvl((uptr *)vmm_get_pagetable(), pml4_index, flags, true);
-    uptr *pml2 = get_next_lvl(pml3, pml3_index, flags, true);
-    uptr *pml1 = get_next_lvl(pml2, pml2_index, flags, true);
-    pml1[pml1_index] = paddr | flags;
+        get_next_lvl((uptr *)vmm_get_pagetable(), pml4_index, transform_flags(flags), true);
+    uptr *pml2 = get_next_lvl(pml3, pml3_index, transform_flags(flags), true);
+    uptr *pml1 = get_next_lvl(pml2, pml2_index, transform_flags(flags), true);
+    pml1[pml1_index] = paddr | transform_flags(flags);
     return true;
 }
 _bool vmm_unmap_page(u64 vaddr) {
@@ -49,15 +74,15 @@ _bool vmm_unmap_page(u64 vaddr) {
     usize pml1_index = (vaddr & ((uptr)0x1ff << 12)) >> 12;
 
     uptr *pml4 = (uptr *)vmm_get_pagetable();
-    if (!(pml4[pml4_index] & VMM_BITMASK_L4_PRESENT)) {
+    if (!(pml4[pml4_index] & X86_PAGER_BITMASK_PRESENT)) {
         return false;
     }
     uptr *pml3 = (uptr *)(pml4[pml4_index] & ~0xFFF);
-    if (!(pml3[pml3_index] & VMM_BITMASK_L4_PRESENT)) {
+    if (!(pml3[pml3_index] & X86_PAGER_BITMASK_PRESENT)) {
         return false;
     }
     uptr *pml2 = (uptr *)(pml3[pml3_index] & ~0xFFF);
-    if (!(pml2[pml2_index] & VMM_BITMASK_L4_PRESENT)) {
+    if (!(pml2[pml2_index] & X86_PAGER_BITMASK_PRESENT)) {
         return false;
     }
     uptr *pml1 = (uptr *)(pml2[pml2_index] & ~0xFFF);

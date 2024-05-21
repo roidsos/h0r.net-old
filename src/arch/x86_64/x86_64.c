@@ -66,7 +66,7 @@ void _start(void) {
     disable_interrupts();
     log_nice("x86_64 Init Target reached: IO\n");
 
-    data.pml4 = (u64)PHYS_TO_VIRT(vmm_get_pagetable());
+    data.pml4 = (u64)PHYS_TO_VIRT(x86pager_get_pagetable());
     get_cpu_capabilities(&data.cpu_info);
     sys_init_fpu();
     gdt_init((u64 *)kernel_stack);
