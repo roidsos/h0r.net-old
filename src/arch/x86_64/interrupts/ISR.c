@@ -1,3 +1,4 @@
+#include "core/kernel.h"
 #include <arch/x86_64/interrupts/IDT.h>
 #include <arch/x86_64/interrupts/ISR.h>
 #include <utils/error.h>
@@ -266,6 +267,7 @@ void ISR_RegisterHandler(int irq, ISRHandler handler) {
     ISRHandlers[irq] = handler;
 }
 void ISR_Handler(Registers *regs) {
+    __asm__ volatile("mov %0, %%cr3" : : "r"((u64)data.pagemap));
     if (regs->interrupt < 32) {
         trigger_psod(regs->interrupt, "interrupt error UwU", regs);
         return;

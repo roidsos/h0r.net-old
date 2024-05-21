@@ -3,6 +3,7 @@
 #include <arch/x86_64/constant_isrs.h>
 #include <arch/x86_64/drivers/IOAPIC.h>
 #include <arch/x86_64/drivers/LAPIC.h>
+#include "arch/general/paging.h"
 #include <arch/x86_64/drivers/input/PS2.h>
 #include <arch/x86_64/drivers/output/cereal.h>
 #include <arch/x86_64/interrupts/interrupts.h>
@@ -76,6 +77,7 @@ void _start(void) {
     }
     log_nice("x86_64 Init Target reached: ACPI\n");
 
+    data.pagemap = vmm_get_pagetable(); // the interrupt handler switches to this pagetable
     initialize_interrupts();
     lapic_init();
     ioapic_init();
