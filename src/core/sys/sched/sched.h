@@ -3,7 +3,7 @@
 
 #include "process.h"
 
-u32 sched_add_process(char* name, void (*entry)(void));
+u32 sched_add_process(char *name, Registers init_state, u64 pagemap);
 void sched_kill(u32 pid);
 
 process_t* sched_get_curr_process();

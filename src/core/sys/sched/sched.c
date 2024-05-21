@@ -9,14 +9,11 @@ u32 sched_current_pid = 0;
 _bool sched_running = false;
 
 // TODO: kernel and user processes
-u32 sched_add_process(char *name, void (*entry)(void)) {
+u32 sched_add_process(char *name, Registers init_state, u64 pagemap) {
     if (sched_num_procs < MAX_PROCESSES) {
         processes[sched_num_procs].name = name;
-        processes[sched_num_procs].regs.rip = (u64)entry;
-        processes[sched_num_procs].regs.rsp = (u64)malloc(0x1000);
-        processes[sched_num_procs].regs.cs = 0x8;
-        processes[sched_num_procs].regs.ss = 0x10;
-        processes[sched_num_procs].regs.rflags = 0x202;
+        processes[sched_num_procs].regs = init_state;
+        processes[sched_num_procs].pagemap = pagemap;
         processes[sched_num_procs].state_flags = SCHED_STATE_READY;
         sched_num_procs++;
         return sched_num_procs - 1;

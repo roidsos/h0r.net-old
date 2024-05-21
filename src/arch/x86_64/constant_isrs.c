@@ -7,6 +7,7 @@
 #include <core/sys/syscall.h>
 #include <libk/string.h>
 
+
 extern void next_process();
 extern process_t processes[MAX_PROCESSES];
 
@@ -21,6 +22,8 @@ void schedule(Registers *regs) {
     next_process();
 
     memcpy(regs, &processes[sched_current_pid].regs, sizeof(Registers));
+
+    __asm__ volatile("mov %0, %%cr3" : : "r"(processes[sched_current_pid].pagemap));
 
     lapic_timer_oneshot(1, 32);
     lapic_eoi();
