@@ -16,9 +16,8 @@
 #define SIV_SIG_STDERR       "STER"
 #define SIV_SIG_REGISTERY    "REGS"
 
-#define SIV_INTENTS_READ     1 << 0
-#define SIV_INTENTS_WRITE    1 << 1
-#define SIV_INTENTS_EXEC     1 << 2
+#define SIV_FLAGS_CACHE     1 << 0
+#define SIV_FLAGS_FORCE_PRELOAD   1 << 1
 
 #define SIV_PERM_OWNER_READ   1 << 0
 #define SIV_PERM_OWNER_WRITE  1 << 1

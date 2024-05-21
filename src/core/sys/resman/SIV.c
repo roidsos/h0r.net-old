@@ -5,6 +5,7 @@
 #include <libk/stddef.h>
 #include <libk/stdint.h>
 #include <libk/string.h>
+#include <libk/binary.h>
 #include <utils/log.h>
 
 siv_drive_t siv_drives[MAX_DRIVES];
@@ -34,7 +35,7 @@ u16 siv_register_driver(block_driver_t driver) {
     return siv_num_drivers - 1;
 }
 
-u32 siv_open(u32 drive_id, char *path, u8 intents) {
+u32 siv_open(u32 drive_id, char *path, u8 flags) {
     log_trace("siv_open(%d, %s, %d)\n", drive_id, path, intents);
     siv_drive_t drive = siv_drives[drive_id];
     block_driver_t driver = siv_drivers[drive.driver_id];
@@ -55,7 +56,7 @@ u32 siv_open(u32 drive_id, char *path, u8 intents) {
         goto error;
     }
 
-    if (!driver.is_virtual && (intents & SIV_INTENTS_READ)) {
+    if ((!driver.is_virtual && FLAG_READ(flags,SIV_FLAGS_CACHE)) || FLAG_READ(flags,SIV_FLAGS_FORCE_PRELOAD)) {
         log_trace("Preloading file %s\n", path);
         open_file_contents[file_desc] = malloc(open_files[file_desc].size);
         driver.read(drive.driver_specific_data, path, 0,
