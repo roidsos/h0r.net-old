@@ -1,7 +1,6 @@
 #ifndef __PROCESS_H__
 #define __PROCESS_H__
 
-//TODO: make this arch independent
 #include <arch/x86_64/interrupts/interrupts.h>
 #include <libk/stdint.h>
 #include <libk/stdbool.h>
@@ -16,6 +15,7 @@ enum process_state {
 typedef struct {
     u8 state_flags;
     char* name;
+    //WARN: Arch specific code in core/ + TODO: smh move to arch/
     Registers regs;
     u32 tty_id;
 } process_t;

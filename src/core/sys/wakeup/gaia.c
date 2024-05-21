@@ -3,6 +3,7 @@
 #include <vendor/printf.h>
 #include <core/sys/sched/sched.h>
 void syscall_test() {
+    //WARN: Arch specific code in core/ + TODO: smh move to arch/
     __asm__ volatile ("mov $0, %rax");
     __asm__ volatile ("int $0x80");
     printf("If this prints, sys_exit has failed\n"); // wont get here

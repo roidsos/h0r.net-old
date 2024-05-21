@@ -39,6 +39,7 @@ void tty_write(u16 tty_id, char *buf, u32 size) {
     tty_t tty = ttys[tty_id];
     if (tty.out_type == TTY_TYPE_SERIAL) {
         for (u32 i = 0; i < size; i++) {
+            //WARN: Arch specific code in core/ + TODO: smh move to arch/
             cereal_write(buf[i], tty.out_port);
         }
     } else if (tty.out_type == TTY_TYPE_UTERUS) {

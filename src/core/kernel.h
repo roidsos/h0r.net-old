@@ -21,6 +21,7 @@ struct HN_data_block {
     u32 lapic_base;
 
     //kterm shit
+    //WARN: Arch specific code in core/ + TODO: smh move to arch/
     struct uterus_context* ut_ctx;
     struct limine_framebuffer *framebuffer;
     struct limine_file *initramfs;

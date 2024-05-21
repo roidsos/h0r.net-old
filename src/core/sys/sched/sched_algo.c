@@ -11,6 +11,7 @@ void next_process() {
     if (sched_current_pid > sched_num_procs)
         sched_current_pid = 0;
     while (!(processes[sched_current_pid].state_flags == SCHED_STATE_READY)) {
+        //WARN: Arch specific code in core/ + TODO: smh move to arch/
         if (processes[sched_current_pid].state_flags == SCHED_STATE_DEAD) {
             memset(&processes[sched_current_pid], 0,
                    sizeof(processes[sched_current_pid]));

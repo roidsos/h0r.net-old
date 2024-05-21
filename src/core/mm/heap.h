@@ -1,7 +1,6 @@
 #ifndef __HEAP_H__
 #define __HEAP_H__
 
-#include <libk/stdint.h>
 #include <libk/stddef.h>
 
 void heap_init();
