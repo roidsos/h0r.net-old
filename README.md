@@ -23,7 +23,7 @@ kernel of https://github.com/roidsos/RoidsOS
 - [ ] Events
 - [ ] SMP
 #### Userspace
-- [ ] System calls
+- [x] System calls
 - [ ] ELF
 - [ ] Userspace
 - [ ] Libc
