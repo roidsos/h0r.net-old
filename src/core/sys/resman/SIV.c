@@ -36,7 +36,7 @@ u16 siv_register_driver(block_driver_t driver) {
 }
 
 u32 siv_open(u32 drive_id, char *path, u8 flags) {
-    log_trace("siv_open(%d, %s, %d)\n", drive_id, path, intents);
+    log_trace("siv_open(%d, %s, %d)\n", drive_id, path, flags);
     siv_drive_t drive = siv_drives[drive_id];
     block_driver_t driver = siv_drivers[drive.driver_id];
 
