@@ -1,5 +1,4 @@
 #include "sched.h"
-#include "utils/log.h"
 #include <config.h>
 #include <core/mm/heap.h>
 #include <vendor/printf.h>
@@ -27,6 +26,10 @@ u32 sched_add_process(char *name, void (*entry)(void)) {
 void sched_kill(u32 pid) {
     if (pid < MAX_PROCESSES) {
         processes[pid].state_flags = SCHED_STATE_DEAD;
+    }
+    if (sched_current_pid == pid) {
+        //TODO: make this arch independent and smh stop the timer to avoid double advance
+        __asm__ volatile("int 0x20");
     }
 }
 
