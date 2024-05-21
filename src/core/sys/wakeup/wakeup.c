@@ -1,9 +1,10 @@
 #include "wakeup.h"
+#include "core/sys/krnlexec.h"
 #include <config.h>
 
 #include <core/sys/resman/SIV.h>
 #include <core/sys/resman/tty.h>
-#include <core/sys/sched/sched.h>
+#include <core/sys/krnlexec.h>
 
 #include <core/mm/heap.h>
 #include <core/mm/pmm.h>
@@ -47,7 +48,7 @@ void wakeup_do_mounts() {
 }
 void wakeup_startup() {
     // start Gaia: the userspace portion of Wakeup
-    sched_add_process("proc1", gaia_main);
+    execute("Gaia", gaia_main, sizeof(gaia_main),false);
 
     // kickstart the sched
     //WARN: Arch specific code in core/ + TODO: smh move to arch/ or make architecture neutral
