@@ -1,5 +1,6 @@
 #include "constant_isrs.h"
 #include "arch/x86_64/interrupts/ISR.h"
+#include "core/mm/mem.h"
 #include <arch/x86_64/drivers/LAPIC.h>
 #include <arch/x86_64/interrupts/interrupts.h>
 #include <config.h>
@@ -23,7 +24,7 @@ void schedule(Registers *regs) {
 
     memcpy(regs, &processes[sched_current_pid].regs, sizeof(Registers));
 
-    __asm__ volatile("mov %0, %%cr3" : : "r"(processes[sched_current_pid].pagemap));
+    __asm__ volatile("mov %0, %%cr3" : : "r"(VIRT_TO_PHYS(processes[sched_current_pid].pagemap)));
 
     lapic_timer_oneshot(1, 32);
     lapic_eoi();
