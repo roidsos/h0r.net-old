@@ -12,9 +12,6 @@ usize highest_block = 0;
 
 struct Bitmap page_bmp;
 
-#define BIT_TO_PAGE(bit) ((usize)bit * PAGE_SIZE)
-#define PAGE_TO_BIT(page) ((usize)page / PAGE_SIZE)
-
 extern usize kernel_start;
 extern usize kernel_end;
 
@@ -123,6 +120,7 @@ void *request_pages(usize num) {
     return PP;
 }
 
+//WARN: Arch specific code in core/ + TODO: smh move to arch/
 void pmm_init() {
     usize page_bmp_size = 0;
     void *largest_free_memseg = NULL;
