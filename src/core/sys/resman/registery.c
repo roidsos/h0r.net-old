@@ -12,7 +12,7 @@
 #include <libk/stdint.h>
 
 hive_header *read_hive(char *path) {
-    u32 fd = siv_open(0, path, SIV_INTENTS_READ);
+    u32 fd = siv_open(0, path, 0);
     if (fd == UINT32_MAX) {
         log_error("Failed to open hive at %s\n", path);
         return NULL;

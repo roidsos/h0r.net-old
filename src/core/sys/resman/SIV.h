@@ -81,7 +81,7 @@ void siv_init();
 u16 siv_register_drive(siv_drive_t drive);
 u16 siv_register_driver(block_driver_t driver);
 
-u32 siv_open(u32 drive_id,char* path,u8 intents);
+u32 siv_open(u32 drive_id,char* path,u8 flags);
 void siv_close(u32 file_desc);
 
 file_t siv_get_file(u32 file_desc);
