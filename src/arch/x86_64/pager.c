@@ -31,9 +31,9 @@ uptr *get_next_lvl(uptr *lvl, usize index, u64 flags, _bool alloc) {
         return PHYS_TO_VIRT(PML4_GET_ADDR(lvl[index]));
     }
     if (alloc) {
-        uptr *new_lvl = (uptr *)request_pages(1);
+        uptr *new_lvl = (uptr *)PHYS_TO_VIRT(request_pages(1));
         memset(new_lvl, 0, 0x1000);
-        lvl[index] = (u64)VIRT_TO_PHYS(new_lvl) | flags;
+        lvl[index] = ((u64)VIRT_TO_PHYS(new_lvl) & X86_PAGER_BITMASK_ADDR) | flags;
         return PHYS_TO_VIRT(new_lvl);
     }
     return 0;
@@ -64,7 +64,7 @@ _bool vmm_map_page(u64 pml4,u64 vaddr, u64 paddr, u64 flags) {
         get_next_lvl((uptr *)pml4, pml4_index, transform_flags(flags), true);
     uptr *pml2 = get_next_lvl(pml3, pml3_index, transform_flags(flags), true);
     uptr *pml1 = get_next_lvl(pml2, pml2_index, transform_flags(flags), true);
-    pml1[pml1_index] = paddr | transform_flags(flags);
+    pml1[pml1_index] = (paddr & X86_PAGER_BITMASK_ADDR) | transform_flags(flags);
     return true;
 }
 
