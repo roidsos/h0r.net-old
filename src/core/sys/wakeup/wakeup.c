@@ -45,10 +45,14 @@ void wakeup_do_mounts() {
     if (siv_num_drives == 0) {
         trigger_psod(HN_ERR_NO_FS, "No filesystem found", NULL);
     }
+
+    log_nice("Filesystem sucessfully initialized!\n");
 }
 void wakeup_startup() {
     // start Gaia: the userspace portion of Wakeup
     execute("Gaia", gaia_main, sizeof(gaia_main),false);
+
+    log_nice("Userland sucessfully initialized!\n");
 
     // kickstart the sched
     //WARN: Arch specific code in core/ + TODO: smh move to arch/ or make architecture neutral
