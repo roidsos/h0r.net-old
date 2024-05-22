@@ -118,6 +118,7 @@ _bool vmm_unmap_page(u64 pml4_,u64 vaddr) {
     }
     uptr *pml1 = (uptr *)(pml2[pml2_index] & ~0xFFF);
     pml1[pml1_index] = 0;
+    __asm__ volatile ("invlpg (%0)" : : "b"(vaddr) : "memory");
     return true;
 }
 
