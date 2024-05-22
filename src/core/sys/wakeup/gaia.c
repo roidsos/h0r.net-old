@@ -4,6 +4,6 @@
 #include <core/sys/krnlexec.h>
 
 void gaia_main(void) {
-    //printf("TODO: startup tasks\n");
+    printf("TODO: startup tasks\n");
     while (true);
 }
