@@ -29,7 +29,7 @@ void execute(const char* name, void (*func)(),u64 fsize, _bool user){
     regs.rflags = 0x202;
 
     //map the kernel
-    vmm_map_range(pagemap, (u64)&text_start_ld, (u64)&text_start_ld - 0xffffffff80000000,
+    vmm_map_range(pagemap, (u64)&text_start_ld, (u64)VIRT_TO_PHYS(&text_start_ld),
                   ((u64)&text_end_ld - (u64)&text_start_ld) / PAGE_SIZE, FLAGS_R | FLAGS_X);
 
     vmm_map_range(pagemap,stack,stack, 2,FLAGS_R | FLAGS_W | FLAGS_U);

@@ -7,6 +7,7 @@
 #include <core/mm/pmm.h>
 #include <arch/general/paging.h>
 #include <libk/string.h>
+#include <libk/binary.h>
 #include <core/kernel.h>
 #include <utils/log.h>
 #include <stdint.h>
@@ -18,16 +19,16 @@
 u64 transform_flags(u64 flags) {
     u64 new_flags = (u64)X86_PAGER_BITMASK_XD;
     if (flags & FLAGS_R) {
-        new_flags |= X86_PAGER_BITMASK_PRESENT;
+        FLAG_SET(new_flags, X86_PAGER_BITMASK_PRESENT);
     }
     if (flags & FLAGS_W) {
-        new_flags |= X86_PAGER_BITMASK_WRITABLE;
+        FLAG_SET(new_flags, X86_PAGER_BITMASK_WRITABLE);
     }
     if (flags & FLAGS_X) {
-        new_flags &= ~(u64)X86_PAGER_BITMASK_XD;
+        FLAG_UNSET(new_flags, X86_PAGER_BITMASK_XD);
     }
     if (flags & FLAGS_U) {
-        new_flags |= X86_PAGER_BITMASK_USER;
+        FLAG_SET(new_flags, X86_PAGER_BITMASK_USER);
     }
     return new_flags;
 }

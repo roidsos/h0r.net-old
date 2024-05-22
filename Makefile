@@ -33,7 +33,7 @@ override DEFAULT_LD := ld
 $(eval $(call DEFAULT_VAR,LD,$(DEFAULT_LD)))
 
 # User controllable C flags.
-override DEFAULT_CFLAGS :=-Os
+override DEFAULT_CFLAGS := -g -Os -pipe
 $(eval $(call DEFAULT_VAR,CFLAGS,$(DEFAULT_CFLAGS)))
 
 # User controllable C preprocessor flags. We set none by default.
@@ -41,7 +41,7 @@ override DEFAULT_CPPFLAGS :=
 $(eval $(call DEFAULT_VAR,CPPFLAGS,$(DEFAULT_CPPFLAGS)))
 
 # User controllable nasm flags.
-override DEFAULT_NASMFLAGS := -f elf64 
+override DEFAULT_NASMFLAGS := -f elf64 -F dwarf -g
 $(eval $(call DEFAULT_VAR,NASMFLAGS,$(DEFAULT_NASMFLAGS)))
 
 # User controllable linker flags. We set none by default.
