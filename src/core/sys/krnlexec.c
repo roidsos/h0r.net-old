@@ -31,10 +31,6 @@ void execute(const char* name, void (*func)(),u64 fsize, _bool user){
     //map the kernel
     vmm_map_range(pagemap, (u64)&text_start_ld, (u64)&text_start_ld - 0xffffffff80000000,
                   ((u64)&text_end_ld - (u64)&text_start_ld) / PAGE_SIZE, FLAGS_R | FLAGS_X);
-    vmm_map_range(pagemap, (u64)&rodata_start_ld, (u64)&rodata_start_ld - 0xffffffff80000000,
-                  ((u64)&rodata_end_ld - (u64)&rodata_start_ld) / PAGE_SIZE, FLAGS_R);
-    vmm_map_range(pagemap, (u64)&data_start_ld, (u64)&data_start_ld - 0xffffffff80000000,
-                  ((u64)&data_end_ld - (u64)&data_start_ld) / PAGE_SIZE, FLAGS_R | FLAGS_W);
 
     vmm_map_range(pagemap,stack,stack, 2,FLAGS_R | FLAGS_W | FLAGS_U);
     vmm_map_range(pagemap,(u64)func, (u64)VIRT_TO_PHYS(func),fsize / PAGE_SIZE,FLAGS_R | FLAGS_W | FLAGS_X | FLAGS_U);
