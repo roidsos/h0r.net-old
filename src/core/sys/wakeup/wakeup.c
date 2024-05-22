@@ -33,8 +33,6 @@ void wakeup_init_hw() {
     init_printf_locks();
     tty_register((tty_t){2, 0, 0, 0, 0});
 
-    data.pagemap = vmm_map_kernel();
-
     siv_init();
     tar_init();
 
@@ -53,7 +51,7 @@ void wakeup_do_mounts() {
 }
 void wakeup_startup() {
     // start Gaia: the userspace portion of Wakeup
-    execute("Gaia", gaia_main, sizeof(gaia_main),false);
+    execute("Gaia", gaia_main, PAGE_SIZE * 2,false);
 
     log_nice("Userland sucessfully initialized!\n");
 

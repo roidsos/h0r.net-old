@@ -112,7 +112,6 @@ static void *find_free_range(usize npages) {
 }
 
 void *request_pages(usize num) {
-    log_trace("Allocating %d pages\n", num);
     void *PP = (void *)find_free_range(num);
     if (!lock_pages(PP, num)) {
         return NULL;
