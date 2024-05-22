@@ -13,6 +13,7 @@
 u64  vmm_create_pagetable();
 void vmm_bind_pagetable(u64 pml4);
 u64  vmm_get_pagetable();
+u64 vmm_map_kernel();
 
 _bool vmm_map_page(u64 pml4,u64 vaddr, u64 paddr, u64 flags);
 _bool vmm_unmap_page(u64 pml4,u64 vaddr);

@@ -8,10 +8,6 @@
 #include <core/mm/pmm.h>
 #include <utils/log.h>
 
-//markers
-extern int kernel_start;
-extern int kernel_end;
-
 void execute(const char* name, void (*func)(),u64 fsize, _bool user){
     u64 pagemap = vmm_create_pagetable();
     Registers regs = {0};
@@ -27,7 +23,6 @@ void execute(const char* name, void (*func)(),u64 fsize, _bool user){
 
     vmm_map_range(pagemap,stack,stack, 2 * PAGE_SIZE,FLAGS_R | FLAGS_W | FLAGS_U);
     vmm_map_range(pagemap,(u64)func, (u64)VIRT_TO_PHYS(func),fsize,FLAGS_R | FLAGS_W | FLAGS_X | FLAGS_U);
-    vmm_map_range(pagemap,(u64)&kernel_start,(u64)VIRT_TO_PHYS(&kernel_start),((u64)&kernel_end) - ((u64)&kernel_start),FLAGS_R | FLAGS_W | FLAGS_X);
-    
+
     sched_add_process((char*)name, regs, pagemap);
 }

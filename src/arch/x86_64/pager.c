@@ -1,5 +1,6 @@
 #include "pager.h"
 #include "config.h"
+#include "libk/stddef.h"
 #include <libk/stdint.h>
 #include <libk/stdbool.h>
 #include <core/mm/mem.h>
@@ -9,6 +10,10 @@
 #include <core/kernel.h>
 #include <utils/log.h>
 #include <stdint.h>
+
+// Sorry, I forgot to attribute this
+//  this is based on:
+//  https://github.com/asterd-og/ZanOS/blob/main/kernel/src/mm/vmm.c
 
 u64 transform_flags(u64 flags) {
     u64 new_flags = (u64)X86_PAGER_BITMASK_XD;
@@ -41,10 +46,60 @@ uptr *get_next_lvl(uptr *lvl, usize index, u64 flags, _bool alloc) {
     return 0;
 }
 
+extern char* kernel_start;
+extern char* kernel_end;
+
 u64 vmm_create_pagetable() { 
+    usize krnl_start_pml4_index = ((u64)&kernel_start >> 39) & 0x1ff;
+    usize krnl_end_pml4_index = ((u64)&kernel_end >> 39) & 0x1ff;
     uptr *pml4 = (uptr *)PHYS_TO_VIRT(request_pages(1));
     memset(pml4, 0, PAGE_SIZE);
+    for (usize i = krnl_start_pml4_index; i <= krnl_end_pml4_index; i++) 
+        pml4[i] = ((u64*)PHYS_TO_VIRT(data.pagemap))[i];
     return (u64)pml4;
+}
+
+struct limine_kernel_address_request kernel_address_request = {
+  .id = LIMINE_KERNEL_ADDRESS_REQUEST,
+  .revision = 0
+};
+
+extern char* text_start_ld;
+extern char* text_end_ld;
+
+extern char* rodata_start_ld;
+extern char* rodata_end_ld;
+
+extern char* data_start_ld;
+extern char* data_end_ld;
+
+u64 vmm_map_kernel(){
+    u64 pagetable = (u64)PHYS_TO_VIRT(request_pages(1));
+    memset((void*)pagetable, 0, PAGE_SIZE);
+
+    uptr phys_base = kernel_address_request.response->physical_base;
+    uptr virt_base = kernel_address_request.response->virtual_base;
+
+    uptr text_start = ALIGN_DOWN((uptr)text_start_ld, PAGE_SIZE);
+    uptr text_end = ALIGN_UP((uptr)text_end_ld, PAGE_SIZE);
+    uptr rodata_start = ALIGN_DOWN((uptr)rodata_start_ld, PAGE_SIZE);
+    uptr rodata_end = ALIGN_UP((uptr)rodata_end_ld, PAGE_SIZE);
+    uptr data_start = ALIGN_DOWN((uptr)data_start_ld, PAGE_SIZE);
+    uptr data_end = ALIGN_UP((uptr)data_end_ld, PAGE_SIZE);
+
+    for (uptr text = text_start; text < text_end; text += PAGE_SIZE)
+      vmm_map_page(pagetable, text, text - virt_base + phys_base, FLAGS_R | FLAGS_X);
+    for (uptr rodata = rodata_start; rodata < rodata_end; rodata += PAGE_SIZE)
+      vmm_map_page(pagetable, rodata, rodata - virt_base + phys_base, FLAGS_R);
+    for (uptr data = data_start; data < data_end; data += PAGE_SIZE)
+      vmm_map_page(pagetable, data, data - virt_base + phys_base, FLAGS_R | FLAGS_W);
+    for (uptr gb4 = 0; gb4 < 0x100000000; gb4 += PAGE_SIZE) {
+      vmm_map_page(pagetable, gb4, gb4, FLAGS_R | FLAGS_W | FLAGS_X);
+      vmm_map_page(pagetable, (uptr)PHYS_TO_VIRT(gb4), gb4, FLAGS_R | FLAGS_W | FLAGS_X);
+    }
+
+    vmm_bind_pagetable(pagetable);
+    return pagetable;
 }
 
 void vmm_bind_pagetable(u64 pml4) {

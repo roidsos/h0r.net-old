@@ -19,19 +19,26 @@ SECTIONS
     . = 0xffffffff80000000;
 
     kernel_start = .;
+    text_start_ld = .;
     .text : {
         *(.text .text.*)
     } :text
+    text_end_ld = .;
 
     /* Move to the next memory page for .rodata */
     . += CONSTANT(MAXPAGESIZE);
+
+    rodata_start_ld = .;
 
     .rodata : {
         *(.rodata .rodata.*)
     } :rodata
 
+    rodata_end_ld = .;
     /* Move to the next memory page for .data */
     . += CONSTANT(MAXPAGESIZE);
+
+    data_start_ld = .;
 
     .data : {
         *(.data .data.*)
@@ -46,6 +53,7 @@ SECTIONS
         *(.bss .bss.*)
     } :data
     kernel_end = .;
+    data_end_ld = .;
 
     /* Discard .note.* and .eh_frame since they may cause issues on some hosts. */
     /DISCARD/ : {

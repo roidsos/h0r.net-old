@@ -1,4 +1,5 @@
 #include "wakeup.h"
+#include "arch/general/paging.h"
 #include "core/sys/krnlexec.h"
 #include <config.h>
 
@@ -31,6 +32,8 @@ void wakeup_init_hw() {
     pmm_init();
     init_printf_locks();
     tty_register((tty_t){2, 0, 0, 0, 0});
+
+    data.pagemap = vmm_map_kernel();
 
     siv_init();
     tar_init();
