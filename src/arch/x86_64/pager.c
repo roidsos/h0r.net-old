@@ -32,7 +32,6 @@ uptr *get_next_lvl(uptr *lvl, usize index, u64 flags, _bool alloc) {
     if (lvl[index] & X86_PAGER_BITMASK_PRESENT) {
         return PHYS_TO_VIRT(PML4_GET_ADDR(lvl[index]));
     }
-    log_trace("asd(0x%p)", lvl[index]);
     if (alloc) {
         uptr *new_lvl = (uptr *)PHYS_TO_VIRT(request_pages(1));
         memset(new_lvl, 0, PAGE_SIZE);
@@ -88,7 +87,7 @@ _bool vmm_edit_flags(u64 pml4,u64 vaddr, u64 flags) {
 
 _bool vmm_map_range(u64 pml4,u64 vaddr, u64 paddr, u64 size, u64 flags){
     _bool success = true;
-    for (u64 i = 0; i < size; i += 0x1000) {
+    for (u64 i = 0; i < size; i += PAGE_SIZE) {
         log_trace("Mapping 0x%p -> 0x%p\n", vaddr + i, paddr + i);
         success &= vmm_map_page(pml4, vaddr + i, paddr + i, flags);
     }
@@ -96,8 +95,9 @@ _bool vmm_map_range(u64 pml4,u64 vaddr, u64 paddr, u64 size, u64 flags){
 }
 _bool vmm_unmap_range(u64 pml4,u64 vaddr, u64 size){
     _bool success = true;
-    for (u64 i = 0; i < size; i += 0x1000) {
-       success &= vmm_unmap_page(pml4, vaddr + i);
+    for (u64 i = 0; i < size; i += PAGE_SIZE) {
+        log_trace("Unmapping 0x%p\n", vaddr + i);
+        success &= vmm_unmap_page(pml4, vaddr + i);
     }
     return success;
 }
