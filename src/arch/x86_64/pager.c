@@ -50,6 +50,10 @@ uptr *get_next_lvl(uptr *lvl, usize index, u64 flags, _bool alloc) {
 u64 vmm_create_pagetable() {
     uptr *pml4 = (uptr *)PHYS_TO_VIRT(request_pages(1));
     memset(pml4, 0, PAGE_SIZE);
+    for(u64 i = 256; i < 512; i++) {
+        pml4[i] = ((uptr*)PHYS_TO_VIRT(data.pagemap))[i];
+        log_trace("pml4[%d] = 0x%p\n", i, pml4[i]);
+    }
     return (u64)pml4;
 }
 
@@ -59,7 +63,7 @@ void vmm_bind_pagetable(u64 pml4) {
 u64 vmm_get_pagetable() {
     u64 pml4;
     __asm__ volatile("mov %%cr3, %0" : "=r"(pml4));
-    return pml4;
+    return pml4 & 0xFFFFFFFFFFFFF000;
 }
 
 _bool vmm_map_page(u64 pml4,u64 vaddr, u64 paddr, u64 flags) {
