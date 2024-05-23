@@ -8,13 +8,6 @@
 #include <core/mm/pmm.h>
 #include <utils/log.h>
 
-extern u64 text_start_ld;
-extern u64 text_end_ld;
-extern u64 rodata_start_ld;
-extern u64 rodata_end_ld;
-extern u64 data_start_ld;
-extern u64 data_end_ld;
-
 void execute(const char* name, void (*func)(),u64 fsize, _bool user){
     u64 pagemap = vmm_create_pagetable();
     Registers regs = {0};
