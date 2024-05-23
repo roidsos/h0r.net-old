@@ -7,7 +7,8 @@
 #include <utils/log.h>
 #include <vendor/printf.h>
 
-//WARN: Arch specific code in utils/ + TODO: smh move to arch/ or make architecture neutral
+// WARN: Arch specific code in utils/ + TODO: smh move to arch/ or make
+// architecture neutral
 char *errors[] = {
     "HN_ERR_DE",         "HN_ERR_DB",
     "HN_ERR_NMI",        "HN_ERR_BP",

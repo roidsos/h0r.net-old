@@ -8,7 +8,6 @@
 #include <core/sys/syscall.h>
 #include <libk/string.h>
 
-
 extern void next_process();
 extern process_t processes[MAX_PROCESSES];
 
@@ -24,7 +23,9 @@ void schedule(Registers *regs) {
 
     memcpy(regs, &processes[sched_current_pid].regs, sizeof(Registers));
 
-    __asm__ volatile("mov %0, %%cr3" : : "r"(VIRT_TO_PHYS(processes[sched_current_pid].pagemap)));
+    __asm__ volatile("mov %0, %%cr3"
+                     :
+                     : "r"(VIRT_TO_PHYS(processes[sched_current_pid].pagemap)));
 
     lapic_timer_oneshot(1, 32);
     lapic_eoi();
@@ -35,6 +36,6 @@ void syscall_handler(Registers *regs) {
 }
 
 void cisrs_register() {
-     register_ISR(32, schedule);
-     register_ISR(0x80, syscall_handler);
+    register_ISR(32, schedule);
+    register_ISR(0x80, syscall_handler);
 }

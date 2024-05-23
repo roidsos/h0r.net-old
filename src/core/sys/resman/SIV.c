@@ -1,11 +1,11 @@
 #include "SIV.h"
 #include <config.h>
 #include <core/mm/heap.h>
+#include <libk/binary.h>
 #include <libk/limits.h>
 #include <libk/stddef.h>
 #include <libk/stdint.h>
 #include <libk/string.h>
-#include <libk/binary.h>
 #include <utils/log.h>
 
 siv_drive_t siv_drives[MAX_DRIVES];
@@ -56,7 +56,8 @@ u32 siv_open(u32 drive_id, char *path, u8 flags) {
         goto error;
     }
 
-    if ((!driver.is_virtual && FLAG_READ(flags,SIV_FLAGS_CACHE)) || FLAG_READ(flags,SIV_FLAGS_FORCE_PRELOAD)) {
+    if ((!driver.is_virtual && FLAG_READ(flags, SIV_FLAGS_CACHE)) ||
+        FLAG_READ(flags, SIV_FLAGS_FORCE_PRELOAD)) {
         log_trace("Preloading file %s\n", path);
         open_file_contents[file_desc] = malloc(open_files[file_desc].size);
         driver.read(drive.driver_specific_data, path, 0,

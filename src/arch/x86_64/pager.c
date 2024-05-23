@@ -1,16 +1,16 @@
 #include "pager.h"
 #include "config.h"
 #include "libk/stddef.h"
-#include <libk/stdint.h>
-#include <libk/stdbool.h>
+#include <arch/general/paging.h>
+#include <core/kernel.h>
 #include <core/mm/mem.h>
 #include <core/mm/pmm.h>
-#include <arch/general/paging.h>
-#include <libk/string.h>
 #include <libk/binary.h>
-#include <core/kernel.h>
-#include <utils/log.h>
+#include <libk/stdbool.h>
+#include <libk/stdint.h>
+#include <libk/string.h>
 #include <stdint.h>
+#include <utils/log.h>
 
 // Sorry, I forgot to attribute this
 //  this is based on:
@@ -42,7 +42,7 @@ uptr *get_next_lvl(uptr *lvl, usize index, u64 flags, _bool alloc) {
         uptr *new_lvl = (uptr *)PHYS_TO_VIRT(request_pages(1));
         memset(new_lvl, 0, PAGE_SIZE);
         lvl[index] = (u64)VIRT_TO_PHYS(new_lvl) | flags;
-        return new_lvl; 
+        return new_lvl;
     }
     return 0;
 }
@@ -50,8 +50,8 @@ uptr *get_next_lvl(uptr *lvl, usize index, u64 flags, _bool alloc) {
 u64 vmm_create_pagetable() {
     uptr *pml4 = (uptr *)PHYS_TO_VIRT(request_pages(1));
     memset(pml4, 0, PAGE_SIZE);
-    for(u64 i = 256; i < 512; i++) {
-        pml4[i] = ((uptr*)PHYS_TO_VIRT(data.pagemap))[i];
+    for (u64 i = 256; i < 512; i++) {
+        pml4[i] = ((uptr *)PHYS_TO_VIRT(data.pagemap))[i];
         log_trace("pml4[%d] = 0x%p\n", i, pml4[i]);
     }
     return (u64)pml4;
@@ -66,7 +66,7 @@ u64 vmm_get_pagetable() {
     return pml4 & 0xFFFFFFFFFFFFF000;
 }
 
-_bool vmm_map_page(u64 pml4,u64 vaddr, u64 paddr, u64 flags) {
+_bool vmm_map_page(u64 pml4, u64 vaddr, u64 paddr, u64 flags) {
     usize pml4_index = (vaddr >> 39) & 0x1ff;
     usize pml3_index = (vaddr >> 30) & 0x1ff;
     usize pml2_index = (vaddr >> 21) & 0x1ff;
@@ -80,7 +80,7 @@ _bool vmm_map_page(u64 pml4,u64 vaddr, u64 paddr, u64 flags) {
     return true;
 }
 
-_bool vmm_edit_flags(u64 pml4,u64 vaddr, u64 flags) {
+_bool vmm_edit_flags(u64 pml4, u64 vaddr, u64 flags) {
     usize pml4_index = (vaddr >> 39) & 0x1ff;
     usize pml3_index = (vaddr >> 30) & 0x1ff;
     usize pml2_index = (vaddr >> 21) & 0x1ff;
@@ -94,18 +94,19 @@ _bool vmm_edit_flags(u64 pml4,u64 vaddr, u64 flags) {
     return true;
 }
 
-
-_bool vmm_map_range(u64 pml4,u64 vaddr, u64 paddr, u64 npages, u64 flags){
+_bool vmm_map_range(u64 pml4, u64 vaddr, u64 paddr, u64 npages, u64 flags) {
     _bool success = true;
     u64 i = 0;
     while (i < npages) {
-        log_trace("Mapping 0x%p -> 0x%p\n", vaddr + i * PAGE_SIZE, paddr + i * PAGE_SIZE);
-        success &= vmm_map_page(pml4, vaddr + i * PAGE_SIZE, paddr + i * PAGE_SIZE, flags);
+        log_trace("Mapping 0x%p -> 0x%p\n", vaddr + i * PAGE_SIZE,
+                  paddr + i * PAGE_SIZE);
+        success &= vmm_map_page(pml4, vaddr + i * PAGE_SIZE,
+                                paddr + i * PAGE_SIZE, flags);
         i++;
     }
     return success;
 }
-_bool vmm_unmap_range(u64 pml4,u64 vaddr, u64 npages){
+_bool vmm_unmap_range(u64 pml4, u64 vaddr, u64 npages) {
     _bool success = true;
     u64 i = 0;
     while (i < npages) {
@@ -116,7 +117,7 @@ _bool vmm_unmap_range(u64 pml4,u64 vaddr, u64 npages){
     return success;
 }
 
-_bool vmm_unmap_page(u64 pml4_,u64 vaddr) {
+_bool vmm_unmap_page(u64 pml4_, u64 vaddr) {
     usize pml4_index = (vaddr >> 39) & 0x1ff;
     usize pml3_index = (vaddr >> 30) & 0x1ff;
     usize pml2_index = (vaddr >> 21) & 0x1ff;
@@ -136,11 +137,11 @@ _bool vmm_unmap_page(u64 pml4_,u64 vaddr) {
     }
     uptr *pml1 = (uptr *)(pml2[pml2_index] & ~0xFFF);
     pml1[pml1_index] = 0;
-    __asm__ volatile ("invlpg (%0)" : : "b"(vaddr) : "memory");
+    __asm__ volatile("invlpg (%0)" : : "b"(vaddr) : "memory");
     return true;
 }
 
-u64 vmm_virt_to_phys(u64 pml4,u64 vaddr) {
+u64 vmm_virt_to_phys(u64 pml4, u64 vaddr) {
     usize pml4_index = (vaddr >> 39) & 0x1ff;
     usize pml3_index = (vaddr >> 30) & 0x1ff;
     usize pml2_index = (vaddr >> 21) & 0x1ff;

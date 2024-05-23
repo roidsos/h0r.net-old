@@ -119,7 +119,8 @@ void *request_pages(usize num) {
     return PP;
 }
 
-//WARN: Arch specific code in core/ + TODO: smh move to arch/ or make architecture neutral
+// WARN: Arch specific code in core/ + TODO: smh move to arch/ or make
+// architecture neutral
 void pmm_init() {
     usize page_bmp_size = 0;
     void *largest_free_memseg = NULL;

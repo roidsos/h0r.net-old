@@ -1,9 +1,9 @@
+#include "arch/general/paging.h"
 #include "arch/x86_64/gdt.h"
 #include "drivers/ACPI/SDT.h"
 #include <arch/x86_64/constant_isrs.h>
 #include <arch/x86_64/drivers/IOAPIC.h>
 #include <arch/x86_64/drivers/LAPIC.h>
-#include "arch/general/paging.h"
 #include <arch/x86_64/drivers/input/PS2.h>
 #include <arch/x86_64/drivers/output/cereal.h>
 #include <arch/x86_64/interrupts/interrupts.h>

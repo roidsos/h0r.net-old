@@ -45,7 +45,8 @@ key_header *read_key(hive_header *hive, char *path) {
     for (u32 i = 0; i < be32toh(hive->num_keys); i++) {
         key_header *key = (key_header *)pointer;
         if (key->magic != KEY_MAGIC) {
-            log_error("Invalid hive at %s: Wrong magic value(0x%x)\n", path,key->magic);
+            log_error("Invalid hive at %s: Wrong magic value(0x%x)\n", path,
+                      key->magic);
             break;
         }
         if (strcmp(key->name, path) == 0) {

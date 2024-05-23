@@ -9,7 +9,8 @@ int atoi(char *s) {
     return n;
 }
 
-//WARN: Arch specific code in libk/ + TODO: smh move to arch/ or make architecture neutral
+// WARN: Arch specific code in libk/ + TODO: smh move to arch/ or make
+// architecture neutral
 void hcf(void) {
     __asm__ volatile("cli");
     for (;;) {

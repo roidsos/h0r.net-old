@@ -36,10 +36,10 @@ void init_tss(u64 rsp0) {
 }
 
 int gdt_init(u64 *rsp0) {
-    set_gdt_entry(0, 0, 0, 0, 0); // NULL segment
+    set_gdt_entry(0, 0, 0, 0, 0);             // NULL segment
     set_gdt_entry(1, 0, 0, 0b10011010, 0xA0); // Ring 0 code
     set_gdt_entry(2, 0, 0, 0b10010010, 0xA0); // Ring 0 data
-    set_gdt_entry(3, 0, 0, 0b10111010, 0xA0); // Ring 1 code 
+    set_gdt_entry(3, 0, 0, 0b10111010, 0xA0); // Ring 1 code
     set_gdt_entry(4, 0, 0, 0b10110010, 0xA0); // Ring 1 data
     set_gdt_entry(5, 0, 0, 0b11011010, 0xA0); // Ring 2 code
     set_gdt_entry(6, 0, 0, 0b11010010, 0xA0); // Ring 2 data

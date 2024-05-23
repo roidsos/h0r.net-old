@@ -66,7 +66,8 @@ void tar_init() {
         return;
     }
 
-    //WARN: Arch specific code in drivers/ + TODO: smh move to arch/ or make architecture neutral
+    // WARN: Arch specific code in drivers/ + TODO: smh move to arch/ or make
+    // architecture neutral
     contents = parse_tar(data.initramfs->address, data.initramfs->size);
 
     u16 driver_id =

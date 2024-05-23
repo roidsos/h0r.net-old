@@ -3,9 +3,9 @@
 #include "core/sys/krnlexec.h"
 #include <config.h>
 
+#include <core/sys/krnlexec.h>
 #include <core/sys/resman/SIV.h>
 #include <core/sys/resman/tty.h>
-#include <core/sys/krnlexec.h>
 
 #include <core/mm/heap.h>
 #include <core/mm/pmm.h>
@@ -36,8 +36,8 @@ void wakeup_init_hw() {
     siv_init();
     tar_init();
 
-    //lai_set_acpi_revision(ACPI_revision);
-    //lai_create_namespace();
+    // lai_set_acpi_revision(ACPI_revision);
+    // lai_create_namespace();
 
     log_nice("Hardware sucessfully initialized!\n");
 }
@@ -51,11 +51,12 @@ void wakeup_do_mounts() {
 }
 void wakeup_startup() {
     // start Gaia: the userspace portion of Wakeup
-    execute("Gaia", gaia_main, PAGE_SIZE * 2,false);
+    execute("Gaia", gaia_main, PAGE_SIZE * 2, false);
 
     log_nice("Userland sucessfully initialized!\n");
 
     // kickstart the sched
-    //WARN: Arch specific code in core/ + TODO: smh move to arch/ or make architecture neutral
+    // WARN: Arch specific code in core/ + TODO: smh move to arch/ or make
+    // architecture neutral
     __asm__("int $32");
 }
