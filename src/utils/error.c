@@ -107,7 +107,7 @@ void trigger_psod(int error_code, char *details, Registers *regs) {
     dprintf("R14=0x%016llx ,R15=0x%016llx ,ERROR_CODE=0x%016llx\n\n", regs->r14,
             regs->r15, regs->error);
 
-    if (regs->rbp < (u64)data.hhdm_off) {
+    if (regs->rbp < (u64)hn_data.hhdm_off) {
         printf("NO backtrace sowwy(bad RBP)\n");
         dprintf("NO backtrace sowwy(bad RBP)\n");
         hcf();
@@ -117,7 +117,7 @@ void trigger_psod(int error_code, char *details, Registers *regs) {
     dprintf("Backtrace:\n");
     struct stackframe64_t *frame = (struct stackframe64_t *)regs->rbp;
     while (true) {
-        if (frame->RIP <= (u64)data.hhdm_off) {
+        if (frame->RIP <= (u64)hn_data.hhdm_off) {
             break;
         }
         printf("    [%.16lx]  <No SymbolTable LMAO>", frame->RIP);

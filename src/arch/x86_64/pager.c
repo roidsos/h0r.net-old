@@ -51,7 +51,7 @@ u64 vmm_create_pagemap() {
     uptr *pml4 = (uptr *)PHYS_TO_VIRT(request_pages(1));
     memset(pml4, 0, PAGE_SIZE);
     for (u64 i = 256; i < 512; i++) {
-        pml4[i] = ((uptr *)PHYS_TO_VIRT(data.pagemap))[i];
+        pml4[i] = ((uptr *)PHYS_TO_VIRT(hn_data.pagemap))[i];
         log_trace("pml4[%d] = 0x%p\n", i, pml4[i]);
     }
     return (u64)pml4;

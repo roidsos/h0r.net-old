@@ -146,7 +146,7 @@ static inline void _out_char(char character, UNUSED void *buffer,
             }
         }
     } else {
-        uterus_write(data.ut_ctx, &character, 1);
+        uterus_write(hn_data.ut_ctx, &character, 1);
     }
 }
 

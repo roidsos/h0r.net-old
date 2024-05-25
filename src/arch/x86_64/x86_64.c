@@ -26,18 +26,18 @@ void load_limine_modules() {
     for (usize i = 0; i < mod_request.response->module_count; i++) {
         struct limine_file *mod = mod_request.response->modules[i];
         if (strcmp(mod->path, "/boot/kfont.psf") == 0) {
-            data.ut_ctx = init_uterus_with_psf2_font(mod, data.framebuffer);
+            hn_data.ut_ctx = init_uterus_with_psf2_font(mod, hn_data.framebuffer);
         } else if (strcmp(mod->path, "/boot/initramfs.tar") == 0) {
-            data.initramfs = mod;
+            hn_data.initramfs = mod;
         } else {
             log_warn("Unknown module \"%s\" found", mod->path);
         }
     }
 
-    if (data.ut_ctx == NULL) {
-        data.ut_ctx = uterus_fb_simple_init(
-            data.framebuffer->address, data.framebuffer->width,
-            data.framebuffer->height, data.framebuffer->pitch);
+    if (hn_data.ut_ctx == NULL) {
+        hn_data.ut_ctx = uterus_fb_simple_init(
+            hn_data.framebuffer->address, hn_data.framebuffer->width,
+            hn_data.framebuffer->height, hn_data.framebuffer->pitch);
     }
 }
 
@@ -51,8 +51,8 @@ void limine_initialize_globals() {
         framebuffer_request.response->framebuffer_count < 1) {
         trigger_psod(HN_ERR_NO_FB, "No framebuffer found.", NULL);
     }
-    data.framebuffer = framebuffer_request.response->framebuffers[0];
-    data.hhdm_off = (void *)hhdm_request.response->offset;
+    hn_data.framebuffer = framebuffer_request.response->framebuffers[0];
+    hn_data.hhdm_off = (void *)hhdm_request.response->offset;
     load_limine_modules();
 }
 
@@ -67,7 +67,7 @@ void _start(void) {
     disable_interrupts();
     log_nice("x86_64 Init Target reached: IO\n");
 
-    get_cpu_capabilities(&data.cpu_info);
+    get_cpu_capabilities(&hn_data.cpu_info);
     sys_init_fpu();
     gdt_init((u64 *)kernel_stack);
     log_nice("x86_64 Init Target reached: CPU\n");
@@ -77,7 +77,7 @@ void _start(void) {
     }
     log_nice("x86_64 Init Target reached: ACPI\n");
 
-    data.pagemap = vmm_get_pagemap();
+    hn_data.pagemap = vmm_get_pagemap();
     initialize_interrupts();
     lapic_init();
     ioapic_init();

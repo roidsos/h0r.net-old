@@ -10,7 +10,7 @@
 
 
 // Struct to hold globals
-struct HN_data_block {
+struct HN_data {
     //System info
     CPUInfo cpu_info;
     u64 pagemap;
@@ -26,5 +26,5 @@ struct HN_data_block {
     struct limine_framebuffer *framebuffer;
     struct limine_file *initramfs;
 };
-extern struct HN_data_block data;
+extern struct HN_data hn_data;
 #endif

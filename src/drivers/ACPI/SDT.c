@@ -24,7 +24,7 @@ _bool do_checksum(sdt_header *table_header) {
 
 _bool find_rsdt(void *rsdp_addr) {
     XSDP *rsdp = (XSDP *)rsdp_addr;
-    data.ACPI_ver = rsdp->revision;
+    hn_data.ACPI_ver = rsdp->revision;
     if (rsdp->revision >= 2) {
         log_trace("Using the XSDT!\n");
         use_xsdt = true;

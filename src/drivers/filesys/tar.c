@@ -62,13 +62,13 @@ void tar_chown(UNUSED void *driver_specific_data, UNUSED char *path,
                UNUSED u64 uid, UNUSED u64 gid) {}
 
 void tar_init() {
-    if (data.initramfs == NULL) {
+    if (hn_data.initramfs == NULL) {
         return;
     }
 
     // WARN: Arch specific code in drivers/ + TODO: smh move to arch/ or make
     // architecture neutral
-    contents = parse_tar(data.initramfs->address, data.initramfs->size);
+    contents = parse_tar(hn_data.initramfs->address, hn_data.initramfs->size);
 
     u16 driver_id =
         siv_register_driver((block_driver_t){.is_virtual = true,

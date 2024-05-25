@@ -44,6 +44,6 @@ void tty_write(u16 tty_id, char *buf, u32 size) {
             cereal_write(buf[i], tty.out_port);
         }
     } else if (tty.out_type == TTY_TYPE_UTERUS) {
-        uterus_write(data.ut_ctx, buf, size);
+        uterus_write(hn_data.ut_ctx, buf, size);
     }
 }
