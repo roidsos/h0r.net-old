@@ -25,7 +25,7 @@ void schedule(Registers *regs) {
 
 
     //setting the timer for next yield, have to do it in the kernel pagemap
-    lapic_timer_oneshot(1, 32);
+    lapic_timer_oneshot(5, 32); // 5ms timeslice
     lapic_eoi();
 
     __asm__ volatile("mov %0, %%cr3"
