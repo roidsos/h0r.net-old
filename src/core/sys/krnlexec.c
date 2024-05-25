@@ -16,7 +16,7 @@ void execute(const char *name, void (*func)(), _bool user) {
     log_trace("func: %p, stack: %p\n", func, stack);
 
     regs.rip = (u64)func;
-    regs.rsp = stack;
+    regs.rsp = stack + 2 * PAGE_SIZE;
     regs.cs = user ? 0x38 : 0x8;
     regs.ss = user ? 0x40 : 0x10;
     regs.rflags = 0x202;
