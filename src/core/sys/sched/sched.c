@@ -34,6 +34,20 @@ void sched_kill(u32 pid) {
 
 process_t *sched_get_curr_process() { return &processes[sched_current_pid]; }
 
+void sched_save_state(u32 pid)
+{
+    processes[pid].saved_regs = processes[pid].regs;
+}
+
+void sched_restore_state(u32 pid)
+{
+    processes[pid].regs = processes[pid].saved_regs;
+    if(pid == sched_current_pid){
+        // TODO: smh stop the timer to avoid double advance
+        __asm__ volatile("int $0x20");
+    }
+}
+
 void sched_block(u32 pid) { processes[pid].state_flags = SCHED_STATE_BLOCKED; }
 
 void sched_unblock(u32 pid) { processes[pid].state_flags = SCHED_STATE_READY; }

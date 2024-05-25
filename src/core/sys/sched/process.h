@@ -17,6 +17,7 @@ typedef struct {
     char* name;
     //WARN: Arch specific code in core/ + TODO: smh move to arch/ or make architecture neutral
     Registers regs;
+    Registers saved_regs;
     u32 tty_id;
     u64 pagemap;
 } process_t;
