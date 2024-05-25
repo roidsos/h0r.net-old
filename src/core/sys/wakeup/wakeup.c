@@ -51,7 +51,7 @@ void wakeup_do_mounts() {
 }
 void wakeup_startup() {
     // start Gaia: the userspace portion of Wakeup
-    execute("Gaia", gaia_main, PAGE_SIZE * 2, false);
+    execute("Gaia", gaia_main, false);
 
     log_nice("Userland sucessfully initialized!\n");
 

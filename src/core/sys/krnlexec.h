@@ -4,6 +4,6 @@
 #include <libk/stdbool.h>
 #include <libk/stdint.h>
 
-void execute(const char* name, void (*func)(),u64 fsize, _bool user);
+void execute(const char* name, void (*func)(), _bool user);
 
 #endif // __KERNLEXEC_H__
