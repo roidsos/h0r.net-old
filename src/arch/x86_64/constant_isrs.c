@@ -1,7 +1,7 @@
 #include "constant_isrs.h"
 #include "arch/x86_64/interrupts/ISR.h"
 #include "core/mm/mem.h"
-#include <arch/x86_64/drivers/LAPIC.h>
+#include <arch/x86_64/LAPIC.h>
 #include <arch/x86_64/interrupts/interrupts.h>
 #include <config.h>
 #include <core/sys/sched/sched.h>

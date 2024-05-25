@@ -1,7 +1,7 @@
 #include "PS2.h"
 
-#include <arch/x86_64/drivers/IOAPIC.h>
-#include <arch/x86_64/drivers/LAPIC.h>
+#include <arch/x86_64/IOAPIC.h>
+#include <arch/x86_64/LAPIC.h>
 #include <arch/x86_64/interrupts/interrupts.h>
 #include <arch/x86_64/io/portio.h>
 #include <libk/macros.h>
