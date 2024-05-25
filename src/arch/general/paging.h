@@ -10,9 +10,9 @@
 #define FLAGS_X (1 << 2)
 #define FLAGS_U (1 << 3)
 
-u64  vmm_create_pagetable();
-void vmm_bind_pagetable(u64 pml4);
-u64  vmm_get_pagetable();
+u64  vmm_create_pagemap();
+void vmm_bind_pagemap(u64 pml4);
+u64  vmm_get_pagemap();
 
 _bool vmm_map_page(u64 pml4,u64 vaddr, u64 paddr, u64 flags);
 _bool vmm_unmap_page(u64 pml4,u64 vaddr);

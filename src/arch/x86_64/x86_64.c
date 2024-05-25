@@ -77,7 +77,7 @@ void _start(void) {
     }
     log_nice("x86_64 Init Target reached: ACPI\n");
 
-    data.pagemap = vmm_get_pagetable();
+    data.pagemap = vmm_get_pagemap();
     initialize_interrupts();
     lapic_init();
     ioapic_init();

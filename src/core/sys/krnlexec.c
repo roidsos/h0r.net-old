@@ -9,7 +9,7 @@
 #include <utils/log.h>
 
 void execute(const char *name, void (*func)(), u64 fsize, _bool user) {
-    u64 pagemap = vmm_create_pagetable();
+    u64 pagemap = vmm_create_pagemap();
     Registers regs = {0};
     u64 stack = (u64)request_pages(2);
 
