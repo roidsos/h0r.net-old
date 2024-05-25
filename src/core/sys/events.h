@@ -16,7 +16,7 @@ typedef struct{
 
 u32 event_create();
 void event_destroy(u32 event_id);
-void event_subscribe(u32 pid,u32 event,void (*callback)(u32 pid,void* private));
+void event_subscribe(u32 pid,u32 event,void (*callback)(u32 event_id,void* private));
 void event_unsubscribe(u32 pid,u32 event);
 
 void event_fire(u32 event_id,void* private);

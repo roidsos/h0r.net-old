@@ -19,7 +19,7 @@ u32 event_create(){
 void event_destroy(u32 event_id){
     events[event_id].event = 0xffffffff;
 }
-void event_subscribe(u32 pid,u32 event,void (*callback)(u32 pid,void* private)){
+void event_subscribe(u32 pid,u32 event,void (*callback)(u32 event_id,void* private)){
     if(event < num_events){
         events[event].subscribers = realloc(events[event].subscribers,(events[event].num_subscribers+1)*sizeof(subscriber));
         events[event].subscribers[events[event].num_subscribers].pid = pid;
