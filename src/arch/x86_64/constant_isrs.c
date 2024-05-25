@@ -23,13 +23,14 @@ void schedule(Registers *regs) {
 
     memcpy(regs, &processes[sched_current_pid].regs, sizeof(Registers));
 
-    // TODO: FIX smh
-    //__asm__ volatile("mov %0, %%cr3"
-    //                 :
-    //                 : "r"(VIRT_TO_PHYS(processes[sched_current_pid].pagemap)));
 
+    //setting the timer for next yield, have to do it in the kernel pagemap
     lapic_timer_oneshot(1, 32);
     lapic_eoi();
+
+    __asm__ volatile("mov %0, %%cr3"
+                     :
+                     : "r"(VIRT_TO_PHYS(processes[sched_current_pid].pagemap)));
 }
 
 void syscall_handler(Registers *regs) {

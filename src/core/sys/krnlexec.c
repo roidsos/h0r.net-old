@@ -21,9 +21,6 @@ void execute(const char *name, void (*func)(), _bool user) {
     regs.ss = user ? 0x40 : 0x10;
     regs.rflags = 0x202;
 
-    //vmm_map_range(pagemap, stack, stack, 2, FLAGS_R | FLAGS_W | FLAGS_U);
-    //vmm_map_range(pagemap, (u64)func, (u64)VIRT_TO_PHYS(func),
-    //              fsize / PAGE_SIZE, FLAGS_R | FLAGS_W | FLAGS_X | FLAGS_U);
-
+    vmm_map_range(pagemap, stack, stack, 2, FLAGS_R | FLAGS_W | FLAGS_U);
     sched_add_process((char *)name, regs, pagemap);
 }
