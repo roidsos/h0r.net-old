@@ -61,9 +61,9 @@ void vmm_bind_pagemap(u64 pml4) {
     __asm__ volatile("mov %0, %%cr3" : : "r"(pml4));
 }
 u64 vmm_get_pagemap() {
-    u64 pml4;
-    __asm__ volatile("mov %%cr3, %0" : "=r"(pml4));
-    return pml4 & 0xFFFFFFFFFFFFF000;
+    u64 cr3;
+    __asm__ volatile("mov %%cr3, %0" : "=r"(cr3));
+    return cr3 & 0xFFFFFFFFFFFFF000;
 }
 
 _bool vmm_map_page(u64 pml4, u64 vaddr, u64 paddr, u64 flags) {
