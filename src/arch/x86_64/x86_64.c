@@ -4,8 +4,8 @@
 #include <arch/x86_64/constant_isrs.h>
 #include <arch/x86_64/IOAPIC.h>
 #include <arch/x86_64/LAPIC.h>
-#include <arch/x86_64/input/PS2.h>
-#include <arch/x86_64/output/cereal.h>
+#include <arch/x86_64/io/PS2.h>
+#include <arch/x86_64/io/cereal.h>
 #include <arch/x86_64/interrupts/interrupts.h>
 #include <arch/x86_64/pager.h>
 #include <backends/fb.h>

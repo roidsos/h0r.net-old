@@ -2,7 +2,7 @@
 
 #include <config.h>
 
-#include <arch/x86_64/output/cereal.h>
+#include <arch/x86_64/io/cereal.h>
 #include <core/kernel.h>
 #include <vendor/uterus/uterus.h>
 

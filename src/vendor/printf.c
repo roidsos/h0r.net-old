@@ -32,7 +32,7 @@
 // Note: Edited
 ///////////////////////////////////////////////////////////////////////////////
 #include "printf.h"
-#include <arch/x86_64/output/cereal.h>
+#include <arch/x86_64/io/cereal.h>
 #include <config.h>
 #include <core/kernel.h>
 #include <core/sys/resman/tty.h>
