@@ -1,7 +1,7 @@
 #include "cpu.h"
 #include "libk/string.h"
 void cpuid(u32 eax, u32 *a, u32 *b, u32 *c, u32 *d) {
-    asm volatile("cpuid" : "=a"(*a), "=b"(*b), "=c"(*c), "=d"(*d) : "a"(eax));
+    __asm__ volatile("cpuid" : "=a"(*a), "=b"(*b), "=c"(*c), "=d"(*d) : "a"(eax));
 }
 
 void get_cpu_capabilities(CPUInfo *cpuInfo) {
@@ -47,24 +47,24 @@ int sys_init_fpu() {
     if (!(edx & (1 << 24)))
         return 1;
     // enable fpu
-    asm volatile("fninit");
-    asm volatile("fwait");
-    asm volatile("clts");
-    asm volatile("mov %cr0, %rax");
-    asm volatile("and $0x9FFFFFFF, %eax");
-    asm volatile("mov %rax, %cr0");
-    asm volatile("mov %cr4, %rax");
-    asm volatile("or $0x600, %rax");
-    asm volatile("mov %rax, %cr4");
+    __asm__ volatile("fninit");
+    __asm__ volatile("fwait");
+    __asm__ volatile("clts");
+    __asm__ volatile("mov %cr0, %rax");
+    __asm__ volatile("and $0x9FFFFFFF, %eax");
+    __asm__ volatile("mov %rax, %cr0");
+    __asm__ volatile("mov %cr4, %rax");
+    __asm__ volatile("or $0x600, %rax");
+    __asm__ volatile("mov %rax, %cr4");
     return 0;
 }
 
 void rdmsr(u32 msr, u32 *lo, u32 *hi) {
-    asm volatile("rdmsr" : "=a"(*lo), "=d"(*hi) : "c"(msr));
+    __asm__ volatile("rdmsr" : "=a"(*lo), "=d"(*hi) : "c"(msr));
 }
 
 void wrmsr(u32 msr, u32 lo, u32 hi) {
-    asm volatile("wrmsr" : : "a"(lo), "d"(hi), "c"(msr));
+    __asm__ volatile("wrmsr" : : "a"(lo), "d"(hi), "c"(msr));
 }
 
 u64 read_tsc() {
