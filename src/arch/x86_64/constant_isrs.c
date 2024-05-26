@@ -30,7 +30,7 @@ void schedule(Registers *regs) {
     lapic_timer_oneshot(5, 32); // 5ms timeslice
     lapic_eoi();
 
-    if(processes[sched_current_pid].state_flags & FLAGS_IN_SYSCALL)
+    if(processes[sched_current_pid].state_flags & SCHED_FLAGS_IN_SYSCALL)
         return;
 
     __asm__ volatile("mov %0, %%cr3"
@@ -39,9 +39,9 @@ void schedule(Registers *regs) {
 }
 
 void syscall_handler(Registers *regs) {
-    FLAG_SET(processes[sched_current_pid].state_flags, FLAGS_IN_SYSCALL);
+    FLAG_SET(processes[sched_current_pid].state_flags, SCHED_FLAGS_IN_SYSCALL);
     regs->rax = syscall(regs->rax, regs->rdi, regs->rsi, regs->rdx);
-    FLAG_UNSET(processes[sched_current_pid].state_flags, FLAGS_IN_SYSCALL);
+    FLAG_UNSET(processes[sched_current_pid].state_flags, SCHED_FLAGS_IN_SYSCALL);
 }
 
 void cisrs_register() {
