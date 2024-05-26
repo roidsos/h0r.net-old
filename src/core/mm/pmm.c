@@ -41,28 +41,7 @@ _bool free_page(void *addr) {
         return false;
     }
 }
-_bool reserve_page(void *addr) {
-    usize index = (usize)addr / PAGE_SIZE;
-    if (bitmap_get(page_bmp, index)) {
-        return true;
-    }
-    if (bitmap_set(page_bmp, index, true)) {
-        return true;
-    } else {
-        return false;
-    }
-}
-_bool unreserve_page(void *addr) {
-    usize index = (usize)addr / PAGE_SIZE;
-    if (!bitmap_get(page_bmp, index)) {
-        return true;
-    }
-    if (bitmap_set(page_bmp, index, false)) {
-    } else {
-        return false;
-    }
-    return true;
-}
+
 _bool lock_pages(void *addr, usize num) {
     for (usize i = 0; i < num; i++) {
         if (!lock_page((void *)(addr + i * PAGE_SIZE)))
@@ -77,20 +56,6 @@ _bool free_pages(void *addr, usize num) {
     }
     return true;
 }
-_bool reserve_pages(void *addr, usize num) {
-    for (usize i = 0; i < num; i++) {
-        if (!reserve_page((void *)(addr + i * PAGE_SIZE)))
-            return false;
-    }
-    return true;
-}
-_bool unreserve_pages(void *addr, usize num) {
-    for (usize i = 0; i < num; i++) {
-        if (!unreserve_page((void *)(addr + i * PAGE_SIZE)))
-            return false;
-    }
-    return true;
-}
 
 usize get_free_RAM() { return free_mem; }
 usize get_used_RAM() { return used_mem; }
@@ -98,7 +63,9 @@ usize get_total_RAM() { return total_mem; }
 
 static void *find_free_range(usize npages) {
     for (usize addr = 0; addr <= page_bmp.size; addr++) {
+        log_trace("Looking at %p\n", (void *)addr);
         for (usize page = 0; page <= npages; page++) {
+
             if (bitmap_get(page_bmp, addr + PAGE_TO_BIT(page)))
                 break;
 
@@ -155,10 +122,13 @@ void pmm_init() {
         if (entry->type == LIMINE_MEMMAP_USABLE ||
             entry->type == LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE ||
             entry->type == LIMINE_MEMMAP_ACPI_RECLAIMABLE) {
-            unreserve_pages((void *)entry->base, entry->length / PAGE_SIZE);
+            usize index = entry->base / PAGE_SIZE;
+            for (usize j = 0; j < DIV_ROUND_UP(entry->length, PAGE_SIZE); j++) {
+                bitmap_set(page_bmp, index + j, false);  
+            }
         }
     }
-    lock_pages(page_bmp.buffer, page_bmp.size / PAGE_SIZE);
+    lock_pages(page_bmp.buffer, DIV_ROUND_UP(page_bmp.size, PAGE_SIZE));
 
     log_trace("PMM initialized\n");
     log_trace("Total RAM: %u KB\n", total_mem / 1024);
