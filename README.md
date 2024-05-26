@@ -20,7 +20,7 @@ kernel of https://github.com/roidsos/RoidsOS
 - [x] Heap
 #### Tasking
 - [x] Scheduler
-- [ ] Events
+- [x] Events
 - [ ] SMP
 #### Userspace
 - [x] System calls
