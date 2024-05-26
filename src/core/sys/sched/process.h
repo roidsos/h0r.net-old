@@ -12,6 +12,9 @@ enum process_state {
     SCHED_STATE_DEAD = 3
 };
 
+// bits 0-3 are the state
+#define FLAGS_IN_SYSCALL 1 << 4
+
 typedef struct {
     u8 state_flags;
     char* name;
