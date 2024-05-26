@@ -28,23 +28,24 @@ kernel of https://github.com/roidsos/RoidsOS
 - [ ] Userspace
 - [ ] Libc
 - [ ] LibZig
-### ACPI
-- [X] ACPI
-- [x] LAPIC
-- [x] IOAPIC
 - [x] LAI
 ### drivers
 #### Timers
 - [x] HPET
 - [x] RTC
 - [x] LAPIC Timer
+#### ACPI
+- [X] ACPI
+- [x] LAPIC
+- [x] IOAPIC
+#### I/O
+- [x] PS/2
+- [x] COM
+- [ ] USB HID
 #### Audio
 - [x] PC speaker
 - [ ] AC97
-#### I/O
-- [x] PS/2 Keyboard
-- [ ] PS/2 Mouse
-- [x] COM
+- [ ] Intel HDA
 <!--
 #### Storage
 - [ ] IDE
