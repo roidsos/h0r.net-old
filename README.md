@@ -1,10 +1,7 @@
 # h0r.net
-A kernel IDK
-
-## What is h0r.net?
+## Wtf is h0r.net?
 kernel of https://github.com/roidsos/RoidsOS
 ## TODO
-
 ### System
 - [x] GDT
 - [x] IDT
@@ -25,10 +22,7 @@ kernel of https://github.com/roidsos/RoidsOS
 #### Userspace
 - [x] System calls
 - [ ] ELF
-- [ ] Userspace
-- [ ] Libc
-- [ ] LibZig
-- [x] LAI
+- [x] Userspace
 ### drivers
 #### Timers
 - [x] HPET
@@ -38,6 +32,7 @@ kernel of https://github.com/roidsos/RoidsOS
 - [X] ACPI
 - [x] LAPIC
 - [x] IOAPIC
+- [x] LAI
 #### I/O
 - [x] PS/2
 - [x] COM
