@@ -17,7 +17,8 @@ void schedule(Registers *regs) {
     if (!sched_running) {
         sched_running = true;
     } else {
-        memcpy(&processes[sched_current_pid].regs, regs, sizeof(Registers));
+        if(!FLAG_READ(processes[sched_current_pid].state_flags, SCHED_FLAGS_CHANGED))
+            memcpy(&processes[sched_current_pid].regs, regs, sizeof(Registers));
     }
 
     // the scheduling algorithm is separated from the scheduler

@@ -1,5 +1,6 @@
 #include "events.h"
 #include "core/sys/sched/process.h"
+#include "libk/binary.h"
 #include <core/sys/sched/sched.h>
 #include <core/mm/heap.h>
 #include <utils/log.h>
@@ -57,6 +58,7 @@ void event_fire(u32 event_id,void* private){
             processes[events[event_id].subscribers[i].pid].regs.rip = (u64)events[event_id].subscribers[i].callback;
             processes[events[event_id].subscribers[i].pid].regs.rdi = (u64)event_id;
             processes[events[event_id].subscribers[i].pid].regs.rsi = (u64)private;
+            FLAG_SET(processes[events[event_id].subscribers[i].pid].state_flags, SCHED_FLAGS_CHANGED);
             if(events[event_id].subscribers[i].pid == sched_current_pid){
                 was_scheduled = true;
             }
@@ -70,6 +72,4 @@ void event_fire(u32 event_id,void* private){
 u32 event_exit(){
     log_trace("event_exit()\n");
     sched_restore_state(sched_current_pid);
-    __asm__ volatile("int $0x20");
-    return 0;
 }

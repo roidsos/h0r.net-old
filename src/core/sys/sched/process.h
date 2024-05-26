@@ -15,6 +15,7 @@ enum process_state {
 // bits 0-3 are the state
 #define SCHED_GET_STATE(x) ((x) & 0b1111)
 #define SCHED_FLAGS_IN_SYSCALL 1 << 4
+#define SCHED_FLAGS_CHANGED 1 << 5
 
 typedef struct {
     u8 state_flags;
