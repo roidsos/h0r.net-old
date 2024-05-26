@@ -20,6 +20,7 @@ void gaia_main(void) {
     sys_call(3, event_id, (u64)test_handler, 0); // sys_event_subscribe
 
     sys_call(5, event_id, 0, 0); // sys_event_fire
+    sys_call(4, event_id, 0, 0); // sys_event_unsubscribe
     sys_call(2, event_id, 0, 0); // sys_event_destroy
     printf("TODO: Startup tasks\n");
     while (true)

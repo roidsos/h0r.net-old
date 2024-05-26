@@ -46,14 +46,14 @@ void event_unsubscribe(u32 pid,u32 event){
     }
 }
 
-extern process_t* processes;
+extern process_t processes[MAX_PROCESSES];
 
 void event_fire(u32 event_id,void* private){
     log_trace("event_fire(%d,%p)\n",event_id,private);
     _bool was_scheduled = false;
     if(event_id < num_events){
         for(u32 i = 0; i < events[event_id].num_subscribers; i++){
-            sched_save_state(events[event_id].subscribers[i].pid);
+            log_trace("proc %p, callback %p\n",processes,events[event_id].subscribers[i].callback);
             processes[events[event_id].subscribers[i].pid].regs.rip = (u64)events[event_id].subscribers[i].callback;
             processes[events[event_id].subscribers[i].pid].regs.rdi = (u64)event_id;
             processes[events[event_id].subscribers[i].pid].regs.rsi = (u64)private;
