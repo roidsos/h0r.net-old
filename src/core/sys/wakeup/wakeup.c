@@ -1,5 +1,6 @@
 #include "wakeup.h"
 #include "arch/general/paging.h"
+#include "core/kernel.h"
 #include "core/sys/krnlexec.h"
 #include <config.h>
 
@@ -36,8 +37,8 @@ void wakeup_init_hw() {
     siv_init();
     tar_init();
 
-    // lai_set_acpi_revision(ACPI_revision);
-    // lai_create_namespace();
+    //lai_set_acpi_revision(hn_data.ACPI_ver);
+    //lai_create_namespace();
 
     log_nice("Hardware sucessfully initialized!\n");
 }
