@@ -18,7 +18,7 @@ void *malloc(usize size) {
 void free(void *tofree) {
     log_trace("free(0x%p)\n", tofree);
     if (tofree == NULL)
-        return;
+        return; // might wanna error out here
     char *PP = (char *)tofree;
     PP -= sizeof(usize);
     usize size = *((usize *)PP);
@@ -38,6 +38,8 @@ void *realloc(void *old, usize size) {
             smallersize = *((usize *)old - 1);
         memcpy(newmem, old, smallersize);
         free(old);
+    } else {
+        // might wanna error out here
     }
     return newmem;
 }
