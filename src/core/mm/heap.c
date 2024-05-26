@@ -32,13 +32,13 @@ void *calloc(usize count, usize size) {
 void *realloc(void *old, usize size) {
     // recording the smaller size
     usize smallersize = size;
-    if (*((usize *)old - 1) < size)
-        smallersize = *((usize *)old - 1);
-
-    free(old); // freeing it before so there will be less airgaps
-    void *newmem = malloc(size);      // mallocing the new aegment
-    memcpy(newmem, old, smallersize); // copying the data there
-
+    void *newmem = malloc(size);
+    if(old != NULL){
+        if (*((usize *)old - 1) < size)
+            smallersize = *((usize *)old - 1);
+        memcpy(newmem, old, smallersize);
+        free(old);
+    }
     return newmem;
 }
 void *realloc_plus(void *old, usize size, usize oldsize) {
