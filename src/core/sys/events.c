@@ -1,8 +1,12 @@
 #include "events.h"
+#include "arch/general/paging.h"
+#include "core/mm/mem.h"
 #include "core/sys/sched/process.h"
 #include "libk/binary.h"
+#include "libk/stdint.h"
 #include <core/sys/sched/sched.h>
 #include <core/mm/heap.h>
+#include <core/mm/pmm.h>
 #include <utils/log.h>
 
 event_t events[64] = {0};
@@ -54,12 +58,16 @@ void event_fire(u32 event_id,void* private){
     _bool was_scheduled = false;
     if(event_id < num_events){
         for(u32 i = 0; i < events[event_id].num_subscribers; i++){
-            log_trace("proc %p, callback %p\n",processes,events[event_id].subscribers[i].callback);
-            processes[events[event_id].subscribers[i].pid].regs.rip = (u64)events[event_id].subscribers[i].callback;
-            processes[events[event_id].subscribers[i].pid].regs.rdi = (u64)event_id;
-            processes[events[event_id].subscribers[i].pid].regs.rsi = (u64)private;
-            FLAG_SET(processes[events[event_id].subscribers[i].pid].state_flags, SCHED_FLAGS_CHANGED);
-            if(events[event_id].subscribers[i].pid == sched_current_pid){
+            u64 pid = events[event_id].subscribers[i].pid;
+            sched_save_state(pid);
+            Registers newregs = processes[pid].regs;
+            newregs.rip = (u64)events[event_id].subscribers[i].callback;
+            newregs.rdi = (u64)event_id;
+            newregs.rsi = (u64)private;
+            FLAG_SET(processes[pid].state_flags, SCHED_FLAGS_CHANGED);
+
+            processes[pid].regs = newregs;
+            if(pid == sched_current_pid){
                 was_scheduled = true;
             }
         }
