@@ -69,7 +69,7 @@ void event_fire(u32 event_id,void* private){
         __asm__ volatile("int $0x20");
     }
 }
-u32 event_exit(){
+void event_exit(){
     log_trace("event_exit()\n");
     sched_restore_state(sched_current_pid);
 }

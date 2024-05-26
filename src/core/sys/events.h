@@ -21,7 +21,7 @@ void event_unsubscribe(u32 pid,u32 event);
 
 void event_fire(u32 event_id,void* private);
 
-u32 event_exit();
+void event_exit();
 
 
 #endif // __EVENTS_H__
