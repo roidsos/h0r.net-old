@@ -3,10 +3,7 @@
 
 #include <libk/stdint.h>
 
-#define ELF_MAG0 0x7F
-#define ELF_MAG1 'E'
-#define ELF_MAG2 'L'
-#define ELF_MAG3 'F'
+#define ELF_MAGIC 0x7f454c46
 
 #define ELF_RELOCATABLE 1
 #define ELF_EXECUTABLE 2

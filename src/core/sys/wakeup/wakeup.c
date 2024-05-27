@@ -1,4 +1,5 @@
 #include "wakeup.h"
+#include "core/sys/executive/ELF/elf.h"
 #include <config.h>
 
 #include <core/sys/resman/SIV.h>
@@ -48,14 +49,13 @@ void wakeup_do_mounts() {
 }
 void wakeup_startup() {
 
-
+    exec_elf("bin/test","test",false);
 
 
     // start Gaia: the userspace portion of Wakeup
     //execute("Gaia", gaia_main, false);
 
     log_nice("Userland sucessfully initialized!\n");
-
 
 
 
