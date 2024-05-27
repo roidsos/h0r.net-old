@@ -1,10 +1,6 @@
 #include "wakeup.h"
-#include "arch/general/paging.h"
-#include "core/kernel.h"
-#include "core/sys/krnlexec.h"
 #include <config.h>
 
-#include <core/sys/krnlexec.h>
 #include <core/sys/resman/SIV.h>
 #include <core/sys/resman/tty.h>
 
@@ -51,10 +47,17 @@ void wakeup_do_mounts() {
     log_nice("Filesystem sucessfully initialized!\n");
 }
 void wakeup_startup() {
+
+
+
+
     // start Gaia: the userspace portion of Wakeup
-    execute("Gaia", gaia_main, false);
+    //execute("Gaia", gaia_main, false);
 
     log_nice("Userland sucessfully initialized!\n");
+
+
+
 
     // kickstart the sched
     // WARN: Arch specific code in core/ + TODO: smh move to arch/ or make
