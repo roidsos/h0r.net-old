@@ -7,7 +7,7 @@
 #include <libk/stdint.h>
 #include <utils/log.h>
 
-void execute(const char *name, void (*func)(), _bool user) {
+void execute(const char *name, void (*func)()) {
     u64 pagemap = vmm_create_pagemap();
     Registers regs = {0};
     u64 stack = (u64)request_pages(2);
@@ -16,8 +16,8 @@ void execute(const char *name, void (*func)(), _bool user) {
 
     regs.rip = (u64)func;
     regs.rsp = stack + 2 * PAGE_SIZE;
-    regs.cs = user ? 0x38 : 0x8;
-    regs.ss = user ? 0x40 : 0x10;
+    regs.cs = 0x8;
+    regs.ss = 0x10;
     regs.rflags = 0x202;
 
     vmm_map_range(pagemap, stack, stack, 2, FLAGS_R | FLAGS_W | FLAGS_U);
