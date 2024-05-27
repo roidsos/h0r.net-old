@@ -65,8 +65,8 @@ void event_fire(u32 event_id,void* private){
             newregs.rdi = (u64)event_id;
             newregs.rsi = (u64)private;
             FLAG_SET(processes[pid].state_flags, SCHED_FLAGS_CHANGED);
-
             processes[pid].regs = newregs;
+            FLAG_UNSET(processes[sched_current_pid].state_flags, SCHED_FLAGS_IN_SYSCALL);
             if(pid == sched_current_pid){
                 was_scheduled = true;
             }
