@@ -10,14 +10,14 @@
 void execute(const char *name, void (*func)()) {
     u64 pagemap = vmm_create_pagemap();
     Registers regs = {0};
-    u64 stack = (u64)request_pages(2);
+    u64 stack = (u64)request_pages(STACK_SIZE);
 
     regs.rip = (u64)func;
-    regs.rsp = stack + 2 * PAGE_SIZE;
+    regs.rsp = stack + STACK_SIZE * PAGE_SIZE;
     regs.cs = 0x8;
     regs.ss = 0x10;
     regs.rflags = 0x202;
 
-    vmm_map_range(pagemap, stack, stack, 2, FLAGS_R | FLAGS_W | FLAGS_U);
+    vmm_map_range(pagemap, stack, stack, STACK_SIZE, FLAGS_R | FLAGS_W | FLAGS_U);
     sched_add_process((char *)name, regs, pagemap);
 }
