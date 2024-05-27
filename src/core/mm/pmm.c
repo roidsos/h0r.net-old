@@ -63,7 +63,6 @@ usize get_total_RAM() { return total_mem; }
 
 static void *find_free_range(usize npages) {
     for (usize addr = 0; addr <= page_bmp.size; addr++) {
-        log_trace("Looking at %p\n", (void *)addr);
         for (usize page = 0; page <= npages; page++) {
 
             if (bitmap_get(page_bmp, addr + PAGE_TO_BIT(page)))

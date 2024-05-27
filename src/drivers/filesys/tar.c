@@ -12,7 +12,6 @@ struct tar_contents contents;
 
 // Driver functions
 file_t tar_get_props(UNUSED void *driver_specific_data, char *path) {
-    log_trace("tar_get_props(%s)\n", path);
     struct tar_header *header = find_file(&contents, path);
     if (header == NULL) {
         return (file_t){0};
@@ -33,14 +32,12 @@ file_t tar_get_props(UNUSED void *driver_specific_data, char *path) {
 }
 void tar_read(UNUSED void *driver_specific_data, char *path, u32 offset,
               char *buffer, u32 size) {
-    log_trace("tar_read(%s, %d, %d)\n", path, offset, size);
     struct tar_header *thdr = find_file(&contents, path);
     usize fsize = parse_size(thdr->size);
     memcpy(buffer, ((char *)thdr) + 512 + offset, size > fsize ? fsize : size);
 }
 void tar_write(UNUSED void *driver_specific_data, char *path, u32 offset,
                char *buffer, u32 size) {
-    log_trace("tar_write(%s, %d, %d)\n", path, offset, size);
     struct tar_header *thdr = find_file(&contents, path);
     usize fsize = parse_size(thdr->size);
     memcpy(((char *)thdr) + 512 + offset, buffer, size > fsize ? fsize : size);
