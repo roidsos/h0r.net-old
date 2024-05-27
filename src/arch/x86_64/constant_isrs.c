@@ -48,6 +48,13 @@ void schedule(Registers *regs) {
 }
 
 void syscall_handler(Registers *regs) {
+    //save the registers so it can be restored after the syscall
+    if(FLAG_READ(processes[sched_current_pid].state_flags, SCHED_FLAGS_IN_SYSCALL)){
+        memcpy(&processes[sched_current_pid].syscall_regs, regs, sizeof(Registers));
+    }else{
+        memcpy(&processes[sched_current_pid].regs, regs, sizeof(Registers));
+    }
+
     FLAG_SET(processes[sched_current_pid].state_flags, SCHED_FLAGS_IN_SYSCALL);
     regs->rax = syscall(regs->rax, regs->rdi, regs->rsi, regs->rdx);
     FLAG_UNSET(processes[sched_current_pid].state_flags, SCHED_FLAGS_IN_SYSCALL);
