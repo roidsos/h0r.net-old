@@ -1,7 +1,6 @@
 #include "krnlexec.h"
 #include "arch/x86_64/interrupts/ISR.h"
 #include "config.h"
-#include "core/mm/mem.h"
 #include <arch/general/paging.h>
 #include <core/mm/pmm.h>
 #include <core/sys/sched/sched.h>
