@@ -21,7 +21,7 @@ kernel of https://github.com/roidsos/RoidsOS
 - [ ] SMP
 #### Userspace
 - [x] System calls
-- [ ] ELF
+- [x] ELF
 - [x] Userspace
 ### drivers
 #### Timers
