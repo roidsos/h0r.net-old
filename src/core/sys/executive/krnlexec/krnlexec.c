@@ -12,8 +12,6 @@ void execute(const char *name, void (*func)()) {
     Registers regs = {0};
     u64 stack = (u64)request_pages(2);
 
-    log_trace("func: %p, stack: %p\n", func, stack);
-
     regs.rip = (u64)func;
     regs.rsp = stack + 2 * PAGE_SIZE;
     regs.cs = 0x8;
