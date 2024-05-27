@@ -21,9 +21,9 @@ void exec_elf(char *path, char *procname,  _bool user) {
         siv_close(fd);
         return;
     }
-    if (le16toh(elf_header.type) != ELF_EXECUTABLE) { // TODO: support relocatable executables
+    if (elf_header.type != ELF_EXECUTABLE) { // TODO: support relocatable executables
         log_error("Invalid ELF at %s: Wrong type(0x%x)\n", path,
-                  be16toh(elf_header.type));
+                  elf_header.type);
         siv_close(fd);
         return;
     }
@@ -32,14 +32,14 @@ void exec_elf(char *path, char *procname,  _bool user) {
     Registers regs = {0};
     u64 stack = (u64)request_pages(2);
 
-    for (u32 i = 0; i < be16toh(elf_header.phcount); i++) {
+    for (u32 i = 0; i < elf_header.phcount; i++) {
         elfph64_t phdr;
 
-        siv_read(fd,be32toh(elf_header.phpos) + sizeof(elfph64_t) * i,(char*)&phdr,sizeof(elfph64_t));
+        siv_read(fd,elf_header.phpos + sizeof(elfph64_t) * i,(char*)&phdr,sizeof(elfph64_t));
         if (phdr.type == ELF_SEGMENT_LOAD) {
             void* seg = request_pages(DIV_ROUND_UP(phdr.msize, PAGE_SIZE));
             vmm_map_range(pagemap, phdr.memaddr, (u64)seg, DIV_ROUND_UP(phdr.msize, PAGE_SIZE),FLAGS_R | FLAGS_W | FLAGS_X | FLAGS_U);
-            siv_read(fd,be32toh(phdr.offset),(char*)seg,phdr.msize);
+            siv_read(fd,phdr.offset,(char*)seg,phdr.msize);
         }
     }
     regs.rip = (u64)elf_header.entry;
