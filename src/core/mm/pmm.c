@@ -84,19 +84,17 @@ void *request_pages(usize num) {
     }
     return PP;
 }
+//WARN: Arch specific code in core/ + TODO: smh move to arch/ or make architecture neutral
+volatile struct limine_memmap_request memmap_request = {
+    .id = LIMINE_MEMMAP_REQUEST, .revision = 0};
 
-// WARN: Arch specific code in core/ + TODO: smh move to arch/ or make
-// architecture neutral
 void pmm_init() {
     usize page_bmp_size = 0;
     void *largest_free_memseg = NULL;
     usize largest_free_memseg_size = 0;
-    log_trace("Memory map segments:\n");
     for (usize i = 0; i < memmap_request.response->entry_count; i++) {
         struct limine_memmap_entry *entry = memmap_request.response->entries[i];
         page_bmp_size += (entry->length / (PAGE_SIZE * 8)) + 1;
-        log_trace("  -type:\"%s\",base:0x%p,length:%u\n",
-                  memmap_type_names[entry->type], entry->base, entry->length);
         if (entry->type == LIMINE_MEMMAP_USABLE ||
             entry->type == LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE ||
             entry->type == LIMINE_MEMMAP_ACPI_RECLAIMABLE) {
