@@ -7,7 +7,7 @@ kernel of https://github.com/roidsos/RoidsOS
 - [x] IDT
 - [X] TSS
 - [x] PCI
-- [ ] PCIe
+- [X] PCIe
 - [ ] MSI
 - [ ] MSI-X
 - [x] Modules

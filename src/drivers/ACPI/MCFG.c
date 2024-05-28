@@ -17,7 +17,6 @@ u32 *mcfg_getaddr(u8 bus, u8 dev, u8 func, u8 off) {
 }
 
 u32 mfg_read(u8 bus, u8 dev, u8 func, u8 off) {
-
     return mcfg_getaddr(bus, dev, func, off)[0];
 }
 void mcfg_write(u8 bus, u8 dev, u8 func, u8 off, u32 val) {
@@ -34,6 +33,7 @@ _bool mcfg_init() {
     entries = (device_config *)((u8 *)h + sizeof(mcfg_header));
 
     pci_aspace_t mcfg_aspace = {
+        .PCIe = true, // this is indeed PCIe
         .read = mfg_read,
         .write = mcfg_write
     };
