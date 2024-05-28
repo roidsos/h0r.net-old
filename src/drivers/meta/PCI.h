@@ -2,6 +2,7 @@
 #define __PCI_H__
 
 #include <libk/stdint.h>
+#include <libk/stdbool.h>
 
 typedef struct {
     u32 (*read)(u8 bus, u8 dev, u8 func, u8 off);
@@ -55,7 +56,7 @@ typedef struct {
 void register_aspace(pci_aspace_t aspace);
 
 // traverse the latest aspace.
-void pci_init(void);
+_bool pci_init(void);
 
 pci_multi_dev_t pci_find_devices_by_id(u16 vendor_id, u16 device_id);
 pci_multi_dev_t pci_find_devices_by_class(u8 class_base, u8 class_sub);

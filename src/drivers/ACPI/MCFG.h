@@ -17,11 +17,4 @@ typedef struct{
 }__attribute__((packed)) device_config;
 
 _bool mcfg_init();
-void iterate_pci();
-
-u32* pcie_getaddr(u8 bus,u8 dev,u8 func,u8 off);
-
-u32 pcie_read(u8 bus,u8 dev,u8 func,u8 off);
-void pcie_write(u8 bus,u8 dev,u8 func,u8 off,u32 val);
-
 #endif

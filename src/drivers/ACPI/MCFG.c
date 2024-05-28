@@ -1,42 +1,11 @@
 #include "MCFG.h"
-#include <utils/log.h>
 #include <vendor/printf.h>
-
+#include <drivers/meta/PCI.h>
 // Puffer get outta here, stop copying my code ffs
-
 u32 num_mcfg_entries;
 device_config *entries;
 
-_bool mcfg_init() {
-    mcfg_header *h = (mcfg_header *)find_SDT("MCFG");
-    if (h == NULL) {
-        return false;
-    }
-    num_mcfg_entries =
-        (h->h.length - sizeof(mcfg_header)) / sizeof(device_config);
-    entries = (device_config *)((u8 *)h + sizeof(mcfg_header));
-    return true;
-}
-void iterate_pci() {
-    log_trace("PCI Devices: \n");
-    for (int bus = 0; bus < 8; bus++) {
-        for (int device = 0; device < 32; device++) {
-            int numfuncs = pcie_read(bus, device, 0, 0x0E) & (1 << 7) ? 8 : 1;
-            for (int function = 0; function < numfuncs; function++) {
-                u16 vendor_id = pcie_read(bus, device, function, 0x00);
-                u16 device_id = pcie_read(bus, device, function, 0x02);
-                if (vendor_id == 0x0000 || vendor_id == 0xFFFF ||
-                    device_id == 0x0000) {
-                    continue;
-                }
-                log_trace("  -VendorID: 0x%x,DeviceID: 0x%x \n", vendor_id,
-                          device_id);
-            }
-        }
-    }
-}
-
-u32 *pcie_getaddr(u8 bus, u8 dev, u8 func, u8 off) {
+u32 *mcfg_getaddr(u8 bus, u8 dev, u8 func, u8 off) {
     for (usize i = 0; i < num_mcfg_entries; i++) {
         if (bus >= entries[i].start_bus && bus <= entries[i].end_bus) {
             u64 addr = (entries[i].base_address + (bus << 20) + (dev << 15) +
@@ -47,10 +16,29 @@ u32 *pcie_getaddr(u8 bus, u8 dev, u8 func, u8 off) {
     return 0;
 }
 
-u32 pcie_read(u8 bus, u8 dev, u8 func, u8 off) {
+u32 mfg_read(u8 bus, u8 dev, u8 func, u8 off) {
 
-    return pcie_getaddr(bus, dev, func, off)[0];
+    return mcfg_getaddr(bus, dev, func, off)[0];
 }
-void pcie_write(u8 bus, u8 dev, u8 func, u8 off, u32 val) {
-    pcie_getaddr(bus, dev, func, off)[0] = val;
+void mcfg_write(u8 bus, u8 dev, u8 func, u8 off, u32 val) {
+    mcfg_getaddr(bus, dev, func, off)[0] = val;
 }
+
+_bool mcfg_init() {
+    mcfg_header *h = (mcfg_header *)find_SDT("MCFG");
+    if (h == NULL) {
+        return false;
+    }
+    num_mcfg_entries =
+        (h->h.length - sizeof(mcfg_header)) / sizeof(device_config);
+    entries = (device_config *)((u8 *)h + sizeof(mcfg_header));
+
+    pci_aspace_t mcfg_aspace = {
+        .read = mfg_read,
+        .write = mcfg_write
+    };
+    register_aspace(mcfg_aspace);
+
+    return true;
+}
+

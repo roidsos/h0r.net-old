@@ -11,13 +11,15 @@
 #include <vendor/printf.h>
 
 #include <arch/x86_64/interrupts/interrupts.h>
-#include <core/sys/wakeup/gaia.h>
+
 #include <drivers/ACPI/MCFG.h>
+#include <drivers/meta/PCI.h>
+#include <drivers/filesys/tar.h>
 
 #include <utils/error.h>
 #include <utils/log.h>
 
-#include <drivers/filesys/tar.h>
+#include <core/sys/wakeup/gaia.h>
 
 #include <lai/core.h>
 
@@ -33,6 +35,9 @@ void wakeup_init_hw() {
 
     siv_init();
     tar_init();
+
+    mcfg_init();
+    pci_init();
 
     //lai_set_acpi_revision(hn_data.ACPI_ver);
     //lai_create_namespace();
@@ -56,8 +61,6 @@ void wakeup_startup() {
     //execute("Gaia", gaia_main, false);
 
     log_nice("Userland sucessfully initialized!\n");
-
-
 
     // kickstart the sched
     // WARN: Arch specific code in core/ + TODO: smh move to arch/ or make
