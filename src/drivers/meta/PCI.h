@@ -4,6 +4,30 @@
 #include <libk/stdint.h>
 #include <libk/stdbool.h>
 
+#define PCI_REG_COMMAND_IO_SPACE 1 << 0
+#define PCI_REG_COMMAND_MEM_SPACE 1 << 1
+#define PCI_REG_COMMAND_MASTER 1 << 2
+#define PCI_REG_COMMAND_SPECIAL_CYCLE 1 << 3
+#define PCI_REG_COMMAND_MWIE 1 << 4
+#define PCI_REG_COMMAND_VGA_PALETTE_SNOOP 1 << 5
+#define PCI_REG_COMMAND_ERROR_RESPONSE 1 << 6
+#define PCI_REG_COMMAND_RESERVED 1 << 7
+#define PCI_REG_COMMAND_SERR 1 << 8
+#define PCI_REG_COMMAND_FASTB2B 1 << 9
+#define PCI_REG_COMMAND_INTX_DISABLE 1 << 10
+
+#define PCI_REG_STATUS_INTERRUPT_STATUS 1 << 3
+#define PCI_REG_STATUS_CAPABILITY_LIST 1 << 4
+#define PCI_REG_STATUS_66MHZ_CAPABLE 1 << 5
+#define PCI_REG_STATUS_FASTB2B_CAPABLE 1 << 7
+#define PCI_REG_STATUS_MASTER_DATA_PARITY_ERROR 1 << 8
+#define PCI_REG_STATUS_DEVSEL_TIMING 3 << 9
+#define PCI_REG_STATUS_SIG_TARGET_ABORT 1 << 11
+#define PCI_REG_STATUS_RECEIVED_TARGET_ABORT 1 << 12
+#define PCI_REG_STATUS_RECIEVED_MASTER_ABORT 1 << 13
+#define PCI_REG_STATUS_SIGNALED_SYSTEM_ERROR 1 << 15
+#define PCI_REG_STATUS_DETECTED_PARITY_ERROR 1 << 16
+
 typedef struct {
     u32 (*read)(u8 bus, u8 dev, u8 func, u8 off);
     void (*write)(u8 bus, u8 dev, u8 func, u8 off, u32 val);
@@ -54,6 +78,11 @@ pci_multi_dev_t pci_find_devices_by_class(u8 class_base, u8 class_sub);
 
 pci_dev_info_t pci_get_device_info(pci_dev_addr_t addr);
 
+u16 pci_read_command_register(pci_dev_addr_t addr);
+void pci_write_command_register(pci_dev_addr_t addr, u16 val);
+
+u16 pci_read_status_register(pci_dev_addr_t addr);
+void pci_write_status_register(pci_dev_addr_t addr, u16 val);
 
 u32 pci_get_bar(pci_dev_addr_t addr, u8 bar_index);
 
@@ -62,6 +91,5 @@ u32 pci_get_bar(pci_dev_addr_t addr, u8 bar_index);
 #define pci_get_bar3(addr) pci_get_bar(addr, 3)
 #define pci_get_bar4(addr) pci_get_bar(addr, 4)
 #define pci_get_bar5(addr) pci_get_bar(addr, 5)
-
 
 #endif // __PCI_H__

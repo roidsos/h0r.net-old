@@ -127,6 +127,26 @@ pci_dev_info_t pci_get_device_info(pci_dev_addr_t addr)
     return ret;
 }
 
+u16 pci_read_command_register(pci_dev_addr_t addr)
+{
+    return pci_aspace.read(addr.bus, addr.dev, addr.func, 0x04) & 0xFFFF;
+}
+
+void pci_write_command_register(pci_dev_addr_t addr, u16 val)
+{
+    pci_aspace.write(addr.bus, addr.dev, addr.func, 0x04, val);
+}
+
+u16 pci_read_status_register(pci_dev_addr_t addr)
+{
+    return pci_aspace.read(addr.bus, addr.dev, addr.func, 0x06) & 0xFFFF;
+}
+
+void pci_write_status_register(pci_dev_addr_t addr, u16 val)
+{
+    pci_aspace.write(addr.bus, addr.dev, addr.func, 0x06, val);
+}
+
 u32 pci_get_bar(pci_dev_addr_t addr, u8 bar_index)
 {
     switch (bar_index) {
