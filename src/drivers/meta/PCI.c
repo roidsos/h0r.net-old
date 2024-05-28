@@ -71,3 +71,31 @@ pci_multi_dev_t pci_find_devices_by_id(u16 vendor_id, u16 device_id)
     }
     return ret;
 }
+
+pci_multi_dev_t pci_find_devices_by_class(u8 class_base, u8 class_sub)
+{
+    pci_multi_dev_t ret = {
+        .addrs = NULL,
+        .count = 0
+    };
+    for (int bus = 0; bus < 8; bus++) {
+        for (int device = 0; device < 32; device++) {
+            int numfuncs = pci_aspace.read(bus, device, 0, 0x0E) & (1 << 7) ? 8 : 1;
+            for (int function = 0; function < numfuncs; function++) {
+                u8 class_base2 = pci_aspace.read(bus, device, function, 0x0B);
+                u8 class_sub2 = pci_aspace.read(bus, device, function, 0x0A);
+                if (class_base == class_base2 && class_sub == class_sub2) {
+                    pci_dev_addr_t addr = {
+                        .bus = bus,
+                        .dev = device,
+                        .func = function
+                    };
+                    ret.addrs = realloc(ret.addrs, (ret.count + 1) * sizeof(pci_dev_addr_t));
+                    ret.addrs[ret.count] = addr;
+                    ret.count++;
+                }
+            }
+        }
+    }
+    return ret;
+}
