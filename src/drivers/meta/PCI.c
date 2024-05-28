@@ -116,16 +116,6 @@ pci_dev_info_t pci_get_device_info(pci_dev_addr_t addr)
         .interrupt_line = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x3C),
         .interrupt_pin = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x3D),
 
-
-        .bar0 = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x10),
-        .bar1 = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x14),
-        .bar2 = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x18),
-        .bar3 = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x1C),
-        .bar4 = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x20),
-        .bar5 = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x24),
-        .expansion_rom = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x30),
-        .cardbus_cis = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x28),
-
         .subsystem_id = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x2C),
         .subsystem_vendor_id = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x2E),
         .revision_id = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x08),
@@ -135,4 +125,17 @@ pci_dev_info_t pci_get_device_info(pci_dev_addr_t addr)
         .max_latency = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x3B)
     };
     return ret;
+}
+
+u32 pci_get_bar(pci_dev_addr_t addr, u8 bar_index)
+{
+    switch (bar_index) {
+        case 0: return pci_aspace.read(addr.bus, addr.dev, addr.func, 0x10);
+        case 1: return pci_aspace.read(addr.bus, addr.dev, addr.func, 0x14);
+        case 2: return pci_aspace.read(addr.bus, addr.dev, addr.func, 0x18);
+        case 3: return pci_aspace.read(addr.bus, addr.dev, addr.func, 0x1C);
+        case 4: return pci_aspace.read(addr.bus, addr.dev, addr.func, 0x24);
+        case 5: return pci_aspace.read(addr.bus, addr.dev, addr.func, 0x28);
+        default: return 0;
+    }
 }

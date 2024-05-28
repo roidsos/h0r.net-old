@@ -34,15 +34,6 @@ typedef struct {
     u8 interrupt_line;
     u8 interrupt_pin;
 
-    u32 bar0;
-    u32 bar1;
-    u32 bar2;
-    u32 bar3;
-    u32 bar4;
-    u32 bar5;
-    u32 expansion_rom;
-    u32 cardbus_cis;
-
     u16 subsystem_id;
     u16 subsystem_vendor_id;
     u8 revision_id;
@@ -62,4 +53,15 @@ pci_multi_dev_t pci_find_devices_by_id(u16 vendor_id, u16 device_id);
 pci_multi_dev_t pci_find_devices_by_class(u8 class_base, u8 class_sub);
 
 pci_dev_info_t pci_get_device_info(pci_dev_addr_t addr);
+
+
+u32 pci_get_bar(pci_dev_addr_t addr, u8 bar_index);
+
+#define pci_get_bar1(addr) pci_get_bar(addr, 1)
+#define pci_get_bar2(addr) pci_get_bar(addr, 2)
+#define pci_get_bar3(addr) pci_get_bar(addr, 3)
+#define pci_get_bar4(addr) pci_get_bar(addr, 4)
+#define pci_get_bar5(addr) pci_get_bar(addr, 5)
+
+
 #endif // __PCI_H__
