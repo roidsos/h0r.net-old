@@ -28,6 +28,7 @@ typedef struct {
 
     u8 class_base;
     u8 class_sub;
+    u8 prog_if;
 
     u8 capabilities;
     u8 interrupt_line;
@@ -45,7 +46,6 @@ typedef struct {
     u16 subsystem_id;
     u16 subsystem_vendor_id;
     u8 revision_id;
-    u8 prog_if;
 
     u8 selftest_status;
     u8 min_grant;

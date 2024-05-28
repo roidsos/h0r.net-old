@@ -99,3 +99,40 @@ pci_multi_dev_t pci_find_devices_by_class(u8 class_base, u8 class_sub)
     }
     return ret;
 }
+
+pci_dev_info_t pci_get_device_info(pci_dev_addr_t addr)
+{
+    u8 header_type = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x0E) & 0x7F;
+    if (header_type != 0) return (pci_dev_info_t){0};
+    pci_dev_info_t ret = {
+        .vendor_id = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x00),
+        .device_id = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x02),
+
+        .class_base = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x0B),
+        .class_sub = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x0A),
+        .prog_if = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x09),
+
+        .capabilities = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x34),
+        .interrupt_line = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x3C),
+        .interrupt_pin = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x3D),
+
+
+        .bar0 = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x10),
+        .bar1 = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x14),
+        .bar2 = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x18),
+        .bar3 = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x1C),
+        .bar4 = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x20),
+        .bar5 = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x24),
+        .expansion_rom = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x30),
+        .cardbus_cis = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x28),
+
+        .subsystem_id = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x2C),
+        .subsystem_vendor_id = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x2E),
+        .revision_id = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x08),
+
+        .selftest_status = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x3E),
+        .min_grant = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x3A),
+        .max_latency = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x3B)
+    };
+    return ret;
+}
