@@ -1,4 +1,5 @@
 #include "PCI.h"
+#include <core/mm/heap.h>
 #include <libk/stddef.h>
 #include <utils/log.h>
 pci_aspace_t pci_aspace = {
@@ -41,4 +42,32 @@ _bool pci_init(void)
     iterate_pci();
 
     return true;
+}
+
+pci_multi_dev_t pci_find_devices_by_id(u16 vendor_id, u16 device_id)
+{
+    pci_multi_dev_t ret = {
+        .addrs = NULL,
+        .count = 0
+    };
+    for (int bus = 0; bus < 8; bus++) {
+        for (int device = 0; device < 32; device++) {
+            int numfuncs = pci_aspace.read(bus, device, 0, 0x0E) & (1 << 7) ? 8 : 1;
+            for (int function = 0; function < numfuncs; function++) {
+                u16 vendor_id2 = pci_aspace.read(bus, device, function, 0x00);
+                u16 device_id2 = pci_aspace.read(bus, device, function, 0x02);
+                if (vendor_id == vendor_id2 && device_id == device_id2) {
+                    pci_dev_addr_t addr = {
+                        .bus = bus,
+                        .dev = device,
+                        .func = function
+                    };
+                    ret.addrs = realloc(ret.addrs, (ret.count + 1) * sizeof(pci_dev_addr_t));
+                    ret.addrs[ret.count] = addr;
+                    ret.count++;
+                }
+            }
+        }
+    }
+    return ret;
 }
