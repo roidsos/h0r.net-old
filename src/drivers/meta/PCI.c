@@ -1,4 +1,5 @@
 #include "PCI.h"
+#include "libk/stdint.h"
 #include <core/mm/heap.h>
 #include <libk/stddef.h>
 #include <utils/log.h>
@@ -105,6 +106,7 @@ pci_dev_info_t pci_get_device_info(pci_dev_addr_t addr)
     u8 header_type = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x0E) & 0x7F;
     if (header_type != 0) return (pci_dev_info_t){0};
     pci_dev_info_t ret = {
+        .addr = addr,
         .vendor_id = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x00),
         .device_id = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x02),
 
@@ -171,4 +173,21 @@ void pci_write_custom_register(pci_dev_addr_t addr, u8 off, u32 val)
 {
     if (pci_aspace.write != NULL)
         pci_aspace.write(addr.bus, addr.dev, addr.func, off, val);  
+}
+
+u8 get_capability_offset(pci_dev_addr_t addr, u8 cap_id)
+{
+    if (!pci_aspace.PCIe){
+        if(!(pci_aspace.read(addr.bus, addr.dev, addr.func, 0x4) & (1 << 4)))
+            return 0;
+    }
+    u32 cap_off = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x34);
+    for(u8 try = 0; try < 32; try++){ // limit depth to 32
+        u32 cap = pci_aspace.read(addr.bus, addr.dev, addr.func, cap_off);
+        if((cap & 0xFF) == cap_id){
+            return cap_off;
+        }
+        cap_off = (cap << 8) & 0xFF;
+    }
+    return 0;
 }

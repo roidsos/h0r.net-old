@@ -96,4 +96,6 @@ u32 pci_get_bar(pci_dev_addr_t addr, u8 bar_index);
 u32 pci_read_custom_register(pci_dev_addr_t addr, u8 off);
 void pci_write_custom_register(pci_dev_addr_t addr, u8 off, u32 val);
 
+u8 get_capability_offset(pci_dev_addr_t addr, u8 cap_id);
+
 #endif // __PCI_H__
