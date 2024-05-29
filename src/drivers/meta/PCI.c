@@ -157,6 +157,7 @@ pci_bar_t pci_get_bar(pci_dev_addr_t addr, u8 bar_index)
     if (barl & PCI_BAR_64BIT){
         baraddr |= ((u64)pci_aspace.read(addr.bus, addr.dev, addr.func, 0x14 + (4 * bar_index)) << 32);
     }
+    baraddr &= ~((barl & PCI_BAR_MMIO) ? 0b1111 : 0b11);
     return (pci_bar_t){.addr = baraddr, .mmio = (barl & PCI_BAR_MMIO), .prefetchable = (barl & PCI_BAR_PREFETCHABLE)}; 
 }
 
