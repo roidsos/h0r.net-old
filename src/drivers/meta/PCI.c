@@ -149,17 +149,15 @@ void pci_write_status_register(pci_dev_addr_t addr, u16 val)
     pci_aspace.write(addr.bus, addr.dev, addr.func, 0x06, val);
 }
 
-u32 pci_get_bar(pci_dev_addr_t addr, u8 bar_index)
+pci_bar_t pci_get_bar(pci_dev_addr_t addr, u8 bar_index)
 {
-    switch (bar_index) {
-        case 0: return pci_aspace.read(addr.bus, addr.dev, addr.func, 0x10);
-        case 1: return pci_aspace.read(addr.bus, addr.dev, addr.func, 0x14);
-        case 2: return pci_aspace.read(addr.bus, addr.dev, addr.func, 0x18);
-        case 3: return pci_aspace.read(addr.bus, addr.dev, addr.func, 0x1C);
-        case 4: return pci_aspace.read(addr.bus, addr.dev, addr.func, 0x24);
-        case 5: return pci_aspace.read(addr.bus, addr.dev, addr.func, 0x28);
-        default: return 0;
+    if (bar_index > 5) return (pci_bar_t){0};
+    u32 barl = pci_aspace.read(addr.bus, addr.dev, addr.func, 0x10 + (4 * bar_index));
+    u64 baraddr = barl & PCI_BAR_ADDR;
+    if (barl & PCI_BAR_64BIT){
+        baraddr |= ((u64)pci_aspace.read(addr.bus, addr.dev, addr.func, 0x14 + (4 * bar_index)) << 32);
     }
+    return (pci_bar_t){.addr = baraddr, .mmio = (barl & PCI_BAR_MMIO), .prefetchable = (barl & PCI_BAR_PREFETCHABLE)}; 
 }
 
 u32 pci_read_custom_register(pci_dev_addr_t addr, u8 off)

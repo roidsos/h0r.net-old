@@ -28,6 +28,11 @@
 #define PCI_REG_STATUS_SIGNALED_SYSTEM_ERROR 1 << 15
 #define PCI_REG_STATUS_DETECTED_PARITY_ERROR 1 << 16
 
+#define PCI_BAR_MMIO (1 << 0)
+#define PCI_BAR_64BIT (1 << 2)
+#define PCI_BAR_PREFETCHABLE (1 << 3)
+#define PCI_BAR_ADDR 0x1fffffffff << 4
+
 typedef struct {
     _bool PCIe;
     u32 (*read)(u8 bus, u8 dev, u8 func, u8 off);
@@ -68,6 +73,12 @@ typedef struct {
     u8 max_latency; //Note: doesnt apply to PCIe
 } pci_dev_info_t;
 
+typedef struct{
+    uptr addr;
+    _bool mmio : 1;
+    _bool prefetchable : 1;
+} pci_bar_t;
+
 // this will just overwrite the current aspace, since we only need one
 void register_aspace(pci_aspace_t aspace);
 
@@ -85,7 +96,7 @@ void pci_write_command_register(pci_dev_addr_t addr, u16 val);
 u16 pci_read_status_register(pci_dev_addr_t addr);
 void pci_write_status_register(pci_dev_addr_t addr, u16 val);
 
-u32 pci_get_bar(pci_dev_addr_t addr, u8 bar_index);
+pci_bar_t pci_get_bar(pci_dev_addr_t addr, u8 bar_index);
 
 #define pci_get_bar1(addr) pci_get_bar(addr, 1)
 #define pci_get_bar2(addr) pci_get_bar(addr, 2)
