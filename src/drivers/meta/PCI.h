@@ -93,4 +93,7 @@ u32 pci_get_bar(pci_dev_addr_t addr, u8 bar_index);
 #define pci_get_bar4(addr) pci_get_bar(addr, 4)
 #define pci_get_bar5(addr) pci_get_bar(addr, 5)
 
+u32 pci_read_custom_register(pci_dev_addr_t addr, u8 off);
+void pci_write_custom_register(pci_dev_addr_t addr, u8 off, u32 val);
+
 #endif // __PCI_H__

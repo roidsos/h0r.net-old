@@ -159,3 +159,16 @@ u32 pci_get_bar(pci_dev_addr_t addr, u8 bar_index)
         default: return 0;
     }
 }
+
+u32 pci_read_custom_register(pci_dev_addr_t addr, u8 off)
+{
+    if (pci_aspace.read != NULL)
+        return pci_aspace.read(addr.bus, addr.dev, addr.func, off);
+    return 0;
+}
+
+void pci_write_custom_register(pci_dev_addr_t addr, u8 off, u32 val)
+{
+    if (pci_aspace.write != NULL)
+        pci_aspace.write(addr.bus, addr.dev, addr.func, off, val);  
+}
