@@ -1,5 +1,6 @@
 #include "wakeup.h"
 #include "core/sys/executive/ELF/elf.h"
+#include "drivers/storage/AHCI.h"
 #include <config.h>
 
 #include <core/sys/resman/SIV.h>
@@ -38,6 +39,8 @@ void wakeup_init_hw() {
 
     mcfg_init();
     pci_init();
+
+    ahci_init();
 
     //lai_set_acpi_revision(hn_data.ACPI_ver);
     //lai_create_namespace();
