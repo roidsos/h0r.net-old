@@ -6,31 +6,36 @@
 
 //all structs and values are from https://github.com/rajesh5310/SBUnix/blob/master/sys/ahci.c and https://osdev.org/AHCI 
 
-#define AHCI_MAX_SLOTS 32
+#define AHCI_MAX_SLOTS 				32
+#define	AHCI_BASE					0x40000
 
-#define	AHCI_SIG_SATA	 0x00000101
-#define	AHCI_SIG_SATAPI	 0xEB140101
-#define	AHCI_SIG_SEMB	 0xC33C0101
-#define	AHCI_SIG_PM		 0x96690101
+#define AHCI_CMD_READ_DMA_EX    	0x25
+#define AHCI_CMD_WRITE_DMA_EX   	0x35
 
-#define AHCI_DEV_NULL 0
-#define AHCI_DEV_SATA 1
-#define AHCI_DEV_SEMB 2
-#define AHCI_DEV_PM 3
-#define AHCI_DEV_SATAPI 4
+#define	AHCI_DEV_SIG_SATA	 		0x00000101
+#define	AHCI_DEV_SIG_SATAPI	 		0xEB140101
+#define	AHCI_DEV_SIG_SEMB	 		0xC33C0101
+#define	AHCI_DEV_SIG_PM		 		0x96690101
+#define AHCI_DEV_BUSY  				0x80
+#define AHCI_DEV_DRQ  				0x08
 
-#define AHCI_HBA_PORT_IPM_ACTIVE 1
-#define AHCI_HBA_PORT_DET_PRESENT 3
+#define AHCI_DEV_TYPE_NULL 			0x0
+#define AHCI_DEV_TYPE_SATA 			0x1
+#define AHCI_DEV_TYPE_SEMB 			0x2
+#define AHCI_DEV_TYPE_PM 			0x3
+#define AHCI_DEV_TYPE_SATAPI 		0x4
 
-#define	AHCI_BASE	0x400000	// 4M
- 
-#define AHCI_HBA_PxCMD_ST    0x0001
-#define AHCI_HBA_PxCMD_FRE   0x0010
-#define AHCI_HBA_PxCMD_FR    0x4000
-#define AHCI_HBA_PxCMD_CR    0x8000
+#define AHCI_HBA_IPM_ACTIVE 		0x1
+#define AHCI_HBA_DET_PRESENT 		0x3
 
-#define AHCI_DEV_BUSY 0x80
-#define AHCI_DEV_DRQ 0x08
+#define AHCI_HBA_CMD_CR           	(1 << 15)
+#define AHCI_HBA_CMD_FR           	(1 << 14)
+#define AHCI_HBA_CMD_FRE          	(1 <<  4)
+#define AHCI_HBA_CMD_SUD          	(1 <<  1)
+#define AHCI_HBA_CMD_ST           	(1 <<  0)
+
+#define AHCI_HBA_IS_TFES   			(1 << 30)
+
 
 enum FIS_type
 {
