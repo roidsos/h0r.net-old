@@ -1,5 +1,6 @@
 #include "tar.h"
 #include "libk/vector.h"
+#include <libk/macros.h>
 
 u32 parse_size(u8 *in) {
 
@@ -14,8 +15,7 @@ u32 parse_size(u8 *in) {
 }
 vector_static(struct tar_header *, headers);
 
-struct tar_contents parse_tar(struct tar_header *header,
-                              __attribute__((unused)) u64 file_size) {
+struct tar_contents parse_tar(struct tar_header *header, UNUSED u64 file_size) {
     vector_init(&headers);
 
     u32 i = 0;

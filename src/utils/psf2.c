@@ -1,7 +1,7 @@
 #include <backends/fb.h>
-#include <limine.h>
-#include <libk/stdint.h>
 #include <libk/macros.h>
+#include <libk/stdint.h>
+#include <limine.h>
 #include <uterus.h>
 
 #define PSF2_MAGIC0 0x72
