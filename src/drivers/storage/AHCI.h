@@ -7,7 +7,6 @@
 //all structs and values are from https://github.com/rajesh5310/SBUnix/blob/master/sys/ahci.c and https://osdev.org/AHCI 
 
 #define AHCI_MAX_SLOTS 				32
-#define	AHCI_BASE					0x40000
 
 #define AHCI_CMD_READ_DMA_EX    	0x25
 #define AHCI_CMD_WRITE_DMA_EX   	0x35
