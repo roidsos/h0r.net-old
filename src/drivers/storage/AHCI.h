@@ -3,6 +3,7 @@
 
 #include <libk/stdint.h>
 #include <libk/stdbool.h>
+#include <libk/macros.h>
 
 //all structs and values are from https://github.com/rajesh5310/SBUnix/blob/master/sys/ahci.c and https://osdev.org/AHCI 
 
@@ -70,7 +71,7 @@ typedef struct
 	u8  icc;
 	u8  control;
 	u8  rsv1[4];
-} FIS_reg_h2d;
+} PACKED FIS_reg_h2d;
 
 typedef struct
 {
@@ -91,7 +92,7 @@ typedef struct
 	u8  counth;
 	u8  rsv3[2];
 	u8  rsv4[4];
-} FIS_reg_d2h;
+} PACKED FIS_reg_d2h;
 
 typedef struct 
 {
@@ -100,7 +101,7 @@ typedef struct
 	u8  rsv0:4;
 	u8  rsv1[2];
 	u32 data[1];
-} FIS_data;
+} PACKED FIS_data;
 
 typedef struct
 {
@@ -123,7 +124,7 @@ typedef struct
 	u8  e_status;
 	u16 tc;
 	u8  rsv4[2];
-} FIS_PIO_setup;
+} PACKED FIS_PIO_setup;
 
 typedef struct 
 {
@@ -140,7 +141,7 @@ typedef struct
     u32 TransferCount;
     u32 resvd;
  
-} FIS_DMA_setup;
+} PACKED FIS_DMA_setup;
 
 typedef volatile struct tagHBA_FIS
 {
@@ -153,7 +154,7 @@ typedef volatile struct tagHBA_FIS
 	u16				sdbfis;
 	u8				ufis[64];
 	u8				rsv[0x100-0xA0];
-} HBA_FIS;
+} PACKED HBA_FIS;
 
 typedef struct
 {
@@ -163,7 +164,7 @@ typedef struct
 	u32 dbc:22;
 	u32 rsv1:9;	
 	u32 i:1;	
-} HBA_PRDT_entry;
+} PACKED HBA_PRDT_entry;
 
 typedef struct
 {
@@ -171,7 +172,7 @@ typedef struct
 	u8  acmd[16];
 	u8  rsv[48];
 	HBA_PRDT_entry	prdt_entry[1];
-} HBA_command_table;
+} PACKED HBA_command_table;
  
 typedef volatile struct {
 	u32 clb;
@@ -193,7 +194,7 @@ typedef volatile struct {
 	u32 fbs; 
 	u32 rsv1[11];
 	u32 vendor[4];
-} HBA_port;
+} PACKED HBA_port;
 
 typedef volatile struct {
 	u32 cap;
@@ -210,7 +211,7 @@ typedef volatile struct {
 	u8  rsv[0xA0-0x2C];
 	u8  vendor[0x100-0xA0];
 	HBA_port	ports[1];
-} HBA_mem;
+} PACKED HBA_mem;
 
 _bool ahci_init();
 
