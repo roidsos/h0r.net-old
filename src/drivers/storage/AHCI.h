@@ -15,6 +15,7 @@
 #define	AHCI_DEV_SIG_SATAPI	 		0xEB140101
 #define	AHCI_DEV_SIG_SEMB	 		0xC33C0101
 #define	AHCI_DEV_SIG_PM		 		0x96690101
+
 #define AHCI_DEV_BUSY  				0x80
 #define AHCI_DEV_DRQ  				0x08
 
