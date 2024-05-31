@@ -1,12 +1,12 @@
 #include "arch/general/paging.h"
 #include "arch/x86_64/gdt.h"
 #include "drivers/ACPI/SDT.h"
-#include <arch/x86_64/constant_isrs.h>
 #include <arch/x86_64/IOAPIC.h>
 #include <arch/x86_64/LAPIC.h>
+#include <arch/x86_64/constant_isrs.h>
+#include <arch/x86_64/interrupts/interrupts.h>
 #include <arch/x86_64/io/PS2.h>
 #include <arch/x86_64/io/cereal.h>
-#include <arch/x86_64/interrupts/interrupts.h>
 #include <arch/x86_64/pager.h>
 #include <backends/fb.h>
 #include <core/kernel.h>
@@ -26,7 +26,8 @@ void load_limine_modules() {
     for (usize i = 0; i < mod_request.response->module_count; i++) {
         struct limine_file *mod = mod_request.response->modules[i];
         if (strcmp(mod->path, "/boot/kfont.psf") == 0) {
-            hn_data.ut_ctx = init_uterus_with_psf2_font(mod, hn_data.framebuffer);
+            hn_data.ut_ctx =
+                init_uterus_with_psf2_font(mod, hn_data.framebuffer);
         } else if (strcmp(mod->path, "/boot/initramfs.tar") == 0) {
             hn_data.initramfs = mod;
         } else {

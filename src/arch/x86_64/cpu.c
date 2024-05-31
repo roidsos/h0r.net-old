@@ -1,7 +1,9 @@
 #include "cpu.h"
 #include "libk/string.h"
 void cpuid(u32 eax, u32 *a, u32 *b, u32 *c, u32 *d) {
-    __asm__ volatile("cpuid" : "=a"(*a), "=b"(*b), "=c"(*c), "=d"(*d) : "a"(eax));
+    __asm__ volatile("cpuid"
+                     : "=a"(*a), "=b"(*b), "=c"(*c), "=d"(*d)
+                     : "a"(eax));
 }
 
 void get_cpu_capabilities(CPUInfo *cpuInfo) {

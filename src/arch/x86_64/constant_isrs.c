@@ -7,8 +7,8 @@
 #include <config.h>
 #include <core/sys/sched/sched.h>
 #include <core/sys/syscall.h>
-#include <libk/string.h>
 #include <libk/binary.h>
+#include <libk/string.h>
 
 extern void next_process();
 extern process_t processes[MAX_PROCESSES];
@@ -17,11 +17,15 @@ void schedule(Registers *regs) {
     if (!sched_running) {
         sched_running = true;
     } else {
-        if(!FLAG_READ(processes[sched_current_pid].state_flags, SCHED_FLAGS_CHANGED)){
-            if(FLAG_READ(processes[sched_current_pid].state_flags, SCHED_FLAGS_IN_SYSCALL)){
-                memcpy(&processes[sched_current_pid].syscall_regs, regs, sizeof(Registers));
-            }else{
-                memcpy(&processes[sched_current_pid].regs, regs, sizeof(Registers));
+        if (!FLAG_READ(processes[sched_current_pid].state_flags,
+                       SCHED_FLAGS_CHANGED)) {
+            if (FLAG_READ(processes[sched_current_pid].state_flags,
+                          SCHED_FLAGS_IN_SYSCALL)) {
+                memcpy(&processes[sched_current_pid].syscall_regs, regs,
+                       sizeof(Registers));
+            } else {
+                memcpy(&processes[sched_current_pid].regs, regs,
+                       sizeof(Registers));
             }
         }
     }
@@ -29,17 +33,19 @@ void schedule(Registers *regs) {
     // the scheduling algorithm is separated from the scheduler
     next_process();
 
-    if(FLAG_READ(processes[sched_current_pid].state_flags, SCHED_FLAGS_IN_SYSCALL)){
-        memcpy(regs,&processes[sched_current_pid].syscall_regs, sizeof(Registers));
-    }else{
-        memcpy(regs,&processes[sched_current_pid].regs, sizeof(Registers));
+    if (FLAG_READ(processes[sched_current_pid].state_flags,
+                  SCHED_FLAGS_IN_SYSCALL)) {
+        memcpy(regs, &processes[sched_current_pid].syscall_regs,
+               sizeof(Registers));
+    } else {
+        memcpy(regs, &processes[sched_current_pid].regs, sizeof(Registers));
     }
 
-    //setting the timer for next yield, have to do it in the kernel pagemap
+    // setting the timer for next yield, have to do it in the kernel pagemap
     lapic_timer_oneshot(5, 32); // 5ms timeslice
     lapic_eoi();
 
-    if(processes[sched_current_pid].state_flags & SCHED_FLAGS_IN_SYSCALL)
+    if (processes[sched_current_pid].state_flags & SCHED_FLAGS_IN_SYSCALL)
         return;
 
     __asm__ volatile("mov %0, %%cr3"
@@ -48,16 +54,19 @@ void schedule(Registers *regs) {
 }
 
 void syscall_handler(Registers *regs) {
-    //save the registers so it can be restored after the syscall
-    if(FLAG_READ(processes[sched_current_pid].state_flags, SCHED_FLAGS_IN_SYSCALL)){
-        memcpy(&processes[sched_current_pid].syscall_regs, regs, sizeof(Registers));
-    }else{
+    // save the registers so it can be restored after the syscall
+    if (FLAG_READ(processes[sched_current_pid].state_flags,
+                  SCHED_FLAGS_IN_SYSCALL)) {
+        memcpy(&processes[sched_current_pid].syscall_regs, regs,
+               sizeof(Registers));
+    } else {
         memcpy(&processes[sched_current_pid].regs, regs, sizeof(Registers));
     }
 
     FLAG_SET(processes[sched_current_pid].state_flags, SCHED_FLAGS_IN_SYSCALL);
     regs->rax = syscall(regs->rax, regs->rdi, regs->rsi, regs->rdx);
-    FLAG_UNSET(processes[sched_current_pid].state_flags, SCHED_FLAGS_IN_SYSCALL);
+    FLAG_UNSET(processes[sched_current_pid].state_flags,
+               SCHED_FLAGS_IN_SYSCALL);
 }
 
 void cisrs_register() {

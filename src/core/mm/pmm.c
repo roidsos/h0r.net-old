@@ -84,7 +84,8 @@ void *request_pages(usize num) {
     }
     return PP;
 }
-//WARN: Arch specific code in core/ + TODO: smh move to arch/ or make architecture neutral
+// WARN: Arch specific code in core/ + TODO: smh move to arch/ or make
+// architecture neutral
 volatile struct limine_memmap_request memmap_request = {
     .id = LIMINE_MEMMAP_REQUEST, .revision = 0};
 
@@ -121,7 +122,7 @@ void pmm_init() {
             entry->type == LIMINE_MEMMAP_ACPI_RECLAIMABLE) {
             usize index = entry->base / PAGE_SIZE;
             for (usize j = 0; j < DIV_ROUND_UP(entry->length, PAGE_SIZE); j++) {
-                bitmap_set(page_bmp, index + j, false);  
+                bitmap_set(page_bmp, index + j, false);
             }
         }
     }

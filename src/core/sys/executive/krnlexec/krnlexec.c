@@ -18,6 +18,7 @@ void execute(const char *name, void (*func)()) {
     regs.ss = 0x10;
     regs.rflags = 0x202;
 
-    vmm_map_range(pagemap, stack, stack, STACK_SIZE, FLAGS_R | FLAGS_W | FLAGS_U);
+    vmm_map_range(pagemap, stack, stack, STACK_SIZE,
+                  FLAGS_R | FLAGS_W | FLAGS_U);
     sched_add_process((char *)name, regs, pagemap);
 }

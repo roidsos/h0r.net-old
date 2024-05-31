@@ -33,7 +33,7 @@ void *realloc(void *old, usize size) {
     // recording the smaller size
     usize smallersize = size;
     void *newmem = malloc(size);
-    if(old != NULL){
+    if (old != NULL) {
         if (*((usize *)old - 1) < size)
             smallersize = *((usize *)old - 1);
         memcpy(newmem, old, smallersize);

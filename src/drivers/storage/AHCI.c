@@ -6,8 +6,7 @@
 
 HBA_mem_t *hba_mem;
 
-_bool ahci_init()
-{
+_bool ahci_init() {
     pci_multi_dev_t devs = pci_find_devices_by_class(0x1, 0x6);
 
     if (devs.count == 0) {

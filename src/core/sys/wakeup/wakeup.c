@@ -14,8 +14,8 @@
 #include <arch/x86_64/interrupts/interrupts.h>
 
 #include <drivers/ACPI/MCFG.h>
-#include <drivers/meta/PCI.h>
 #include <drivers/filesys/tar.h>
+#include <drivers/meta/PCI.h>
 
 #include <utils/error.h>
 #include <utils/log.h>
@@ -42,8 +42,8 @@ void wakeup_init_hw() {
 
     ahci_init();
 
-    //lai_set_acpi_revision(hn_data.ACPI_ver);
-    //lai_create_namespace();
+    // lai_set_acpi_revision(hn_data.ACPI_ver);
+    // lai_create_namespace();
 
     log_nice("Hardware sucessfully initialized!\n");
 }
@@ -57,11 +57,10 @@ void wakeup_do_mounts() {
 }
 void wakeup_startup() {
 
-    exec_elf("bin/test","test",false);
-
+    exec_elf("bin/test", "test", false);
 
     // start Gaia: the userspace portion of Wakeup
-    //execute("Gaia", gaia_main, false);
+    // execute("Gaia", gaia_main, false);
 
     log_nice("Userland sucessfully initialized!\n");
 

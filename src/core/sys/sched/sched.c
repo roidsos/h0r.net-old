@@ -1,8 +1,8 @@
 #include "sched.h"
 #include <config.h>
 #include <core/mm/heap.h>
-#include <vendor/printf.h>
 #include <libk/binary.h>
+#include <vendor/printf.h>
 
 process_t processes[MAX_PROCESSES] = {0};
 u32 sched_num_procs = 0;
@@ -35,17 +35,16 @@ void sched_kill(u32 pid) {
 
 process_t *sched_get_curr_process() { return &processes[sched_current_pid]; }
 
-void sched_save_state(u32 pid)
-{
+void sched_save_state(u32 pid) {
     processes[pid].saved_regs = processes[pid].regs;
 }
 
-void sched_restore_state(u32 pid)
-{
+void sched_restore_state(u32 pid) {
     processes[pid].regs = processes[pid].saved_regs;
     FLAG_SET(processes[pid].state_flags, SCHED_FLAGS_CHANGED);
-    FLAG_UNSET(processes[sched_current_pid].state_flags, SCHED_FLAGS_IN_SYSCALL);
-    if(pid == sched_current_pid){
+    FLAG_UNSET(processes[sched_current_pid].state_flags,
+               SCHED_FLAGS_IN_SYSCALL);
+    if (pid == sched_current_pid) {
         // TODO: smh stop the timer to avoid double advance
         __asm__ volatile("int $0x20");
     }

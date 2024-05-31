@@ -1,6 +1,6 @@
 #include "MCFG.h"
-#include <vendor/printf.h>
 #include <drivers/meta/PCI.h>
+#include <vendor/printf.h>
 // Puffer get outta here, stop copying my code ffs
 u32 num_mcfg_entries;
 device_config *entries;
@@ -32,13 +32,10 @@ _bool mcfg_init() {
         (h->h.length - sizeof(mcfg_header)) / sizeof(device_config);
     entries = (device_config *)((u8 *)h + sizeof(mcfg_header));
 
-    pci_aspace_t mcfg_aspace = {
-        .PCIe = true, // this is indeed PCIe
-        .read = mfg_read,
-        .write = mcfg_write
-    };
+    pci_aspace_t mcfg_aspace = {.PCIe = true, // this is indeed PCIe
+                                .read = mfg_read,
+                                .write = mcfg_write};
     register_aspace(mcfg_aspace);
 
     return true;
 }
-
