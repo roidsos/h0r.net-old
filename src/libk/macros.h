@@ -1,7 +1,8 @@
 #ifndef __MACROS_H__
 #define __MACROS_H__
 
-// handy macro that is needed almost as often as the types
+// attribute macros
+#define PACKED __attribute__((packed))
 #define UNUSED __attribute__((unused))
 
 #endif

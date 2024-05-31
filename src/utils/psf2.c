@@ -1,6 +1,7 @@
 #include <backends/fb.h>
 #include <limine.h>
-#include <stdint.h>
+#include <libk/stdint.h>
+#include <libk/macros.h>
 #include <uterus.h>
 
 #define PSF2_MAGIC0 0x72
@@ -16,7 +17,7 @@ typedef struct {
     u32 length;
     u32 charSize;
     u32 height, width;
-} __attribute__((packed)) psf2Hdr;
+} PACKED psf2Hdr;
 
 // WARN: Arch specific code in utils/ + TODO: smh move to arch/ or make
 // architecture neutral

@@ -8,7 +8,7 @@ struct IDT64 {
     u16 offset_mid;
     u32 offset_high;
     u32 zero;
-} __attribute__((packed));
+} PACKED;
 
 struct IDT64 g_IDT[256];
 

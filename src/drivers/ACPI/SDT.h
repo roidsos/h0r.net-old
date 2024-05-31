@@ -4,6 +4,7 @@
 #include <libk/stdint.h>
 #include <libk/stdbool.h>
 #include <libk/stddef.h>
+#include <libk/macros.h>
 typedef struct {
   char signature[4];
   u32 length;
@@ -14,7 +15,7 @@ typedef struct {
   u32 OEM_revision;
   u32 creator_ID;
   u32 creator_revision;
-} __attribute__ ((packed)) sdt_header;
+} PACKED sdt_header;
 
 typedef struct {
     sdt_header h;
@@ -37,7 +38,7 @@ typedef struct{
     u64 XSDT_address;
     u8 extended_checksum;
     u8 reserved[3];
-} __attribute__ ((packed)) XSDP;
+} PACKED XSDP;
 
 typedef struct {
     u8 address_space;
@@ -45,7 +46,7 @@ typedef struct {
     u8 bit_offset;
     u8 access_size;
     u64 address;
-} __attribute((packed)) generic_address_t;
+} PACKED generic_address_t;
 
 
 typedef struct {
@@ -124,7 +125,7 @@ typedef struct {
     generic_address_t X_PM_timer_block;
     generic_address_t X_GPE0_block;
     generic_address_t X_GPE1_block;
-} __attribute((packed)) fadt_header;
+} PACKED fadt_header;
 
 
 _bool find_rsdt(void* RSDP_address);

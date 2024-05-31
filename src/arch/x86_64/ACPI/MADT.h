@@ -15,12 +15,12 @@ typedef struct {
     sdt_header h;
     u32 lapic_addr;
     u32 flags;
-} __attribute__((__packed__)) madt_header;
+} PACKED madt_header;
 
 typedef struct {
     u8 type;
     u8 length;
-} __attribute__((__packed__)) entry_header;
+} PACKED entry_header;
 
 typedef struct {
     entry_header h;
@@ -29,42 +29,43 @@ typedef struct {
             u8 CPU_ID;
             u8 LAPIC_ID;
             u32 flags;
-        } __attribute__((__packed__)) lapic;
+        } PACKED lapic;
         struct {
             u8 id;
             u8 reserved;
             u32 adress;
             u32 GS_interrupt_base;
-        } __attribute__((__packed__)) ioapic;
+        } PACKED ioapic;
         struct {
             u8 bus_source;
             u8 IRQ_source;
             u8 GS_interupt;
             u16 flags;
-        } __attribute__((__packed__)) ioapic_override;
+        } PACKED ioapic_override;
         struct {
             u8 source;
             u8 reserved;
             u16 flags;
             u32 GS_interrupt;
-        } __attribute__((__packed__)) ioapic_nmi;
+        } PACKED ioapic_nmi;
         struct {
             u8 CPU_ID;
             u16 flags;
             u8 lint_num;//?????
-        } __attribute__((__packed__)) lapic_nmi;
+        } PACKED lapic_nmi;
         struct {
             u16 reserved;
             u64 addr64;
-        } __attribute__((__packed__)) lapic_addr_overrride;
+        } PACKED lapic_addr_overrride;
         struct {
             u16 reserved;
             u32 ID;
             u32 flags;
             u32 ACPI_ID;
-        } __attribute__((__packed__)) lx2apic;
+        } PACKED lx2apic;
+
     } the_meat;
-} __attribute__((__packed__)) madt_entry;
+} PACKED madt_entry;
 
 _bool madt_init();
 

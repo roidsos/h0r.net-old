@@ -1,6 +1,7 @@
 #ifndef __ISR_H__
 #define __ISR_H__
 #include <libk/stdint.h>
+#include <libk/macros.h>
 
 typedef struct 
 {
@@ -28,7 +29,7 @@ typedef struct
 	u64 rflags;
 	u64 rsp;
 	u64 ss;
-} __attribute__((packed)) Registers;
+} PACKED Registers;
 
 typedef void (*ISRHandler)(Registers* regs);
 

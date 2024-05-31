@@ -2,6 +2,7 @@
 #define __LIBELF_H__
 
 #include <libk/stdint.h>
+#include <libk/macros.h>
 
 #define ELF_MAGIC 0x7f454c46
 
@@ -59,7 +60,7 @@ typedef struct {
 	u16 shsize;
 	u16 shcount;
 	u16 shnames;
-} __attribute__((packed)) elfheader64_t;
+} PACKED elfheader64_t;
 
 #define PH_TYPE_LOAD 1
 #define PH_TYPE_DYNAMIC 2
@@ -77,6 +78,6 @@ typedef struct{
 	u64 fsize;
 	u64 msize;
 	u64 alignment;
-} __attribute__((packed)) elfph64_t;
+} PACKED elfph64_t;
 
 #endif // __LIBELF_H__

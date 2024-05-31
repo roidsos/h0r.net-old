@@ -16,7 +16,7 @@ typedef struct {
     u8 hpet_num;
     u16 minimum_ticks;
     u8 page_protection;
-} __attribute__((packed)) hpet_header;
+} PACKED hpet_header;
 
 typedef struct {
     u64 capabilities;
@@ -28,7 +28,7 @@ typedef struct {
     u64 reserved3[24];
     volatile u64 counter_val;
     u64 unused4;
-} __attribute__((packed)) hpet_regs;
+} PACKED hpet_regs;
 
 _bool hpet_init();
 void hpet_usleep(u64 us);
