@@ -6,7 +6,7 @@
 
 //all structs and values are from https://github.com/rajesh5310/SBUnix/blob/master/sys/ahci.c and https://osdev.org/AHCI 
 
-#define AHCI_MAX_SLOTS 				32
+#define AHCI_MAX_PORTS 				32
 
 #define AHCI_CMD_READ_DMA_EX    	0x25
 #define AHCI_CMD_WRITE_DMA_EX   	0x35
@@ -193,7 +193,7 @@ typedef volatile struct {
 	u32 fbs; 
 	u32 rsv1[11];
 	u32 vendor[4];
-} HBA_port_t;
+} HBA_port;
 
 typedef volatile struct {
 	u32 cap;
@@ -209,8 +209,8 @@ typedef volatile struct {
 	u32 bohc;
 	u8  rsv[0xA0-0x2C];
 	u8  vendor[0x100-0xA0];
-	HBA_port_t	ports[1];
-} HBA_mem_t;
+	HBA_port	ports[1];
+} HBA_mem;
 
 _bool ahci_init();
 
