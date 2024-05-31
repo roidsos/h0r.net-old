@@ -1,5 +1,6 @@
 #include "wakeup.h"
 #include "core/sys/executive/ELF/elf.h"
+#include "core/sys/executive/krnlexec/krnlexec.h"
 #include "drivers/storage/AHCI.h"
 #include <config.h>
 
@@ -57,10 +58,10 @@ void wakeup_do_mounts() {
 }
 void wakeup_startup() {
 
-    exec_elf("bin/test", "test", false);
+    //exec_elf("bin/test", "test", false);
 
     // start Gaia: the userspace portion of Wakeup
-    // execute("Gaia", gaia_main, false);
+    execute("Gaia", gaia_main);
 
     log_nice("Userland sucessfully initialized!\n");
 
