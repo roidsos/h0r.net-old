@@ -38,6 +38,6 @@
 #define MAX_LOCKED_PROCS 64
 
 //Executive
-#define STACK_SIZE 2 // In PAGES
+#define STACK_SIZE 4 // In PAGES
 
 #endif
