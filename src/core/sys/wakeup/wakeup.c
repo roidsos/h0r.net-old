@@ -18,7 +18,7 @@
 #include <drivers/filesys/tar.h>
 #include <drivers/meta/PCI.h>
 
-#include <utils/error.h>
+#include <core/error.h>
 #include <utils/log.h>
 
 #include <core/sys/wakeup/gaia.h>

@@ -1,7 +1,7 @@
 #include "core/kernel.h"
 #include <arch/x86_64/interrupts/IDT.h>
 #include <arch/x86_64/interrupts/ISR.h>
-#include <utils/error.h>
+#include <core/error.h>
 #include <vendor/printf.h>
 
 void ISR0();

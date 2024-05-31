@@ -3,7 +3,7 @@
 #include <arch/x86_64/io/portio.h>
 #include <core/mm/mem.h>
 #include <drivers/ACPI/HPET.h>
-#include <utils/error.h>
+#include <core/error.h>
 #include <vendor/printf.h>
 
 u32 ticks = 0;

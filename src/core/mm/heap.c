@@ -2,7 +2,7 @@
 #include <core/mm/mem.h>
 #include <core/mm/pmm.h>
 #include <libk/string.h>
-#include <utils/error.h>
+#include <core/error.h>
 #include <utils/log.h>
 #include <vendor/printf.h>
 

@@ -2,7 +2,7 @@
 #include <core/mm/heap.h>
 #include <drivers/ACPI/SDT.h>
 #include <libk/macros.h>
-#include <utils/error.h>
+#include <core/error.h>
 #include <vendor/printf.h>
 
 // WARN: Arch specific code in utils/ + TODO: smh move to arch/ or make
