@@ -1,8 +1,8 @@
 #include <arch/x86_64/io/portio.h>
+#include <core/error.h>
 #include <core/mm/heap.h>
 #include <drivers/ACPI/SDT.h>
 #include <libk/macros.h>
-#include <core/error.h>
 #include <vendor/printf.h>
 
 // WARN: Arch specific code in utils/ + TODO: smh move to arch/ or make

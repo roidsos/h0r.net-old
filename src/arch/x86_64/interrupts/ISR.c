@@ -263,13 +263,48 @@ void ISR255();
 
 ISRHandler ISRHandlers[255];
 
+char *err_strings[32] = {
+    "Divide Error",
+    "Debug",
+    "NMI",
+    "Breakpoint",
+    "Overflow",
+    "Bound Range Exceeded",
+    "Invalid Opcode",
+    "Device Not Available",
+    "Double Fault",
+    "Coprocessor Segment Overrun",
+    "Invalid TSS",
+    "Segment Not Present",
+    "Stack Fault",
+    "General Protection Fault",
+    "Page Fault",
+    "Unknown Interrupt",
+    "Coprocessor Fault",
+    "Alignment Check",
+    "Machine Check",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+};
+
 void ISR_RegisterHandler(int irq, ISRHandler handler) {
     ISRHandlers[irq] = handler;
 }
 void ISR_Handler(Registers *regs) {
     __asm__ volatile("mov %0, %%cr3" : : "r"((u64)hn_data.pagemap));
     if (regs->interrupt < 32) {
-        trigger_psod(regs->interrupt, "interrupt error UwU", regs);
+        trigger_psod(HN_ERR_HW_EXCEPTION, err_strings[regs->interrupt], regs);
         return;
     }
     if (ISRHandlers[regs->interrupt] != 0) {

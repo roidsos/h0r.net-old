@@ -1,8 +1,8 @@
 #include "heap.h"
+#include <core/error.h>
 #include <core/mm/mem.h>
 #include <core/mm/pmm.h>
 #include <libk/string.h>
-#include <core/error.h>
 #include <utils/log.h>
 #include <vendor/printf.h>
 

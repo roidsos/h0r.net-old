@@ -10,25 +10,8 @@
 // WARN: Arch specific code in utils/ + TODO: smh move to arch/ or make
 // architecture neutral
 char *errors[] = {
-    "HN_ERR_DE",         "HN_ERR_DB",
-    "HN_ERR_NMI",        "HN_ERR_BP",
-    "HN_ERR_OF",         "HN_ERR_BR",
-    "HN_ERR_UD",         "HN_ERR_NM",
-    "HN_ERR_DF",         "HN_ERR_DEPRICATED",
-    "HN_ERR_TS",         "HN_ERR_NP",
-    "HN_ERR_SS", // the SS is coming for you LMAO
-    "HN_ERR_GP",         "HN_ERR_PF",
-    "HN_ERR_RESERVED",   "HN_ERR_MF",
-    "HN_ERR_AC",         "HN_ERR_MC",
-    "HN_ERR_XM",         "HN_ERR_VE",
-    "HN_ERR_CP",         "HN_ERR_RESERVED",
-    "HN_ERR_RESERVED",   "HN_ERR_RESERVED",
-    "HN_ERR_RESERVED",   "HN_ERR_RESERVED",
-    "HN_ERR_RESERVED",   "HN_ERR_HV",
-    "HN_ERR_VC",         "HN_ERR_SX",
-    "HN_ERR_RESERVED",   "HN_ERR_KERNEL_EXITED",
-    "HN_ERR_NO_ACPI",    "HN_ERR_NO_FB",
-    "HN_ERR_OUT_OF_MEM", "HN_ERR_LAI_PANIC",
+    "HN_ERR_HW_EXCEPTION", "HN_ERR_KERNEL_EXITED", "HN_ERR_NO_ACPI",
+    "HN_ERR_NO_FB",        "HN_ERR_OUT_OF_MEM",    "HN_ERR_LAI_PANIC",
     "HN_ERR_NO_FS",
 };
 
@@ -63,10 +46,8 @@ void trigger_psod(int error_code, char *details, Registers *regs) {
 
     log_error("%s\n", errors[error_code]);
 
-    if (details)
-
         // background
-        printf(BGCOL "\x1b[2J");
+    printf(BGCOL "\x1b[2J");
     printf(FGCOL "FUCKING HALT!\n");
 
     // title,error type and details
@@ -75,13 +56,10 @@ void trigger_psod(int error_code, char *details, Registers *regs) {
         log_error("%s\n", details);
         printf("%s\n\n\n", details);
     }
-    if (error_code == 14) // PF
-    {
-        u64 faultig_addr;
-        __asm__ volatile("movq %%cr2, %0\r\n" : "=r"(faultig_addr) :);
-        printf("Faultig address: 0x%016llx\n\n", faultig_addr);
-        log_error("Faultig address: 0x%016llx\n\n", faultig_addr);
-    }
+    u64 faultig_addr;
+    __asm__ volatile("movq %%cr2, %0\r\n" : "=r"(faultig_addr) :);
+    printf("cr2: 0x%016llx\n\n", faultig_addr);
+    log_error("cr2: 0x%016llx\n\n", faultig_addr);
 
     // Reg Dump
     printf("RIP=0x%016llx ,RSP=0x%016llx ,CS =0x%016llx ,SS =0x%016llx\n",

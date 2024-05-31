@@ -9,10 +9,10 @@
 #include <arch/x86_64/io/cereal.h>
 #include <arch/x86_64/pager.h>
 #include <backends/fb.h>
+#include <core/error.h>
 #include <core/kernel.h>
 #include <core/mm/mem.h>
 #include <libk/string.h>
-#include <core/error.h>
 #include <utils/log.h>
 #include <utils/psf2.h>
 #include <vendor/printf.h>
