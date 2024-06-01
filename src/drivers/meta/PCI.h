@@ -28,10 +28,10 @@
 #define PCI_REG_STATUS_SIGNALED_SYSTEM_ERROR        1 << 15
 #define PCI_REG_STATUS_DETECTED_PARITY_ERROR        1 << 16
 
-#define PCI_BAR_MMIO (1 << 0)
-#define PCI_BAR_64BIT (1 << 2)
-#define PCI_BAR_PREFETCHABLE (1 << 3)
-#define PCI_BAR_ADDR 0x1fffffffff << 4
+#define PCI_BAR_MMIO                                (1 << 0)
+#define PCI_BAR_64BIT                               (1 << 2)
+#define PCI_BAR_PREFETCHABLE                        (1 << 3)
+#define PCI_BAR_ADDR                                0x1fffffffff << 4
 
 typedef struct {
     _bool PCIe;
