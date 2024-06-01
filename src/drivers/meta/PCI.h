@@ -4,29 +4,29 @@
 #include <libk/stdint.h>
 #include <libk/stdbool.h>
 
-#define PCI_REG_COMMAND_IO_SPACE 1 << 0
-#define PCI_REG_COMMAND_MEM_SPACE 1 << 1
-#define PCI_REG_COMMAND_MASTER 1 << 2
-#define PCI_REG_COMMAND_SPECIAL_CYCLE 1 << 3 //Note: doesnt apply to PCIe
-#define PCI_REG_COMMAND_MWIE 1 << 4 //Note: doesnt apply to PCIe
-#define PCI_REG_COMMAND_VGA_PALETTE_SNOOP 1 << 5 //Note: doesnt apply to PCIe
-#define PCI_REG_COMMAND_ERROR_RESPONSE 1 << 6
-#define PCI_REG_COMMAND_RESERVED 1 << 7 
-#define PCI_REG_COMMAND_SERR 1 << 8
-#define PCI_REG_COMMAND_FASTB2B 1 << 9 //Note: doesnt apply to PCIe
-#define PCI_REG_COMMAND_INTX_DISABLE 1 << 10
+#define PCI_REG_COMMAND_IO_SPACE                    1 << 0
+#define PCI_REG_COMMAND_MEM_SPACE                   1 << 1
+#define PCI_REG_COMMAND_MASTER                      1 << 2
+#define PCI_REG_COMMAND_SPECIAL_CYCLE               1 << 3 //Note: doesnt apply to PCIe
+#define PCI_REG_COMMAND_MWIE                        1 << 4 //Note: doesnt apply to PCIe
+#define PCI_REG_COMMAND_VGA_PALETTE_SNOOP           1 << 5 //Note: doesnt apply to PCIe
+#define PCI_REG_COMMAND_ERROR_RESPONSE              1 << 6
+#define PCI_REG_COMMAND_RESERVED                    1 << 7 
+#define PCI_REG_COMMAND_SERR                        1 << 8
+#define PCI_REG_COMMAND_FASTB2B                     1 << 9 //Note: doesnt apply to PCIe
+#define PCI_REG_COMMAND_INTX_DISABLE                1 << 10
 
-#define PCI_REG_STATUS_INTERRUPT_STATUS 1 << 3
-#define PCI_REG_STATUS_CAPABILITY_LIST 1 << 4 //Note: mandatory on PCIe
-#define PCI_REG_STATUS_66MHZ_CAPABLE 1 << 5 //Note: doesnt apply to PCIe
-#define PCI_REG_STATUS_FASTB2B_CAPABLE 1 << 7 //Note: doesnt apply to PCIe
-#define PCI_REG_STATUS_MASTER_DATA_PARITY_ERROR 1 << 8
-#define PCI_REG_STATUS_DEVSEL_TIMING 3 << 9 //Note: doesnt apply to PCIe
-#define PCI_REG_STATUS_SIG_TARGET_ABORT 1 << 11
-#define PCI_REG_STATUS_RECEIVED_TARGET_ABORT 1 << 12
-#define PCI_REG_STATUS_RECIEVED_MASTER_ABORT 1 << 13
-#define PCI_REG_STATUS_SIGNALED_SYSTEM_ERROR 1 << 15
-#define PCI_REG_STATUS_DETECTED_PARITY_ERROR 1 << 16
+#define PCI_REG_STATUS_INTERRUPT_STATUS             1 << 3
+#define PCI_REG_STATUS_CAPABILITY_LIST              1 << 4 //Note: mandatory on PCIe
+#define PCI_REG_STATUS_66MHZ_CAPABLE                1 << 5 //Note: doesnt apply to PCIe
+#define PCI_REG_STATUS_FASTB2B_CAPABLE              1 << 7 //Note: doesnt apply to PCIe
+#define PCI_REG_STATUS_MASTER_DATA_PARITY_ERROR     1 << 8
+#define PCI_REG_STATUS_DEVSEL_TIMING                3 << 9 //Note: doesnt apply to PCIe
+#define PCI_REG_STATUS_SIG_TARGET_ABORT             1 << 11
+#define PCI_REG_STATUS_RECEIVED_TARGET_ABORT        1 << 12
+#define PCI_REG_STATUS_RECIEVED_MASTER_ABORT        1 << 13
+#define PCI_REG_STATUS_SIGNALED_SYSTEM_ERROR        1 << 15
+#define PCI_REG_STATUS_DETECTED_PARITY_ERROR        1 << 16
 
 #define PCI_BAR_MMIO (1 << 0)
 #define PCI_BAR_64BIT (1 << 2)
