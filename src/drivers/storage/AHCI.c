@@ -6,7 +6,7 @@
 #include <drivers/meta/PCI.h>
 #include <libk/endian.h>
 
-HBA_mem *hba_mem;
+HBA_mem *abar;
 
 void start_cmd(HBA_port *port)
 {
@@ -30,6 +30,20 @@ void stop_cmd(HBA_port *port)
 		break;
 	}
  
+}
+
+int find_cmdslot(HBA_port *port)
+{
+	u32 slots = (port->sact | port->ci);
+    u32 num_slots= (abar->cap & 0x0f00)>>8 ; // Bit 8-12
+	for (u32 i=0; i < num_slots; i++)
+	{
+		if ((slots&1) == 0)
+			return i;
+		slots >>= 1;
+	}
+	log_error("Cannot find free command list entry\n");
+	return -1;
 }
 
 static int check_type(HBA_port *port) {
@@ -85,7 +99,16 @@ void port_rebase(HBA_port *port) {
     start_cmd(port);
 }
 
-void probe_port(HBA_mem *abar) {
+_bool ahci_init() {
+    pci_multi_dev_t devs = pci_find_devices_by_class(0x1, 0x6);
+
+    if (devs.count == 0) {
+        log_error("AHCI: No devices found\n");
+        return false;
+    }
+    // TODO: check for multiple AHCI controllers
+    abar = (HBA_mem *)PHYS_TO_VIRT(pci_get_bar5(devs.addrs[0]).addr);
+
     uint32_t pi = abar->pi;
     int i = 0;
     while (i < AHCI_MAX_PORTS) {
@@ -106,19 +129,6 @@ void probe_port(HBA_mem *abar) {
         }
         i++;
     }
-}
-
-_bool ahci_init() {
-    pci_multi_dev_t devs = pci_find_devices_by_class(0x1, 0x6);
-
-    if (devs.count == 0) {
-        log_error("AHCI: No devices found\n");
-        return false;
-    }
-    // TODO: check for multiple AHCI controllers
-    hba_mem = (HBA_mem *)PHYS_TO_VIRT(pci_get_bar5(devs.addrs[0]).addr);
-
-    probe_port(hba_mem);
 
     return true;
 }
