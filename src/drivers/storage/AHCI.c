@@ -68,7 +68,6 @@ void probe_port(HBA_mem *abar) {
             } else if (dt == AHCI_DEV_TYPE_PM) {
                 log_trace("PM is unimplemented...\n", i);
             } else {
-                // print "WTF is that device at port %d????" but in Russian
                 log_trace("Что за устройство находится на порту %d?\n", i);
             }
         }
