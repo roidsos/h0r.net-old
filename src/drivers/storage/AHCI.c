@@ -9,7 +9,7 @@ HBA_mem *hba_mem;
 void start_cmd(HBA_port *port)
 {
 	while (port->cmd & AHCI_HBA_CMD_CR);
- 
+
 	port->cmd |= AHCI_HBA_CMD_FRE;
 	port->cmd |= AHCI_HBA_CMD_ST; 
 }
@@ -18,7 +18,7 @@ void stop_cmd(HBA_port *port)
 {
 	port->cmd &= ~AHCI_HBA_CMD_ST;
 	port->cmd &= ~AHCI_HBA_CMD_FRE;
- 
+
 	while(1)
 	{
 		if (port->cmd & AHCI_HBA_CMD_FR)
@@ -62,9 +62,14 @@ void probe_port(HBA_mem *abar) {
             if (dt == AHCI_DEV_TYPE_SATA) {
                 log_trace("SATA drive found at port %d!\n", i);
             } else if (dt == AHCI_DEV_TYPE_SATAPI) {
-                log_trace("SATAPI drive found at port %d!\n", i);
+                log_trace("SATAPI is unimplemented...\n", i);
+            } else if (dt == AHCI_DEV_TYPE_SEMB) {
+                log_trace("SMBus is unimplemented...\n", i);
+            } else if (dt == AHCI_DEV_TYPE_PM) {
+                log_trace("PM is unimplemented...\n", i);
             } else {
-                log_trace("Unknown drive found at port %d...        \n", i);
+                // print "WTF is that device at port %d????" but in Russian
+                log_trace("Что за устройство находится на порту %d?\n", i);
             }
         }
         i++;
