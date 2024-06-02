@@ -1,5 +1,7 @@
 #include "AHCI.h"
 #include "core/mm/mem.h"
+#include "libk/string.h"
+#include "core/mm/heap.h"
 #include "utils/log.h"
 #include <drivers/meta/PCI.h>
 #include <libk/endian.h>
@@ -53,6 +55,36 @@ static int check_type(HBA_port *port) {
     }
 }
 
+void port_rebase(HBA_port *port) {
+    stop_cmd(port);
+
+    //command list is 1024 bytes per SATA port
+    u64 clb = (u64)malloc(1024);
+    memset((void*)clb, 0, 1024);
+    port->clb = (u32)clb;
+    port->clbu = (u32)(clb << 32);
+
+    //FIS buffer is 256 bytes per SATA port
+    u64 fb = (u64)malloc(256);
+    memset((void*)fb, 0, 256);
+    port->fb = (u32)fb;
+    port->fbu = (u32)(fb << 32);
+
+    //Command table is 8K per port
+    HBA_command_header *ct_entries = (HBA_command_header *)clb;
+    for (int i = 0; i < 32; i++) {
+        ct_entries[i].prdtl = 8;
+
+        // Command table buffer is 256 bytes
+        u64 ctba = (u64)malloc(256);
+        ct_entries[i].ctba = (u32)ctba;
+        ct_entries[i].ctbau = (u32)(ctba << 32);
+        memset((void*)ctba, 0, 256);
+    }
+
+    start_cmd(port);
+}
+
 void probe_port(HBA_mem *abar) {
     uint32_t pi = abar->pi;
     int i = 0;
@@ -61,6 +93,7 @@ void probe_port(HBA_mem *abar) {
             int dt = check_type(&abar->ports[i]);
             if (dt == AHCI_DEV_TYPE_SATA) {
                 log_trace("SATA drive found at port %d!\n", i);
+                port_rebase(&abar->ports[i]);
             } else if (dt == AHCI_DEV_TYPE_SATAPI) {
                 log_trace("SATAPI is unimplemented...\n", i);
             } else if (dt == AHCI_DEV_TYPE_SEMB) {
