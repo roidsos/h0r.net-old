@@ -158,6 +158,24 @@ typedef volatile struct tagHBA_FIS
 
 typedef struct
 {
+	u8  cfl:5;
+	u8  a:1;
+	u8  w:1;
+	u8  p:1;
+	u8  r:1;
+	u8  b:1;
+	u8  c:1;
+	u8  rsv0:1;
+	u8  pmp:4;
+	u16 prdtl;
+	u32 prdbc;
+	u32 ctba;
+	u32 ctbau;
+	u32 rsv1[4];
+} HBA_command_header;
+
+typedef struct
+{
 	u32 dba;
 	u32 dbau;
 	u32 rsv0;
