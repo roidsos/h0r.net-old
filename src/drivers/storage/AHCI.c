@@ -6,6 +6,30 @@
 
 HBA_mem *hba_mem;
 
+void start_cmd(HBA_port *port)
+{
+	while (port->cmd & AHCI_HBA_CMD_CR);
+ 
+	port->cmd |= AHCI_HBA_CMD_FRE;
+	port->cmd |= AHCI_HBA_CMD_ST; 
+}
+
+void stop_cmd(HBA_port *port)
+{
+	port->cmd &= ~AHCI_HBA_CMD_ST;
+	port->cmd &= ~AHCI_HBA_CMD_FRE;
+ 
+	while(1)
+	{
+		if (port->cmd & AHCI_HBA_CMD_FR)
+			continue;
+		if (port->cmd & AHCI_HBA_CMD_CR)
+			continue;
+		break;
+	}
+ 
+}
+
 static int check_type(HBA_port *port) {
     uint32_t ssts = port->ssts;
 
