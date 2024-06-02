@@ -230,7 +230,7 @@ typedef volatile struct {
 	u8  vendor[0x100-0xA0];
 	HBA_port	ports[1];
 } PACKED HBA_mem;
-
+_bool ahci_use_device(HBA_port *port,u64 start , u8 *buf, u32 count,_bool write);
 _bool ahci_init();
 
 #endif // __AHCI_H__
