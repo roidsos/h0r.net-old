@@ -9,15 +9,15 @@ char bcd;
 
 unsigned char read_register(unsigned char reg) {
     __asm__ volatile("cli");
-    outb8(RTC_COMMAND, reg);
-    return inb8(RTC_DATA);
+    o8(RTC_COMMAND, reg);
+    return in8(RTC_DATA);
     __asm__ volatile("sti");
 }
 
 void write_register(unsigned char reg, unsigned char value) {
     __asm__ volatile("cli");
-    outb8(RTC_COMMAND, reg);
-    outb8(RTC_DATA, value);
+    o8(RTC_COMMAND, reg);
+    o8(RTC_DATA, value);
     __asm__ volatile("sti");
 }
 

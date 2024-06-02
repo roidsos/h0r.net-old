@@ -52,7 +52,7 @@ uint8_t KB_SCANCODE[] = {0x1e, 0x30, 0x2e, 0x20, 0x12, 0x21, 0x22, 0x23, 0x17,
                          0xb,  0xc,  0xd,  0x2a, 0x36, 0xaa, 0x3a};
 
 void handler(UNUSED Registers *regs) {
-    uint8_t scancode = inb8(PS2_DATA);
+    uint8_t scancode = in8(PS2_DATA);
     // printf("0x%x\n", scancode);
     for (int i = 0; i < 42; i++) {
         if (scancode == KB_SCANCODE[i]) {
@@ -117,11 +117,11 @@ void ps2_init() {
     register_ISR(33, handler);
     ioapic_unmask(1);
 
-    if (inb8(PS2_COMMAND) & 0x1) // initialize the ps2 controller
-        inb8(PS2_DATA);
-    outb8(PS2_COMMAND, 0x60);
-    outb8(PS2_DATA, 0b01100101);
+    if (in8(PS2_COMMAND) & 0x1) // initialize the ps2 controller
+        in8(PS2_DATA);
+    o8(PS2_COMMAND, 0x60);
+    o8(PS2_DATA, 0b01100101);
 
-    outb8(PS2_COMMAND, 0xAE);
-    outb8(PS2_DATA, 0xf4);
+    o8(PS2_COMMAND, 0xAE);
+    o8(PS2_DATA, 0xf4);
 }

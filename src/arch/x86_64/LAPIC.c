@@ -30,9 +30,9 @@ void lapic_init() {
     madt_init();
 
     // make sure the leagacy PIC is disabled
-    outb8(0x21, 0xFF);
+    o8(0x21, 0xFF);
     iowait();
-    outb8(0xA1, 0xFF);
+    o8(0xA1, 0xFF);
     iowait();
 
     // enable the LAPIC
