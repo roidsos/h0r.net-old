@@ -23,18 +23,6 @@ void vfs_init() {
     memset(vfs_drivers, 0, sizeof(vfs_drivers));
 }
 
-u16 vfs_register_drive(vfs_drive_t drive) {
-    vfs_drives[vfs_num_drives] = drive;
-    vfs_num_drives++;
-    return vfs_num_drives - 1;
-}
-
-u16 vfs_register_driver(block_driver_t driver) {
-    vfs_drivers[vfs_num_drivers] = driver;
-    vfs_num_drivers++;
-    return vfs_num_drivers - 1;
-}
-
 u32 vfs_open(u32 drive_id, char *path, u8 flags) {
     log_trace("vfs_open(%d, %s, %d)\n", drive_id, path, flags);
     vfs_drive_t drive = vfs_drives[drive_id];
