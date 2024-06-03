@@ -5,7 +5,6 @@
 #include <config.h>
 
 #include <core/sys/resman/VFS.h>
-#include <core/sys/resman/tty.h>
 
 #include <core/mm/heap.h>
 #include <core/mm/pmm.h>
@@ -32,8 +31,6 @@ void wakeup_init_hw() {
              KERNEL_VER_MINOR, KERNEL_VER_PATCH, KERNEL_VER_CODENAME);
 
     pmm_init();
-    init_printf_locks();
-    tty_register((tty_t){2, 0, 0, 0, 0});
 
     vfs_init();
     tar_init();
