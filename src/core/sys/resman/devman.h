@@ -4,6 +4,7 @@
 #include <libk/stdint.h>
 #include <libk/stdbool.h>
 #include <libk/stddef.h>
+#include "file.h"
 
 #define DEVICE_TYPE_NONE        0
 #define DEVICE_TYPE_BLOCK       1
@@ -48,7 +49,7 @@ typedef struct {
             _bool         (*mov)(void* PP,char* from,char* to);
 
             void* driver_specific_data;
-        } fs_dev; 
+        } fsdev; 
     } u;
 } device_t;
 
@@ -62,16 +63,16 @@ _bool blockdev_write(u32 device_id, u8* buf, u64 offset, u64 size);
 h0r_char chardev_read(u32 device_id);
 _bool chardev_write(u32 device_id, h0r_char c);
 
-file_props_t fs_dev_id(u32 device_id, char* path);
-_bool fs_dev_rd(u32 device_id, char* path, u32 offset, char* buffer, u32 size);
-_bool fs_dev_wr(u32 device_id, char* path, u32 offset, char* buffer, u32 size);
+file_props_t fsdev_id(u32 device_id, char* path);
+_bool fsdev_rd(u32 device_id, char* path, u32 offset, char* buffer, u32 size);
+_bool fsdev_wr(u32 device_id, char* path, u32 offset, char* buffer, u32 size);
 
-_bool fs_dev_chp(u32 device_id, char* path, u8 perms, u8 who);
-_bool fs_dev_cho(u32 device_id, char* path, u64 uid, u64 gid);
-_bool fs_dev_mak(u32 device_id, char* path, _bool isdir, _bool recursive);
-_bool fs_dev_lnk(u32 device_id, char* from, char* to);
-_bool fs_dev_rem(u32 device_id, char* path);
-_bool fs_dev_cpy(u32 device_id, char* from, char* to);
-_bool fs_dev_mov(u32 device_id, char* from, char* to);
+_bool fsdev_chp(u32 device_id, char* path, u8 perms, u8 who);
+_bool fsdev_cho(u32 device_id, char* path, u64 uid, u64 gid);
+_bool fsdev_mak(u32 device_id, char* path, _bool isdir, _bool recursive);
+_bool fsdev_lnk(u32 device_id, char* from, char* to);
+_bool fsdev_rem(u32 device_id, char* path);
+_bool fsdev_cpy(u32 device_id, char* from, char* to);
+_bool fsdev_mov(u32 device_id, char* from, char* to);
 
 #endif // __DEVMAN_H__

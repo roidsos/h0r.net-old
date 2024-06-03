@@ -34,8 +34,8 @@ void remove_device(u32 id)
 _bool blockdev_read(u32 device_id, u8* buf, u64 offset, u64 size)
 {
     if (device_id < num_devices) {
-        if (devices[device_id].type != DEVICE_TYPE_BLOCKDEV) return false;
-        return devices[device_id].read(buf, offset, size);
+        if (devices[device_id].type != DEVICE_TYPE_BLOCK) return false;
+        return devices[device_id].u.blockdev.read(devices[device_id].PP,buf, offset, size);
     }
     return false;
 }
@@ -43,8 +43,8 @@ _bool blockdev_read(u32 device_id, u8* buf, u64 offset, u64 size)
 _bool blockdev_write(u32 device_id, u8* buf, u64 offset, u64 size)
 {
     if (device_id < num_devices) {
-        if (devices[device_id].type != DEVICE_TYPE_BLOCKDEV) return false;
-        return devices[device_id].write(buf, offset, size);
+        if (devices[device_id].type != DEVICE_TYPE_BLOCK) return false;
+        return devices[device_id].u.blockdev.write(devices[device_id].PP,buf, offset, size);
     }
     return false;
 }
@@ -52,8 +52,8 @@ _bool blockdev_write(u32 device_id, u8* buf, u64 offset, u64 size)
 h0r_char chardev_read(u32 device_id)
 {
     if (device_id < num_devices) {
-        if (devices[device_id].type != DEVICE_TYPE_CHARDEV) return 0;
-        return devices[device_id].read();
+        if (devices[device_id].type != DEVICE_TYPE_CHAR) return 0;
+        return devices[device_id].u.chardev.read(devices[device_id].PP);
     }
     return 0;
 }
@@ -61,98 +61,98 @@ h0r_char chardev_read(u32 device_id)
 _bool chardev_write(u32 device_id, h0r_char c)
 {
     if (device_id < num_devices) {
-        if (devices[device_id].type != DEVICE_TYPE_CHARDEV) return false;
-        return devices[device_id].write(c);
+        if (devices[device_id].type != DEVICE_TYPE_CHAR) return false;
+        return devices[device_id].u.chardev.write(devices[device_id].PP,c);
     }
     return false;
 }
 
-file_props_t fs_dev_id(u32 device_id, char* path)
+file_props_t fsdev_id(u32 device_id, char* path)
 {
     if (device_id < num_devices) {
         if (devices[device_id].type != DEVICE_TYPE_FS) return (file_props_t){0};
-        return devices[device_id].id(path);
+        return devices[device_id].u.fsdev.id(devices[device_id].PP,path);
     }
     return (file_props_t){0};
 }
 
-_bool fs_dev_rd(u32 device_id, char* path, u32 offset, char* buffer, u32 size)
+_bool fsdev_rd(u32 device_id, char* path, u32 offset, char* buffer, u32 size)
 {
     if (device_id < num_devices) {
         if (devices[device_id].type != DEVICE_TYPE_FS) return false;
-        return devices[device_id].rd(path, offset, buffer, size);
+        return devices[device_id].u.fsdev.rd(devices[device_id].PP,path, offset, buffer, size);
     }
     return false;
 }
 
-_bool fs_dev_wr(u32 device_id, char* path, u32 offset, char* buffer, u32 size)
+_bool fsdev_wr(u32 device_id, char* path, u32 offset, char* buffer, u32 size)
 {
     if (device_id < num_devices) {
         if (devices[device_id].type != DEVICE_TYPE_FS) return false;
-        return devices[device_id].wr(path, offset, buffer, size);
+        return devices[device_id].u.fsdev.wr(devices[device_id].PP,path, offset, buffer, size);
     }
     return false;
 }
 
-_bool fs_dev_chp(u32 device_id, char* path, u8 perms, u8 who)
+_bool fsdev_chp(u32 device_id, char* path, u8 perms, u8 who)
 {
     if (device_id < num_devices) {
         if (devices[device_id].type != DEVICE_TYPE_FS) return false;
-        return devices[device_id].chp(path, perms, who);
+        return devices[device_id].u.fsdev.chp(devices[device_id].PP,path, perms, who);
     }
     return false;
 }
 
-_bool fs_dev_cho(u32 device_id, char* path, u64 uid, u64 gid)
+_bool fsdev_cho(u32 device_id, char* path, u64 uid, u64 gid)
 {
     if (device_id < num_devices) {
         if (devices[device_id].type != DEVICE_TYPE_FS) return false;
-        return devices[device_id].cho(path, uid, gid);
+        return devices[device_id].u.fsdev.cho(devices[device_id].PP,path, uid, gid);
     }
     return false;
 }
 
-_bool fs_dev_mak(u32 device_id, char* path, _bool isdir, _bool recursive)
+_bool fsdev_mak(u32 device_id, char* path, _bool isdir, _bool recursive)
 {
     if (device_id < num_devices) {
         if (devices[device_id].type != DEVICE_TYPE_FS) return false;
-        return devices[device_id].mak(path, isdir, recursive);
+        return devices[device_id].u.fsdev.mak(devices[device_id].PP,path, isdir, recursive);
     }
     return false;
 }
 
-_bool fs_dev_lnk(u32 device_id, char* from, char* to)
+_bool fsdev_lnk(u32 device_id, char* from, char* to)
 {
     if (device_id < num_devices) {
         if (devices[device_id].type != DEVICE_TYPE_FS) return false;
-        return devices[device_id].lnk(from, to);
+        return devices[device_id].u.fsdev.lnk(devices[device_id].PP,from, to);
     }
     return false;
 }
 
-_bool fs_dev_rem(u32 device_id, char* path)
+_bool fsdev_rem(u32 device_id, char* path)
 {
     if (device_id < num_devices) {
         if (devices[device_id].type != DEVICE_TYPE_FS) return false;
-        return devices[device_id].rem(path);
+        return devices[device_id].u.fsdev.rem(devices[device_id].PP,path);
     }
     return false;
 }
 
-_bool fs_dev_cpy(u32 device_id, char* from, char* to)
+_bool fsdev_cpy(u32 device_id, char* from, char* to)
 {
     if (device_id < num_devices) {
         if (devices[device_id].type != DEVICE_TYPE_FS) return false;
-        return devices[device_id].cpy(from, to);
+        return devices[device_id].u.fsdev.cpy(devices[device_id].PP,from, to);
     }
     return false;
 }
 
-_bool fs_dev_mov(u32 device_id, char* from, char* to)
+_bool fsdev_mov(u32 device_id, char* from, char* to)
 {
     if (device_id < num_devices) {
         if (devices[device_id].type != DEVICE_TYPE_FS) return false;
-        return devices[device_id].mov(from, to);
+        return devices[device_id].u.fsdev.mov(devices[device_id].PP,from, to);
     }
     return false;
 }
