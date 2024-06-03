@@ -32,7 +32,6 @@ void wakeup_init_hw() {
 
     pmm_init();
 
-    vfs_init();
     tar_init();
 
     mcfg_init();
@@ -47,9 +46,9 @@ void wakeup_init_hw() {
 }
 
 void wakeup_do_mounts() {
-    if (vfs_num_drives == 0) {
-        trigger_psod(HN_ERR_NO_FS, "No filesystem found", NULL);
-    }
+    //if (vfs_num_drives == 0) {
+    //    trigger_psod(HN_ERR_NO_FS, "No filesystem found", NULL);
+    //}
 
     log_nice("Filesystem sucessfully initialized!\n");
 }
