@@ -23,15 +23,12 @@ void vfs_init() {
     memset(vfs_drivers, 0, sizeof(vfs_drivers));
 }
 
-u32 vfs_open(u32 drive_id, char *path, u8 flags) {
+u32 vfs_open(u32 dev_id, char *path, u8 flags) {
     log_trace("vfs_open(%d, %s, %d)\n", drive_id, path, flags);
-    vfs_drive_t drive = vfs_drives[drive_id];
-    block_driver_t driver = vfs_drivers[drive.driver_id];
-
     u32 file_desc = vfs_num_open_files;
     vfs_num_open_files++;
 
-    open_files[file_desc] = driver.get_props(drive.driver_specific_data, path);
+    open_files[file_desc] = driver.id(drive.driver_specific_data, path);
 
     // TODO: check user perms
     if (open_files[file_desc].size == 0 &&

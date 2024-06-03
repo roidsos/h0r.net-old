@@ -10,7 +10,7 @@
 
 void vfs_init();
 
-u32 vfs_open(u32 drive_id,char* path,u8 flags);
+u32 vfs_open(u32 dev_id,char* path,u8 flags);
 void vfs_close(u32 file_desc);
 
 file_t vfs_get_file(u32 file_desc);

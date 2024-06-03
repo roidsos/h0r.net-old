@@ -5,9 +5,10 @@
 #include <libk/stdbool.h>
 #include <libk/stddef.h>
 
-#define DEVICE_TYPE_BLOCK 0
-#define DEVICE_TYPE_CHAR 1
-#define DEVICE_TYPE_FS 2
+#define DEVICE_TYPE_NONE        0
+#define DEVICE_TYPE_BLOCK       1
+#define DEVICE_TYPE_CHAR        2
+#define DEVICE_TYPE_FS          3
 
 #define FS_DEV_SIG_HARDDRIVE    "HARD"
 #define FS_DEV_SIG_CD_DRIVE     "CDVD"
@@ -28,26 +29,49 @@ typedef struct {
         } blockdev;
         struct {
             h0r_char (*read)(void* PP);
-            void (*write)(void* PP,h0r_char c); 
+            _bool (*write)(void* PP,h0r_char c); 
         } chardev;
         struct {
             char sig[4];
             _bool is_virtual;
 
-            file_props_t (*id)(void* drive_specific_data,char* path);
-            void         (*rd)(void* drive_specific_data,char* path,u32 offset,char* buffer,u32 size);
-            void         (*wr)(void* drive_specific_data,char* path,u32 offset,char* buffer,u32 size);
+            file_props_t  (*id )(void* PP,char* path);
+            _bool         (*rd )(void* PP,char* path,u32 offset,char* buffer,u32 size);
+            _bool         (*wr )(void* PP,char* path,u32 offset,char* buffer,u32 size);
 
-            void         (*chp)(void* drive_specific_data,char* path,u8 perms,u8 who);
-            void         (*cho)(void* drive_specific_data,char* path,u64 uid,u64 gid); 
-            void         (*mak)(void* drive_specific_data,char* path,_bool isdir,_bool recursive);
-            void         (*lnk)(void* drive_specific_data,char* from,char* to);
-            void         (*rem)(void* drive_specific_data,char* path);
-            void         (*cpy)(void* drive_specific_data,char* from,char* to);
-            void         (*mov)(void* drive_specific_data,char* from,char* to);
+            _bool         (*chp)(void* PP,char* path,u8 perms,u8 who);
+            _bool         (*cho)(void* PP,char* path,u8 uid,u8 gid);
+            _bool         (*mak)(void* PP,char* path,_bool isdir,_bool recursive);
+            _bool         (*lnk)(void* PP,char* from,char* to);
+            _bool         (*rem)(void* PP,char* path);
+            _bool         (*cpy)(void* PP,char* from,char* to);
+            _bool         (*mov)(void* PP,char* from,char* to);
 
             void* driver_specific_data;
         } fs_dev; 
     } u;
 } device_t;
+
+u32 register_device(device_t device);
+device_t *get_device_by_id(u32 id);
+void remove_device(u32 id);
+
+_bool blockdev_read(u32 device_id, u8* buf, u64 offset, u64 size);
+_bool blockdev_write(u32 device_id, u8* buf, u64 offset, u64 size);
+
+h0r_char chardev_read(u32 device_id);
+_bool chardev_write(u32 device_id, h0r_char c);
+
+file_props_t fs_dev_id(u32 device_id, char* path);
+_bool fs_dev_rd(u32 device_id, char* path, u32 offset, char* buffer, u32 size);
+_bool fs_dev_wr(u32 device_id, char* path, u32 offset, char* buffer, u32 size);
+
+_bool fs_dev_chp(u32 device_id, char* path, u8 perms, u8 who);
+_bool fs_dev_cho(u32 device_id, char* path, u64 uid, u64 gid);
+_bool fs_dev_mak(u32 device_id, char* path, _bool isdir, _bool recursive);
+_bool fs_dev_lnk(u32 device_id, char* from, char* to);
+_bool fs_dev_rem(u32 device_id, char* path);
+_bool fs_dev_cpy(u32 device_id, char* from, char* to);
+_bool fs_dev_mov(u32 device_id, char* from, char* to);
+
 #endif // __DEVMAN_H__
