@@ -24,7 +24,6 @@ typedef struct {
     Registers regs;
     Registers saved_regs;
     Registers syscall_regs;
-    u32 tty_id;
     u64 pagemap;
 } process_t;
 

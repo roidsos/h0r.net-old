@@ -35,8 +35,6 @@
 #include <arch/x86_64/io/cereal.h>
 #include <config.h>
 #include <core/kernel.h>
-#include <core/sys/resman/tty.h>
-#include <core/sys/sched/sched.h>
 #include <libk/macros.h>
 #include <libk/stdint.h>
 #include <uterus.h>
@@ -105,49 +103,12 @@ static inline void _out_null(char character, void *buffer, usize idx,
     (void)maxlen;
 }
 
-typedef struct {
-    u16 tty_id;
-    u32 victim_pid;
-} lock_victim_t;
 
-lock_victim_t locks[MAX_LOCKED_PROCS];
-
-void init_printf_locks() {
-    for (int i = 0; i < MAX_LOCKED_PROCS; i++) {
-        locks[i].tty_id = 0;
-        locks[i].victim_pid = 0;
-    }
-}
-
+//TODO: stop using this
 // internal _putchar wrapper
 static inline void _out_char(char character, UNUSED void *buffer,
                              UNUSED usize idx, UNUSED usize maxlen) {
-    if (sched_running && tty_initialized) {
-        // TODO: move this into its own place
-        u16 curr_tty = sched_get_curr_process()->tty_id;
-        if (!tty_lock(curr_tty)) {
-            for (int i = 0; i < MAX_LOCKED_PROCS; i++) {
-                if (locks[i].tty_id == 0) {
-                    locks[i].tty_id = curr_tty;
-                    locks[i].victim_pid = sched_current_pid;
-                    sched_block(sched_current_pid);
-                }
-            }
-            while (tty_get_lock(curr_tty))
-                ;
-        }
-        tty_write(curr_tty, &character, 1);
-        tty_unlock(curr_tty);
-        for (int i = 0; i < MAX_LOCKED_PROCS; i++) {
-            if (locks[i].tty_id == curr_tty) {
-                sched_unblock(locks[i].victim_pid);
-                locks[i].tty_id = 0;
-                locks[i].victim_pid = 0;
-            }
-        }
-    } else {
-        uterus_write(hn_data.ut_ctx, &character, 1);
-    }
+    uterus_write(hn_data.ut_ctx, &character, 1);
 }
 
 // internal secure strlen
