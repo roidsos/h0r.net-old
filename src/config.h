@@ -1,22 +1,28 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-//kernel
+//version
 #define KERNEL_VER_MAJOR 0
 #define KERNEL_VER_MINOR 0
 #define KERNEL_VER_PATCH 1
 #define KERNEL_VER_CODENAME "Deez Nutz"
 
-//TTY
+//general
+#define CHAR_WIDTH 8
+#define PAGE_SIZE 4096
+#define STACK_SIZE 4 // In PAGES
+
+//Resman
 #define MAX_TTYS 4
+
+//Scheduler 
+#define MAX_PROCESSES 64
+#define MAX_LOCKED_PROCS 64
 
 //VFS
 #define MAX_OPEN_FILES 64
 #define MAX_DRIVES     64
-#define MAX_DRIVERS    8
-
-//MM
-#define PAGE_SIZE 4096
+#define MAX_FS_DRIVERS 8
 
 //Loggers-poggers
 #define DEBUG true
@@ -29,15 +35,8 @@
 #define WARN_PORT COM1
 #define EROR_PORT COM1
 
-//Registery
-#define HIVE_MAGIC 0xB16B00B5 // "Big Boobs", "(I think "Microsoftus Neckbearditis" got me...)
-#define KEY_MAGIC 0x69420666 // "69 420 666"
-
-//Scheduler 
-#define MAX_PROCESSES 64
-#define MAX_LOCKED_PROCS 64
-
-//Executive
-#define STACK_SIZE 4 // In PAGES
+//Magic values
+#define REG_HIVE_MAGIC 0xB16B00B5 // "Big Boobs", "(I think "Microsoftus Neckbearditis" got me...)
+#define REG_KEY_MAGIC 0x69420666 // "69 420 666"
 
 #endif

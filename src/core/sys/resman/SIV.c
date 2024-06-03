@@ -11,7 +11,7 @@
 siv_drive_t siv_drives[MAX_DRIVES];
 u16 siv_num_drives = 0;
 
-block_driver_t siv_drivers[MAX_DRIVERS];
+block_driver_t siv_drivers[MAX_FS_DRIVERS];
 u16 siv_num_drivers = 0;
 
 file_t open_files[MAX_OPEN_FILES];
