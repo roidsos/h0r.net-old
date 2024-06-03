@@ -12,17 +12,14 @@
 #define PAGE_SIZE 4096
 #define STACK_SIZE 4 // In PAGES
 
-//Resman
-#define MAX_TTYS 4
+//VFS
+#define MAX_OPEN_FILES 64
+
+//Devman
+#define MAX_DEVICES 64
 
 //Scheduler 
 #define MAX_PROCESSES 64
-#define MAX_LOCKED_PROCS 64
-
-//VFS
-#define MAX_OPEN_FILES 64
-#define MAX_DRIVES     64
-#define MAX_FS_DRIVERS 8
 
 //Loggers-poggers
 #define DEBUG true
