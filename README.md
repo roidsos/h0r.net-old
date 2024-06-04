@@ -1,20 +1,23 @@
 # h0r.net
 ## Wtf is h0r.net?
 kernel of https://github.com/roidsos/RoidsOS
-## TODO
-### System
-- [x] GDT
-- [x] IDT
+please star the repo UwU
+## TODO for 1.0
+### General
+#### x86
+- [X] GDT
+- [X] IDT
 - [X] TSS
-- [x] PCI(thru bakvords kompat)
+- [X] Pager
+#### PCI
+- [X] PCI(thru bakvords kompat)
 - [X] PCIe
 - [ ] MSI
 - [ ] MSI-X
-- [x] Modules
 #### Memory
-- [x] PMM
-- [x] VMM
-- [x] Heap
+- [X] PMM
+- [ ] VMM
+- [X] Heap
 #### Tasking
 - [x] Scheduler
 - [x] Events
@@ -23,39 +26,7 @@ kernel of https://github.com/roidsos/RoidsOS
 - [x] System calls
 - [x] ELF
 - [ ] Userspace
-### drivers
-#### Timers
-- [x] HPET
-- [x] RTC
-- [x] LAPIC Timer
-#### ACPI
-- [X] ACPI
-- [x] LAPIC
-- [x] IOAPIC
-- [x] LAI
-#### I/O
-- [x] PS/2
-- [x] COM
-- [ ] USB HID
-#### Audio
-- [x] PC speaker
-- [ ] AC97
-- [ ] Intel HDA
-<!--
-#### Storage
-- [ ] IDE
-- [ ] SATA
-- [ ] NVMe
-#### Network
-- [ ] RTL8139
-- [ ] RTL8169
-- [ ] E1000
-#### USB
-- [ ] UHCI
-- [ ] OHCI
-- [ ] EHCI
-- [ ] XHCI 
-#### Network
+#### Network stack
 - [ ] Ethernet
 - [ ] ARP
 - [ ] IPv4
@@ -67,19 +38,49 @@ kernel of https://github.com/roidsos/RoidsOS
 - [ ] Telnet
 - [ ] SSL
 - [ ] Or just LWIP
+### Drivers
+#### Timers
+- [X] HPET
+- [X] RTC
+- [X] LAPIC Timer
+#### ACPI
+- [X] ACPI
+- [X] LAPIC
+- [X] IOAPIC
+- [X] LAI
+#### I/O
+- [x] PS/2
+- [x] COM
+- [ ] USB HID
+#### Filesystems
+- [X] VFS
+- [ ] TMPFS
+- [X] USTAR
+- [ ] EXT2
+- [ ] EXT3
+- [ ] EXT4
+- [ ] FAT12
+- [ ] FAT16
+- [ ] FAT32
+- [ ] ISO9660
+#### Storage
+- [ ] IDE
+- [x] SATA
+- [ ] NVMe
+#### Driver interfaces
+- [ ] CDI
+- [ ] UDI
+<!--
 #### Partition tables
 - [ ] MBR
 - [ ] GPT 
-#### Filesystems
-- [ ] VFS
-- [ ] TMPFS
-- [ ] DEVTMPFS
-- [ ] PROCFS
-- [ ] SYSFS
-- [ ] USTAR
-- [ ] ILAR
-- [ ] Ext2
-- [ ] Fat32
-- [ ] ISO9660
-- [ ] NTFS
+#### Network
+- [ ] RTL8139
+- [ ] RTL8169
+- [ ] E1000
+#### USB
+- [ ] UHCI
+- [ ] OHCI
+- [ ] EHCI
+- [ ] XHCI 
 -->
