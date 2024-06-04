@@ -41,11 +41,14 @@ kernel of https://github.com/roidsos/RoidsOS
 - [x] PC speaker
 - [ ] AC97
 - [ ] Intel HDA
-<!--
 #### Storage
 - [ ] IDE
-- [ ] SATA
+- [x] SATA
 - [ ] NVMe
+#### Driver interfaces
+- [ ] CDI
+- [ ] UDI
+<!--
 #### Network
 - [ ] RTL8139
 - [ ] RTL8169
