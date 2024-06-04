@@ -11,6 +11,7 @@
 #define HN_ERR_OUT_OF_MEM     4
 #define HN_ERR_LAI_PANIC      5
 #define HN_ERR_NO_FS          6
+#define HN_ERR_DRIVER_ERROR   7
 
 void trigger_psod(int error_code,char* details,Registers* regs);
 

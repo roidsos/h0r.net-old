@@ -1,6 +1,8 @@
 #ifndef LAPIC_H
 #define LAPIC_H
 
+#include <libk/stdbool.h>
+
 #define LAPIC_APICID      0x20
 #define LAPIC_APICVER     0x30
 #define LAPIC_TASKPRIOR   0x80
@@ -30,7 +32,7 @@
 
 #include "ACPI/MADT.h"
 
-void lapic_init();
+_bool lapic_init();
 void lapic_eoi();
 
 void lapic_timer_stop();

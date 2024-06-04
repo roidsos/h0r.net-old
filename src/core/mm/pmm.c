@@ -89,7 +89,7 @@ void *request_pages(usize num) {
 volatile struct limine_memmap_request memmap_request = {
     .id = LIMINE_MEMMAP_REQUEST, .revision = 0};
 
-void pmm_init() {
+_bool pmm_init() {
     usize page_bmp_size = 0;
     void *largest_free_memseg = NULL;
     usize largest_free_memseg_size = 0;
@@ -132,4 +132,5 @@ void pmm_init() {
     log_trace("Total RAM: %u KB\n", total_mem / 1024);
     log_trace("Free RAM: %u KB\n", free_mem / 1024);
     log_trace("Used RAM: %u KB\n", used_mem / 1024);
+    return true;
 }

@@ -1,6 +1,7 @@
 #include "wakeup.h"
 #include "core/sys/executive/krnlexec/krnlexec.h"
 #include "drivers/storage/AHCI.h"
+#include "libk/macros.h"
 #include <config.h>
 
 #include <core/sys/resman/VFS.h>
@@ -13,7 +14,6 @@
 #include <arch/x86_64/interrupts/interrupts.h>
 
 #include <drivers/ACPI/MCFG.h>
-#include <drivers/filesys/tar.h>
 #include <drivers/meta/PCI.h>
 
 #include <core/error.h>
@@ -24,19 +24,20 @@
 #include <lai/core.h>
 
 extern int ACPI_revision;
+extern _bool tar_init();
 
 void wakeup_init_hw() {
     log_info("h0r.net identifies as v%u.%u.%u \"%s\"\n", KERNEL_VER_MAJOR,
              KERNEL_VER_MINOR, KERNEL_VER_PATCH, KERNEL_VER_CODENAME);
 
-    pmm_init();
+    DRIVER_ASSERT(pmm_init());
 
-    tar_init();
+    DRIVER_ASSERT(tar_init());
 
-    mcfg_init();
-    pci_init();
+    DRIVER_ASSERT(mcfg_init());
+    DRIVER_ASSERT(pci_init());
 
-    ahci_init();
+    DRIVER_ASSERT(ahci_init());
 
     // lai_set_acpi_revision(hn_data.ACPI_ver);
     // lai_create_namespace();
@@ -52,7 +53,6 @@ void wakeup_do_mounts() {
     log_nice("Filesystem sucessfully initialized!\n");
 }
 void wakeup_startup() {
-
 
     // start Gaia: the userspace portion of Wakeup
     execute("Gaia", gaia_main);
