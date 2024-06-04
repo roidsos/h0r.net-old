@@ -1,7 +1,8 @@
 # h0r.net
 ## Wtf is h0r.net?
 kernel of https://github.com/roidsos/RoidsOS
-## TODO
+please start the repo UwU
+## TODO for 1.0
 ### System
 - [x] GDT
 - [x] IDT
