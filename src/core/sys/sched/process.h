@@ -18,18 +18,13 @@ enum process_state {
 #define SCHED_FLAGS_CHANGED 1 << 5
 
 typedef struct {
-    u64 stack_base;
-    u64 kernel_stack;
-} stackstate_t;
-
-typedef struct {
+    u64* stack_base;
+    u64* kernel_stack;
     u8 state_flags;
     char* name;
     //WARN: Arch specific code in core/ + TODO: smh move to arch/ or make architecture neutral
     Registers regs;
     Registers saved_regs;
-    Registers syscall_regs;
-    stackstate_t stackstate;
     u64 pagemap;
 } process_t;
 

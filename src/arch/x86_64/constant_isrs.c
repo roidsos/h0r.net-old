@@ -20,29 +20,16 @@ void schedule(Registers *regs) {
     } else {
         if (!FLAG_READ(processes[sched_current_pid].state_flags,
                        SCHED_FLAGS_CHANGED)) {
-            if (FLAG_READ(processes[sched_current_pid].state_flags,
-                          SCHED_FLAGS_IN_SYSCALL)) {
-                memcpy(&processes[sched_current_pid].syscall_regs, regs,
-                       sizeof(Registers));
-            } else {
-                memcpy(&processes[sched_current_pid].regs, regs,
-                       sizeof(Registers));
-            }
+            memcpy(&processes[sched_current_pid].regs, regs, sizeof(Registers));
         }
     }
 
     // the scheduling algorithm is separated from the scheduler
     next_process();
 
-    if (FLAG_READ(processes[sched_current_pid].state_flags,
-                  SCHED_FLAGS_IN_SYSCALL)) {
-        memcpy(regs, &processes[sched_current_pid].syscall_regs,
-               sizeof(Registers));
-    } else {
-        memcpy(regs, &processes[sched_current_pid].regs, sizeof(Registers));
-    }
+    memcpy(regs, &processes[sched_current_pid].regs, sizeof(Registers));
 
-    wrmsr(GS_KERNEL_MSR, (u64)&processes[sched_current_pid].stackstate);
+    wrmsr(GS_KERNEL_MSR, (u64)&processes[sched_current_pid]);
 
     // setting the timer for next yield, have to do it in the kernel pagemap
     lapic_timer_oneshot(5, 32); // 5ms timeslice
