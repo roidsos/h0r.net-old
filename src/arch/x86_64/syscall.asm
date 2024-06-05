@@ -1,5 +1,6 @@
 global syscall_isr
 extern syscall_handler
+extern hn_pagemap
 section .text
 
 %macro PUSHA64 0
@@ -41,6 +42,8 @@ section .text
 ; thanks to https://github.com/asterd-og/ZanOS/blob/main/kernel/src/sys/user.asm
 
 syscall_isr:
+    mov rax, hn_pagemap
+    mov cr3, rax
     swapgs
     mov [gs:0], rsp ; Save user stack in the stack
     mov rsp, [gs:8] ; Kernel stack

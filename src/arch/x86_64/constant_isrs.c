@@ -1,4 +1,5 @@
 #include "constant_isrs.h"
+#include "arch/x86_64/cpu.h"
 #include "arch/x86_64/interrupts/ISR.h"
 #include "core/mm/mem.h"
 #include "core/sys/sched/process.h"
@@ -40,6 +41,8 @@ void schedule(Registers *regs) {
     } else {
         memcpy(regs, &processes[sched_current_pid].regs, sizeof(Registers));
     }
+
+    wrmsr(GS_KERNEL_MSR, (u64)&processes[sched_current_pid].stackstate);
 
     // setting the timer for next yield, have to do it in the kernel pagemap
     lapic_timer_oneshot(5, 32); // 5ms timeslice

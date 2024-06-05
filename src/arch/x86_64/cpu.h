@@ -74,6 +74,9 @@
 #define CPUID_FEAT_EDX_PBE         1 << 31
 
 
+#define GS_MSR 0xC0000101
+#define GS_KERNEL_MSR 0xC0000102
+
 #include <libk/stdint.h>
 typedef struct {
     char vendor[13];       // Vendor ID (12 characters + null terminator)
