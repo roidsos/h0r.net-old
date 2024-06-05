@@ -54,7 +54,7 @@ void wakeup_do_mounts() {
     log_nice("Filesystem sucessfully initialized!\n");
 }
 void wakeup_startup() {
-    exec_elf("bin/test", "test", false);
+    exec_elf("bin/test", "test", true);
 
     // start Gaia: the userspace portion of Wakeup
     execute("Gaia", gaia_main);
