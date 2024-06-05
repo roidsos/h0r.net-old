@@ -3,6 +3,7 @@
 #include "drivers/ACPI/SDT.h"
 #include <arch/x86_64/IOAPIC.h>
 #include <arch/x86_64/LAPIC.h>
+#include <arch/x86_64/user.h>
 #include <arch/x86_64/constant_isrs.h>
 #include <arch/x86_64/interrupts/interrupts.h>
 #include <arch/x86_64/io/PS2.h>
@@ -87,6 +88,7 @@ void _start(void) {
 
     ps2_init();
     cisrs_register();
+    user_init();
     log_nice("x86_64 Init Target reached: Misc\n");
 
     kmain();

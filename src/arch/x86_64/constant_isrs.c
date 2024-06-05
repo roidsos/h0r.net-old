@@ -58,12 +58,11 @@ void syscall_handler(Registers *regs) {
     memcpy(&processes[sched_current_pid].regs, regs, sizeof(Registers));
 
     FLAG_SET(processes[sched_current_pid].state_flags, SCHED_FLAGS_IN_SYSCALL);
-    regs->rax = syscall(regs->rax, regs->rdi, regs->rsi, regs->rdx);
+    regs->rax = syscall(regs->rax, regs->rdi, regs->rsi, regs->rdx,regs->r10,regs->r8,regs->r9);
     FLAG_UNSET(processes[sched_current_pid].state_flags,
                SCHED_FLAGS_IN_SYSCALL);
 }
 
 void cisrs_register() {
     register_ISR(32, schedule);
-    register_ISR(0x80, syscall_handler);
 }
