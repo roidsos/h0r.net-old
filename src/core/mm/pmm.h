@@ -12,7 +12,7 @@
 #define BIT_TO_PAGE(bit) ((usize)bit * PAGE_SIZE)
 #define PAGE_TO_BIT(page) ((usize)page / PAGE_SIZE)
 
-void pmm_init();
+_bool pmm_init();
 _bool free_pages(void* addr,usize num);
 _bool lock_pages(void* addr,usize num);
 

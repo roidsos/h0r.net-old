@@ -74,6 +74,9 @@
 #define CPUID_FEAT_EDX_PBE         1 << 31
 
 
+#define GS_MSR 0xC0000101
+#define GS_KERNEL_MSR 0xC0000102
+
 #include <libk/stdint.h>
 typedef struct {
     char vendor[13];       // Vendor ID (12 characters + null terminator)
@@ -97,8 +100,8 @@ void cpuid(u32 eax, u32 *a, u32 *b, u32 *c, u32 *d);
 void get_cpu_capabilities(CPUInfo *cpuInfo);
 int sys_init_fpu();
 
-void rdmsr(u32 msr, u32 *lo, u32 *hi);
-void wrmsr(u32 msr, u32 lo, u32 hi);
+u64 rdmsr(u32 msr);
+void wrmsr(u32 msr, u64 val);
 u64 read_tsc();
 
 #endif // __CPU_H__

@@ -76,9 +76,9 @@ _bool tar_chown(UNUSED void *driver_specific_data, UNUSED char *path,
     return false;
 }
 
-void tar_init() {
+_bool tar_init() {
     if (hn_data.initramfs == NULL) {
-        return;
+        return false;
     }
 
     // WARN: Arch specific code in drivers/ + TODO: smh move to arch/ or make
@@ -99,4 +99,6 @@ void tar_init() {
                                    .u.fsdev.rem = tar_remove,
                                    .u.fsdev.cpy = tar_copy,
                                    .u.fsdev.mov = tar_move});
+
+    return true;
 }

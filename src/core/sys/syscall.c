@@ -6,7 +6,7 @@
 #include <utils/log.h>
 #include <vendor/uterus/uterus.h>
 
-u64 syscall(u64 number, u64 arg1, u64 arg2, UNUSED u64 arg3) {
+u64 syscall(u64 number, u64 arg1, u64 arg2, UNUSED u64 arg3,UNUSED u64 arg4,UNUSED u64 arg5,UNUSED u64 arg6) {
     switch (number) {
     case 0: // sys_exit
         // TODO: exit codes

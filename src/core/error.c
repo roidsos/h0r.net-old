@@ -12,7 +12,7 @@
 char *errors[] = {
     "HN_ERR_HW_EXCEPTION", "HN_ERR_KERNEL_EXITED", "HN_ERR_NO_ACPI",
     "HN_ERR_NO_FB",        "HN_ERR_OUT_OF_MEM",    "HN_ERR_LAI_PANIC",
-    "HN_ERR_NO_FS",
+    "HN_ERR_NO_FS", "HN_ERR_DRIVER_ERROR",
 };
 
 #define BGCOL "\x1b[48;2;17;0;34m"

@@ -1,4 +1,8 @@
 #include "sched.h"
+#include "core/mm/mem.h"
+#include "core/mm/pmm.h"
+#include "core/sys/sched/process.h"
+#include "utils/log.h"
 #include <config.h>
 #include <core/mm/heap.h>
 #include <libk/binary.h>
@@ -16,6 +20,9 @@ u32 sched_add_process(char *name, Registers init_state, u64 pagemap) {
         processes[sched_num_procs].regs = init_state;
         processes[sched_num_procs].pagemap = pagemap;
         processes[sched_num_procs].state_flags = SCHED_STATE_READY;
+        processes[sched_num_procs].stack_base = (void*)init_state.rsp;
+        processes[sched_num_procs].kernel_stack = PHYS_TO_VIRT(request_pages(3)) + (3 * PAGE_SIZE);
+        log_trace("stack_base: %p, kernel_stack: %p", processes[sched_num_procs].stack_base, processes[sched_num_procs].kernel_stack);
         sched_num_procs++;
         return sched_num_procs - 1;
     }

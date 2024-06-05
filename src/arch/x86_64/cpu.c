@@ -61,12 +61,14 @@ int sys_init_fpu() {
     return 0;
 }
 
-void rdmsr(u32 msr, u32 *lo, u32 *hi) {
-    __asm__ volatile("rdmsr" : "=a"(*lo), "=d"(*hi) : "c"(msr));
+u64 rdmsr(u32 msr) {
+    u32 lo, hi;
+    __asm__ volatile("rdmsr" : "=a"(lo), "=d"(hi) : "c"(msr));
+    return (u64)lo | ((u64)hi << 32);
 }
 
-void wrmsr(u32 msr, u32 lo, u32 hi) {
-    __asm__ volatile("wrmsr" : : "a"(lo), "d"(hi), "c"(msr));
+void wrmsr(u32 msr, u64 val) {
+    __asm__ volatile("wrmsr" : : "a"(val & 0xFFFFFFFF), "d"((val >> 32) & 0xFFFFFFFF), "c"(msr));
 }
 
 u64 read_tsc() {

@@ -13,7 +13,6 @@
 struct HN_data {
     //System info
     CPUInfo cpu_info;
-    u64 pagemap;
 
     //ACPI shit
     void* hhdm_off;
@@ -26,5 +25,6 @@ struct HN_data {
     struct limine_framebuffer *framebuffer;
     struct limine_file *initramfs;
 };
+extern u64 hn_pagemap; // separate cuz assembly
 extern struct HN_data hn_data;
 #endif

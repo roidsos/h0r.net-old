@@ -26,7 +26,7 @@ void lapic_timer_oneshot(u64 ms, u8 vec) {
     wreg(LAPIC_TMRINITCNT, ms * ticks);
 }
 
-void lapic_init() {
+_bool lapic_init() {
     madt_init();
 
     // make sure the leagacy PIC is disabled
@@ -41,7 +41,7 @@ void lapic_init() {
 
     // check for timer
     if (!hpet_init()) {
-        trigger_psod(HN_ERR_NO_ACPI, "no HPET found LMAO", NULL);
+        return false;
     }
 
     // Calibrate the timer
@@ -54,6 +54,8 @@ void lapic_init() {
 
     ticks = 0xFFFFFFFF - rreg(LAPIC_TMRCURRCNT);
     lapic_timer_stop();
+
+    return true;
 }
 
 void lapic_eoi() { wreg(LAPIC_EOI, 0); }

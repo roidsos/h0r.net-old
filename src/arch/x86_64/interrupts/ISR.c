@@ -302,7 +302,7 @@ void ISR_RegisterHandler(int irq, ISRHandler handler) {
     ISRHandlers[irq] = handler;
 }
 void ISR_Handler(Registers *regs) {
-    __asm__ volatile("mov %0, %%cr3" : : "r"((u64)hn_data.pagemap));
+    __asm__ volatile("mov %0, %%cr3" : : "r"((u64)hn_pagemap));
     if (regs->interrupt < 32) {
         trigger_psod(HN_ERR_HW_EXCEPTION, err_strings[regs->interrupt], regs);
         return;

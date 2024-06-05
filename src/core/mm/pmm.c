@@ -63,6 +63,7 @@ usize get_total_RAM() { return total_mem; }
 
 static void *find_free_range(usize npages) {
     for (usize addr = 0; addr <= page_bmp.size; addr++) {
+        log_trace("addr: %p\n", (void *)addr);
         for (usize page = 0; page <= npages; page++) {
 
             if (bitmap_get(page_bmp, addr + PAGE_TO_BIT(page)))
@@ -89,7 +90,7 @@ void *request_pages(usize num) {
 volatile struct limine_memmap_request memmap_request = {
     .id = LIMINE_MEMMAP_REQUEST, .revision = 0};
 
-void pmm_init() {
+_bool pmm_init() {
     usize page_bmp_size = 0;
     void *largest_free_memseg = NULL;
     usize largest_free_memseg_size = 0;
@@ -126,10 +127,14 @@ void pmm_init() {
             }
         }
     }
-    lock_pages(page_bmp.buffer, DIV_ROUND_UP(page_bmp.size, PAGE_SIZE));
+    usize index = (usize)page_bmp.buffer / PAGE_SIZE;
+    for (usize j = 0; j < DIV_ROUND_UP(page_bmp.size, PAGE_SIZE); j++) {
+        bitmap_set(page_bmp, index + j, true);
+    }
 
     log_trace("PMM initialized\n");
     log_trace("Total RAM: %u KB\n", total_mem / 1024);
     log_trace("Free RAM: %u KB\n", free_mem / 1024);
     log_trace("Used RAM: %u KB\n", used_mem / 1024);
+    return true;
 }
