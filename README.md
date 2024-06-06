@@ -9,11 +9,6 @@ please star the repo UwU
 - [X] IDT
 - [X] TSS
 - [X] Pager
-#### PCI
-- [X] PCI(thru bakvords kompat)
-- [X] PCIe
-- [ ] MSI
-- [ ] MSI-X
 #### Memory
 - [X] PMM
 - [ ] VMM
@@ -26,6 +21,11 @@ please star the repo UwU
 - [x] System calls
 - [x] ELF
 - [x] Userspace
+#### PCI
+- [X] PCI(thru bakvords kompat)
+- [X] PCIe
+- [ ] MSI
+- [ ] MSI-X
 #### Network stack
 - [ ] Ethernet
 - [ ] ARP
@@ -44,11 +44,6 @@ please star the repo UwU
 - [X] HPET
 - [X] RTC
 - [X] LAPIC Timer
-#### ACPI
-- [X] ACPI
-- [X] LAPIC
-- [X] IOAPIC
-- [X] LAI
 #### I/O
 - [x] PS/2
 - [x] COM
@@ -77,3 +72,8 @@ please star the repo UwU
 - [ ] OHCI
 - [ ] EHCI
 - [ ] XHCI
+#### ACPI
+- [X] ACPI
+- [X] LAPIC
+- [X] IOAPIC
+- [X] LAI
