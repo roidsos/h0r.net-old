@@ -39,6 +39,7 @@ please star the repo UwU
 - [ ] SSL
 - [ ] Or just LWIP
 ### Drivers
+- [ ] CDI
 #### Timers
 - [X] HPET
 - [X] RTC
@@ -52,6 +53,13 @@ please star the repo UwU
 - [x] PS/2
 - [x] COM
 - [ ] USB HID
+#### Storage
+- [ ] IDE
+- [x] SATA
+- [ ] NVMe
+#### Partition tables
+- [ ] MBR
+- [ ] GPT 
 #### Filesystems
 - [X] VFS
 - [ ] TMPFS
@@ -63,24 +71,9 @@ please star the repo UwU
 - [ ] FAT16
 - [ ] FAT32
 - [ ] ISO9660
-#### Storage
-- [ ] IDE
-- [x] SATA
-- [ ] NVMe
-#### Driver interfaces
-- [ ] CDI
-- [ ] UDI
-<!--
-#### Partition tables
-- [ ] MBR
-- [ ] GPT 
-#### Network
-- [ ] RTL8139
-- [ ] RTL8169
-- [ ] E1000
 #### USB
+- [ ] the basics
 - [ ] UHCI
 - [ ] OHCI
 - [ ] EHCI
-- [ ] XHCI 
--->
+- [ ] XHCI
