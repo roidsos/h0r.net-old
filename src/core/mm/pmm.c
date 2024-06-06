@@ -1,7 +1,7 @@
 #include "pmm.h"
 #include <config.h>
 #include <core/error.h>
-#include <string.h>
+#include <libk/string.h>
 #include <utils/log.h>
 #include <vendor/printf.h>
 
