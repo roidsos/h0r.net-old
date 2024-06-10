@@ -1,7 +1,6 @@
-#ifdef __x86_64__ // Since GDT is x86-only, we use a preprocessor condition to
-                  // know if we need to compile the GDT.
-
+#include <libk/macros.h>
 #include "gdt.h"
+#include "cpu.h"
 
 gdt_table gdt;
 gdt_pointer gdtr;
@@ -37,7 +36,8 @@ void init_tss(u64 rsp0) {
     daTSS.rsp0 = rsp0;
 }
 
-int gdt_init(u64 *rsp0) {
+int gdt_init(u64 rsp0) {
+
     set_gdt_entry(0, 0, 0, 0, 0);             // NULL segment
     set_gdt_entry(1, 0, 0, 0b10011010, 0xA0); // Ring 0 code
     set_gdt_entry(2, 0, 0, 0b10010010, 0xA0); // Ring 0 data
@@ -52,10 +52,15 @@ int gdt_init(u64 *rsp0) {
     gdtr.size = sizeof(gdt) - 1;
     gdtr.offset = (u64)&gdt;
 
-    init_tss((u64)rsp0);
+    init_tss(rsp0);
 	asm volatile("lgdt (%%rax)" : : "a"(&gdtr) : "memory");
 	asm volatile("ltr %%ax" : : "a"(0x48));
     asm volatile(
+        "swapgs;"
+		"mov $0, %%ax;"
+		"mov %%ax, %%gs;"
+		"mov %%ax, %%fs;"
+		"swapgs;"
 		"pushq $0x8;"
 		"pushq $.reload;"
         "mov $0x10, %%ax;"
@@ -66,9 +71,16 @@ int gdt_init(u64 *rsp0) {
 		".reload:"
 		: : : "ax");
 
+    struct{
+        u64 stack_base;
+        u64 kernel_stack;
+    } PACKED dummy_proc;
+    dummy_proc.stack_base = 0;
+    dummy_proc.kernel_stack = rsp0;
+    wrmsr(GS_KERNEL_MSR, (u64)&dummy_proc);
+    wrmsr(GS_MSR, (u64)&dummy_proc);
+
     return 0;
 }
 
-void set_kernel_stack(u64 *stack) { daTSS.rsp0 = (u64)stack; }
-
-#endif
+void set_kernel_stack(u64 stack) { daTSS.rsp0 = stack; }
