@@ -71,7 +71,7 @@ void _start(void) {
 
     get_cpu_capabilities(&hn_data.cpu_info);
     sys_init_fpu();
-    gdt_init((u64 *)kernel_stack);
+    gdt_init(kernel_stack);
     log_nice("x86_64 Init Target reached: CPU\n");
 
     if (!find_rsdt(rsdp_request.response->address)) {

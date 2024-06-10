@@ -8,7 +8,7 @@
 typedef struct
 {
     u16 size;
-    u32 offset;
+    u64 offset;
 } PACKED gdt_pointer;
 
 typedef struct {

@@ -53,8 +53,18 @@ int gdt_init(u64 *rsp0) {
     gdtr.offset = (u64)&gdt;
 
     init_tss((u64)rsp0);
-    load_gdt(&gdtr);
-    load_tss();
+	asm volatile("lgdt (%%rax)" : : "a"(&gdtr) : "memory");
+	asm volatile("ltr %%ax" : : "a"(0x48));
+    asm volatile(
+		"pushq $0x8;"
+		"pushq $.reload;"
+        "mov $0x10, %%ax;"
+		"mov %%ax, %%ds;"
+		"mov %%ax, %%es;"
+		"mov %%ax, %%ss;"
+		"retfq;"
+		".reload:"
+		: : : "ax");
 
     return 0;
 }
