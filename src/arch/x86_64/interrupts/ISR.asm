@@ -55,10 +55,6 @@ ISR%1:
 
 extern ISR_Handler
 isr_common:
-    swapgs
-    mov [gs:0], rsp ; Save user stack in the stack
-    mov rsp, [gs:8] ; Kernel stack
-
 	PUSHA64
 
 	cld
@@ -66,12 +62,7 @@ isr_common:
 	call ISR_Handler
 
 	POPA64
-
-	mov [gs:8], rsp
-    mov rsp, [gs:0]
-    swapgs ; swap again, now kernel gs is the kernel gs again
 	add rsp, 16
-
 	iretq
 
 ISR_NOERRORCODE 0

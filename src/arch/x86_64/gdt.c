@@ -36,6 +36,11 @@ void init_tss(u64 rsp0) {
     daTSS.rsp0 = rsp0;
 }
 
+struct{
+    u64 stack_base;
+    u64 kernel_stack;
+} PACKED dummy_proc;
+
 int gdt_init(u64 rsp0) {
 
     set_gdt_entry(0, 0, 0, 0, 0);             // NULL segment
@@ -70,15 +75,6 @@ int gdt_init(u64 rsp0) {
 		"retfq;"
 		".reload:"
 		: : : "ax");
-
-    struct{
-        u64 stack_base;
-        u64 kernel_stack;
-    } PACKED dummy_proc;
-    dummy_proc.stack_base = 0;
-    dummy_proc.kernel_stack = rsp0;
-    wrmsr(GS_KERNEL_MSR, (u64)&dummy_proc);
-    wrmsr(GS_MSR, (u64)&dummy_proc);
 
     return 0;
 }

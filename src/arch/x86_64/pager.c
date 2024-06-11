@@ -10,7 +10,6 @@
 #include <libk/stdint.h>
 #include <libk/string.h>
 #include <stdint.h>
-#include <utils/log.h>
 
 // Sorry, I forgot to attribute this
 //  this is based on:
@@ -97,8 +96,6 @@ _bool vmm_map_range(u64 pml4, u64 vaddr, u64 paddr, u64 npages, u64 flags) {
     _bool success = true;
     u64 i = 0;
     while (i < npages) {
-        log_trace("Mapping 0x%p -> 0x%p\n", vaddr + i * PAGE_SIZE,
-                  paddr + i * PAGE_SIZE);
         success &= vmm_map_page(pml4, vaddr + i * PAGE_SIZE,
                                 paddr + i * PAGE_SIZE, flags);
         i++;
@@ -109,7 +106,6 @@ _bool vmm_unmap_range(u64 pml4, u64 vaddr, u64 npages) {
     _bool success = true;
     u64 i = 0;
     while (i < npages) {
-        log_trace("Unmapping 0x%p\n", vaddr + i * PAGE_SIZE);
         success &= vmm_unmap_page(pml4, vaddr + i * PAGE_SIZE);
         i++;
     }
