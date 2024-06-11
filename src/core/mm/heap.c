@@ -7,16 +7,13 @@
 #include <vendor/printf.h>
 
 void *malloc(usize size) {
-    log_trace("malloc(%d)\n", size);
     char *PP = (char *)PHYS_TO_VIRT(request_pages((size / 4096) + 1));
     *((usize *)PP) = size;
     PP += sizeof(usize);
-    log_trace("malloc returned 0x%p\n", PP);
     return (void *)PP;
 }
 
 void free(void *tofree) {
-    log_trace("free(0x%p)\n", tofree);
     if (tofree == NULL)
         return; // might wanna error out here
     char *PP = (char *)tofree;
