@@ -57,7 +57,7 @@ void wakeup_startup() {
     exec_elf("bin/test", "test", true);
 
     // start Gaia: the userspace portion of Wakeup
-    execute("Gaia", gaia_main);
+    //execute("Gaia", gaia_main);
 
     log_nice("Userland sucessfully initialized!\n");
 

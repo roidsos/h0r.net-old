@@ -113,7 +113,7 @@ void handler(UNUSED Registers *regs) {
 }
 
 void ps2_init() {
-    register_ISR(33, handler);
+    register_ISR(1, handler);
     ioapic_unmask(1);
 
     if (in8(PS2_COMMAND) & 0x1) // initialize the ps2 controller

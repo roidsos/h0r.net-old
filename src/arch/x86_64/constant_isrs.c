@@ -11,48 +11,45 @@
 #include <libk/binary.h>
 #include <libk/string.h>
 
-extern void next_process();
+extern process_t next_process();
 extern process_t processes[MAX_PROCESSES];
 
+process_t current_process = {0};
+
 void schedule(Registers *regs) {
-    if (!sched_running) {
-        sched_running = true;
-    } else {
-        if (!FLAG_READ(processes[sched_current_pid].state_flags,
-                       SCHED_FLAGS_CHANGED)) {
-            memcpy(&processes[sched_current_pid].regs, regs, sizeof(Registers));
+    lapic_timer_stop();
+
+    //__asm__ volatile("mov %0, %%cr3" : : "r"((u64)hn_pagemap));
+
+    if (current_process.stack_base != 0) {
+        if(!FLAG_READ(processes[sched_current_pid].state_flags,
+                   SCHED_FLAGS_CHANGED)){
+            current_process.regs = *regs;
         }
     }
 
     // the scheduling algorithm is separated from the scheduler
-    next_process();
+    current_process = next_process();
 
-    memcpy(regs, &processes[sched_current_pid].regs, sizeof(Registers));
-
-    wrmsr(GS_KERNEL_MSR, (u64)&processes[sched_current_pid]);
-
-    // setting the timer for next yield, have to do it in the kernel pagemap
-    lapic_timer_oneshot(5, 32); // 5ms timeslice
-    lapic_eoi();
-
-    if (processes[sched_current_pid].state_flags & SCHED_FLAGS_IN_SYSCALL)
-        return;
-
+    *regs = processes[sched_current_pid].regs;
     __asm__ volatile("mov %0, %%cr3"
                      :
-                     : "r"(VIRT_TO_PHYS(processes[sched_current_pid].pagemap)));
+                     : "r"(VIRT_TO_PHYS(current_process.pagemap)));
+
+
+    wrmsr(GS_KERNEL_MSR, (u64)&current_process);
+
+    lapic_eoi();
+    lapic_timer_oneshot(5, 32); // 5ms timeslice
 }
 
 void syscall_handler(Registers *regs) {
     // save the registers so it can be restored after the syscall
-    memcpy(&processes[sched_current_pid].regs, regs, sizeof(Registers));
+    current_process.regs = *regs;
 
-    FLAG_SET(processes[sched_current_pid].state_flags, SCHED_FLAGS_IN_SYSCALL);
     regs->rax = syscall(regs->rax, regs->rdi, regs->rsi, regs->rdx,regs->r10,regs->r8,regs->r9);
-    FLAG_UNSET(processes[sched_current_pid].state_flags,
-               SCHED_FLAGS_IN_SYSCALL);
 }
 
 void cisrs_register() {
-    register_ISR(32, schedule);
+    register_ISR(0, schedule);
 }

@@ -40,18 +40,8 @@ typedef struct {
   u32 resv;
 } PACKED tss_entry;
 
-typedef struct
-{
-    u16 limit0;
-    u16 base0;
-    u8 base1;
-    u8 access;
-    u8 limit1_flags;
-    u8 base2;
-} PACKED gdt_entry;
-
 typedef struct {
-  gdt_entry gdt_entries[9];
+  u64 gdt_entries[9];
   tss_entry tss_entry;
 } PACKED gdt_table;
 

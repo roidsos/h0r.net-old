@@ -6,7 +6,7 @@ extern process_t processes[MAX_PROCESSES];
 extern u32 sched_num_procs;
 extern u32 sched_current_pid;
 
-void next_process() {
+process_t next_process() {
     sched_current_pid++;
     if (sched_current_pid > sched_num_procs)
         sched_current_pid = 0;
@@ -23,4 +23,6 @@ void next_process() {
         if (sched_current_pid > sched_num_procs)
             sched_current_pid = 0;
     }
+
+    return processes[sched_current_pid];
 }

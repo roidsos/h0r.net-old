@@ -12,7 +12,7 @@ struct IDT64 {
 
 struct IDT64 g_IDT[256];
 
-void SetGate(int interrupt, void *base, u16 segmentDescriptor, u8 flags) {
+void idt_set_gate(int interrupt, void *base, u16 segmentDescriptor, u8 flags) {
     g_IDT[interrupt].zero = 0;
     g_IDT[interrupt].ist = 0;
     g_IDT[interrupt].offset_low = (u16)(((u64)base & 0x000000000000ffff));
