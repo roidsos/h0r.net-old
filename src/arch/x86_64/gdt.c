@@ -18,8 +18,7 @@ gdt_table gdt = {
   0x00aff3000000ffff, // 0x38 data ss
   0x00affb000000ffff, // 0x40 user mode code cs
   },
-  {
-  }
+  {0}
 };
 
 gdt_pointer gdtr;
