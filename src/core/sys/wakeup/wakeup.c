@@ -42,8 +42,8 @@ void wakeup_init_hw() {
 
     DRIVER_ASSERT(ahci_init());
 
-    // lai_set_acpi_revision(hn_data.ACPI_ver);
-    // lai_create_namespace();
+    lai_set_acpi_revision(hn_data.ACPI_ver);
+    lai_create_namespace();
 
     log_nice("Hardware sucessfully initialized!\n");
 }
@@ -60,8 +60,6 @@ void wakeup_startup() {
     u64* kstack = PHYS_TO_VIRT(request_pages(STACK_SIZE) + STACK_SIZE*PAGE_SIZE);
     u64* sched_stack = PHYS_TO_VIRT(request_pages(STACK_SIZE) + STACK_SIZE*PAGE_SIZE);
     set_important_stacks(kstack, sched_stack);
-
-
 
     exec_elf("bin/test", "test", true);
 
