@@ -19,5 +19,5 @@ typedef enum
 } IDT_FLAGS;
 
 void enable_IDT();
-void idt_set_gate(int interrupt, void* base, u16 segmentDescriptor, u8 flags);
+void idt_set_gate(int interrupt, void* base, u16 segment_descriptor, u8 flags,u8 ist);
 #endif // __IDT_H__

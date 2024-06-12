@@ -45,7 +45,5 @@ typedef struct {
   tss_entry tss_entry;
 } PACKED gdt_table;
 
-int gdt_init(u64 rsp0);
-void set_kernel_stack(u64 stack);
-
+int gdt_init();
 #endif

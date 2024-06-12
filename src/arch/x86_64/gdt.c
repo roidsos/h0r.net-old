@@ -23,20 +23,12 @@ gdt_table gdt = {
 };
 
 gdt_pointer gdtr;
-tss daTSS;
+tss daTSS = {0};
 
 extern void load_gdt(gdt_pointer *);
 extern void load_tss();
 
-void init_tss(u64 rsp0) {
-    char *ptr_c = (char *)&daTSS;
-    for (usize i = 0; i < sizeof(tss); i++) {
-        ptr_c[i] = (char)0;
-    }
-    daTSS.rsp0 = rsp0;
-}
-
-int gdt_init(u64 rsp0) {
+int gdt_init() {
 
     gdt.tss_entry.length = sizeof(tss);
     gdt.tss_entry.base = (u16)((u64)&daTSS & 0xffff);
@@ -50,7 +42,6 @@ int gdt_init(u64 rsp0) {
     gdtr.size = sizeof(gdt) - 1;
     gdtr.offset = (u64)&gdt;
 
-    init_tss(rsp0);
 	asm volatile("lgdt (%%rax)" : : "a"(&gdtr) : "memory");
 	asm volatile("ltr %%ax" : : "a"(0x48));
     asm volatile(
@@ -71,5 +62,7 @@ int gdt_init(u64 rsp0) {
 
     return 0;
 }
-
-void set_kernel_stack(u64 stack) { daTSS.rsp0 = stack; }
+void set_important_stacks(u64* kstack,u64* sched_stack){
+    daTSS.rsp0 = (u64)kstack;
+    daTSS.ist1 = (u64)sched_stack;
+}
