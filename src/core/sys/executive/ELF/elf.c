@@ -48,11 +48,11 @@ void exec_elf(char *path, char *procname, _bool user) {
     }
     regs.rip = (u64)elf_header.entry;
     regs.rsp = stack + STACK_SIZE * PAGE_SIZE;
-    regs.cs = user ? 0x38 : 0x8;
-    regs.ss = user ? 0x40 : 0x10;
+    regs.cs = user ? 0x43 : 0x28;
+    regs.ss = user ? 0x3B : 0x30;
     regs.rflags = 0x202;
 
     vmm_map_range(pagemap, stack, stack, STACK_SIZE,
-                  FLAGS_R | FLAGS_W | FLAGS_U);
+                  FLAGS_R | FLAGS_W | FLAGS_X | FLAGS_U);
     sched_add_process((char *)procname, regs, pagemap);
 }

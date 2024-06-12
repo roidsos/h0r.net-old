@@ -1,4 +1,5 @@
 #include "wakeup.h"
+#include "core/mm/mem.h"
 #include "core/sys/executive/krnlexec/krnlexec.h"
 #include "core/sys/executive/ELF/elf.h"
 #include "drivers/storage/AHCI.h"
@@ -13,6 +14,7 @@
 #include <vendor/printf.h>
 
 #include <arch/x86_64/interrupts/interrupts.h>
+#include <arch/general/interrupts.h>
 
 #include <drivers/ACPI/MCFG.h>
 #include <drivers/meta/PCI.h>
@@ -54,10 +56,17 @@ void wakeup_do_mounts() {
     log_nice("Filesystem sucessfully initialized!\n");
 }
 void wakeup_startup() {
+    //setup for userland
+    u64* kstack = PHYS_TO_VIRT(request_pages(STACK_SIZE) + STACK_SIZE*PAGE_SIZE);
+    u64* sched_stack = PHYS_TO_VIRT(request_pages(STACK_SIZE) + STACK_SIZE*PAGE_SIZE);
+    set_important_stacks(kstack, sched_stack);
+
+
+
     exec_elf("bin/test", "test", true);
 
     // start Gaia: the userspace portion of Wakeup
-    execute("Gaia", gaia_main);
+    //execute("Gaia", gaia_main);
 
     log_nice("Userland sucessfully initialized!\n");
 

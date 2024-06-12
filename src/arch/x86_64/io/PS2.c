@@ -6,16 +6,16 @@
 #include <arch/x86_64/interrupts/interrupts.h>
 #include <arch/x86_64/io/portio.h>
 #include <libk/macros.h>
-#include <stdint.h>
-#include <string.h>
+#include <libk/string.h>
+#include <utils/log.h>
 #include <vendor/printf.h>
 
-int shiftpoint = 0;
-int capspoint = 0;
+u32 shiftpoint = 0;
+u32 capspoint = 0;
 
 char KB_STATE[2] = "";
-int KB_CAPS_STATE;
-int KB_SHIFT_STATE;
+u32 KB_CAPS_STATE;
+u32 KB_SHIFT_STATE;
 
 char *KB_KEY[] = {
     "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
@@ -45,16 +45,15 @@ char *KB_KEY_SHIFT[] = {"~",
                         "?",
                         "|"};
 
-uint8_t KB_SCANCODE[] = {0x1e, 0x30, 0x2e, 0x20, 0x12, 0x21, 0x22, 0x23, 0x17,
+u8 KB_SCANCODE[] = {0x1e, 0x30, 0x2e, 0x20, 0x12, 0x21, 0x22, 0x23, 0x17,
                          0x24, 0x25, 0x26, 0x32, 0x32, 0x18, 0x19, 0x10, 0x13,
                          0x1f, 0x14, 0x16, 0x2f, 0x11, 0x2d, 0x15, 0x2c, 0x29,
                          0x2,  0x3,  0x4,  0x5,  0x6,  0x7,  0x8,  0x9,  0xa,
                          0xb,  0xc,  0xd,  0x2a, 0x36, 0xaa, 0x3a};
 
 void handler(UNUSED Registers *regs) {
-    uint8_t scancode = in8(PS2_DATA);
-    // printf("0x%x\n", scancode);
-    for (int i = 0; i < 42; i++) {
+    u8 scancode = in8(PS2_DATA);
+    for (u32 i = 0; i < 42; i++) {
         if (scancode == KB_SCANCODE[i]) {
             if (shiftpoint == 1) {
                 if (i > 26) {
@@ -114,7 +113,7 @@ void handler(UNUSED Registers *regs) {
 }
 
 void ps2_init() {
-    register_ISR(33, handler);
+    register_ISR(1, handler);
     ioapic_unmask(1);
 
     if (in8(PS2_COMMAND) & 0x1) // initialize the ps2 controller

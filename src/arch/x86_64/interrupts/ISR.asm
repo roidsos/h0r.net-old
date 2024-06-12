@@ -56,9 +56,11 @@ ISR%1:
 extern ISR_Handler
 isr_common:
 	PUSHA64
+
 	cld
 	mov rdi, rsp
 	call ISR_Handler
+
 	POPA64
 	add rsp, 16
 	iretq

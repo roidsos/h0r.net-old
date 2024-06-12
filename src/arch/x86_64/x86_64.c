@@ -18,7 +18,7 @@
 #include <utils/psf2.h>
 #include <vendor/printf.h>
 
-u64 kernel_stack[8192];
+u64 kernel_stack[8192] = {0};
 
 static volatile struct limine_module_request mod_request = {
     .id = LIMINE_MODULE_REQUEST, .revision = 0};
@@ -70,8 +70,9 @@ void _start(void) {
     log_nice("x86_64 Init Target reached: IO\n");
 
     get_cpu_capabilities(&hn_data.cpu_info);
+    user_init();
     sys_init_fpu();
-    gdt_init((u64 *)kernel_stack);
+    gdt_init((u64)kernel_stack);
     log_nice("x86_64 Init Target reached: CPU\n");
 
     if (!find_rsdt(rsdp_request.response->address)) {
@@ -81,14 +82,13 @@ void _start(void) {
 
     hn_pagemap = vmm_get_pagemap();
     initialize_interrupts();
+    cisrs_register();
     lapic_init();
     ioapic_init();
     enable_interrupts();
     log_nice("x86_64 Init Target reached: Interrupts\n");
 
     ps2_init();
-    cisrs_register();
-    user_init();
     log_nice("x86_64 Init Target reached: Misc\n");
 
     kmain();

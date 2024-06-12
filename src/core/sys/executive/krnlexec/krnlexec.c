@@ -14,8 +14,8 @@ void execute(const char *name, void (*func)()) {
 
     regs.rip = (u64)func;
     regs.rsp = stack + STACK_SIZE * PAGE_SIZE;
-    regs.cs = 0x8;
-    regs.ss = 0x10;
+    regs.cs = 0x28;
+    regs.ss = 0x30;
     regs.rflags = 0x202;
 
     vmm_map_range(pagemap, stack, stack, STACK_SIZE,

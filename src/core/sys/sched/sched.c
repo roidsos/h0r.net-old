@@ -11,7 +11,6 @@
 process_t processes[MAX_PROCESSES] = {0};
 u32 sched_num_procs = 0;
 u32 sched_current_pid = 0;
-_bool sched_running = false;
 
 // TODO: kernel and user processes
 u32 sched_add_process(char *name, Registers init_state, u64 pagemap) {
@@ -21,8 +20,7 @@ u32 sched_add_process(char *name, Registers init_state, u64 pagemap) {
         processes[sched_num_procs].pagemap = pagemap;
         processes[sched_num_procs].state_flags = SCHED_STATE_READY;
         processes[sched_num_procs].stack_base = (void*)init_state.rsp;
-        processes[sched_num_procs].kernel_stack = PHYS_TO_VIRT(request_pages(3)) + (3 * PAGE_SIZE);
-        log_trace("stack_base: %p, kernel_stack: %p", processes[sched_num_procs].stack_base, processes[sched_num_procs].kernel_stack);
+        processes[sched_num_procs].kernel_stack = PHYS_TO_VIRT(request_pages(3) + (3 * PAGE_SIZE));
         sched_num_procs++;
         return sched_num_procs - 1;
     }

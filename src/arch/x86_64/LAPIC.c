@@ -8,10 +8,10 @@
 
 u32 ticks = 0;
 
-u32 rreg(u16 offset) { return *((u32 *)((u64)hn_data.lapic_base + offset)); }
+u32 rreg(u16 offset) { return *((u32 *)((u64)PHYS_TO_VIRT(hn_data.lapic_base) + offset)); }
 
 void wreg(u16 offset, u32 val) {
-    *((u32 *)((u64)hn_data.lapic_base + offset)) = val;
+    *((u32 *)((u64)PHYS_TO_VIRT(hn_data.lapic_base) + offset)) = val;
 }
 
 void lapic_timer_stop() {
