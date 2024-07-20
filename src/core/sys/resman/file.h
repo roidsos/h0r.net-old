@@ -1,8 +1,8 @@
 #ifndef __FILE_H__
 #define __FILE_H__
 
-#include <libk/stdint.h>
-#include <libk/stdbool.h>
+#include <core/libk/stdint.h>
+#include <core/libk/stdbool.h>
 
 #define FILE_PERM_OWNER_READ   1 << 0
 #define FILE_PERM_OWNER_WRITE  1 << 1

@@ -1,8 +1,8 @@
 #include "SDT.h"
 #include <core/kernel.h>
 #include <core/mm/mem.h>
-#include <libk/string.h>
-#include <utils/log.h>
+#include <core/libk/string.h>
+#include <core/utils/log.h>
 
 RSDT *rsdt;
 XSDT *xsdt;

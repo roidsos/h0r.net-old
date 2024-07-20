@@ -1,8 +1,8 @@
 #ifndef __VECTOR_H__
 #define __VECTOR_H__
 
-#include "libk/stdint.h"
-#include "libk/string.h"
+#include "core/libk/stdint.h"
+#include "core/libk/string.h"
 #include <core/mm/heap.h>
 
 #define vector_struct(type) \

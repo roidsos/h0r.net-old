@@ -1,7 +1,7 @@
 #ifndef __ISR_H__
 #define __ISR_H__
-#include <libk/stdint.h>
-#include <libk/macros.h>
+#include <core/libk/stdint.h>
+#include <core/libk/macros.h>
 
 typedef struct 
 {

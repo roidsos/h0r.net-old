@@ -35,8 +35,8 @@
 #include <arch/x86_64/io/cereal.h>
 #include <config.h>
 #include <core/kernel.h>
-#include <libk/macros.h>
-#include <libk/stdint.h>
+#include <core/libk/macros.h>
+#include <core/libk/stdint.h>
 #include <uterus.h>
 
 // 'ntoa' conversion buffer size, this must be big enough to hold one converted

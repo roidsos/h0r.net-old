@@ -4,10 +4,10 @@
 #include <arch/x86_64/interrupts/ISR.h>
 #include <core/mm/pmm.h>
 #include <core/sys/resman/VFS.h>
-#include <libk/endian.h>
-#include <libk/libelf.h>
-#include <libk/macros.h>
-#include <utils/log.h>
+#include <core/libk/endian.h>
+#include <core/libk/libelf.h>
+#include <core/libk/macros.h>
+#include <core/utils/log.h>
 #include <vendor/printf.h>
 
 void exec_elf(char *path, char *procname, _bool user) {

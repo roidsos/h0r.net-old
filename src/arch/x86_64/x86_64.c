@@ -1,6 +1,6 @@
 #include "arch/general/paging.h"
 #include "arch/x86_64/gdt.h"
-#include "drivers/ACPI/SDT.h"
+#include "core/drivers/ACPI/SDT.h"
 #include <arch/x86_64/IOAPIC.h>
 #include <arch/x86_64/LAPIC.h>
 #include <arch/x86_64/user.h>
@@ -13,9 +13,9 @@
 #include <core/error.h>
 #include <core/kernel.h>
 #include <core/mm/mem.h>
-#include <libk/string.h>
-#include <utils/log.h>
-#include <utils/psf2.h>
+#include <core/libk/string.h>
+#include <core/utils/log.h>
+#include <core/utils/psf2.h>
 #include <vendor/printf.h>
 
 u64 kernel_stack[8192] = {0};
@@ -72,7 +72,7 @@ void _start(void) {
     get_cpu_capabilities(&hn_data.cpu_info);
     user_init();
     sys_init_fpu();
-    gdt_init((u64)kernel_stack);
+    gdt_init();
     log_nice("x86_64 Init Target reached: CPU\n");
 
     if (!find_rsdt(rsdp_request.response->address)) {

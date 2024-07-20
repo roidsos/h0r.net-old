@@ -1,10 +1,10 @@
 #include "AHCI.h"
 #include "core/mm/mem.h"
-#include "libk/string.h"
+#include "core/libk/string.h"
 #include "core/mm/heap.h"
-#include "utils/log.h"
-#include <drivers/meta/PCI.h>
-#include <libk/endian.h>
+#include "core/utils/log.h"
+#include <core/drivers/meta/PCI.h>
+#include <core/libk/endian.h>
 
 HBA_mem *abar;
 

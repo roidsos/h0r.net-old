@@ -1,7 +1,7 @@
 #include "interrupts.h"
 #include <arch/x86_64/interrupts/IDT.h>
 #include <arch/x86_64/io/portio.h>
-#include <utils/log.h>
+#include <core/utils/log.h>
 
 void initialize_interrupts() {
     init_ISR();

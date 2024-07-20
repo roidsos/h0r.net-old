@@ -1,11 +1,11 @@
 #include <arch/x86_64/io/portio.h>
 #include <core/error.h>
 #include <core/mm/heap.h>
-#include <drivers/ACPI/SDT.h>
-#include <libk/macros.h>
+#include <core/drivers/ACPI/SDT.h>
+#include <core/libk/macros.h>
 #include <vendor/printf.h>
 
-// WARN: Arch specific code in utils/ + TODO: smh move to arch/ or make
+// WARN: Arch specific code in core/utils/ + TODO: smh move to arch/ or make
 // architecture neutral
 void *laihost_malloc(usize size) { return malloc(size); }
 void *laihost_realloc(void *old, usize newsize, usize oldsize) {

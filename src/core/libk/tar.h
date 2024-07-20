@@ -1,7 +1,7 @@
 #ifndef __TAR_H__
 #define __TAR_H__
 
-#include <libk/stdint.h>
+#include <core/libk/stdint.h>
 
 struct tar_header
 {

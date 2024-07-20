@@ -4,8 +4,8 @@
 #include "arch/x86_64/cpu.h"
 
 #include "limine.h"
-#include <libk/stdint.h>
-#include <libk/stdbool.h>
+#include <core/libk/stdint.h>
+#include <core/libk/stdbool.h>
 #include "uterus.h"
 
 

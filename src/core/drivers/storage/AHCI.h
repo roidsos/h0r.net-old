@@ -1,9 +1,9 @@
 #ifndef __AHCI_H__
 #define __AHCI_H__
 
-#include <libk/stdint.h>
-#include <libk/stdbool.h>
-#include <libk/macros.h>
+#include <core/libk/stdint.h>
+#include <core/libk/stdbool.h>
+#include <core/libk/macros.h>
 
 //all structs and values are from https://github.com/rajesh5310/SBUnix/blob/master/sys/ahci.c and https://osdev.org/AHCI 
 

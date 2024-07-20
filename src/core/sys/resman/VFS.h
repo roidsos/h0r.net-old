@@ -1,8 +1,8 @@
 #ifndef __VFS_H__
 #define __VFS_H__
 
-#include <libk/stdint.h>
-#include <libk/stdbool.h>
+#include <core/libk/stdint.h>
+#include <core/libk/stdbool.h>
 #include "devman.h"
 #include "file.h"
 

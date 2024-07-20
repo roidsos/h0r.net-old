@@ -5,9 +5,9 @@
 #include <arch/x86_64/LAPIC.h>
 #include <arch/x86_64/interrupts/interrupts.h>
 #include <arch/x86_64/io/portio.h>
-#include <libk/macros.h>
-#include <libk/string.h>
-#include <utils/log.h>
+#include <core/libk/macros.h>
+#include <core/libk/string.h>
+#include <core/utils/log.h>
 #include <vendor/printf.h>
 
 u32 shiftpoint = 0;
@@ -28,7 +28,7 @@ char *KB_KEY_SHIFT[] = {"~",
                         "@",
                         "#",
                         "$",
-                        "%"
+                        "%",
                         "^",
                         "&",
                         "*",

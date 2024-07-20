@@ -1,9 +1,9 @@
 #ifndef __BITMAP_H__
 #define __BITMAP_H__
 
-#include <libk/stdint.h>
-#include <libk/stddef.h>
-#include <libk/stdbool.h>
+#include <core/libk/stdint.h>
+#include <core/libk/stddef.h>
+#include <core/libk/stdbool.h>
 
 struct Bitmap{
     usize size;

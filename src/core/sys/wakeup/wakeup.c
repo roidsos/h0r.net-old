@@ -2,8 +2,8 @@
 #include "core/mm/mem.h"
 #include "core/sys/executive/krnlexec/krnlexec.h"
 #include "core/sys/executive/ELF/elf.h"
-#include "drivers/storage/AHCI.h"
-#include "libk/macros.h"
+#include "core/drivers/storage/AHCI.h"
+#include "core/libk/macros.h"
 #include <config.h>
 
 #include <core/sys/resman/VFS.h>
@@ -16,11 +16,11 @@
 #include <arch/x86_64/interrupts/interrupts.h>
 #include <arch/general/interrupts.h>
 
-#include <drivers/ACPI/MCFG.h>
-#include <drivers/meta/PCI.h>
+#include <core/drivers/ACPI/MCFG.h>
+#include <core/drivers/meta/PCI.h>
 
 #include <core/error.h>
-#include <utils/log.h>
+#include <core/utils/log.h>
 
 #include <core/sys/wakeup/gaia.h>
 

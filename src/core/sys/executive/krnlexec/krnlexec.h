@@ -1,8 +1,8 @@
 #ifndef __KERNLEXEC_H__
 #define __KERNLEXEC_H__
 
-#include <libk/stdbool.h>
-#include <libk/stdint.h>
+#include <core/libk/stdbool.h>
+#include <core/libk/stdint.h>
 
 void execute(const char* name, void (*func)());
 

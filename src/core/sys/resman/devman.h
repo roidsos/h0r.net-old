@@ -1,9 +1,9 @@
 #ifndef __DEVMAN_H__
 #define __DEVMAN_H__
 
-#include <libk/stdint.h>
-#include <libk/stdbool.h>
-#include <libk/stddef.h>
+#include <core/libk/stdint.h>
+#include <core/libk/stdbool.h>
+#include <core/libk/stddef.h>
 #include "file.h"
 
 #define DEVICE_TYPE_NONE        0

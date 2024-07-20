@@ -1,8 +1,8 @@
 #ifndef __PCI_H__
 #define __PCI_H__
 
-#include <libk/stdint.h>
-#include <libk/stdbool.h>
+#include <core/libk/stdint.h>
+#include <core/libk/stdbool.h>
 
 #define PCI_REG_COMMAND_IO_SPACE                    1 << 0
 #define PCI_REG_COMMAND_MEM_SPACE                   1 << 1

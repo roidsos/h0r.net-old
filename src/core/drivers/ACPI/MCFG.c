@@ -1,5 +1,5 @@
 #include "MCFG.h"
-#include <drivers/meta/PCI.h>
+#include <core/drivers/meta/PCI.h>
 #include <vendor/printf.h>
 // Puffer get outta here, stop copying my code ffs
 u32 num_mcfg_entries;

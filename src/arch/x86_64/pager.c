@@ -1,14 +1,14 @@
 #include "pager.h"
 #include "config.h"
-#include "libk/stddef.h"
+#include "core/libk/stddef.h"
 #include <arch/general/paging.h>
 #include <core/kernel.h>
 #include <core/mm/mem.h>
 #include <core/mm/pmm.h>
-#include <libk/binary.h>
-#include <libk/stdbool.h>
-#include <libk/stdint.h>
-#include <libk/string.h>
+#include <core/libk/binary.h>
+#include <core/libk/stdbool.h>
+#include <core/libk/stdint.h>
+#include <core/libk/string.h>
 #include <stdint.h>
 
 // Sorry, I forgot to attribute this

@@ -2,8 +2,8 @@
 #define __PROCESS_H__
 
 #include <arch/x86_64/interrupts/interrupts.h>
-#include <libk/stdint.h>
-#include <libk/stdbool.h>
+#include <core/libk/stdint.h>
+#include <core/libk/stdbool.h>
 
 enum process_state {
     SCHED_STATE_NONEXISTENT = 0,

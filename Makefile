@@ -25,7 +25,7 @@ endif
 # It is highly recommended to use a custom built cross toolchain to build a kernel.
 # We are only using "cc" as a placeholder here. It may work by using
 # the host system's toolchain, but this is not guaranteed.
-override DEFAULT_CC := gcc
+override DEFAULT_CC := clang
 $(eval $(call DEFAULT_VAR,CC,$(DEFAULT_CC)))
 
 # Same thing for "ld" (the linker).
@@ -33,7 +33,7 @@ override DEFAULT_LD := ld
 $(eval $(call DEFAULT_VAR,LD,$(DEFAULT_LD)))
 
 # User controllable C flags.
-override DEFAULT_CFLAGS := -g -Os -pipe
+override DEFAULT_CFLAGS := -g -O0 -pipe
 $(eval $(call DEFAULT_VAR,CFLAGS,$(DEFAULT_CFLAGS)))
 
 # User controllable C preprocessor flags. We set none by default.
@@ -56,7 +56,6 @@ override CFLAGS += \
     -Wall \
     -Wextra \
     -Werror \
-    -std=gnu99 \
     -ffreestanding \
     -fno-stack-protector \
     -fno-stack-check \
@@ -64,7 +63,7 @@ override CFLAGS += \
     -fno-PIE \
     -fno-PIC \
     -m64 \
-    -march=x86-64 \
+    --target=x86_64-pc-none-elf \
     -mabi=sysv \
     -mcmodel=kernel \
     -mno-80387 \

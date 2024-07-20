@@ -1,7 +1,7 @@
 #ifndef LAPIC_H
 #define LAPIC_H
 
-#include <libk/stdbool.h>
+#include <core/libk/stdbool.h>
 
 #define LAPIC_APICID      0x20
 #define LAPIC_APICVER     0x30

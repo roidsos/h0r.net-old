@@ -34,8 +34,8 @@
 #define _PRINTF_H_
 
 #include <stdarg.h>
-#include <libk/stdint.h>
-#include <libk/stddef.h>
+#include <core/libk/stdint.h>
+#include <core/libk/stddef.h>
 
 #ifdef __cplusplus
 extern "C" {

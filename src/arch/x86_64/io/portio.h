@@ -1,6 +1,6 @@
 #ifndef __PORTIO_H__
 #define __PORTIO_H__
-#include <libk/stdint.h>
+#include <core/libk/stdint.h>
 
 //outputs 8 bits TO THE IO BUS
 void o8(u16 port,u8 value);

@@ -2,8 +2,8 @@
 #include "core/kernel.h"
 #include <core/sys/events.h>
 #include <core/sys/sched/sched.h>
-#include <libk/macros.h>
-#include <utils/log.h>
+#include <core/libk/macros.h>
+#include <core/utils/log.h>
 #include <vendor/uterus/uterus.h>
 
 u64 syscall(u64 number, u64 arg1, u64 arg2, UNUSED u64 arg3,UNUSED u64 arg4,UNUSED u64 arg5,UNUSED u64 arg6) {

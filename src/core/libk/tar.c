@@ -1,6 +1,6 @@
 #include "tar.h"
-#include "libk/vector.h"
-#include <libk/macros.h>
+#include "core/libk/vector.h"
+#include <core/libk/macros.h>
 
 u32 parse_size(u8 *in) {
 

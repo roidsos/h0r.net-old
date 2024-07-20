@@ -1,7 +1,7 @@
 #ifndef ERROR_H
 #define ERROR_H
 
-//WARN: Arch specific code in utils/ + TODO: smh move to arch/ or make architecture neutral
+//WARN: Arch specific code in core/utils/ + TODO: smh move to arch/ or make architecture neutral
 #include <arch/x86_64/interrupts/ISR.h>
 
 #define HN_ERR_HW_EXCEPTION   0

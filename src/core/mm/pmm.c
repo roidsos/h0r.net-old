@@ -1,8 +1,8 @@
 #include "pmm.h"
 #include <config.h>
 #include <core/error.h>
-#include <libk/string.h>
-#include <utils/log.h>
+#include <core/libk/string.h>
+#include <core/utils/log.h>
 #include <vendor/printf.h>
 
 usize total_mem = 0;

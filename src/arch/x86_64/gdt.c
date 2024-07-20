@@ -1,4 +1,4 @@
-#include <libk/macros.h>
+#include <core/libk/macros.h>
 #include "gdt.h"
 #include "cpu.h"
 

@@ -1,10 +1,10 @@
 #ifndef SDT_H
 #define SDT_H
 
-#include <libk/stdint.h>
-#include <libk/stdbool.h>
-#include <libk/stddef.h>
-#include <libk/macros.h>
+#include <core/libk/stdint.h>
+#include <core/libk/stdbool.h>
+#include <core/libk/stddef.h>
+#include <core/libk/macros.h>
 typedef struct {
   char signature[4];
   u32 length;

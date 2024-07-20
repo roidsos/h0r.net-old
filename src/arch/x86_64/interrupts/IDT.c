@@ -1,5 +1,5 @@
 #include "IDT.h"
-#include <libk/binary.h>
+#include <core/libk/binary.h>
 struct IDT64 {
     u16 offset_low;
     u16 selector;

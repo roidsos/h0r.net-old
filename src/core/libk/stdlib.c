@@ -1,4 +1,4 @@
-#include <libk/stdint.h>
+#include <core/libk/stdint.h>
 
 int atoi(char *s) {
     int i = 0;
@@ -9,7 +9,7 @@ int atoi(char *s) {
     return n;
 }
 
-// WARN: Arch specific code in libk/ + TODO: smh move to arch/ or make
+// WARN: Arch specific code in core/libk/ + TODO: smh move to arch/ or make
 // architecture neutral
 void hcf(void) {
     __asm__ volatile("cli");

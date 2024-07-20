@@ -2,12 +2,12 @@
 #include "arch/general/paging.h"
 #include "core/mm/mem.h"
 #include "core/sys/sched/process.h"
-#include "libk/binary.h"
-#include "libk/stdint.h"
+#include "core/libk/binary.h"
+#include "core/libk/stdint.h"
 #include <core/mm/heap.h>
 #include <core/mm/pmm.h>
 #include <core/sys/sched/sched.h>
-#include <utils/log.h>
+#include <core/utils/log.h>
 
 event_t events[64] = {0};
 u32 num_events = 0;

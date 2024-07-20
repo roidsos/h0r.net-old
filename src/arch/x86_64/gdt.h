@@ -1,9 +1,9 @@
 #ifndef GDT_H
 #define GDT_H
 
-#include <libk/stdint.h>
-#include <libk/stddef.h>
-#include <libk/macros.h>
+#include <core/libk/stdint.h>
+#include <core/libk/stddef.h>
+#include <core/libk/macros.h>
 
 typedef struct
 {

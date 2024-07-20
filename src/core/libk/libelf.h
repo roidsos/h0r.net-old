@@ -1,8 +1,8 @@
 #ifndef __LIBELF_H__
 #define __LIBELF_H__
 
-#include <libk/stdint.h>
-#include <libk/macros.h>
+#include <core/libk/stdint.h>
+#include <core/libk/macros.h>
 
 #define ELF_MAGIC 0x7f454c46
 

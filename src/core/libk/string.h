@@ -1,8 +1,8 @@
 #ifndef __STRING_H__
 #define __STRING_H__
 
-#include <libk/stdint.h>
-#include <libk/stddef.h>
+#include <core/libk/stdint.h>
+#include <core/libk/stddef.h>
 
 void *memchr(const void *, int, usize);
 int memcmp(const void *, const void *, usize);

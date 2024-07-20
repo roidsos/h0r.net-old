@@ -4,8 +4,8 @@
 #include <arch/general/paging.h>
 #include <core/mm/pmm.h>
 #include <core/sys/sched/sched.h>
-#include <libk/stdint.h>
-#include <utils/log.h>
+#include <core/libk/stdint.h>
+#include <core/utils/log.h>
 
 void execute(const char *name, void (*func)()) {
     u64 pagemap = vmm_create_pagemap();

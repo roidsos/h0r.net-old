@@ -1,6 +1,6 @@
 #ifndef LOGGER_H
 #define LOGGER_H
-#include <libk/stdint.h>
+#include <core/libk/stdint.h>
 #include <config.h>
 
 #define LOG_TRAC 0

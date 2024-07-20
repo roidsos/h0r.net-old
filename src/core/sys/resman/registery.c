@@ -1,15 +1,15 @@
 #include "registery.h"
 #include <config.h>
-#include <libk/string.h>
-#include <utils/log.h>
+#include <core/libk/string.h>
+#include <core/utils/log.h>
 
 #include <core/mm/heap.h>
 #include <core/sys/resman/VFS.h>
 
-#include <libk/endian.h>
-#include <libk/limits.h>
-#include <libk/stddef.h>
-#include <libk/stdint.h>
+#include <core/libk/endian.h>
+#include <core/libk/limits.h>
+#include <core/libk/stddef.h>
+#include <core/libk/stdint.h>
 
 hive_header *read_hive(char *path) {
     u32 fd = vfs_open(0, path, 0);

@@ -1,6 +1,6 @@
 #include <backends/fb.h>
-#include <libk/macros.h>
-#include <libk/stdint.h>
+#include <core/libk/macros.h>
+#include <core/libk/stdint.h>
 #include <limine.h>
 #include <uterus.h>
 
@@ -19,7 +19,7 @@ typedef struct {
     u32 height, width;
 } PACKED psf2Hdr;
 
-// WARN: Arch specific code in utils/ + TODO: smh move to arch/ or make
+// WARN: Arch specific code in core/utils/ + TODO: smh move to arch/ or make
 // architecture neutral
 struct uterus_context *
 init_uterus_with_psf2_font(struct limine_file *psf2,

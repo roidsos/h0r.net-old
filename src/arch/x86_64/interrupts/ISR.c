@@ -1,4 +1,4 @@
-#include "utils/log.h"
+#include "core/utils/log.h"
 #include <arch/x86_64/interrupts/IDT.h>
 #include <arch/x86_64/interrupts/ISR.h>
 #include <core/error.h>

@@ -1,4 +1,4 @@
-#include <libk/stdbool.h>
+#include <core/libk/stdbool.h>
 #include <vendor/printf.h>
 
 void gaia_main(void) {

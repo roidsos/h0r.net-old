@@ -1,7 +1,7 @@
 #ifndef __EVENTS_H__
 #define __EVENTS_H__
 
-#include <libk/stdint.h>
+#include <core/libk/stdint.h>
 
 typedef struct{
     u32 pid;

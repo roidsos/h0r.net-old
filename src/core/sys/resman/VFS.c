@@ -2,12 +2,12 @@
 #include "devman.h"
 #include <config.h>
 #include <core/mm/heap.h>
-#include <libk/binary.h>
-#include <libk/limits.h>
-#include <libk/stddef.h>
-#include <libk/stdint.h>
-#include <libk/string.h>
-#include <utils/log.h>
+#include <core/libk/binary.h>
+#include <core/libk/limits.h>
+#include <core/libk/stddef.h>
+#include <core/libk/stdint.h>
+#include <core/libk/string.h>
+#include <core/utils/log.h>
 
 file_props_t open_files[MAX_OPEN_FILES] = {0};
 char *open_file_contents[MAX_OPEN_FILES] = {0};

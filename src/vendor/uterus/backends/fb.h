@@ -30,9 +30,9 @@
 extern "C" {
 #endif
 
-#include <libk/stdint.h>
-#include <libk/stddef.h>
-#include <libk/stdbool.h>
+#include <core/libk/stdint.h>
+#include <core/libk/stddef.h>
+#include <core/libk/stdbool.h>
 
 #include "../uterus.h"
 

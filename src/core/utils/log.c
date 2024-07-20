@@ -1,5 +1,5 @@
 #include "log.h"
-// WARN: Arch specific code in utils/ + TODO: smh move to arch/ or make
+// WARN: Arch specific code in core/utils/ + TODO: smh move to arch/ or make
 // architecture neutral
 #include <arch/x86_64/io/cereal.h>
 #include <vendor/printf.h>

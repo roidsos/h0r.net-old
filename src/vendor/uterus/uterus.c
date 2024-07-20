@@ -23,8 +23,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <libk/stdbool.h>
-#include <libk/stdint.h>
+#include <core/libk/stdbool.h>
+#include <core/libk/stdint.h>
 
 #include "uterus.h"
 

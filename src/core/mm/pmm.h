@@ -2,7 +2,7 @@
 #define PMM_H__
 
 #include <core/mm/mem.h>
-#include "libk/bitmap.h"
+#include "core/libk/bitmap.h"
 #include <limine.h>
 
 #define DIV_ROUND_UP(x, y) (x + (y - 1)) / y

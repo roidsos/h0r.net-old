@@ -1,6 +1,6 @@
 #include "string.h"
-#include <libk/stddef.h>
-#include <libk/stdint.h>
+#include <core/libk/stddef.h>
+#include <core/libk/stdint.h>
 
 void *memchr(const void *s, int c, usize n) {
     const unsigned char uc = c;

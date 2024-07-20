@@ -1,8 +1,8 @@
 #ifndef __REGISTERY_H__
 #define __REGISTERY_H__
 
-#include <libk/stdint.h>
-#include <libk/macros.h>
+#include <core/libk/stdint.h>
+#include <core/libk/macros.h>
 
 typedef struct {
     u32 magic;   // a magic value meant to verify whether this file is actually a hive file

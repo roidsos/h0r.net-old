@@ -1,7 +1,7 @@
 #ifndef PS2_H
 #define PS2_H
 
-#include <libk/stdint.h>
+#include <core/libk/stdint.h>
 
 #define PS2_COMMAND     0x64
 #define PS2_DATA        0x60

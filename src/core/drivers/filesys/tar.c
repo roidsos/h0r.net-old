@@ -2,12 +2,12 @@
 #include "core/sys/resman/file.h"
 #include <core/kernel.h>
 #include <core/sys/resman/VFS.h>
-#include <libk/macros.h>
-#include <libk/stdbool.h>
-#include <libk/stdint.h>
-#include <libk/string.h>
-#include <libk/tar.h>
-#include <utils/log.h>
+#include <core/libk/macros.h>
+#include <core/libk/stdbool.h>
+#include <core/libk/stdint.h>
+#include <core/libk/string.h>
+#include <core/libk/tar.h>
+#include <core/utils/log.h>
 
 u16 drive_id = 0;
 struct tar_contents contents;
@@ -81,7 +81,7 @@ _bool tar_init() {
         return false;
     }
 
-    // WARN: Arch specific code in drivers/ + TODO: smh move to arch/ or make
+    // WARN: Arch specific code in core/drivers/ + TODO: smh move to arch/ or make
     // architecture neutral
     contents = parse_tar(hn_data.initramfs->address, hn_data.initramfs->size);
 

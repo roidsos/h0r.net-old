@@ -8,8 +8,8 @@
 #include <config.h>
 #include <core/sys/sched/sched.h>
 #include <core/sys/syscall.h>
-#include <libk/binary.h>
-#include <libk/string.h>
+#include <core/libk/binary.h>
+#include <core/libk/string.h>
 
 extern process_t next_process();
 extern process_t processes[MAX_PROCESSES];

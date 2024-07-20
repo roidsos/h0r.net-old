@@ -2,10 +2,10 @@
 #include "core/mm/mem.h"
 #include "core/mm/pmm.h"
 #include "core/sys/sched/process.h"
-#include "utils/log.h"
+#include "core/utils/log.h"
 #include <config.h>
 #include <core/mm/heap.h>
-#include <libk/binary.h>
+#include <core/libk/binary.h>
 #include <vendor/printf.h>
 
 process_t processes[MAX_PROCESSES] = {0};

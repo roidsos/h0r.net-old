@@ -1,7 +1,7 @@
 #ifndef __HEAP_H__
 #define __HEAP_H__
 
-#include <libk/stddef.h>
+#include <core/libk/stddef.h>
 
 void* malloc(usize size);
 void* calloc(usize count, usize size);

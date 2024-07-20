@@ -2,12 +2,12 @@
 #include <arch/x86_64/LAPIC.h>
 #include <arch/x86_64/cpu.h>
 #include <core/mm/mem.h>
-#include <libk/stdlib.h>
+#include <core/libk/stdlib.h>
 #include <stdint.h>
-#include <utils/log.h>
+#include <core/utils/log.h>
 #include <vendor/printf.h>
 
-// WARN: Arch specific code in utils/ + TODO: smh move to arch/ or make
+// WARN: Arch specific code in core/utils/ + TODO: smh move to arch/ or make
 // architecture neutral
 char *errors[] = {
     "HN_ERR_HW_EXCEPTION", "HN_ERR_KERNEL_EXITED", "HN_ERR_NO_ACPI",

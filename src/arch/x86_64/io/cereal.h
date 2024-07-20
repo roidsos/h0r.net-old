@@ -1,8 +1,8 @@
 #ifndef __CEREAL_H__
 #define __CEREAL_H__
 
-#include <libk/stdint.h>
-#include <libk/stdbool.h>
+#include <core/libk/stdint.h>
+#include <core/libk/stdbool.h>
 
 #define COM1 0x3F8
 #define COM2 0x2F8

@@ -1,8 +1,8 @@
 #include "PCI.h"
-#include "libk/stdint.h"
+#include "core/libk/stdint.h"
 #include <core/mm/heap.h>
-#include <libk/stddef.h>
-#include <utils/log.h>
+#include <core/libk/stddef.h>
+#include <core/utils/log.h>
 pci_aspace_t pci_aspace = {.read = NULL, .write = NULL};
 
 void iterate_pci() {
