@@ -43,21 +43,21 @@ int gdt_init() {
 
 	asm volatile("lgdt (%%rax)" : : "a"(&gdtr) : "memory");
 	asm volatile("ltr %%ax" : : "a"(0x48));
-    asm volatile(
-        "swapgs;"
-		"mov $0, %%ax;"
-		"mov %%ax, %%gs;"
-		"mov %%ax, %%fs;"
-		"swapgs;"
-		"pushq $0x28;"
-		"pushq $.reload;"
-        "mov $0x30, %%ax;"
-		"mov %%ax, %%ds;"
-		"mov %%ax, %%es;"
-		"mov %%ax, %%ss;"
-		"retfq;"
-		".reload:"
-		: : : "ax");
+    //asm volatile(
+    //    "swapgs;"
+	//	"mov $0, %%ax;"
+	//	"mov %%ax, %%gs;"
+	//	"mov %%ax, %%fs;"
+	//	"swapgs;"
+	//	"pushq $0x28;"
+	//	"pushq $.reload;"
+    //    "mov $0x30, %%ax;"
+	//	"mov %%ax, %%ds;"
+	//	"mov %%ax, %%es;"
+	//	"mov %%ax, %%ss;"
+	//	"retfq;"
+	//	".reload:"
+	//	: : : "ax");
 
     return 0;
 }
