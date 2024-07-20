@@ -15,12 +15,17 @@ please star the repo UwU
 - [X] Heap
 #### Tasking
 - [x] Scheduler
-- [x] Events
 - [ ] SMP
 #### Userspace
 - [x] System calls
 - [x] ELF
 - [x] Userspace
+- [x] Events
+- [ ] Device abstraction
+- [ ] Memory abstraction
+- [ ] Shared memory
+- [ ] Framework system
+- [ ] Shared object support
 #### PCI
 - [X] PCI(thru bakvords kompat)
 - [X] PCIe
